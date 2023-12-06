@@ -1,0 +1,105 @@
+\documentclass[12pt,a4paper,notitlepage,twocolumn]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{float}
+\usepackage[french]{babel}
+
+\usepackage{palatino}
+
+ \usepackage[active]{srcltx}
+\usepackage{scrtime}
+
+\newcounter{qnumber}
+\setcounter{qnumber}{0}
+
+\newcounter{enumber}
+\setcounter{enumber}{0}
+
+\newcommand{\question}{\textbf{(\addtocounter{qnumber}{1}\theqnumber)}\,}
+\newcommand{\exercice}{\textbf{\addtocounter{enumber}{1}\textsc{Exercice} \theenumber}.\,}
+\setlength{\parindent}{0cm}
+
+
+\begin{document}
+
+\title{\textsc{Économétrie Approfondie}}
+\date{Mercredi 13 décembre 2023}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\begin{quote}
+  \textit{Les réponses non commentées ou insuffisamment détaillées ne seront pas
+    considérées. Prenez le temps de faire des phrase.}
+\end{quote}
+
+\bigskip
+
+\exercice On suppose que les données sont générées par le modèle suivant~:
+\[
+  y_i = x_{1,i}\beta_1 + \ldots x_{K,i}\beta_K + \varepsilon_i
+\]
+où $x_{k,i}$, pour $k=1,\ldots,K$ sont des variables explicatives déterministes, $\beta_k$, pour $k=1,\ldots,K$, sont des paramètres réels, $\varepsilon_i$ une variable aléatoire centrée de variance $\sigma_{\varepsilon}^2$. \question Expliciter les matrices et vecteurs dans la représentation matricielle équivalente du modèle~:
+\[
+Y = X\beta + \varepsilon
+\]
+\question Définir et donner l'expression de l'estimateur des MCO de $\beta$ (en montrant comment on arrive à cette expression et en explicitant les hypothèses nécessaires pour que cet estimateur existe). \question Montrer que cet estimateur est sans biais. \question Calculer la variance de cet estimateur. \question Pourquoi l'estimateur des MCO a t-il une variance~?\newline
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice On considère le modèle suivant~:
+\[
+y_i = \mu + \varepsilon_i
+\]
+pour $i=1,\ldots,N$ avec $\mu$ un paramètre réel et $\varepsilon_i$ une variable aléatoire réelle
+d'espérance nulle et de variance $\sigma_{i}^2$. On suppose que
+$\lim_{N\rightarrow\infty}N^{-1}\sum_{i=1}^N \sigma_i^2 = \bar
+\sigma^2<\infty$. Le modèle empirique est~:
+\[
+y_i = a + u_i
+\]
+\question Calculer l'estimateur des MCO de $a$. \question Quelle est l'espérance de $\hat a_{\textsc{mco}}$~? \question Calculer la variance de $\hat a_{\textsc{mco}}$. \question La limite en probabilité de $\hat a_{\textsc{mco}}$ lorsque $N$ tend vers l'infini, est-elle définie~? Si oui, quelle est cette limite~? \question Pourquoi cet estimateur n'est-il pas efficace~? \question Définir et donner l'expression de l'estimateur des MCG de $a$. Cet estimateur est-il un estimateur sans biais de $\mu$~? \question Calculer la variance de $\hat a_{\textsc{mcg}}$. \question Comparer les variances de $\hat a_{\textsc{mco}}$ et $\hat a_{\textsc{mcg}}$. Conclure.\newline
+
+\textbf{\textsc{Rappel}} \textit{Soient $\alpha_1, \ldots,\alpha_n$ des nombres réels positifs, alors la moyenne arithmétique des $\alpha_i$ est plus grande que la moyenne harmonique des $\alpha_i$:
+\[
+\frac{\alpha_1+\ldots+\alpha_n}{n} > \frac{n}{\frac{1}{\alpha_1}+\ldots+\frac{1}{\alpha_n}}
+\]}
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice Soit le modèle~:
+\[
+y_t = \beta x_t + \varepsilon_t
+\]
+avec $\beta$ un paramètre réel et
+\[
+\varepsilon_t = \varphi_1 \varepsilon_{t-1} + \varphi_2\varepsilon_{t-2} + \nu_t
+\]
+où $\nu_t$ est une variable aléatoire centrée de variance $\sigma_\nu^2$ et les
+paramètres réels $\varphi_1$, $\varphi_2$ sont tels que les moments d'ordre 2
+(la variance et la fonction d'autocorrélation) de $\varepsilon_t$ sont bien
+définis. On peut montrer, cela fera l'objet d'un cours au second semestre que la
+fonction d'autocorrélation de $\varepsilon$, $\rho(k)$, est non nulle est tend
+vers zero quand $k$ tend vers l'infini (la corrélation entre $\varepsilon_t$ et
+$\varepsilon_{t-k}$ se rapproche de zéro quand $k$ devient assez grand). On suppose que
+les valeurs de $\varphi_1$ et $\varphi_2$ sont connues. \question L'estimateur
+des MCO pour $\beta$ est-il un estimateur efficace~? Pourquoi~? \question
+Proposer une transformation des données, c'est-à-dire des variables $\tilde y_t$
+et $\tilde x_t$, telle que l'estimation de~:
+\[
+\tilde y_t = b \tilde x_t + \eta_t
+\]
+par les MCO délivre un estimateur sans biais et efficace de $\beta$. \question
+De quel estimateur s'agit-il~? \question Que faire si les paramètres $\varphi_1$
+et $\varphi_2$ ne sont pas connus~?
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
