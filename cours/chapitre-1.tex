@@ -1,0 +1,308 @@
+\synctex=1
+
+\documentclass[10pt,notheorems]{beamer}
+
+\usepackage{etex}
+\usepackage{fourier-orns}
+\usepackage{ccicons}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsbsy}
+\usepackage{amsopn}
+\usepackage{amscd}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{color, colortbl}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{lastpage}
+\usepackage[nice]{nicefrac}
+\usepackage{setspace}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{algorithms/algorithm}
+\usepackage{algorithms/algorithmic}
+\usepackage[frenchb]{babel}
+\usepackage{tikz,pgfplots,pgfplotstable}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{patterns, arrows, decorations.pathreplacing, decorations.markings, calc}
+\pgfplotsset{plot coordinates/math parser=false}
+\newlength\figureheight
+\newlength\figurewidth
+\usepackage{cancel}
+\usepackage{tikz-qtree}
+\usepackage{dcolumn}
+\usepackage{adjustbox}
+\usepackage{environ}
+\usepackage[cal=boondox]{mathalfa}
+\usepackage{manfnt}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=black,
+  urlcolor=black,
+}
+\usepackage{venndiagram}
+\usepackage{subcaption}
+
+\makeatletter
+\@ifclassloaded{beamer}{
+\uselanguage{French}
+\languagepath{French}
+% Git hash
+\usepackage{xstring}
+\usepackage{catchfile}
+\immediate\write18{git rev-parse HEAD > git.hash}
+\CatchFileDef{\HEAD}{git.hash}{\endlinechar=-1}
+\newcommand{\gitrevision}{\StrLeft{\HEAD}{7}}
+}{}
+\makeatother
+
+\newcommand{\trace}{\mathrm{tr}}
+\newcommand{\vect}{\mathrm{vec}}
+\newcommand{\tracarg}[1]{\mathrm{tr}\left\{#1\right\}}
+\newcommand{\vectarg}[1]{\mathrm{vec}\left(#1\right)}
+\newcommand{\vecth}[1]{\mathrm{vech}\left(#1\right)}
+\newcommand{\iid}[2]{\mathrm{iid}\left(#1,#2\right)}
+\newcommand{\normal}[2]{\mathcal N\left(#1,#2\right)}
+\newcommand{\sample}{\mathcal Y_T}
+\newcommand{\samplet}[1]{\mathcal Y_{#1}}
+\newcommand{\slidetitle}[1]{\fancyhead[L]{\textsc{#1}}}
+
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\binomial}[2]{\begin{pmatrix} #1 \\ #2 \end{pmatrix}}
+\newcommand{\bigO}[1]{\mathcal O \left(#1\right)}
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\renewcommand{\qedsymbol}{C.Q.F.D.}
+
+\newcolumntype{d}{D{.}{.}{-1}}
+\definecolor{gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{gray}}c}
+
+
+\makeatletter
+\@ifclassloaded{beamer}{\setbeamertemplate{theorems}[numbered]{}}{}
+\makeatother
+
+\theoremstyle{plain}
+
+\makeatletter
+\@ifclassloaded{beamer}{
+\setbeamertemplate{footline}{
+  {\hfill\vspace*{1pt}\href{http://creativecommons.org/licenses/by-sa/3.0/legalcode}{\ccbysa}\hspace{.1cm}
+    \href{https://git.ithaca.fr/stepan/econometrics/src/commit/\HEAD/cours/chapitre-1.tex}{\gitrevision}\enspace--\enspace\today\enspace
+  }}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{caption}[numbered]
+
+\newenvironment{notes}
+{\bgroup \justifying\bgroup\tiny\begin{spacing}{1.0}}
+  {\end{spacing}\egroup\egroup}
+
+\newenvironment{exercise}[1]
+{\bgroup \small\begin{block}{Ex. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{defn}[1]
+{\bgroup \small\begin{block}{Définition. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{exemple}[1]
+{\bgroup \small\begin{block}{Exemple. #1}}
+  {\end{block}\egroup}
+}{}
+\makeatother
+
+\begin{document}
+
+\title{Économétrie\\\small{Les MCO quand tout va bien}}
+\author[S. Adjemian]{Stéphane Adjemian}
+\institute{\texttt{stephane.adjemian@univ-lemans.fr}}
+\date{Septembre 2023}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section{DGP et modèle empirique}
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Un modèle linéaire}
+
+  \bigskip
+
+  On suppose que les données ($y$) sont générées par le modèle suivant~:
+  \[
+    y_t = \beta_1x_{1,t} + \beta_2x_{2,t} + \dots + \beta_Kx_{K,t} + \varepsilon_t
+  \]
+
+  \bigskip
+
+  \begin{itemize}
+  
+  \item $y$ est la variable endogène (ou expliquée).\newline
+
+  \item $x_{k}$, $k=1,\ldots,K$, sont les variables exogènes (ou explicatives).\newline
+
+  \item $\varepsilon_t$ est une variable aléatoire, elle rend compte de ce qui ne peut être expliqué par les variables $x_k$.\newline
+
+  \item La nature nous donne un échantillon $\{y_t,x_{1,t},\ldots,x_{K,t}\}_{t=1}^T$ ($T$ est le nombre d'observations).\newline
+
+  \item Les $K$ variables exogènes peuvent être déterministes (pour simplifier) ou aléatoires.\newline
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Variables exogènes déterministes ou aléatoires}
+
+  \begin{itemize}
+
+  \item Les variables exogènes sont déterministes $\Leftrightarrow$
+    Lorsque l'économètre s'adresse à la nature afin d'obtenir un
+    nouvel échantillon, elle lui renvoit toujours les mêmes valeurs
+    pour les variables exogènes.\newline
+
+  \item Dans le cas de variables exogènes non
+    stochastiques, $\varepsilon$ est la seule source d'aléa.\newline
+
+  \item[$\Rightarrow$] La loi de $y$ est directement déduite de celle de $\varepsilon$.\newline
+
+  \item Cette hypothèse simplifie grandement l'étude des propriétés de
+    l'estimateur des Moindres Carrés Ordinaires, mais dans certaines
+    circonstances elle est beaucoup trop forte (voire n'a aucun sens
+    comme dans le cas des modèles dynamiques).\newline
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Variables exogènes déterministes ou aléatoires}
+
+  \begin{figure}
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+      \scalebox{.3}{
+    \input{images/chapitre-1/app-01-sample-nonstochastic-x.tex}}
+    \caption{$x$ déterministe.}
+    \label{fig:01:a}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.4\textwidth}
+    \scalebox{.3}{
+    \input{images/chapitre-1/app-01-sample-stochastic-x.tex}}
+    \caption{$x$ stochastique.}
+    \label{fig:01:b}
+  \end{subfigure}
+  \label{fig:01}
+  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ une variable alléatoire gaussienne centrée réduite avec $\mathbb E[\varepsilon_t\varepsilon_s]=0$ si $s\neq t$. Chaque figure représente 100 échantillons de 10 observations. Les codes pour reproduire ces graphiques sont disponibles \href{https://git.ithaca.fr/stepan/econometrics/src/commit/\HEAD/cours/codes/chapitre-1/app-001.py}{ici}.}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Représentation matricielle}
+
+  \begin{itemize}
+
+  \item Ce modèle peut être représenté matriciellement sous la forme :
+    \[
+      Y = X\beta + \varepsilon
+    \]
+    avec $Y = \left( y_1, y_2, \dots, y_T\right)'$ et $\varepsilon = \left( \varepsilon_1, \varepsilon_2, \dots, \varepsilon_T\right)'$ des vecteurs $T\times 1$, $\beta = \left( \beta_1, \dots, \beta_K \right)'$  un vecteur $K\times 1$ et
+    \[
+      X =
+      \begin{pmatrix}
+        x_{1,1} & x_{2,1} & \dots & x_{K,1} \\
+        x_{1,2} & x_{2,2} & \dots & x_{K,2} \\
+        \vdots  & \vdots  &       & \vdots  \\
+        x_{1,T} & x_{2,2} & \dots & x_{K,T} \\
+      \end{pmatrix}
+    \]
+    une matrice $T\times K$.\newline
+
+    \item On notera $\mathbf x_t = (x_{1,t},x_{2,t}, \dots, x_{K,t})$ la t-ième observation pour les exogènes (un vecteur $1\times K$).
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Hypothèses}
+
+  \begin{itemize}
+
+  \item[$\mathcal H_1$] Les variables exogènes sont déterministes.\newline
+
+    \bigskip\bigskip
+
+  \item[$\mathcal H_2$] $X$ est une matrice de rang $K<T$ et vérifie :
+    \[
+      \lim_{T\rightarrow\infty} \frac{X'X}{T} = Q
+    \]
+    où $Q$ est une matrice symétrique définie positive.\newline
+
+    \bigskip\bigskip
+
+  \item[$\mathcal H_3$] $\varepsilon$ suit loi normale multivariée d'espérance nulle et de variance $\sigma_{\varepsilon}^2I_T$.
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de l'économètre}
+  \framesubtitle{Pas de mauvaise spécification}
+
+  \begin{itemize}
+
+  \item On suppose que l'économmètre connaît la forme du modèle de la nature.\newline
+
+    \bigskip
+
+  \item Mais il ne connaît pas les valeurs des paramètres $\beta$ qu'il va chercher à estimer...\newline
+
+    \bigskip
+
+  \item ... En utilisant l'unique échantillon que lui donne la nature.\newline
+
+    \bigskip
+
+  \item Le modèle empirique est donc :
+    \[
+      Y = X\beta + \epsilon
+    \]
+  \end{itemize}
+
+\end{frame}
+
+\section{Moindres Carrés Ordinaires}
+
+
+\end{document}
+
+
+% Local Variables:
+% ispell-check-comments: exclusive
+% ispell-local-dictionary: "french"
+% TeX-master: t
+% End:
