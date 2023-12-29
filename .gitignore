@@ -1,1 +1,5 @@
 *.pdf
+
+cours/git.hash
+cours/.ltx
+cours/.auctex-auto
