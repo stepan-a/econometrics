@@ -1,0 +1,307 @@
+\documentclass[12pt,a4paper,notitlepage,twocolumn]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage[french]{babel}
+
+\usepackage{palatino}
+
+ \usepackage[active]{srcltx}
+\usepackage{scrtime}
+
+\newcounter{qnumber}
+\setcounter{qnumber}{0}
+
+\newcounter{enumber}
+\setcounter{enumber}{0}
+
+\newcommand{\question}{\textbf{(\addtocounter{qnumber}{1}\theqnumber)}\,}
+\newcommand{\exercice}{\textbf{\addtocounter{enumber}{1}\textsc{Exercice} \theenumber}.\,}
+\setlength{\parindent}{0cm}
+
+
+\begin{document}
+
+\title{\textsc{Économétrie Approfondie}\\ \small{(Éléments de correction)}}
+\date{Mercredi 13 décembre 2023}
+
+\maketitle
+
+\thispagestyle{empty}
+
+
+\bigskip
+
+\exercice On suppose que les données sont générées par le modèle suivant~:
+\[
+  y_i = x_{1,i}\beta_1 + \ldots x_{K,i}\beta_K + \varepsilon_i
+\]
+où $x_{k,i}$, pour $k=1,\ldots,K$ sont des variables explicatives
+déterministes, $\beta_k$, pour $k=1,\ldots,K$, sont des paramètres
+réels, $\varepsilon_i$ une variable aléatoire centrée de
+variance $\sigma_{\varepsilon}^2$. \question On obtient la représentation matricielle de ce modèle en concatément (verticalement) les observations. On pose~: $Y = \left( y_1, y_2, \dots, y_N \right)'$, $\varepsilon = \left( \varepsilon_1, \varepsilon_2, \dots, \varepsilon_N \right)'$, $\beta = \left( \beta_1, \beta_2, \dots, \beta_K \right)$ et
+\[
+  X =
+  \begin{pmatrix}
+    x_{1,1} & x_{2,1} & \ldots & x_{K,1}\\
+    x_{1,2} & x_{2,2} & \ldots & x_{K,2}\\
+    \vdots  & \vdots  &        & \vdots \\
+    x_{1,N} & x_{2,N} & \ldots & x_{K,N}\\
+  \end{pmatrix}
+\]
+
+On peut alors réécrire le modèle sous la forme~:
+\[
+Y = X\beta + \varepsilon
+\]
+\question L'estimateur des MCO est le vecteur $\hat\beta$ qui minimise la somme des carrés des résidus :
+\begin{equation*}
+  \begin{split}
+    \hat\beta &= \arg\min_{\{\beta\}} (Y-X\beta)'(Y-X\beta) \\
+              &= \arg\min_{\{\beta\}} Y'Y - \beta'X'Y - Y'X\beta + \beta'X'X\beta \\
+              &= \arg\min_{\{\beta\}}  \beta'X'X\beta -2\beta'X'Y
+  \end{split}
+\end{equation*}
+
+La condition nécessaire d'optimalité est~:
+\[
+2X'X\hat\beta - 2X'Y = 0
+\]
+\[
+\Leftrightarrow \hat\beta = \left( X'X \right)^{-1}X'Y
+\]
+en supposant que la matrice $X'X$ est inversible (c'est le cas si,
+comme nous le supposons habituellement, $X$ est une matrice de
+rang $K$). \question $\hat\beta$ est un estimateur sans biais
+de $\beta$. Pour le montrer substituons le DGP dans l'expression de
+l'estimateur :
+\[
+  \begin{split}
+    \hat \beta &= \left( X'X \right)^{-1}X'\left( X\beta + \varepsilon \right)\\
+               &= \left( X'X \right)^{-1}X'X\beta +\left( X'X \right)^{-1}X'\varepsilon\\
+               &= \beta + \left( X'X \right)^{-1}X'\varepsilon
+  \end{split}
+\]
+En supposant que les variables exogènes sont déterministes (sinon il
+faut recourrir au théorème des espérances itérées), on a donc :
+\[
+  \begin{split}
+    \mathbb E\left[\hat\beta\right] &= \beta + \mathbb E\left[\left( X'X \right)^{-1}X'\varepsilon\right]\\
+                                    &= \beta + \left( X'X \right)^{-1}X'\mathbb E\left[\varepsilon\right]\\
+                                    &= \beta
+  \end{split}
+\]
+
+\question La variance de $\hat \beta$ est définie
+par
+$\mathbb V\left[\hat\beta\right] = \mathbb E\left[\left( \hat\beta-\mathbb E\left[ \hat\beta \right] \right)^2\right]$. En
+substituant l'expression de $\hat\beta$ en fonction de $\beta$ (qui
+est aussi l'espérance de $\hat\beta$), il vient (en supposant
+que $\mathbb E\left[\varepsilon_i\varepsilon_j\right]=0$ pour
+tout $i\neq j$)~:
+\[
+  \begin{split}
+    \mathbb V\left[\hat\beta \right] &= \mathbb V\left[\left( X'X \right)^{-1}X'\varepsilon\right]\\
+                                     &= \left( X'X \right)^{-1}X'\mathbb V\left[\varepsilon\right] X\left( X'X \right)^{-1} \\
+                                     &= \left( X'X \right)^{-1}X'\sigma_{\varepsilon}^2 I_N X\left( X'X \right)^{-1} \\
+                                     &= \sigma^2_{\varepsilon}\left( X'X \right)^{-1}X'X\left( X'X \right)^{-1}\\
+                                     &= \sigma^2_{\varepsilon}\left( X'X \right)^{-1}
+  \end{split}
+\]
+Si la variance du vecteur $\varepsilon$ est différente
+de $\sigma_{\varepsilon}^2I_N$ (autocorrélation ou hétéroscédasticité)
+les matrices $X'X$ ne se simplifient plus et on obtient~:
+\[
+\mathbb V\left[\hat\beta \right] = \left( X'X \right)^{-1}X'\Sigma X\left( X'X \right)^{-1}
+\]
+où $\Sigma$ est la matrice de variance covariance
+de $\varepsilon$. \question L'estimateur des MCO est une variable
+aléatoire, \emph{i.e.} a une variance, car $\hat\beta$ est une
+fonction linéaire du vecteur aléatoire $\varepsilon$.
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice On considère le modèle suivant~:
+\[
+y_i = \mu + \varepsilon_i
+\]
+pour $i=1,\ldots,N$ avec $\mu$ un paramètre réel et $\varepsilon_i$ une variable aléatoire réelle
+d'espérance nulle et de variance $\sigma_{i}^2$ avec $\mathbb E\left[ \varepsilon_i\varepsilon_j \right]=0$ si $i\neq j$. On suppose que
+$\lim_{N\rightarrow\infty}N^{-1}\sum_{i=1}^N \sigma_i^2 = \bar
+\sigma^2<\infty$. Le modèle empirique est~:
+\[
+y_i = a + u_i
+\]
+\question On montre facilement que l'estimateur des MCO de $a$ est la moyenne des $y_i$. Le modèle peut s'écrire sous forme matricielle~:
+\[
+Y = X a + U
+\]
+avec $Y = \left( y_1,y_2,\dots,y_N \right)'$, $U = \left( u_1, u_2, \dots, u_N \right)'$ et $X = (1, 1, \dots, 1)'$ un vecteur $N\times 1$. K'estimateur des MCO est~:
+\[
+  \begin{split}
+    \hat a_{\textsc{mco}} &= (X'X)^{-1}X'Y\\
+    &= N^{-1}\sum_{i=1}^Ny_i = \bar y
+  \end{split}
+\]
+\question L'espérance $\hat a_{\textsc{mco}}$, en substituant le processus générateur des données, est~:
+\[
+  \begin{split}
+    \mathbb E \left[\hat a_{\textsc{mco}}\right] &= N^{-1}\sum_{i=1}^N\mathbb E[\mu + \varepsilon_i]\\
+    &= N^{-1}N\mu + 0 = \mu
+  \end{split}
+\]
+$\hat a_{\textsc{mco}}$ est donc un estimateur sans biais de $\mu$. \question On suit la même démarche pour le calcul de la variance de $\hat a_{\textsc{mco}}$\footnote{En retenant de la question 2 que $\hat a_{\textsc{mco}}=\mu+N^{-1}\sum_{i=1}^N$ et donc que $\hat a_{\textsc{mco}}-\mathbb E\left[ \hat a_{\textsc{mco}} \right]=N^{-1}\sum_{i=1}^N\varepsilon_i$.}. On a~:
+\[
+  \begin{split}
+    \mathbb V\left[\hat a_{\textsc{mco}} \right] &= N^{-2}\mathbb E\left[\sum_{i=1}^N\sum_{j=1}^N\varepsilon_i\varepsilon_j \right]\\
+    &= N^{-2}\sum_{i=1}^N\sum_{j=1}^N\mathbb E\left[\varepsilon_i\varepsilon_j \right]\\
+  \end{split}
+\]
+comme les $\varepsilon_i$ sont non corrélés, il vient :
+\[
+  \begin{split}
+    \mathbb V\left[ \hat a_{\textsc{mco}} \right] &= N^{-2}\sum_{i=1}^N\sigma_i^2\\
+    &= \frac{\bar \sigma^2}{N}
+  \end{split}
+\]
+\question La variance de $\hat a_{\textsc{mco}}$ tend vers 0 quand $N$
+tend vers l'infini, l'estimateur tend donc, par la loi des frands
+nombres, en probabilité vers son espérance~:
+\[
+\hat a_{\textsc{mco}}\xlongrightarrow[N\rightarrow\infty]{\textrm{proba}}\mu
+\]
+\question Cet estimateur sans biais n'est pas efficace car la variance
+des résidus est spécifique à chaque observation (problème
+d'hétéroscédasticité). \question De façon générale, l'estimateur des MCG est défini par~:
+\[
+\hat a_{\textsc{mcg}} = \left( X'\Sigma^{-1}X \right)^{-1}X'\Sigma^{-1}Y
+\]
+où $\Sigma$ est la variance du vecteur $\varepsilon$~:
+\[
+  \Sigma =
+  \begin{pmatrix}
+    \sigma_1^2 &  0          & 0 & \dots & 0 \\
+    0          &  \sigma_2^2 & 0 & \dots & 0 \\
+    \vdots     &             & \ddots &  & \vdots \\
+    \vdots     &             &  & \ddots & \vdots \\
+    0 & \dots& & 0 & \sigma_N^2
+  \end{pmatrix}
+\]
+On a donc~:
+\[
+\hat a_{\textsc{mcg}} = \left( \frac{1}{\sigma_1^2} + \frac{1}{\sigma_2^2} + \dots + \frac{1}{\sigma_N^2} \right)^{-1}\left( \frac{y_1}{\sigma_1^2} + \frac{y_2}{\sigma_2^2} + \dots + \frac{y_N}{\sigma_N^2} \right)
+\]
+
+Il s'agit d'un estimateur sans biais de $\mu$. En effet~:
+\[
+  \begin{split}
+    \mathbb E\left[ \hat a_{\textsc{mcg}}\right] &= \left( \frac{1}{\sigma_1^2} + \frac{1}{\sigma_2^2} + \dots + \frac{1}{\sigma_N^2} \right)^{-1}\sum_{i=1}^N \frac{\mathbb E[y_i]}{\sigma_i^2}\\
+                                                 &= \left( \sum_{i=1}^N \frac{1}{\sigma_i^2} \right)^{-1}\sum_{i=1}^N \frac{\mu}{\sigma_i^2} \\
+                                                 &= \mu
+  \end{split}
+\]
+\question Pour calculer la variance de $\hat a_{\textsc{mcg}}$ on peut partir de la forumule obtenue en cours, $\left(X'\Sigma^{-1}X\right)^{-1}$, ou du cas particulier étudié ici~:
+\[
+  \begin{split}
+    \mathbb V\left[ \hat a_{\textsc{mcg}}\right] &= \mathbb E\left[ \left( \hat a_{\textsc{mcg}} -\mu\right)^2\right]\\
+                                                 &= \left( \sum_{i=1}^N \frac{1}{\sigma_i^2} \right)^{-2} \mathbb E\left[\left(\sum_{i=1}^N \frac{\varepsilon_i}{\sigma_i^2}\right)^2\right]\\
+                                                 &= \left( \sum_{i=1}^N \frac{1}{\sigma_i^2} \right)^{-2} \mathbb E\left[\sum_{i=1}^N\sum_{j=1}^N\frac{\varepsilon_i}{\sigma_i^2}\frac{\varepsilon_j}{\sigma_j^2} \right]\\
+                                                 &= \left( \sum_{i=1}^N \frac{1}{\sigma_i^2} \right)^{-2} \mathbb E\left[\sum_{i=1}^N \frac{\varepsilon_i^2}{\sigma_i^4}\right]\\
+                                                 &= \left( \sum_{i=1}^N \frac{1}{\sigma_i^2} \right)^{-2} \sum_{i=1}^N \frac{1}{\sigma_i^2}\\
+                                                 &= \left( \sum_{i=1}^N \frac{1}{\sigma_i^2} \right)^{-1}
+  \end{split}
+\]
+
+\question La variance de $\hat a_{\textsc{mco}}$ est plus grande que celle de $\hat a_{\textsc{mcg}}$. En effet~:
+\[
+\mathbb V \left[\hat a_{\textsc{mco}}\right] > \mathbb V \left[\hat a_{\textsc{mco}}\right]
+\]
+\[
+\Leftrightarrow \frac{\bar \sigma^2}{N} > \left( \sum_{i=1}^N \frac{1}{\sigma_i^2} \right)^{-1}
+\]
+\[
+\Leftrightarrow \bar \sigma^2 > N\left( \sum_{i=1}^N \frac{1}{\sigma_i^2} \right)^{-1}
+\]
+On reconnaît gauche une moyenne arithmétique et à droite une moyenne
+harmonique. La moyenne harmonique est toujours plus petite que la
+moyenne arithmétique (voir le rappel). Donc la variance de
+l'estimateur des MCO est plus grande que la variance de l'estimateur
+des MCG. Comme la variance de l'estimateur des MCO converge vers 0
+quand $N$ tend vers l'infini, la variance de l'estimateur des MCG
+converge nécessairement vers 0 quand $N$tend vers l'infini, et donc
+l'estimateur des MCG converge aussi en probabilité vers $\mu$.
+
+\textbf{\textsc{Rappel}} \textit{Soient $\alpha_1, \ldots,\alpha_n$ des nombres réels positifs, alors la moyenne arithmétique des $\alpha_i$ est plus grande que la moyenne harmonique des $\alpha_i$:
+\[
+\frac{\alpha_1+\ldots+\alpha_n}{n} > \frac{n}{\frac{1}{\alpha_1}+\ldots+\frac{1}{\alpha_n}}
+\]}
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice Soit le modèle~:
+\[
+y_t = \beta x_t + \varepsilon_t
+\]
+avec $\beta$ un paramètre réel et
+\[
+\varepsilon_t = \varphi_1 \varepsilon_{t-1} + \varphi_2\varepsilon_{t-2} + \nu_t
+\]
+où $\nu_t$ est une variable aléatoire centrée de
+variance $\sigma_\nu^2$ et les paramètres
+réels $\varphi_1$, $\varphi_2$ sont tels que les moments d'ordre 2 (la
+variance et la fonction d'autocorrélation) de $\varepsilon_t$ sont
+bien définis. On peut montrer, cela fera l'objet d'un cours au second
+semestre que la fonction d'autocorrélation
+de $\varepsilon$, $\rho(k)$, est non nulle est tend vers zero
+quand $k$ tend vers l'infini (la corrélation entre $\varepsilon_t$
+et $\varepsilon_{t-k}$ se rapproche de zéro quand $k$ devient assez
+grand). On suppose que les valeurs de $\varphi_1$ et $\varphi_2$ sont
+connues. \question des MCO pour $\beta$ n'est pas un estimateur efficace car les résidus du modèle sont autocorrélés. \question On
+pose $\tilde y_t = y_t-\varphi_1 y_{t-1} - \varphi_2 y_{t-2}$
+et $\tilde x_t = x_t-\varphi_1 x_{t-1}-\varphi_2 x_{t-2}$. En
+utilisant la définition de $y$ on a :
+\[
+y_{t-1} = \beta x_{t-1} + \varepsilon_{t-1}
+\]
+et
+\[
+y_{t-2} = \beta x_{t-2} + \varepsilon_{t-2}
+\]
+ainsi~:
+\[
+\tilde y_t = y_t-\varphi_1 y_{t-1}-\varphi_2 y_{t-2}
+\]
+\[
+\Leftrightarrow \tilde y_t = \beta x_t + \varepsilon_t- \beta\varphi_1 x_{t-1} - \varphi\varepsilon_{t-1} - \beta\varphi_2 x_{t-2} - \varphi_2\varepsilon_{t-2}
+\]
+\[
+\Leftrightarrow \tilde y_t = \beta \tilde x_t + \varepsilon_t - \varphi_1\varepsilon_{t-1} - \varphi_2\varepsilon_{t-2}
+\]
+\[
+\Leftrightarrow \tilde y_t = \beta \tilde x_t + \nu_t
+\]
+Ici l'estimateur est efficace car $\nu_t$ n'est pas autocorrélé (il
+n'y a pas d'hétéroscédasticité car la variance est constante, elle ne
+dépend pas de $t$). \question Il s'agit d'un estimateur des
+MCG. \question Si les paramètres $\varphi_1$ et $\varphi_2$ ne sont
+pas connus, on peut les estimer dans une première étape. En estimant
+le modèle original, par les MCO on récupère les résidus estimés et on
+estime le modèle autorégressif~:
+\[
+\hat\varepsilon_t = \varphi_1\hat\varepsilon_{t-1} + \varphi_2\hat\varepsilon_{t-2} + \nu_t
+\]
+On utilise alors $\hat\varphi_1$ et $\hat\varphi_2$ pour transformer
+les données comme décrit plus haut. On peut reprendre la procédure
+plusierus fois tant que les estimations pour $\beta$ et les
+paramètres $\varphi_1$ et $\varphi_2$ changent.
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
