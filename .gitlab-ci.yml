@@ -3,7 +3,7 @@ variables:
   TERM: linux
   GIT_STRATEGY: clone
 
-vitae:
+cours:
   stage: build
   only:
     - master@stephane/econometrics
