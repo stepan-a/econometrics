@@ -32,7 +32,7 @@ fig, ax = plt.subplots()
 for i in range(N):
     ax.scatter(x, YD[:,i], marker='o', facecolors='none', edgecolor='black')
 
-plt.savefig('app-01-sample-nonstochastic-x.tex', format='pgf')
+plt.savefig('sample-nonstochastic-x.tex', format='pgf')
 
 #
 # Représentation graphique d''échantillons avec variable exogène stochastique
@@ -43,7 +43,7 @@ fig, ax = plt.subplots()
 for i in range(N):
     ax.scatter(XS[:,i], YS[:,i], marker='o', facecolors='none', edgecolor='black')
 
-plt.savefig('app-01-sample-stochastic-x.tex', format='pgf')
+plt.savefig('sample-stochastic-x.tex', format='pgf')
 
 #
 # Un peu de ménage
@@ -51,5 +51,5 @@ plt.savefig('app-01-sample-stochastic-x.tex', format='pgf')
 
 from shutil import move
 
-move('app-01-sample-nonstochastic-x.tex', 'images/chapitre-1/app-01-sample-nonstochastic-x.tex')
-move('app-01-sample-stochastic-x.tex', 'images/chapitre-1/app-01-sample-stochastic-x.tex')
+move('sample-nonstochastic-x.tex', '../images/chapitre-1/sample-nonstochastic-x.tex')
+move('sample-stochastic-x.tex', '../images/chapitre-1/sample-stochastic-x.tex')
