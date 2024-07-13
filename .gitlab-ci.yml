@@ -1,0 +1,21 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  TERM: linux
+  GIT_STRATEGY: clone
+
+vitae:
+  stage: build
+  only:
+    - master@stephane/econometrics
+  script:
+    - make -C cours
+    - scp cours/chapitre-1.pdf /home/www/le-mans.adjemian.eu/econometrics
+    - scp cours/codes/chapitre-1.org /home/www/le-mans.adjemian.eu/econometrics/codes
+    - scp -r cours/codes/chapitre-1 /home/www/le-mans.adjemian.eu/econometrics/codes
+    - scp -r cours/images /home/www/le-mans.adjemian.eu/econometrics
+    - scp -r cours/data /home/www/le-mans.adjemian.eu/econometrics
+  artifacts:
+    paths:
+      - cours/chapitre-1.pdf
+  tags:
+    - stepan@puck
