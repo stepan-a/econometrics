@@ -1,0 +1,133 @@
+#+EMAIL: stepan@adjemian.eu
+#+STARTUP: latexpreview
+#+STARTUP: overview
+#+AUTHOR: Stéphane Adjemian
+#+TITLE: Notes pour le chapitre 1
+#+auto_tangle: t
+
+* DGP et modèle empirique
+** Générer des échantillons avec des variables exogènes déterministes
+On suppose que les données sont générées par le modèle :
+
+\[
+y_t = x_t + \varepsilon_t\text{ avec }\varepsilon_t \underset{\mathrm{iid}}{\sim}\mathcal N(0,1)
+\]
+
+où $x_t$ est une variable déterministe dans l'intervalle $[0,10]$. La
+variable $y_t$ est donc normalement distribuée d'espérance $x_t$ et de
+variance 1, puisque l'unique source d'aléa est $\varepsilon_t$. La
+nature génère des échantillons de $T$ observations
+$\{y_t,x_t\}_{t=1}^T$. Deux échantillons sont différents parce les
+réalisations de $\{\varepsilon_t\}_{t=1}^T$ sont différentes à chaque
+fois que la nature génère un nouvel échantillon.
+
+Dans le code suivant on génère 100 échantillons pour $y$ avec une
+variable exogène déterministe. Chaque échantillon est une colonne du
+tableau =Y= (dans la boucle en ligne $x$
+
+#+begin_src python :results none :session :exports code :tangle "codes/chapitre-1/app-001.py"
+  import numpy as np
+
+  rng = np.random.default_rng(2211)
+
+  N = 100                            # Nombre d'échantillons
+  T = 10                             # Taille de chaque échantillon
+
+  def y(x, ε):
+      return x+ε
+
+  x = 10*rng.uniform(size=(T,1))     # Variable exogène déterminsite (utilisée pour YD)
+
+  ϵ = rng.normal(size=(T,N))         # Tableau où seront stockés les résidus pour les N échantillons
+
+  YD = np.zeros((T,N))               # N échantillons (pour y) avec variable exogène déterministe
+  YS = np.zeros((T,N))               # N échantillons (pour y) avec variable exogène stochastique
+  XS = np.zeros((T,N))               # N échantillons (pour x) avec variable exogène stochastique
+
+  for i in range(N):
+      YD[:,i] = y(x, ϵ[:,i])[:,0]
+      XS[:,i] = 10*rng.uniform(size=(T,1))[:,0]
+      YS[:,i] = y(XS[:,i], ϵ[:,i])
+
+  import matplotlib.pyplot as plt
+
+  #
+  # Représentation graphique d''échantillons avec variable exogène déterministe
+  #
+
+  fig, ax = plt.subplots()
+
+  for i in range(N):
+      ax.scatter(x, YD[:,i], marker='o', facecolors='none', edgecolor='black')
+
+  plt.savefig('app-01-sample-nonstochastic-x.tex', format='pgf')
+
+  #
+  # Représentation graphique d''échantillons avec variable exogène stochastique
+  #
+
+  fig, ax = plt.subplots()
+
+  for i in range(N):
+      ax.scatter(XS[:,i], YS[:,i], marker='o', facecolors='none', edgecolor='black')
+
+  plt.savefig('app-01-sample-stochastic-x.tex', format='pgf')
+
+  #
+  # Un peu de ménage
+  #
+
+  from shutil import move
+
+  move('app-01-sample-nonstochastic-x.tex', 'images/chapitre-1/app-01-sample-nonstochastic-x.tex')
+  move('app-01-sample-stochastic-x.tex', 'images/chapitre-1/app-01-sample-stochastic-x.tex')
+
+#+end_src
+** Discussion de l'hypothèse $\mathcal H_2$
+Cette hypothèse est trop forte, mais elle permet d'obtenir facilement
+les propriétés qui nous intéressent, comme la convergence de
+l'estimateur des MCO. Par exemple, si le modèle est :
+
+\[
+y_t = \alpha_0 + \alpha_1 t + \varepsilon_t
+\]
+
+pour $t=1,\dots,T$. Sa représentation matricielle est :
+
+\begin{equation*}
+Y = \begin{pmatrix}
+\alpha_0\\
+\alpha_1
+\end{pmatrix} + \varepsilon
+\end{equation*}
+
+où la matrice $X$ est définie par :
+
+\begin{equation*}
+X = \begin{pmatrix}
+1 & 1 \\
+1 & 2 \\
+\vdots & \vdots \\
+1 & T
+\end{pmatrix}
+\end{equation*}
+
+On a alors :
+
+\begin{equation*}
+X'X =
+\begin{pmatrix}
+\sum_{t=1}^T 1 & \sum_{t=1}^T t \\
+\sum_{t=1}^T t & \sum_{t=1}^T t^2
+\end{pmatrix}
+=
+\begin{pmatrix}
+T & \frac{T(T+1)}{2} \\
+\frac{T(T+1)}{2} & \frac{T(T+1)(2T+1)}{6}
+\end{pmatrix}
+\end{equation*}
+
+et donc, pour ce modèle, $T^{-1}X'X$ ne tend pas vers une matrice
+définie positive quand $T$ tend vers l'infini. On verra néanmoins plus
+loin que, même si l'hypothèse $\mathcal H_2$ n'est pas satisfaite,
+l'estimateur des MCO garde ses bonnes propriétés.

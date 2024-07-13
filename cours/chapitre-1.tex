@@ -1,0 +1,850 @@
+\synctex=1
+
+\documentclass[10pt]{beamer}
+
+\usepackage{etex}
+\usepackage{fourier-orns}
+\usepackage{ccicons}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsbsy}
+\usepackage{amsopn}
+\usepackage{amscd}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{color, colortbl}
+\usepackage{mathrsfs}
+\usepackage{bm}
+%\usepackage{lastpage}
+\usepackage[nice]{nicefrac}
+\usepackage{setspace}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{algorithms/algorithm}
+\usepackage{algorithms/algorithmic}
+\usepackage[frenchb]{babel}
+\usepackage{tikz,pgfplots,pgfplotstable}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{patterns, arrows, decorations.pathreplacing, decorations.markings, calc}
+\pgfplotsset{plot coordinates/math parser=false}
+\newlength\figureheight
+\newlength\figurewidth
+\usepackage{cancel}
+\usepackage{tikz-qtree}
+\usepackage{dcolumn}
+\usepackage{adjustbox}
+\usepackage{environ}
+\usepackage[cal=boondox]{mathalfa}
+\usepackage{manfnt}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=black,
+  urlcolor=black,
+}
+\usepackage{venndiagram}
+\usepackage{subcaption}
+
+\usepackage[backend=biber,style=bwl-FU,natbib=true,doi=false,isbn=false,url=false,eprint=false]{biblatex}%bwl-FU
+\addbibresource{econometrics.bib}
+
+
+
+\makeatletter
+\@ifclassloaded{beamer}{
+\uselanguage{French}
+\languagepath{French}
+% Git hash
+\usepackage{xstring}
+\usepackage{catchfile}
+\immediate\write18{git rev-parse HEAD > git.hash}
+\CatchFileDef{\HEAD}{git.hash}{\endlinechar=-1}
+\newcommand{\gitrevision}{\StrLeft{\HEAD}{7}}
+}{}
+\makeatother
+
+\newcommand{\trace}{\mathrm{tr}}
+\newcommand{\vect}{\mathrm{vec}}
+\newcommand{\tracarg}[1]{\mathrm{tr}\left\{#1\right\}}
+\newcommand{\vectarg}[1]{\mathrm{vec}\left(#1\right)}
+\newcommand{\vecth}[1]{\mathrm{vech}\left(#1\right)}
+\newcommand{\iid}[2]{\mathrm{iid}\left(#1,#2\right)}
+\newcommand{\normal}[2]{\mathcal N\left(#1,#2\right)}
+\newcommand{\sample}{\mathcal Y_T}
+\newcommand{\samplet}[1]{\mathcal Y_{#1}}
+\newcommand{\slidetitle}[1]{\fancyhead[L]{\textsc{#1}}}
+
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\binomial}[2]{\begin{pmatrix} #1 \\ #2 \end{pmatrix}}
+\newcommand{\bigO}[1]{\mathcal O \left(#1\right)}
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\newcommand\gauss[2]{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))} % Gaussian probability density function.
+
+\renewcommand{\qedsymbol}{C.Q.F.D.}
+
+\newcolumntype{d}{D{.}{.}{-1}}
+\definecolor{gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{gray}}c}
+
+
+\makeatletter
+\@ifclassloaded{beamer}{\setbeamertemplate{theorems}[numbered]{}}{}
+\makeatother
+
+\theoremstyle{plain}
+
+\makeatletter
+\@ifclassloaded{beamer}{
+\setbeamertemplate{footline}{
+  {\hfill\vspace*{1pt}\href{http://creativecommons.org/licenses/by-sa/3.0/legalcode}{\ccbysa}\hspace{.1cm}
+    \href{https://git.ithaca.fr/stepan/econometrics/src/commit/\HEAD/cours/chapitre-1.tex}{\gitrevision}\enspace--\enspace\today\enspace
+  }}
+
+\makeatother
+
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{caption}[numbered]
+
+\NewEnviron{notes}{\justifying\footnotesize\begin{spacing}{1.0}\BODY\vfill\pagebreak\end{spacing}}
+
+\newenvironment{exercise}[1]
+{\bgroup \small\begin{block}{Ex. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{defn}[1]
+{\bgroup \small\begin{block}{Définition. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{exemple}[1]
+{\bgroup \small\begin{block}{Exemple. #1}}
+  {\end{block}\egroup}
+}{}
+
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollaire}
+
+%\usepgfplotslibrary{external}
+%\tikzexternalize
+
+
+\begin{document}
+
+\title{Économétrie\\\small{Les MCO quand tout va bien}}
+\author[S. Adjemian]{Stéphane Adjemian}
+\institute{\texttt{stephane.adjemian@univ-lemans.fr}}
+\date{Septembre 2023}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section{DGP et modèle empirique}
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Un modèle linéaire}
+
+  \bigskip
+
+  On suppose que les données ($y$) sont générées par le modèle suivant~:
+  \[
+    y_t = \beta_1x_{1,t} + \beta_2x_{2,t} + \dots + \beta_Kx_{K,t} + \varepsilon_t
+  \]
+
+  \bigskip
+
+  \begin{itemize}
+  
+  \item $y$ est la variable endogène (ou expliquée).\newline
+
+  \item $x_{k}$, $k=1,\ldots,K$, sont les variables exogènes (ou explicatives).\newline
+
+  \item $\varepsilon_t$ est une variable aléatoire, elle rend compte de ce qui ne peut être expliqué par les variables $x_k$.\newline
+
+  \item La nature nous donne un échantillon $\{y_t,x_{1,t},\ldots,x_{K,t}\}_{t=1}^T$ ($T$ est le nombre d'observations).\newline
+
+  \item Les $K$ variables exogènes peuvent être déterministes (pour simplifier) ou aléatoires.\newline
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Variables exogènes déterministes ou aléatoires}
+
+  \begin{itemize}
+
+  \item Les variables exogènes sont déterministes $\Leftrightarrow$
+    Lorsque l'économètre s'adresse à la nature afin d'obtenir un
+    nouvel échantillon, elle lui renvoit toujours les mêmes valeurs
+    pour les variables exogènes.\newline
+
+  \item Dans le cas de variables exogènes non
+    stochastiques, $\varepsilon$ est la seule source d'aléa.\newline
+
+  \item[$\Rightarrow$] La loi de $y$ est directement déduite de celle de $\varepsilon$.\newline
+
+  \item Cette hypothèse simplifie grandement l'étude des propriétés de
+    l'estimateur des Moindres Carrés Ordinaires, mais dans certaines
+    circonstances elle est beaucoup trop forte (voire n'a aucun sens
+    comme dans le cas des modèles dynamiques).\newline
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Variables exogènes déterministes ou aléatoires}
+
+  \begin{figure}
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+      \scalebox{.3}{
+    \input{images/chapitre-1/sample-nonstochastic-x.tex}}
+    \caption{$x$ déterministe.}
+    \label{fig:01:a}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.4\textwidth}
+    \scalebox{.3}{
+    \input{images/chapitre-1/sample-stochastic-x.tex}}
+    \caption{$x$ stochastique.}
+    \label{fig:01:b}
+  \end{subfigure}
+  \label{fig:01}
+  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ une variable alléatoire gaussienne centrée réduite avec $\mathbb E[\varepsilon_t\varepsilon_s]=0$ si $s\neq t$. Chaque figure représente 100 échantillons de 10 observations. Les codes pour reproduire ces graphiques sont disponibles \href{https://git.ithaca.fr/stepan/econometrics/src/commit/\HEAD/cours/codes/chapitre-1/deterministic-versus-stochastic-samples.py}{ici}.}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Représentation matricielle}
+
+  \begin{itemize}
+
+  \item Ce modèle peut être représenté matriciellement sous la forme :
+    \[
+      \mathbf y = X\beta + \varepsilon
+    \]
+    avec $\mathbf y = \left( y_1, y_2, \dots, y_T\right)'$ et $\varepsilon = \left( \varepsilon_1, \varepsilon_2, \dots, \varepsilon_T\right)'$ des vecteurs $T\times 1$, $\beta = \left( \beta_1, \dots, \beta_K \right)'$  un vecteur $K\times 1$ et
+    \[
+      X =
+      \begin{pmatrix}
+        x_{1,1} & x_{2,1} & \dots & x_{K,1} \\
+        x_{1,2} & x_{2,2} & \dots & x_{K,2} \\
+        \vdots  & \vdots  &       & \vdots  \\
+        x_{1,T} & x_{2,2} & \dots & x_{K,T} \\
+      \end{pmatrix}
+    \]
+    une matrice $T\times K$.\newline
+
+    \item On notera $\mathbf x_t = (x_{1,t},x_{2,t}, \dots, x_{K,t})$ la t-ième observation pour les exogènes (un vecteur $1\times K$).
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+  \framesubtitle{Hypothèses}
+
+  \begin{itemize}
+
+  \item[$\mathcal H_1$] Les variables exogènes sont déterministes.\newline
+
+    \bigskip\bigskip
+
+  \item[$\mathcal H_2$] $X$ est une matrice de rang $K<T$ et vérifie :
+    \[
+      \lim_{T\rightarrow\infty} \frac{X'X}{T} = Q
+    \]
+    où $Q$ est une matrice symétrique définie positive.\newline
+
+    \bigskip\bigskip
+
+  \item[$\mathcal H_3$] $\varepsilon$ suit loi normale multivariée d'espérance nulle et de variance $\sigma_{\varepsilon}^2I_T$.
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de l'économètre}
+  \framesubtitle{Pas de mauvaise spécification}
+
+  \begin{itemize}
+
+  \item On suppose que l'économmètre connaît la forme du modèle de la nature.\newline
+
+    \bigskip
+
+  \item Mais il ne connaît pas les valeurs des paramètres $\beta$ qu'il va chercher à estimer...\newline
+
+    \bigskip
+
+  \item ... En utilisant l'unique échantillon que lui donne la nature.\newline
+
+    \bigskip
+
+  \item Le modèle empirique est donc~:
+    \[
+      \mathbf y = X\mathbf b + \epsilon
+    \]
+    où $\mathbf b$ est le vecteur des paramètres du modèle empirique.
+  \end{itemize}
+
+\end{frame}
+
+\section{Moindres Carrés Ordinaires}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+
+\begin{defn}{}
+  L'estimateur des MCO de $\mathbf b$ minimise la somme des carrés des résidus:
+  \[
+    \begin{split}
+      \hat{\mathbf b} &= \arg\min_{\mathbf b} \sum_{t=1}^T \epsilon_t^2\\
+      &= \arg\min_{\mathbf b} (\mathbf y-X \mathbf b)'(\mathbf y-X\mathbf b)
+    \end{split}
+  \]
+\end{defn}
+
+\bigskip
+
+\begin{itemize}
+
+\item $\epsilon_t^2$ est une mesure de la distance entre l'observation $y_t$ et la prédiction $\mathbf x_t\mathbf b$.\newline
+
+\item Le choix de la distance entre observation et prédiction est
+  arbitraire.\newline
+
+\item L'estimateur des MCO minimise la somme des carrés des erreurs de prédiction.\newline
+
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Formule}
+
+\begin{theorem}\label{thm:ols}
+  L'estimateur des MCO de $\mathbf b$ dans le modèle $\mathbf y=X\mathbf b + \epsilon$ est~:
+  \[
+    \hat{\mathbf{b}} = \left( X'X \right)^{-1}X'\mathbf y
+  \]
+\end{theorem}
+
+
+\bigskip
+
+\textbf{Preuve.} \small{La forme quadratique que nous devons minimiser s'écrit en développant~: $\mathcal S(\mathbf b) = \mathbf y'\mathbf y-\mathbf y'X\mathbf b-\mathbf b'X'\mathbf y+\mathbf b'X'X\mathbf b$, une fonction de $\mathbb R^K$ dans $\mathbb R^+$. En notant que $\mathbf y'X\mathbf b = \mathbf b'X'\mathbf y$ puisque la transposée d'un scalaire est égale au scalaire, on a~: $\mathcal S(\mathbf b) = \mathbf y'\mathbf y-2\mathbf b'X'\mathbf y+\mathbf b'X'X\mathbf b$. En annulant la dérivée de $\mathcal S$ par rapport à $\mathbf b$ on obtient la condition du premier ordre~:
+\[
+-2X'\mathbf y + 2 X'X \hat{\mathbf b} = 0
+\]
+soit de façon équivalente~:
+\[
+\hat{\mathbf{b}} = \left( X'X \right)^{-1}X'\mathbf y
+\]
+car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Remarques sur le théorème \ref{thm:ols}}
+
+  \begin{itemize}
+
+  \item La condition du premier ordre qui permet d'identifier $\hat{\mathbf b}$ est linéaire car l'objectif est quadratique.\newline
+
+  \item La matrice hessienne de l'objectif est bien définie positive~:
+    \[
+      \frac{\partial^2\mathcal S}{\partial \mathbf b \partial\mathbf b'} = 2 X'X
+    \]
+
+  \item Notons aussi qu'il est possible de réécrire l'objectif de la façon suivante~:
+    \[
+      \mathcal S(\mathbf b) = \mathcal S(\hat{\mathbf b}) + \left(\mathbf b - \hat{\mathbf b}  \right)' X'X \left(\mathbf b - \hat{\mathbf b}  \right)
+    \]
+    puisque le dernier terme est toujours positif (car la matrice hessienne $X'X$ est définie positive), on voit directement que la somme des carrés des résidus est minimale en $\hat{\mathbf b}$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+% EXEMPLE
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Résidus estimés}
+
+  \begin{defn}{}
+    Les résidus estimés sont définis par~:
+    \[
+      \hat{\epsilon}  = \mathbf y - X \hat{\mathbf b}
+    \]
+  \end{defn}
+
+  \bigskip
+
+  \begin{prop}\label{prop:orthogonal_residuals}
+    Les résidus estimés sont orthogonaux aux variables explicatives~:
+    \[
+    X\hat\epsilon = 0
+  \]
+  \end{prop}
+
+  \bigskip
+
+  \begin{cor}\label{cor:zero_mean_residuals}
+    Si les variables explicatives contiennent une constante alors les résidus somment à zéro.
+  \end{cor}
+
+\end{frame}
+
+\begin{notes}
+  \begin{itemize}
+
+      \item \textbf{Preuve de la proposition \ref{prop:orthogonal_residuals}.} En partant de la CNO pour $\hat{\mathbf b}$~:
+  \[
+    -2X'\mathbf y + 2 X'X \hat{\mathbf b} = 0
+  \]
+  et en factorisant on a directement~:
+    \[
+      X'(\mathbf y - X \hat{\mathbf b}) = 0
+    \]
+    soit par définition des résidus estimés~:  $X'\hat\epsilon = 0$ \qed\newline
+
+    \item \textbf{Preuve du corollaire \ref{cor:zero_mean_residuals}.} Supposons, sans perte de généralité, que les éléments de la première colonne de $X$ soit tous égaux à 1. Le premier élément du vecteur $K\times 1$ $X'\hat\epsilon$ est alors~:
+    \[
+      \begin{pmatrix}
+        1 & 1 & \ldots & 1
+      \end{pmatrix}
+      \begin{pmatrix}
+        \hat\epsilon_1\\
+        \hat\epsilon_2\\
+        \vdots\\
+        \hat\epsilon_T
+      \end{pmatrix} = \sum_{t=1}^T\hat\epsilon_t
+    \]
+    qui doit être égal à zéro.\qed\newline
+
+  \item Le corollaire \ref{cor:zero_mean_residuals} implique en particulier que les
+      résidus sont nécessairement de moyenne nulle dès lors que le modèle contient
+      une constante.
+
+  \end{itemize}
+\end{notes}
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Sommes de carrés}
+
+  \begin{defn}{}
+    On note $\hat y_t = x_t \hat{\mathbf b}$ le prédicteur de $y_t$, $\bar y = T^{-1}\sum_{t=1}^T y_t$ la moyenne arithmétique, et on définit~:
+    \[
+      \begin{split}
+        SSE &= \hat\epsilon'\hat\epsilon = \sum_{t=1}^T(y_t-\hat y_t)^2\\
+        SSR &= \sum_{t=1}^T(\hat y_t-\bar y)^2\\
+        SST &= \sum_{t=1}^T(y_t-\bar y)^2
+      \end{split}
+    \]
+  \end{defn}
+
+  \bigskip
+
+  \begin{prop}\label{prop:SST_SSR_SSE}
+    Si les variables explicatives contiennent une constante alors~:
+    \[
+    SST = SSR + SSE
+  \]
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+  \begin{itemize}
+
+  \item \textbf{Lemme.} La somme des carrés des résidus vérifie $\hat\epsilon'\hat\epsilon = \mathbf y'\mathbf y - \hat{\mathbf y}'\hat{\mathbf y}$.\newline
+
+    \textbf{Preuve.} Par définition des résidus estimés, on a~:
+    \[
+      \begin{split}
+        \hat\epsilon'\hat\epsilon &= (\mathbf y-X\hat{\mathbf b})'(\mathbf y-X\hat{\mathbf b})\\
+                                  &= \mathbf y'\mathbf y - \mathbf y'X\hat{\mathbf b} - \hat{\mathbf b}'X'\mathbf y + \hat{\mathbf b}'X'X\hat{\mathbf b}\\
+                                  &= \mathbf y'\mathbf y - 2\hat{\mathbf b}'X'\mathbf y + \hat{\mathbf b}'X'X\hat{\mathbf b}\\
+                                  &= \mathbf y'\mathbf y - 2\hat{\mathbf b}'X'X\hat{\mathbf b} + \hat{\mathbf b}'X'X\hat{\mathbf b}\\
+                                  &= \mathbf y'\mathbf y - \hat{\mathbf b}'X'X\hat{\mathbf b}\\
+                                  &= \mathbf y'\mathbf y - \hat{\mathbf y}'\hat{\mathbf y}
+      \end{split}
+    \]
+où on passe à la troisième égalité en notant qu'un scalaire est égal à sa transposée, puis à la quatrième en utilisant la CNO pour $\hat{\mathbf b}$ qui nous dit que $X'\mathbf y = X'X \hat{\mathbf b}$.\qed\newline
+
+\item \textbf{Preuve de la proposition \ref{prop:SST_SSR_SSE}.} On sait, voir le lemme donné au dessus, que~:
+  \[
+    \mathbf y'\mathbf y = \hat{\mathbf y}' \hat{\mathbf y} + \hat\epsilon'\hat\epsilon
+  \]
+  En retranchant $T\bar y^2$ sur les deux membres, il vient~:
+  \[
+    \mathbf y'\mathbf y - T\bar y^2 = \hat{\mathbf y}' \hat{\mathbf y} - T\bar y^2 + \hat\epsilon'\hat\epsilon
+  \]
+  Par ailleurs~:
+  \[
+    \begin{split}
+      SST &= \sum_{t=1}^T(y_t-\bar y)^2\\
+          &= \sum_{t=1}^Ty_t^2 - 2\bar y\sum_{t=1}^Ty_t + T\bar y^2\\
+          &= \mathbf y'\mathbf y - 2T\bar y^2 + T\bar y^2\\
+          &= \mathbf y'\mathbf y - T\bar y^2
+    \end{split}
+  \]
+  nous retrouvons donc $SST$ sur le membre de gauche. On a aussi~:
+\[
+    \begin{split}
+      SSR &= \sum_{t=1}^T(\hat y_t-\bar y)^2\\
+          &= \sum_{t=1}^T\hat y_t^2 - 2\bar y\sum_{t=1}^T\hat y_t + T\bar y^2\\
+    \end{split}
+  \]
+  En rappelant que  $y_t = \mathbf x_t \hat{\mathbf b} + \hat\epsilon_t = \hat y_t + \hat\epsilon_t$, on a encore~:
+  \[
+    SSR= \sum_{t=1}^T\hat y_t^2 - 2\bar y\sum_{t=1}^T (y_t-\hat\epsilon_t) + T\bar y^2
+  \]
+  et puisque les résidus estimés somment à zéro quand $X$ contient une constante~:
+  \[
+    SSR = \sum_{t=1}^T\hat y_t^2 - 2\bar y\sum_{t=1}^T y_t + T\bar y^2
+  \]
+  et donc~:
+  \[
+    SSR = \hat{\mathbf y}'\hat{\mathbf y} - T\bar y^2
+  \]
+Ainsi, nous avons finalement~:
+  \[
+    SST = SSR + SSE
+  \]
+  \qed\newline
+
+  \end{itemize}
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Coefficient de détermination}
+
+  \begin{defn}{}
+    Le coefficient de détermination est~:
+    \[
+      R^2 = 1 - \frac{SSE}{SST}
+    \]
+  \end{defn}
+
+  \bigskip
+
+  \begin{prop}\label{prop:r2}
+    Si les variables explicatives contiennent une constante alors~:
+    \begin{enumerate}
+      \item $R^2 = \frac{SSR}{SST}$
+      \item $0 \leq R^2 \leq 1$
+      \item $\sqrt{R^2} = \mathtt{corr}(y,\hat y)$
+    \end{enumerate}
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+  \begin{itemize}
+  \item \textbf{Preuve de la proposition \ref{prop:r2}.} \textbf{(1)} En utilisant la proposition \ref{prop:SST_SSR_SSE} on a~:
+    \[
+      \frac{SSR}{SST} = \frac{SST-SSE}{SST} = 1 - \frac{SSE}{SST}
+    \]
+    \textbf{(2)} Comme $SSR$ et $SST$ sont des sommes de carrés, le $R^2$ ne peut-être négatif. Comme, pour la même raison, $\frac{SSE}{SST}\geq 0$ le $R^2$ ne peut être supérieur à 1. \textbf{(3)} La corrélation entre $y$ et $\hat y$ est définie par~:
+    \[
+      \mathtt{corr}(y,\hat y) = \frac{\mathtt{cov(y,\hat y)}}{\sqrt{\mathbb V[y]\mathbb V[\hat y]}}
+    \]
+    La variance de la variable expliquée est~:
+    \[
+      \mathbb V [y] = \frac{1}{T}\sum_{t=1}^T(y_t-\bar y)^2 = \frac{SST}{T}
+    \]
+    La variance de la prédiction, en notant que $\bar y$ est aussi la moyenne de $\hat y$ puisque les résidus estimés somment à zéro, est~:
+    \[
+      \mathbb V [\hat y] = \frac{1}{T}\sum_{t=1}^T(\hat y_t-\bar y)^2 = \frac{SSR}{T}
+    \]
+    La covariance entre $y$ et $\hat y$ est~:
+    \[
+      \mathtt{cov}(y,\hat y) = \frac{1}{T}\sum_{t=1}^T(y_t-\bar y)(\hat y_t- \bar y)
+    \]
+    En développant sous la somme~:
+    \[
+      \begin{split}
+        \mathtt{cov}(y,\hat y) &= \frac{1}{T}\sum_{t=1}^T y_t\hat y_t - \bar y y_t - \bar y \hat y_t + \bar y^2\\
+                               &= \frac{1}{T}\sum_{t=1}^T y_t\hat y_t - \bar y^2
+      \end{split}
+    \]
+    Puisque $y_t = \hat y_t + \hat \epsilon_t$ et $\sum_{t=1}^T\hat \epsilon_t \hat y_t  = \hat{\mathbf y}'\hat\epsilon = \hat{\mathbf b}'X'\hat\epsilon = 0$ car les résidus estimés sont orthogonaux aux variables explicatives, nous avons~:
+    \[
+      \mathtt{cov}(y,\hat y) = \frac{1}{T}\sum_{t=1}^T\hat y_t^2 - \bar y^2 = \frac{SSR}{T}
+    \]
+    Notons en passant que la covariance entre $y$ et $\hat y$ est nécessairement positive (c'est heureux). La corrélation est donc~:
+    \[
+      \mathtt{corr}(y,\hat y) = \sqrt{\frac{SSR}{SST}} = \sqrt{R^2}
+    \]
+    \qed\newline
+  \end{itemize}
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Remarques sur le  $R^2$}
+
+  \begin{itemize}
+
+  \item Par définition le $R^2$ est toujours plus petit que 1.\newline
+
+  \item Pour que le $R^2$ soit positif il faut que le modèle contienne
+    une constante.\newline
+
+  \item Dans ce cas, le $R^2$ mesure la contribution de la variabilité de $x$ à la variance de $y$.\newline
+
+  \item Les prédictions \textit{in-sample} ($\hat{\mathbf y}$) sont d'autant meilleures (proches de $\mathbf y$) que le $R^2$ est proche de 1.\newline
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Remarques sur le  $R^2$ (suite)}
+
+
+  \begin{itemize}
+
+  \item Un $R^2$ proche de 1 ne garantit pas que le modèle soit \og bon \fg{}.\newline
+
+  \item De bonnes prévisions \textit{in-sample} ne garantissent pas de bonnes prévisions \textit{out-of-sample}.\newline
+
+  \item Le $R^2$ ne préjuge pas de la relation entre $y$ et $x$ (ce n'est pas parce que le $R^2$ est faible que $x$ n'a pas d'effet significatif sur $y$).\newline
+
+  \item Un grand $R^2$ proche de 1 ne veut pas dire que la variable $x$ explique  \og bien \fg{} la variable $y$. Nous obtiendrions le même  $R^2$ en inversant le modèle empirique $\Rightarrow$ Pas d'interprétation causale.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+
+  \begin{itemize}
+
+  \item Échantillons (différents DGP) avec mêmes moments d'ordre 1 et 2.\newline
+
+  \item Même modèle empirique $\Rightarrow$ Estimations et $R^2=0,67$ identiques.
+
+  \end{itemize}
+
+  \begin{figure}
+    \centering
+    \scalebox{.5}{
+      \input{images/chapitre-1/anscombe.tex}}
+    \label{fig:02}
+    \caption{Les quatre échantillons d'\cite{Anscombe1973}}
+  \end{figure}
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Propriétés statistiques}
+
+  \begin{itemize}
+
+  \item L'estimateur $\hat{\mathbf b}$ est une fonction de $X$ (supposé déterministe) et $\mathbf y$ (aléatoire).\newline
+
+  \item[$\Rightarrow$] L'estimateur $\hat{\mathbf b}$ est une variable aléaoire.\newline
+
+  \item[$\Rightarrow$] L'estimateur $\hat{\mathbf b}$ est toujours différent de $\beta$ (sauf si $T\rightarrow\infty$).\newline
+
+  \end{itemize}
+
+
+  \begin{prop}\label{prop:biais-variance}
+    $\hat{\mathbf b}$ est un estimateur sans biais de $\beta$ (\underline{en moyenne} $\hat{\mathbf b}$ est égal à $\beta$), sa variance est~:
+    \[
+      \mathbb V \left[ \hat{\mathbf b} \right] = \sigma_{\varepsilon}^2(X'X)^{-1}
+    \]
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{prop:biais-variance}}. Pour étudier les propriétés de l'estimateur des MCO, il faut substituer le processus générateur des données dans l'expression de l'estimateur. On a~:
+  \[
+    \begin{split}
+      \hat{\mathbf b} &= (X'X)^{-1}X'\mathbf y\\
+                      &= (X'X)^{-1}X'\left( X\bm \beta + \varepsilon \right)\\
+                      &= \bm \beta + (X'X)^{-1}X'\varepsilon
+    \end{split}
+  \]
+  Ainsi l'espérance de l'estimateur des MCO est~:
+  \[
+    \begin{split}
+      \mathbb E \left[ \hat{\mathbf b} \right] &= \bm \beta + \mathbb E\left[ (X'X)^{-1}X'\varepsilon \right]\\
+                                               &= \bm \beta + (X'X)^{-1}X'\mathbb E\left[ \varepsilon \right]\quad\text{car $X$ est déterministe}\\
+                                               &= \bm \beta\quad\text{car $\varepsilon$  est d'espérance nulle.}
+    \end{split}
+  \]
+  L'estimateur est donc sans biais, en moyenne l'estimateur des MCO est égal à la vraie valeur des paramètres. La variance est l'espérance du carré de l'écart à l'espérance~:
+  \[
+    \mathbb V\left[ \hat{\mathbf b} \right] = \mathbb E\left[\left( \hat{\mathbf b}- \bm\beta \right)\left( \hat{\mathbf b}- \bm\beta \right)'\right]
+  \]
+  une matrice $K\times K$. En substituant l'espression de l'estimateur en fonction de $\varepsilon$, on obtient~:
+\[
+    \begin{split}
+      \mathbb V\left[ \hat{\mathbf b} \right] &= \mathbb E\left[ \left( (X'X)^{-1}X'\varepsilon \right)\left( (X'X)^{-1}X'\varepsilon \right)' \right]\\
+                                              &= \mathbb E\left[ (X'X)^{-1}X'\varepsilon\varepsilon' X (X'X)^{-1} \right]\\
+    \end{split}
+  \]
+Puisque $X$ est déterministe~:
+  \[
+    \begin{split}
+      \mathbb V\left[ \hat{\mathbf b} \right]
+                                              &= (X'X)^{-1}X' \mathbb E\left[ \varepsilon\varepsilon' \right]X(X'X)^{-1}\\
+                                              &= (X'X)^{-1}X' \sigma_\varepsilon^2I_T X(X'X)^{-1}
+    \end{split}
+  \]
+  par $\mathcal H_3$. Enfin~:
+\[
+    \begin{split}
+      \mathbb V\left[ \hat{\mathbf b} \right]
+                                              &= \sigma_\varepsilon^2(X'X)^{-1}X'X(X'X)^{-1}\\
+      &= \sigma_\varepsilon^2(X'X)^{-1}
+    \end{split}
+  \]
+  \qed
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Propriétés statistiques}
+
+  \begin{figure}
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+      \scalebox{.3}{
+    \input{images/chapitre-1/slope-estimate-sample-nonstochastic-x.tex}}
+    \caption{$x$ déterministe.}
+    \label{fig:01:a}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.4\textwidth}
+    \scalebox{.3}{
+    \input{images/chapitre-1/slope-estimate-sample-stochastic-x.tex}}
+    \caption{$x$ stochastique.}
+    \label{fig:01:b}
+  \end{subfigure}
+  \label{fig:01}
+  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène (déterministe ou stochastique) prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ un bruit blanc gaussien. On simule 100000  échantillons de 10 observations, pour chaque échantillon on estime le modèle empirique $y_t = b_0 + b_1 x_t + \epsilon_t$. Chaque figure représente la distribution (avec un histogramme) de l'esimateur $\hat b_1$. Comme attendu,  $\hat b_1$ est centré sur 1, la vrai valeur de la pente.  Les codes pour reproduire ces graphiques sont disponibles \href{https://mnemosyne.ithaca.fr/stephane/econometrics/src/commit/\HEAD/cours/codes/chapitre-1/estimator-with-deterministic-versus-stochastic-samples.py}{ici}.}
+\end{figure}
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{center}
+    \begin{tabular}{c}
+      \\
+      \Huge{\textsc{Références}}\\
+      \\
+    \end{tabular}
+  \end{center}
+
+  \bigskip
+
+  \printbibliography
+
+\end{notes}
+
+
+
+\section{Annexe A}
+
+\begin{frame}
+  \begin{center}
+    \Huge{\textsc{Annexe A}}\\
+    \Huge\textbf{Géométrie les MCO}
+  \end{center}
+\end{frame}
+
+
+\section{Annexes B}
+
+\begin{frame}
+  \begin{center}
+    \Huge{\textsc{Annexe B}}\\
+    \Huge\textbf{Probabilités}
+  \end{center}
+\end{frame}
+
+\subsection{Distributions utiles}
+
+\begin{frame}
+  \frametitle{La loi normale univariée}
+
+  \begin{defn}{}
+    Si $X$ suit une normale d'espérance $\mu$ et de variance $\sigma^2$, on note $X\sim\mathcal N \left(\mu, \sigma^2\right)$, alors sa fonction de densité de probabilité est~:
+    \[
+      f_X(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2\sigma^2}\left(x-\mu\right)^2}
+    \]
+  \end{defn}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{La loi normale multivariée}
+
+  \begin{defn}{}
+    Le vecteur aléatoire $\bm{X}\in \mathbb R^n$ suit une normale d'espérance $\bm \mu$ et de variance $\Sigma$, on note $\bm{X}\sim\mathcal N \left(\bm\mu, \Sigma\right)$, alors sa fonction de densité de probabilité est~:
+    \[
+      f_{\bm X}(\bm x) = \left( 2\pi \right)^{-\frac{n}{2}}\left| \Sigma \right|^{-\frac{1}{2}}e^{-\frac{1}{2}\left(\bm x-\bm\mu\right)'\Sigma^{-1}\left(\bm x-\bm\mu\right)}
+    \]
+  \end{defn}
+
+\end{frame}
+
+
+\end{document}
+
+
+% Local Variables:
+% ispell-check-comments: exclusive
+% ispell-local-dictionary: "french"
+% TeX-master: t
+% End:
