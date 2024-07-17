@@ -1,3 +1,4 @@
+
 \synctex=1
 
 \documentclass[10pt]{beamer}
@@ -748,6 +749,16 @@ Puisque $X$ est déterministe~:
     \end{split}
   \]
   \qed
+
+
+  \begin{itemize}
+  \item L'estimateur des MCO est d'autant moins précis (sa variance est d'autant plus grande) que la variance des erreurs $\varepsilon$ est importante.\newline
+
+  \item L'esimateur des MCO est d'autant moins précis que la variabilité des variables explicatives, la matrice $X'X$ \og petite \fg, est faible.\newline
+
+  \item[$\Rightarrow$] Il est plus facile d'identifier l'effet d'une variable explicative sur $y$ si le signal (la variance de la variable explicative) est important relativement au bruit ($\sigma_{\varepsilon}^2$).
+  \end{itemize}
+
 \end{notes}
 
 
@@ -774,6 +785,46 @@ Puisque $X$ est déterministe~:
   \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène (déterministe ou stochastique) prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ un bruit blanc gaussien. On simule 100000  échantillons de 10 observations, pour chaque échantillon on estime le modèle empirique $y_t = b_0 + b_1 x_t + \epsilon_t$. Chaque figure représente la distribution (avec un histogramme) de l'esimateur $\hat b_1$. Comme attendu,  $\hat b_1$ est centré sur 1, la vrai valeur de la pente.  Les codes pour reproduire ces graphiques sont disponibles \href{https://mnemosyne.ithaca.fr/stephane/econometrics/src/commit/\HEAD/cours/codes/chapitre-1/estimator-with-deterministic-versus-stochastic-samples.py}{ici}.}
 \end{figure}
 \end{frame}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Propriétés statistiques}
+
+
+  \begin{theorem}[Gauss Markov]\label{thm:Gauss-Markov}
+    $\hat{\mathbf b}$ est le meilleur estimateur linéaire sans biais (BLUE) de $\beta$.
+  \end{theorem}
+
+  \bigskip\bigskip
+
+  \textbf{Remarque.} L'estimateur $\lambda \hat{\mathbf b}$, où $\lambda$ est un vecteur de paramètres $1\times K$, est aussi le meilleur estimateur linéaire sans biais de $\lambda \beta$.
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{thm:Gauss-Markov}}. Nous avons déjà montré que $\hat{\mathbf b}$ est un estimateur sans biais de $\beta$. Soit un estimateur linéaire en $\mathbf y$~: $\tilde{\mathbf b} = C \mathbf y$ avec, sans perte de généralité, $C = (X'X)^{-1}X' + D$. L'absence de biais pose des contraintes sur la matrice $D$~:
+  \[
+    \begin{split}
+      \mathbb E\left[\tilde{\mathbf b}\right] &= \mathbb E\left[\left( (X'X)^{-1}X'+D \right)\left( X\beta + \varepsilon \right)\right]\\
+      &= \beta + DX\beta
+    \end{split}
+  \]
+  pour que l'estimateur $\tilde{\mathbf b}$ soit non biaisé, il faut et il suffit que la matrice $DX$ soit nulle. Calculons la variance de cet estimateur et montrons qu'elle est plus grande que la variance de l'estimateur des MCO, dans le sens où la matrice $\mathbb V\left[\tilde{\mathbf b}\right] - \mathbb V\left[\hat{\mathbf b}\right]$ est définie positive. Si $\tilde{\mathbf b}$ est sans biais, on a~:
+  \[
+    \begin{split}
+      \mathbb V\left[\tilde{\mathbf b}\right] &= \mathbb E\left[\left( \tilde{\mathbf b}-\beta \right)\left( \tilde{\mathbf b}-\beta \right)'\right] \\
+                                              &= \mathbb E\left[\left( \left( (X'X)^{-1}X'+D \right)\left( X\beta + \varepsilon \right) -\beta \right)\left( \left( (X'X)^{-1}X'+D \right)\left( X\beta + \varepsilon \right)-\beta \right)'\right]\\
+                                              &= \mathbb E\left[ \left((X'X)^{-1}X'\varepsilon  + D\varepsilon + DX\beta \right)\left((X'X)^{-1}X'\varepsilon  + D\varepsilon + DX\beta \right)'\right]\\
+                                              &= \mathbb E\left[ \left((X'X)^{-1}X'  + D\right)\varepsilon\varepsilon'\left((X'X)^{-1}X'  + D\right)'\right]\\
+                                              &= \sigma_{\varepsilon}^2\left((X'X)^{-1}X'  + D\right)\left((X'X)^{-1}X'  + D\right)'\\
+                                              &= \sigma_{\varepsilon}^2\left( (X'X)^{-1}  + DD'\right)\\
+                                              &= \mathbb V\left[\hat{\mathbf b}\right] + \sigma_{\varepsilon}^2 DD'
+    \end{split}
+  \]
+Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}$ est plus grande que celle de $\hat{\mathbf b}$. L'estimateur des MCO est donc bien le meilleur, au sens de la réduction de la variance, estimateur linéaire sans biais de $\beta$.\qed
+\end{notes}
 
 
 \begin{notes}
