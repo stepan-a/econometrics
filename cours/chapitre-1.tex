@@ -311,8 +311,6 @@
 
 \end{frame}
 
-\section{Moindres Carrés Ordinaires}
-
 
 \begin{frame}
   \frametitle{Estimateur des Moindres Carrés Ordinaires}
@@ -881,6 +879,176 @@ Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}
       \end{split}
     \]
     et donc, par définition la variance de l'estimateur~: $\lim_{T\to\infty} \mathbb V[\hat{\mathbf b}] = 0$.\qed
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Retour sur les résidus estimés}
+
+  \begin{itemize}
+
+  \item On peut exprimer $\hat\epsilon$ comme une fonction linéaire de $\varepsilon$~:
+    \[
+      \begin{split}
+        \hat\epsilon &= \mathbf y-X\hat{\mathbf b}\\
+                     &= \mathbf y - X(X'X)^{-1}X'\mathbf y\\
+                     &= X\mathbf\beta + \varepsilon - X(X'X)^{-1}X'\left( X\mathbf\beta + \varepsilon\right)\\
+                     &= \left( I -  X(X'X)^{-1}X'\right)\varepsilon
+      \end{split}
+    \]
+
+    \medskip
+
+  \item On notera~: $P = X(X'X)^{-1}X'$, la matrice de projection orthogonale, et $M = I-P$. On a~:
+    \[
+      \hat\epsilon = M\varepsilon
+    \]
+
+    \medskip
+
+  \item La matrice $M$ est symétrique et idempotente~:
+    \[
+      M' = I - \left( X(X'X)^{-1}X' \right) = I - X(X'X)^{-1}X = M
+    \]
+    \[
+      M'M = I-2X(X'X)^{-1}X'+\underbrace{X(X'X)^{-1}X'X(X'X)^{-1}X'}_{X(X'X)^{-1}X'}= M
+    \]
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item Les valeurs propres d'une matrice idempotente $A$ sont égales à 1 ou 0. En effet, supposons que $\lambda$ soit une valeur propre et $x$ le vecteur propre associé. Alors, par définition d'une valeur propre, on doit avoir~:
+    \[
+      \lambda x = A x
+    \]
+    Comme $A$ est idempotente, on a $\lambda x = A^2 x$, ou encore~:
+    \[
+      \begin{split}
+        \lambda x &= A \lambda x\\
+        &= \lambda A x
+      \end{split}
+    \]
+    et donc~:
+    \[
+      \lambda x = \lambda^2 x
+    \]
+    ce qui n'est possible que si $\lambda$ est égal à un ou zéro.\newline
+
+  \item Ainsi le rang d'une matrice idempotente est égal à sa trace (la somme des éléments sur la diagonale).\newline
+
+  \item Nous avons donc~:
+    \[
+      \begin{split}
+        \mathrm{rang}(M) &= \mathrm{trace}(I_T) - \mathrm{trace}\left( X(X'X)^{-1}X' \right)\\
+                         &= T - \mathrm{trace}\left( X'X(X'X)^{-1} \right)\\
+                         &= T - \mathrm{trace}\left(I_K\right)\\
+        &= T-K
+      \end{split}
+  \]
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Retour sur les résidus estimés}
+
+  \begin{itemize}
+
+  \item L'expression des résidus estimés en fonction de $\varepsilon$ permet de déduire des propriétés probabilistes sur $\hat\epsilon$.\newline
+
+  \item On montre facilement que $\mathbb E[\hat\epsilon] = 0$ et $\mathbb V[\hat\epsilon] = \sigma_{\varepsilon}^2M$.\newline
+
+  \item Même si la matrice de variance covariance de $\varepsilon$ est diagonale, les résidus estimés sont corrélés (car la matrice $M$ n'est pas diagonale).\newline
+
+  \item La normalité de $\varepsilon$ implique la normalité de $\hat\epsilon$, \underline{\textbf{mais}} la distribution de $\hat\epsilon$ est dégénére (sa variance n'est pas de plein rang)... Nous ne sommes pas surpris puisque nous avons déjà montré que la somme des résidus estimés doit être nulle (déterministe).\newline
+
+  \item On peut aussi exprimer la somme des carrés des résidus estimés comme une fonction de $\varepsilon$~:
+    \[
+      SSE = \hat\epsilon'\hat\epsilon = \varepsilon'M'M \varepsilon = \varepsilon' M \varepsilon
+    \]
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Comment estimer $\sigma_{\varepsilon}^2$~?}
+
+  \begin{prop}\label{prop:sse:expectation}
+    L'espérance de somme des carrés des résidus estimés est donnée par~:
+    \[
+      \mathbb E [SSE] = \sigma_{\varepsilon}^2(T-K)
+    \]
+  \end{prop}
+
+
+  \begin{cor}\label{cor:s2}
+    Un estimateur non biaisé de $\sigma_{\varepsilon}^2$ est~:
+    \[
+      s^2 = \frac{SSE}{T-K}
+    \]
+  \end{cor}
+
+
+  \begin{prop}\label{prop:s2}
+    $s^2$ est un estimateur convergent de $\sigma_{\varepsilon}^2$.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+  \begin{itemize}
+
+  \item \textbf{Preuve de la proposition \ref{prop:sse:expectation}.} On a~:
+    \[
+      \begin{split}
+        \mathbb E[SSE] &= \mathbb E [\varepsilon' M \varepsilon]\\
+                       &= \mathbb E \left[\mathrm{trace}\left( \varepsilon' M \varepsilon \right)\right]\\
+                       &= \mathbb E \left[\mathrm{trace}\left( M \varepsilon\varepsilon'  \right)\right]\\
+                       &= \mathrm{trace}\left( M \sigma_{\varepsilon}^2 I_T  \right)\\
+                       &= \sigma_{\varepsilon}^2\mathrm{trace}\left( M\right)\\
+                       &= \sigma_{\varepsilon}^2(T-K)
+      \end{split}
+    \]
+\qed
+
+\medskip
+
+En passant, notons que $\frac{SSE}{T}$, qui nous le verrons plus loin est l'estimateur du maximum de vraisemblance, est un estimateur biaisé à distance finie. Asymptotiquement, il n'y a cependant pas de différence entre l'estimateur du maximum de vraisemblance est $s^2$.\newline
+
+\medskip
+\item \textbf{Lemme.} On a~: $\underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon'X}{T}$.\newline\newline
+
+  \textbf{Preuve.} Puisque $X$ est déterministe, on a directement:~ $\mathbb E \left[ \frac{\varepsilon'X}{T} \right] = 0$. Tout assi facilement on montre que la variance est~:
+  \[
+    \mathbb V \left[ \frac{\varepsilon'X}{T} \right] = \frac{\sigma_{\varepsilon}^2}{T}\frac{X'X}{T}\underset{T\to\infty}{\longrightarrow} 0 \times Q=0
+  \]
+$\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
+
+\pagebreak
+
+\item \textbf{Preuve de la proposition \ref{prop:s2}.} Nous devons montrer que $s^2$ converge en probabilité vers $\sigma_{\varepsilon}^2$. On a~:
+  \[
+    \begin{split}
+      \underset{T\to\infty}{\mathrm{plim}} s^2 &= \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon' M \varepsilon}{T-K} = \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon' M \varepsilon}{T}\\
+                                               &= \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon' \varepsilon}{T} - \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon' X (X'X)^{-1}X'\varepsilon}{T}\\
+                                               &= \sigma_{\varepsilon}^2 - \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon'X}{T}\left( \frac{X'X}{T} \right)^{-1}\frac{X'\varepsilon}{T}\\
+      & \sigma_{\varepsilon}^2 - 0 \times Q^{-1} \times 0 = \sigma_{\varepsilon}^2
+    \end{split}
+  \]
+\qed
+\end{itemize}
 \end{notes}
 
 
