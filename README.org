@@ -1,0 +1,9 @@
+#+html:<div align="center">
+* Cours d'Économétrie Approfondie
+   (Le Mans, L3)
+#+html:</div>
+
+\\
+\\
+
+*Chapitre I*. [[https://le-mans.adjemian.eu/econometrics/chapitre-1.pdf][Les MCO quand tout va bien]].
