@@ -680,7 +680,7 @@ Ainsi, nous avons finalement~:
 
 \begin{frame}
   \frametitle{Estimateur des Moindres Carrés Ordinaires}
-  \framesubtitle {Propriétés statistiques}
+  \framesubtitle {Propriétés statistiques de $\hat{\mathbf b}$}
 
   \begin{itemize}
 
@@ -764,7 +764,7 @@ Puisque $X$ est déterministe~:
 
 \begin{frame}
   \frametitle{Estimateur des Moindres Carrés Ordinaires}
-  \framesubtitle {Propriétés statistiques}
+  \framesubtitle {Propriétés statistiques de $\hat{\mathbf b}$}
 
   \begin{figure}
     \centering
@@ -789,7 +789,7 @@ Puisque $X$ est déterministe~:
 
 \begin{frame}
   \frametitle{Estimateur des Moindres Carrés Ordinaires}
-  \framesubtitle {Propriétés statistiques}
+  \framesubtitle {Propriétés statistiques de $\hat{\mathbf b}$}
 
 
   \begin{theorem}[Gauss Markov]\label{thm:Gauss-Markov}
@@ -804,7 +804,7 @@ Puisque $X$ est déterministe~:
 
 \begin{notes}
 
-  \textbf{Preuve de la proposition \ref{thm:Gauss-Markov}}. Nous avons déjà montré que $\hat{\mathbf b}$ est un estimateur sans biais de $\beta$. Soit un estimateur linéaire en $\mathbf y$~: $\tilde{\mathbf b} = C \mathbf y$ avec, sans perte de généralité, $C = (X'X)^{-1}X' + D$. L'absence de biais pose des contraintes sur la matrice $D$~:
+  \textbf{Preuve de la proposition \ref{thm:Gauss-Markov}}. Nous avons déjà montré que $\hat{\mathbf b}$ est un estimateur sans biais de $\beta$. Soit un estimateur linéaire en $\mathbf y$~: $\tilde{\mathbf b} = C \mathbf y$ avec, sans perte de généralité, $C = (X'X)^{-1}X'' + D$. L'absence de biais pose des contraintes sur la matrice $D$~:
   \[
     \begin{split}
       \mathbb E\left[\tilde{\mathbf b}\right] &= \mathbb E\left[\left( (X'X)^{-1}X'+D \right)\left( X\beta + \varepsilon \right)\right]\\
@@ -824,6 +824,63 @@ Puisque $X$ est déterministe~:
     \end{split}
   \]
 Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}$ est plus grande que celle de $\hat{\mathbf b}$. L'estimateur des MCO est donc bien le meilleur, au sens de la réduction de la variance, estimateur linéaire sans biais de $\beta$.\qed
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Propriétés statistiques de $\hat{\mathbf b}$}
+
+
+  \begin{prop}\label{prop:mco:convergence}
+    $\hat{\mathbf b}$ est un estimateur convergent de $\beta$~:
+    \[
+      \hat{\mathbf b} \underset{T\to\infty}{\overset{\text{proba}}{\longrightarrow}} \beta
+    \]
+  \end{prop}
+
+  \bigskip\bigskip
+
+  \begin{itemize}
+
+  \item Ce résultat nous dit que la probabilité d'observer une différence arbitrairement petite entre l' estimateur des MCO et $\beta$ tend vers zéro quand la taille de l'échantillon tend vers l'infini.\newline
+
+  \item La distribution de l'estimateur $\hat{\mathbf b}$ se concentre autour de $\beta$ quand la taille de l'échantillon tend vers l'infini.
+
+  \end{itemize}
+
+\end{frame}
+
+\clearpage
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Propriétés statistiques de $\hat{\mathbf b}$}
+
+  \begin{figure}
+    \centering
+      \scalebox{.425}{
+    \input{images/chapitre-1/ols-convergence.tex}}
+  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène déterministe prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ un bruit blanc gaussien. On simule 100000  échantillons de 10, 100 ou 1000 observations, pour chaque échantillon on estime le modèle empirique $y_t = b_0 + b_1 x_t + \epsilon_t$. Chaque figure représente la distribution de l'esimateur $\hat b_1$. Les codes pour reproduire ces graphiques sont disponibles \href{https://mnemosyne.ithaca.fr/stephane/econometrics/src/commit/\HEAD/cours/codes/chapitre-1/ols-convergence.py}{ici}.}
+\end{figure}
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{prop:mco:convergence}.} Nous savons déjà que l'estimateur est sans biais, pour toute dimension de l'échantillon. Pour établir la convergence en probabilité de l'estimateur vers $\beta$, il suffit de montrer que sa variance tend vers 0 quand $T$ tend vers l'infini. Par $\mathcal H_2$, nous savons que~:
+\[
+      \lim_{T\rightarrow\infty} \frac{X'X}{T} = Q
+    \]
+    où $Q$ est une matrice définie positive. Ainsi, nous avons~:
+    \[
+      \begin{split}
+        \lim_{T\to\infty} (X'X)^{-1} &= \lim_{T\to\infty} \frac{1}{T}\left(\frac{X'X}{T}\right)^{-1}\\
+                                     &= Q^{-1}\lim_{T\to\infty} \frac{1}{T}\\
+                                     &= 0
+      \end{split}
+    \]
+    et donc, par définition la variance de l'estimateur~: $\lim_{T\to\infty} \mathbb V[\hat{\mathbf b}] = 0$.\qed
 \end{notes}
 
 
