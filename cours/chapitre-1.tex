@@ -1052,6 +1052,100 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 \end{notes}
 
 
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Distribution de $\hat{\mathbf b}$ et $s^2$}
+
+  \begin{theorem}\label{thm:bhat:distribution}
+    L'estimateur $\hat{\mathrm b}$ est normalement distribué~:
+    \[
+      \hat{\mathbf b} \sim \mathcal N\left( \beta, \sigma_{\varepsilon}^2(X'X)^{-1} \right)
+    \]
+  \end{theorem}
+
+
+  \begin{theorem}\label{thm:s2:distribution}
+    L'estimateur $\frac{(T-K)s^2}{\sigma_{\varepsilon}^2}$ est distribué comme un khi-2~:
+    \[
+      \frac{(T-K)s^2}{\sigma_{\varepsilon}^2} \sim \chi^2(T-K)
+    \]
+  \end{theorem}
+
+
+  \begin{cor}\label{cor:s2:distribution}
+    La variance de $s^2$ est égale à $\frac{2\sigma_{\varepsilon}^2}{T-K}$.
+  \end{cor}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve du théorème \ref{thm:bhat:distribution}.} Nous avons déjà obtenu l'espérance et la variance de $\hat{\mathrm b}$. Comme l'estimateur des MCO est linéaire par rapport à $\mathbf y$ et donc $\varepsilon$ (puisque le modèle de la nature est linéaire) qui suit une loi normale multivariée. L'estimateur des MCO est donc normalement distribué.\qed\newline
+
+  \item \textbf{Lemme.} Soit $Q$ une matrice réelle $T\times T$ symétrique et idempotente, alors~:
+       \[
+         \frac{\varepsilon' Q \varepsilon}{\sigma_{\varepsilon}^2} \sim \chi^2\left(\mathrm{trace}(Q)\right)
+       \]
+       \medskip
+
+       \textbf{Preuve.} Puisque la matrice réelle $Q$ est symétrique,
+       on sait qu'il existe une matrice orthogonale $P$ telle
+       que $P'QP = \Lambda$ est une matrice diagonale. On sait que les
+       valeurs propres de $Q$ sont égales à 1 ou 0. Sans perte de
+       généralité, on suppose que les valeurs propres non nulles
+       viennent en premier le long de la diagonale de $\Lambda$~:
+       \[
+         \Lambda =
+         \begin{pmatrix}
+           I_{\star} & 0 \\
+           0 & 0
+         \end{pmatrix}
+       \]
+       où la dimension de $I_{\star}$ est égale à la trace de la
+       matrice $Q$ (la trace d'une matrice est invariante au
+       changement de base). Définissons $\nu = P'\varepsilon$, on a
+       directement $\mathbb E[\nu] = 0$
+       et $\mathbb V[\nu] = \sigma_{\varepsilon}^2I_T$ puisque $P$ est
+       une matrice orthogonale. Le vecteur $\nu$ est normalement
+       distribué~:
+       $\nu \sim \mathcal N \left( 0, \sigma_{\varepsilon}^2I_T \right)$. Puisque
+       $P$ est une matrice orthogonale, nous pouvons
+       exprimer $\varepsilon$ en fonction de $\nu$~:
+       \[
+         P\nu = PP'\varepsilon \Leftrightarrow \varepsilon = P\nu
+       \]
+       On a donc~:
+       \[
+         \begin{split}
+           \frac{\varepsilon' Q \varepsilon}{\sigma_{\varepsilon}^2} &= \frac{\nu'P'Q P \nu}{\sigma_{\varepsilon}^2}\\
+                                                                     &= \frac{1}{\sigma_{\varepsilon}^2}\nu'
+                                                                       \begin{pmatrix}
+                                                                         I_{\star} & 0\\
+                                                                         0 & 0
+                                                                       \end{pmatrix} \nu \\
+                                                                     &= \frac{1}{\sigma_{\varepsilon}^2}\sum_{i=1}^{\mathrm{tr}(Q)}\nu_i^2\\
+                                                                     &= \sum_{i=1}^{\mathrm{tr}(Q)}\left( \frac{\nu_i}{\sigma_{\varepsilon}} \right)^2
+         \end{split}
+       \]
+       Puisque $\frac{\nu_i}{\sigma_\varepsilon} \perp \frac{\nu_j}{\sigma_\varepsilon} \sim \mathcal N(0,1)$ pour tout $i\neq j$, on a $\frac{\varepsilon' Q \varepsilon}{\sigma_{\varepsilon}^2}\sim\chi^2\left( \mathrm{tr}(Q) \right)$.\newline
+
+     \item \textbf{Preuve du théorème \ref{thm:s2:distribution}.} Nous avons~:
+       \[
+         \frac{(T-K)s^2}{\sigma_{\varepsilon}^2} = \frac{SSE}{\sigma_{\varepsilon}^2} = \frac{\varepsilon' M \varepsilon}{\sigma_{\varepsilon}^2}
+       \]
+       où la matrice $M = I - X(X'X)^{-1}X'$ est une matrice de rang $T-K$. Le lemme précédent entraîne le résultat annoncé.\qed\newline
+
+     \item \textbf{Preuve du corollaire \ref{cor:s2:distribution}.} Direct en notant que la variance d'un $\chi^2$ à $T-K$ degrés de liberté est $2(T-K).$\qed
+
+     \end{itemize}
+
+
+\end{notes}
+
+
 \begin{notes}
 
   \begin{center}
