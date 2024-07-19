@@ -1142,9 +1142,74 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
      \end{itemize}
 
-
 \end{notes}
 
+
+\begin{frame}
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle {Distribution de $\hat{\mathbf b}$ et $s^2$}
+
+  \begin{prop}\label{prop:bhat_perp_s2}
+    Les estimateurs $\hat{\mathrm b}$ et $s^2$ sont des variables aléatoires indépendantes.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Lemme}
+    Soit $Q$ une matrice réelle $T\times T$ symétrique et idempotente de rang $q$. Soit $B$ une matrice réelle $m\times T$ telle que $BQ=0$. Soit le vecteur aléatoire gaussien $\varepsilon\sim\mathcal N(0, \sigma_{\varepsilon}^2I_T)$. Alors le vecteur aléatoire $B\varepsilon$ et la variable aléatoire $\varepsilon' Q \varepsilon$ sont indépendants.\newline
+
+    \textbf{Preuve.} Comme dans la preuve du lemme précédent, on définit la matrice orthogonale $P$ telle que~:
+    \[
+      P'QP =
+      \begin{pmatrix}
+        I_q & 0\\
+        0   & 0
+      \end{pmatrix}
+    \]
+    et le vecteur gaussien $\nu = P'\varepsilon\sim\mathcal N\left(0, \sigma_{\varepsilon}^2I_T\right)$ (car $P$ est une matrice orthogonale). On partitionne le vecteur $\nu$ sous la forme $(\nu_1',\nu_2')'$ où $\nu_1$ et $\nu_2$ sont des vecteurs aléatoires $q\times 1$ et $(T-q)\times 1$ indépendants. On a directement~:
+    \[
+      \varepsilon' Q \varepsilon = \nu_1'\nu_1
+    \]
+    qui suit un $\chi^2(q)$. Posons $BP = C$ et partitionnons les colonnes de $C$ conformément à la partition de $\nu$:
+    \[
+      C =
+      \begin{pmatrix}
+        C_1 & C_2
+      \end{pmatrix}
+    \]
+    où $C_1$ est une matrice $m\times q$ et $C_2$ une matrice $m\times(T-q)$. Nous devons avoir $C P' Q P = 0$ puisque $CP'QP = BPP'QP = BQP$ et $BQ = 0$ par hypothèse. Ainsi~:
+    \[
+      \begin{pmatrix}
+        C_1 & C_2
+      \end{pmatrix}
+      \begin{pmatrix}
+        I_q & 0\\
+        0   & 0
+      \end{pmatrix}
+      = 0
+    \]
+    et donc $C_1=0$. Pour que la matrice $BQ$ soit nulle, il faut éliminer toutes les valeurs propres non nulles. En notant que~:
+    \[
+      B\varepsilon = BPP'\varepsilon = C\nu = C_2\nu_2
+    \]
+    puisque $C_1$ doit être nul, on voit que $B\varepsilon$ ne dépend que de $\nu_2$ qui est indépendant de $\nu_1$ donc de $\varepsilon' Q \varepsilon$.\qed\newline
+
+  \item \textbf{Preuve de la proposition \ref{prop:bhat_perp_s2}.} On
+    a $s^2=\frac{\varepsilon' M \varepsilon}{T-K}$
+    et
+    $\hat{\mathbf b}-\beta = (X'X)^{-1}X'\varepsilon$. Puisque
+    $(X'X)^{-1}X'M = (X'X)^{-1}X'-(X'X)^{-1}X'X(X'X)^{-1}X'=0$, le
+    lemme implique que $s^2$ et $\hat{\mathbf b}$ sont indépendants.\qed
+
+
+  \end{itemize}
+
+\end{notes}
 
 \begin{notes}
 
