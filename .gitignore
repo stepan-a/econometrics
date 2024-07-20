@@ -5,3 +5,14 @@ cours/git.hash
 cours/.ltx
 cours/auto
 cours/.auctex-auto
+
+cours/*.aux
+cours/*.bbl
+cours/*.bcf
+cours/*.blg
+cours/*.nav
+cours/*.out
+cours/*.xml
+cours/*.snm
+cours/*.synctex.gz
+cours/*.toc
