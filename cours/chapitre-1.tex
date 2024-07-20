@@ -1,4 +1,3 @@
-
 \synctex=1
 
 \documentclass[10pt]{beamer}
@@ -1210,6 +1209,250 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \end{itemize}
 
 \end{notes}
+
+
+\begin{frame}
+  \frametitle{Vraisemblance}
+
+  \begin{itemize}
+
+  \item La vraisemblance est la densité de l'échantillon.\newline
+
+  \item Comme le modèle est linéaire et que $\varepsilon$ est normalement distribué, on a directement~:
+    \[
+      L(\beta, \sigma_{\varepsilon}^2; \mathbf y) = (2\pi\sigma_{\varepsilon}^2)^{-\frac{T}{2}}e^{-\frac{1}{2\sigma_{\varepsilon}^2}(\mathbf y - X\beta)'(\mathbf y - X\beta)}
+    \]
+    \medskip
+
+  \item En pratique, par la suite, on considérera souvent la log-vraisemblance notée $l(\beta, \sigma_{\varepsilon}^2; \mathbf y)$~:
+    \[
+      l(\beta, \sigma_{\varepsilon}^2; \mathbf y) = -\frac{T}{2}\log(2\pi) -\frac{T}{2}\log\sigma_{\varepsilon}^2 - \frac{1}{2\sigma_{\varepsilon}^2}(\mathbf y - X\beta)'(\mathbf y - X\beta)
+    \]
+    \medskip
+
+  \item $\underset{\{\beta, \sigma_{\varepsilon}^2\}}{\max} l(\beta, \sigma_{\varepsilon}^2; \mathbf y) \Leftrightarrow \underset{\{\beta, \sigma_{\varepsilon}^2\}}{\max} L(\beta, \sigma_{\varepsilon}^2; \mathbf y)$
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item On peut écrire la vraisemnblance de façon équivalente sous la forme~:
+    \[
+      L(\beta, \sigma_{\varepsilon}^2; \mathbf y) = (2\pi\sigma_{\varepsilon}^2)^{-\frac{T}{2}}e^{-\frac{SSE + \left(\hat{\mathbf b}-\beta\right)'X'X\left(\hat{\mathbf b}-\beta\right)}{2\sigma_{\varepsilon}^2}}
+    \]
+
+    \medskip
+
+    Développons le numérateur sous l'exponentielle~:
+
+    \begin{align*}
+      (\mathbf y - X\beta)'(\mathbf y - X\beta) &= \left(\mathbf y - X\hat{\mathbf b} + X(\hat{\mathbf b}-\beta)\right)'\left(\mathbf y - X\hat{\mathbf b} + X(\hat{\mathbf b}-\beta)\right)\\
+                                                &= (\mathbf y - X\hat{\mathbf b})'(\mathbf y - X\hat{\mathbf b})
+                                                     + (\hat{\mathbf b}-\beta)'X'X(\hat{\mathbf b}-\beta)\\
+                                                & \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad   + 2(\hat{\mathbf b}-\beta)X'(\mathbf y-X\hat{\mathrm b})\\
+                                                   &= SSE + (\hat{\mathbf b}-\beta)'X'X(\hat{\mathbf b}-\beta)
+      \end{align*}
+
+    où sur la deuxième ligne le dernier terme est nul car les résidus estimés sont orthogonaux aux variables explicatives.\newline
+
+
+  \item $SSE$ et $\hat{\mathbf b}$ sont des statistiques suffisantes, du point de vue de la vraisemblance et donc de l'inférence, elles résument parfaitement les données.\newline
+
+  \item Comme l'estimateur des MCO pour $\beta$
+    et $\sigma_{\varepsilon}^2$ ne dépendent que des statistiques
+    suffisantes et que ces estimateurs sont sans biais, on peut
+    montrer que ces estimateurs sont efficaces ($\nexists$
+    d'estimateur sans biais avec une variance plus faible).
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Vraisemblance}
+
+  \begin{itemize}
+
+  \item Les dérivées partielles de la log-vraisemblance~:
+    \[
+      \frac{\partial l(\beta, \sigma_{\varepsilon}^2; \mathbf y)}{\partial\beta} = -\frac{1}{\sigma_{\varepsilon}^2}X'(\mathbf y - X\beta)
+    \]
+    \[
+      \frac{\partial l(\beta, \sigma_{\varepsilon}^2; \mathbf y)}{\partial\sigma_{\varepsilon}^2} = -\frac{T}{2\sigma_{\varepsilon}^2} + \frac{1}{2\sigma_{\varepsilon}^4}\left( \mathbf y - X\beta \right)'\left( \mathbf y - X\beta \right)
+    \]
+    \medskip
+
+  \item Les espérances des dérivées partielles sont nulles~:
+
+    \[
+      \mathbb E\left[ \frac{\partial l(\beta, \sigma_{\varepsilon}^2; \mathbf y)}{\partial\beta} \right] = -\frac{1}{\sigma_{\varepsilon}^2}X'\mathbb E[\varepsilon] = 0
+    \]
+    \[
+      \mathbb E \left[ \frac{\partial l(\beta, \sigma_{\varepsilon}^2; \mathbf y)}{\partial\sigma_{\varepsilon}^2} \right] = -\frac{T}{2\sigma_{\varepsilon}^2} + \frac{1}{2\sigma_{\varepsilon}^4}\mathbb E[\varepsilon'\varepsilon] = -\frac{T}{2\sigma_{\varepsilon}^2} + \frac{T\sigma_{\varepsilon}^2}{2\sigma_{\varepsilon}^4} = 0
+    \]
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Vraisemblance}
+
+  \begin{prop}\label{prop:cdfr}
+    Les bornes inférieures de Cramer-Darmois-Fréchet-Rao pour les variances des estimateurs sans biais de $\beta$ et $\sigma_{\varepsilon}^2$ sont $\sigma_{\varepsilon}^2(X'X)^{-1}$ et $\frac{2\sigma_{\varepsilon}^4}{T}$.
+  \end{prop}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item La variance de $\hat{\mathbf b}$ est sur la borne CDFR, il s'agit donc bien d'un estimateur efficace (sans biais et de variance minimale).\newline
+
+  \item La variance de $s^2$ est strictement supérieure à la borne CDFR. Il s'agit tout de même d'un estimateur efficace car il ne dépend que d'une statistique suffisante ($SSR$, par le théorème de Lehmann-Scheffé).
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve de la proposition \ref{prop:cdfr}.} Calculons la matrice d'information de Fisher. Les dérivées secondes de la log-vraisemblance sont~:
+    \[
+      \frac{\partial^2 l(\beta, \sigma_{\varepsilon}^2; \mathbf y)}{\partial\beta\partial\beta'} = -\frac{1}{\sigma_{\varepsilon}^2}X'X
+    \]
+    \[
+      \frac{\partial^2 l(\beta, \sigma_{\varepsilon}^2; \mathbf y)}{\partial\sigma_{\varepsilon}^4} = \frac{T}{2\sigma_{\varepsilon}^4}-\frac{1}{\sigma_{\varepsilon}^6}\left( \mathbf y-X\beta \right)'\left( \mathbf y-X\beta \right)
+    \]
+    \[
+      \frac{\partial^2 l(\beta, \sigma_{\varepsilon}^2; \mathbf y)}{\partial\beta\partial\sigma_{\varepsilon}^2} = -\frac{1}{\sigma_{\varepsilon}^4}X'\left( \mathbf y - X\beta \right)
+    \]
+    La matrice d'information de Fisher est l'opposé de l'espérance de la matrice hessienne (des dérivées secondes)~:
+    \[
+      I =
+      \begin{pmatrix}
+        \frac{X'X}{\sigma_{\varepsilon}^2} & 0 \\
+        0                                  & \frac{T}{2\sigma_{\varepsilon}^4}
+      \end{pmatrix}
+    \]
+    La borne CDFR est définie par la diagonale de l'inverse de la matrice d'information de Fisher.\qed
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Vraisemblance}
+
+  \begin{prop}\label{prop:ml}
+    Les estimateurs du maximum de vraisemblance de $\beta$ et $\sigma_{\varepsilon}^2$ sont~:
+    \[
+      \hat\beta = (X'X)^{-1}X'\mathbf y \quad\text{ et }\quad \hat{\sigma}_{\varepsilon}^2 = \frac{SSE}{T}
+    \]
+  \end{prop}
+
+  \begin{itemize}
+
+  \item L'estimateur du MV de $\beta$ est identique à l'estimateur des MCO $\hat{\mathbf b}$.\newline
+
+  \item L'estimateur du MV de $\sigma_{\varepsilon}^{2}$ est biaisé !\newline
+
+  \item La variance de l'estimateur du MV de $\sigma_{\varepsilon}^{2}$ est plus faible que la variance de $s^2$~:
+    \[
+      \mathbb V\left[ \hat{\sigma}_{\varepsilon}^2 \right] = 2\sigma_{\varepsilon}^4\frac{T-K}{T^2} < \underbrace{\frac{2\sigma_{\varepsilon}^4}{T}}_{\textsc{CDFR}}< \frac{2\sigma_{\varepsilon}^4}{T-K}
+    \]
+  \item \underline{\textbf{Mais}} l'erreur quadratique moyenne de l'estimateur du MV est plus faible que celle de $s^2$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve de la proposition \ref{prop:ml}} Direct en annulant les dérivées partielles par rapport à $\beta$ et $\sigma_{\varepsilon}^2$. Pour $\hat\beta$ on peut alternativement raisonner sur la représentation alternative (en fonction de $SSE$ et $\hat{\mathbf b}$) de la fonction de vraisemblance.\qed\newline
+
+  \item \textbf{Calcul de la variance de $\hat{\sigma}_{\varepsilon}^2$.} Nous avons déjà montré, voir le corollaire \ref{cor:s2:distribution}, que~:
+    \[
+      \mathbb V\left[ \frac{SSE}{T-K} \right] = \frac{2\sigma_{\varepsilon}^4}{T-K}
+    \]
+    \[
+      \Leftrightarrow \mathbb V\left[ \frac{SSE}{T}\frac{T}{T-K} \right] = \frac{2\sigma_{\varepsilon}^4}{T-K}
+    \]
+    \[
+      \Leftrightarrow \mathbb V\left[ \frac{SSE}{T}\right] = \frac{2\sigma_{\varepsilon}^4}{T-K}\frac{(T-K)^2}{T^2}
+    \]
+    \[
+      \Leftrightarrow \mathbb V\left[ \hat{\sigma}_{\varepsilon}^2\right] = 2\sigma_{\varepsilon}^4\frac{T-K}{T^2}
+    \]
+    \qed\newline
+
+  \item \textbf{Remarque 1.} La variance de l'estimateur du maximum de vraisemblance de $\sigma_{\varepsilon}^2$ est strictement inférieure à la borne de CDFR. Possible car cette borne inférieure ne concerne que les estimateurs sans biais (l'estimateur du MV est biaisé).\newline
+
+  \item L'erreur quadratique moyenne d'un estimateur $\hat\theta$ est défini par~:
+    \[
+      MSE(\hat\theta) = \mathbb E\left[ \left( \hat\theta -\theta \right)^2 \right]
+    \]
+  \item Si $\hat\theta$ est un estimateur sans biais de $\theta$ alors l'erreur quadratique moyenne est égale à la variance.\newline
+
+  \item Autrement, en notant $B(\hat\theta) = \mathbb E\left[\hat\theta\right]-\theta$ le biais de l'estimateur, on a~:
+    \[
+      \begin{split}
+        MSE\left( \hat\theta \right) &= \mathbb E \left[ \left( \hat\theta - \mathbb E\left[\hat\theta\right] + B\left( \hat\theta \right) \right)^2 \right]\\
+                                     &= \mathbb V\left[ \hat\theta \right] + B\left( \hat\theta \right)^2 + 2B\left(\hat\theta\right)\mathbb E\left[ \hat\theta - \mathbb \mathbb E\left[ \hat\theta \right] \right]\\
+        &= \mathbb V\left[ \hat\theta \right] + B\left( \hat\theta \right)^2
+      \end{split}
+    \]
+
+  \item \textsc{Arbitrage Biais-Variance.} Au sens de la réduction de l'erreur quadratique moyenne, un estimateur peut compenser son biais par une plus faible variance (une plus grande précision)\newline
+
+  \item Dans le cas qui nous intéresse, on a~:
+    \[
+      MSE(s^2) = \mathbb V\left[ s^2 \right] = \sigma_{\varepsilon}^4\frac{2}{T-K}
+    \]
+    et
+    \[
+      MSE(\hat{\sigma}_{\varepsilon}^2) = \sigma_{\varepsilon}^4 \frac{2(T-K)+K^2}{T^2}
+    \]
+    Définissons~:
+    \[
+      r(s^2, \hat{\sigma}_{\varepsilon}^2) = \frac{MSE(s^2)}{MSE(\hat{\sigma}_{\varepsilon}^2)}
+    \]
+    \[
+      \Leftrightarrow r(s^2, \hat{\sigma}_{\varepsilon}^2) = \frac{2}{T-K}\frac{T^2}{2(T-K)+K^2}
+    \]
+    On a~:
+    \[
+      \begin{split}
+        r(s^2, \hat{\sigma}_{\varepsilon}^2) >1 &\Leftrightarrow 2T^2 > (T-K)\left[ 2(T-K) + K^2 \right]\\
+                                                &\Leftrightarrow 2T^2 > 2T^2 + 2K^2 -4TK + K^2\\
+                                                &\Leftrightarrow K(3K-4T)<0\\
+                                                &\Leftrightarrow T>\frac{3}{4}K
+      \end{split}
+    \]
+    La dernière inégalité est nécessairement vraie, autrement $X'X$ ne serait pas de plein rang (le nombre d'observations doit être supérieur aux nombre de variables explicatives). Le ratio $r(s^2, \hat{\sigma}_{\varepsilon}^2)$ doit donc être supérieur à 1, et l'erreur quadratique moyenne de l'estimateur du MV inférieure à l'erreur quadratique moyenne de $s^2$.\newline
+
+  \item \textbf{Remarque 2.} Même si en moyenne $\hat{\sigma}_{\varepsilon}^2$ est différent de $\sigma_{\varepsilon}^2$, cet estimateur est en moyenne moins éloigné de  $\sigma_{\varepsilon}^2$ que $s^2$ (qui pourtant est égal à  $\sigma_{\varepsilon}^2$ en moyenne).
+
+  \end{itemize}
+
+\end{notes}
+
+
+
+
 
 \begin{notes}
 
