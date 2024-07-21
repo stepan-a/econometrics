@@ -1451,7 +1451,77 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 \end{notes}
 
 
+\begin{frame}
+  \frametitle{Distribution asymptotique des estimateurs}
 
+  \begin{prop}\label{prop:asymptotic_dist:bhat}
+    L'estimateur $\hat{\mathbf b}$ est asymptotiquement normalement distribué~:
+    \[
+      \sqrt{T}\left( \hat{\mathbf b} - \beta\right) \underset{T\to\infty}{\Longrightarrow} \mathcal N\left( 0, \sigma_{\varepsilon}^2 Q^{-1}\right)
+    \]
+    où $Q = \lim_{T\to\infty}\frac{X'X}{T}$.
+  \end{prop}
+
+  \bigskip
+
+  \begin{prop}\label{prop:asymptotic_dist:s2}
+    L'estimateur $s^2$ est asymptotiquement normalement distribué~:
+    \[
+      \sqrt{T}\left( s^2 - \sigma_{\varepsilon}^2\right) \underset{T\to\infty}{\Longrightarrow} \mathcal N\left( 0, 2\sigma_{\varepsilon}^4\right)
+    \]
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve de la proposition \ref{prop:asymptotic_dist:bhat}.} Nous avons déjà montré, voir le théorème \ref{thm:s2:distribution}, que $\hat{\mathbf b}$ est normalement distribué pour tout $T$. Nous avons~:
+    \[
+      \hat{\mathbf b} \sim \mathcal N \left( \beta, \sigma_{\varepsilon}^2(X'X)^{-1}\right)
+    \]
+    \[
+      \Leftrightarrow \hat{\mathbf b}-\beta \sim \mathcal N \left( 0, \sigma_{\varepsilon}^2(X'X)^{-1}\right)
+    \]
+    \[
+      \Leftrightarrow \sqrt{T}\left( \hat{\mathbf b}-\beta \right) \sim \mathcal N \left( 0, T \sigma_{\varepsilon}^2(X'X)^{-1}\right)
+    \]
+    \[
+      \Leftrightarrow \sqrt{T}\left( \hat{\mathbf b}-\beta \right) \sim \mathcal N \left( 0, \sigma_{\varepsilon}^2\left( \frac{X'X}{T} \right)^{-1}\right)
+    \]
+    On obtient le résultat asymptotique en rapellant que, selon $\mathcal H_2$, $\frac{X'X}{T}$ converge vers $Q$ lorsque $T$ tend vers l'infini.\qed\newline
+
+  \item \textbf{Preuve de la proposition \ref{prop:asymptotic_dist:s2}.} Une variable aléatoire du $\chi^2(n)$ est une somme de $n$ variables aléatoires indépendantes (carrés de variables aléatoires normales centrées-réduites). Le théorème de la limite centrale nous dit que la variable du $\chi^2$ doit être vers une variable aléatoire normale quand $n$ tend vers l'infini.\newline
+
+    D'après le théorème \ref{thm:s2:distribution}, on a~:
+    \[
+      \frac{(T-K)s^2}{\sigma_{\varepsilon}^2} = \sum_{i=1}^{T-K}v_i^2
+    \]
+    où $(v_i, i=1,\dots,T-K)$ sont des variables aléatoires gaussiennes centrées réduites indépendantes, et donc $(v_i^2, i=1,\dots,T-K)$ sont des $\chi^2(1)$ indépendantes. Sachant que $\mathbb E\left[ v_i^2 \right]=1$ et $\mathbb V\left[ v_i^2 \right]=2$, le théorème de la limite centrale nous dit que~:
+    \[
+      \frac{1}{\sqrt{T-K}}\sum_{i=1}^{T-K}\frac{v_i^2-1}{\sqrt{2}} \underset{T\to\infty}{\Longrightarrow} \mathcal N(0,1)
+    \]
+    \[
+      \Leftrightarrow \frac{1}{\sqrt{T-K}}\sum_{i=1}^{T-K} \left( v_i^2-1 \right) \underset{T\to\infty}{\Longrightarrow} \mathcal N(0,2)
+    \]
+    \[
+      \Leftrightarrow \frac{1}{\sqrt{T-K}}\left( \sum_{i=1}^{T-K}v_i^2 - (T-K) \right) \underset{T\to\infty}{\Longrightarrow} \mathcal N(0,2)
+    \]
+    \[
+      \Leftrightarrow \frac{1}{\sqrt{T-K}}\left( \frac{(T-K)s^2}{\sigma_{\varepsilon}^2} - (T-K) \right) \underset{T\to\infty}{\Longrightarrow} \mathcal N(0,2)
+    \]
+    \[
+      \Leftrightarrow \sqrt{T-K}\left( s^2 - \sigma_{\varepsilon}^2 \right) \underset{T\to\infty}{\Longrightarrow} \mathcal N\left(0,2\sigma_{\varepsilon}^4 \right)
+    \]
+    \[
+      \Rightarrow \sqrt{T}\left( s^2 - \sigma_{\varepsilon}^2 \right) \underset{T\to\infty}{\Longrightarrow} \mathcal N\left(0,2\sigma_{\varepsilon}^4 \right)
+    \]
+    \qed
+  \end{itemize}
+
+\end{notes}
 
 
 \begin{notes}
