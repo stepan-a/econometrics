@@ -2,6 +2,7 @@
 
 \documentclass[10pt]{beamer}
 
+\usepackage[T1]{fontenc}
 \usepackage{etex}
 \usepackage{fourier-orns}
 \usepackage{ccicons}
@@ -16,16 +17,14 @@
 \usepackage{color, colortbl}
 \usepackage{mathrsfs}
 \usepackage{bm}
-%\usepackage{lastpage}
 \usepackage[nice]{nicefrac}
 \usepackage{setspace}
 \usepackage{ragged2e}
 \usepackage{listings}
 \usepackage{algorithms/algorithm}
 \usepackage{algorithms/algorithmic}
-\usepackage[frenchb]{babel}
 \usepackage{tikz,pgfplots,pgfplotstable}
-\pgfplotsset{compat=newest}
+\pgfplotsset{compat=1.18}%newest}
 \usetikzlibrary{patterns, arrows, decorations.pathreplacing, decorations.markings, calc}
 \pgfplotsset{plot coordinates/math parser=false}
 \newlength\figureheight
@@ -46,14 +45,14 @@
 }
 \usepackage{venndiagram}
 \usepackage{subcaption}
+\usepackage{centernot}
 
 \usepackage[backend=biber,style=bwl-FU,natbib=true,doi=false,isbn=false,url=false,eprint=false]{biblatex}%bwl-FU
 \addbibresource{econometrics.bib}
 
-\usefonttheme[onlymath]{serif}
-
 \makeatletter
 \@ifclassloaded{beamer}{
+\usefonttheme[onlymath]{serif}
 \uselanguage{French}
 \languagepath{French}
 % Git hash
@@ -639,13 +638,13 @@ Ainsi, nous avons finalement~:
 
   \begin{itemize}
 
-  \item Un $R^2$ proche de 1 ne garantit pas que le modèle soit \og bon \fg{}.\newline
+  \item Un $R^2$ proche de 1 ne garantit pas que le modèle soit \guillemotleft bon\guillemotright.\newline
 
   \item De bonnes prévisions \textit{in-sample} ne garantissent pas de bonnes prévisions \textit{out-of-sample}.\newline
 
   \item Le $R^2$ ne préjuge pas de la relation entre $y$ et $x$ (ce n'est pas parce que le $R^2$ est faible que $x$ n'a pas d'effet significatif sur $y$).\newline
 
-  \item Un grand $R^2$ proche de 1 ne veut pas dire que la variable $x$ explique  \og bien \fg{} la variable $y$. Nous obtiendrions le même  $R^2$ en inversant le modèle empirique $\Rightarrow$ Pas d'interprétation causale.
+  \item Un grand $R^2$ proche de 1 ne veut pas dire que la variable $x$ explique  \guillemotleft bien\guillemotright  la variable $y$. Nous obtiendrions le même  $R^2$ en inversant le modèle empirique $\Rightarrow$ Pas d'interprétation causale.
 
   \end{itemize}
 
@@ -751,7 +750,7 @@ Puisque $X$ est déterministe~:
   \begin{itemize}
   \item L'estimateur des MCO est d'autant moins précis (sa variance est d'autant plus grande) que la variance des erreurs $\varepsilon$ est importante.\newline
 
-  \item L'esimateur des MCO est d'autant moins précis que la variabilité des variables explicatives, la matrice $X'X$ \og petite \fg, est faible.\newline
+  \item L'esimateur des MCO est d'autant moins précis que la variabilité des variables explicatives, la matrice $X'X$ \guillemotleft petite\guillemotright, est faible.\newline
 
   \item[$\Rightarrow$] Il est plus facile d'identifier l'effet d'une variable explicative sur $y$ si le signal (la variance de la variable explicative) est important relativement au bruit ($\sigma_{\varepsilon}^2$).
   \end{itemize}
@@ -1524,6 +1523,197 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 \end{notes}
 
 
+\begin{frame}
+  \frametitle{Tests d'hypothèses}
+  \framesubtitle{Restriction sur les paramètres}
+
+  \begin{theorem}\label{thm:test:single_linear_restriction}
+    Soient $R$ un vecteur réel $1\times K$déterministe et $r$ un scalaire réel déterministe. Sous l'hypothèse nulle $R\beta = r$, on a~:
+    \[
+      \frac{R\hat{\mathrm b}-r}{\sqrt{s^2R(X'X)^{-1}R}} \sim t_{T-K}
+    \]
+    où $t_{T-K}$ est une loi de Student à $T-K$ degrés de liberté.
+  \end{theorem}
+
+  \bigskip
+
+  \begin{example}
+    Soit le modèle $y_t = \beta_0 + \beta_1 x_{1,t} + \beta_2 x_{2,t} + \varepsilon_t$. Pour tester l'hypothèse $\beta_1+\beta_2=1$, on pose $R = (1, 1)$ et $r=1$. Notons que pour estimer le modèle contraint nous pouvons le réécrire en substituant la contrainte~:
+    \[
+      y_t-x_{2,t} = \beta_0 + \beta_1\left( x_{1,t}-x_{2,t} \right) + \varepsilon_t
+    \]
+  \end{example}
+
+\end{frame}
+
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve du théorème \ref{thm:test:single_linear_restriction}.} Le numérateur $R\hat{\mathbf b}-r$ est une variable aléatoire centrée sous l'hypothèse nulle~:
+    \[
+      \mathbb E \left[ R\hat{\mathbf b} - r \right] = R\mathbb E\left[ \hat{\mathbf b} \right] - r = R\beta-r = 0
+    \]
+    Sa variance est~:
+    \[
+      \mathbb V\left[ R\hat{\mathbf b}-r\right] = R\mathbb V\left[ \hat{\mathbf b} \right] R' = \sigma_{\varepsilon}^2R(X'X)^{-1}R'
+    \]
+    Ainsi, sous l'hypothèse nulle, on a~:
+    \[
+      \frac{R\hat{\mathbf b}-r}{\sigma_{\varepsilon}^2R(X'X)^{-1}R'} \sim \mathcal N(0,1)
+    \]
+    Mais comme nous ne connaissons pas $\sigma_{\varepsilon}^2$, on remplace cette variance par $s^2$, un estimateur sans biais. Or nous savons, par le théorème \ref{thm:s2:distribution}, que~:
+    \[
+      \frac{(T-K)s^2}{\sigma_{\varepsilon}^2} \sim \chi^2(T-K)
+    \]
+    Ainsi~:
+    \[
+      \frac{s^2R(X'X)^{-1}R'}{\sigma_{\varepsilon}^2R(X'X)^{-1}R'} = \frac{s^2}{\sigma_{\varepsilon}^2} \sim \frac{\chi^2(T-K)}{T-K}
+    \]
+    et donc~:
+    \[
+      \frac{R\hat{\mathbf b}-r}{s^2R(X'X)^{-1}R'} =
+      \frac{\frac{R\left( \hat{\mathbf b} - \beta \right)}{\sqrt{\sigma_{\varepsilon}^2R(X'X)^{-1}R'}}}
+      {\sqrt{\frac{s^2R(X'X)^{-1}R'}{\sigma_{\varepsilon}^2R(X'X)^{-1}R'}}}
+    \]
+    est le ratio d'une normale centrée réduite et d'un $\chi^2$ à $T-K$ degrés de liberté rapporté à $T-K$. Puisque le numérateur et le dénominateur sont des variables aléaoires indépendantes, voir la proposition \ref{prop:bhat_perp_s2}, le ratio suit une loi de student à $T-K$ degrés de liberté, voir la proposition \ref{prop:student} dans l'annexe A.\qed
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Tests d'hypothèses}
+  \framesubtitle{Significativité d'un paramètre}
+
+  \begin{cor}\label{cor:student_statistic}
+    Soit $s_{\hat{\mathrm b}_i}^2 = s^2 \left[ (X'X)^{-1} \right]_{ii}$ la variance de l'estimateur des MCO du i-ème paramètre. La statistique~:
+    \[
+      t = \frac{\hat{\mathbf b}_i}{s_{\hat{\mathrm b}_i}}
+    \]
+    suit une loi de Student à $T-K$ degrés de liberté sous l'hypothèse nulle $\beta_i = 0$.
+  \end{cor}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item Conséquence directe du théorème
+    \ref{thm:test:single_linear_restriction} avec $r = 0$ et $R$ un
+    vecteur de sélection du i-ème élément de $\beta$ (un vecteur ligne
+    nul à l'exception du i-ème élément égal à 1).\newline
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Tests d'hypothèses}
+  \framesubtitle{Restriction\underline{s} sur les paramètres}
+
+  \begin{theorem}\label{thm:fisher_statistic}
+    Soit $R$ une matrice réelle déterministe $m\times K$ de rang $m$. Soit $r$ un vecteur réel  $m\times 1$ déterministe. Alors sous l'hypothèse nulle $R\beta=r$, la statistique~:
+    \[
+      \frac{\nicefrac{\left(r-R\hat{\mathbf b}\right)'\left( R(X'X)^{-1}R' \right)^{-1}\left(r-R\hat{\mathbf b}\right)}{m}}{\nicefrac{SSE}{(T-K)}}
+    \]
+ suit une loi de Fisher $F\left(m, T-K\right)$.
+  \end{theorem}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item Ici on teste simultanément $m$ restrictions.\newline
+
+  \item Ces restrictions doivent être différentes, les $m$ lignes de $R$ sont linéairement indépendantes.\newline
+
+  \item Théorème \ref{thm:fisher_statistic} $\centernot{\Longleftrightarrow}$  $m\times$Théorème \ref{thm:test:single_linear_restriction}
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Tests d'hypothèses}
+  \framesubtitle{Restriction\underline{s} sur les paramètres}
+
+  \begin{itemize}
+
+  \item $r-R\hat{\mathbf b}$ est généralement différent de zéro, même
+    si $R\beta = r$, à cause de l'incertitude liée à l'estimateur des
+    MCO.\newline
+
+  \item Le numérateur de la statistique de Fisher est une mesure de la distance aux $m$ contraintes.\newline
+
+  \item Le dénominateur mesure la taille des perturbations $\varepsilon$.\newline
+
+  \item On rejette les $m$ contraintes si la distance aux m contraintes est trop importante par rapport à la taille des perturbations.\newline
+
+  \item Pourquoi ne pas rajouter les contraintes $R\beta=r$ à la procédure d'estimation par les MCO ou par MV~? Cela permettrait de réduire la variance de l'estimateur (moins de paramètres à estimer).
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve du théorème \ref{thm:fisher_statistic}.} Sous l'hypothèse nulle, $r=R\beta$, on a~:
+    \[
+      r-R\hat{\mathbf b} = R\left( \beta - \hat{\mathbf b} \right) = -R(X'X)^{-1}X'\varepsilon
+    \]
+    Ainsi, la variance de $r-R\hat{\mathbf b}$ est~:
+    \[
+      \mathbb V \left[ r-R\hat{\mathbf b} \right] = \sigma_{\varepsilon}^2R(X'X)^{-1}X'X(X'X)^{-1}R' = \sigma_{\varepsilon}^2R(X'X)^{-1}R'
+    \]
+    dont nous retrouvons l'inverse au centre du numérateur, au facteur
+    d'échelle $\sigma_{\varepsilon}^2$ près, en notant que cette
+    matrice (comme son inverse) est symétrique et donc identique à sa
+    transposée. Si $r-R\hat{\mathbf b}$ mesure l'écart aux $m$
+    restrictions, la statistique donne relativement plus de poids aux
+    restrictions qui sont mesurées de façon plus précises. Nous pouvons donc réécrire le numérateur sous la forme $\varepsilon' Q \varepsilon$ avec~:
+    \[
+      Q = X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'
+    \]
+    Clairement cette matrice est symétrique~:
+    \[
+      \begin{split}
+        Q' &= \left( X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X' \right)'\\
+           &= \left( R(X'X)^{-1}X' \right)'\left( R(X'X)^{-1}R' \right)^{-1}\left( X(X'X)^{-1}R' \right)'\\
+           &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'\\
+           &= Q
+      \end{split}
+    \]
+  elle est aussi idempotente~:
+    {\tiny
+    \[
+      \begin{split}
+        QQ &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X' X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'\\
+           &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'\\
+           &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X' = Q
+      \end{split}
+    \]}
+  Nous pouvons montrer que la trace de la matrice $Q$ est égale à $m$ (son rang)~:
+    \[
+      \begin{split}
+        \mathrm{tr} (Q) &= \mathrm{tr}\left( X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'  \right) \\
+                         &= \mathrm{tr}\left( \left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'X(X'X)^{-1}R'   \right)\\
+                         &= \mathrm{tr}\left( \left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}R'  \right)\\
+                         &= \mathrm{tr} \left( I_m \right) = m
+      \end{split}
+    \]
+    Nous savons donc que le numérateur est distribué comme $\sigma_{\varepsilon}^2\left( \nicefrac{\chi^2(m)}{m} \right)$, voir la preuve du théorème \ref{thm:s2:distribution} (le lemme utilisé dans la preuve). Par ailleurs, nous savons aussi que le dénominateur peut s'écrire comme $\nicefrac{\varepsilon' M \varepsilon}{(T-K)}$ avec $M = I-X(X'X)^{-1}X'$ une matrice symétrique, idempotente et vérifiant $\mathrm{tr}(M)=T-K$. Le dénominateur est donc distribué comme $\sigma_{\varepsilon}^2\left( \nicefrac{\chi^2\left( T-K \right)}{(T-K)} \right)$.\newline
+
+    Comme le numérateur et le dénominateur sont deux variables aléatoires indépendantes, puisque le numérateur dépend de $\hat{\mathrm b}$ et le dénominateur de $s^2$ (voir la proposition \ref{prop:bhat_perp_s2}, $\hat{\mathrm b}$ et $s^2$ sont indépendants), on sait par définition de la loi de Fisher (voir l'annexe A) que la statistique donnée dans le théorème, dite de Fisher, suit une loi de Fisher $F(m, T-K)$.\qed
+
+\end{notes}
+
+
 \begin{notes}
 
   \begin{center}
@@ -1542,21 +1732,9 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
 
 
-\section{Annexe A}
-
 \begin{frame}
   \begin{center}
     \Huge{\textsc{Annexe A}}\\
-    \Huge\textbf{Géométrie les MCO}
-  \end{center}
-\end{frame}
-
-
-\section{Annexes B}
-
-\begin{frame}
-  \begin{center}
-    \Huge{\textsc{Annexe B}}\\
     \Huge\textbf{Probabilités}
   \end{center}
 \end{frame}
@@ -1586,6 +1764,144 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \end{defn}
 
 \end{frame}
+
+
+\begin{frame}
+  \frametitle{Loi du $\chi^2$}
+
+  \begin{defn}{}
+    Soit $X_1, \dots, X_k$ une suite de variable aléaoires normales centrées-réduites indépendantes. Alors $\sum_{i=1}^kX_i^2$ suit une loi du chi-deux à $k$ degrés de liberté, notée~: $\chi^2(k)$.
+  \end{defn}
+
+  \bigskip
+
+  \begin{prop}\label{prop:chi2}
+    La fonction de densité de probabilité de $X\sim\chi^2(k)$,
+    avec $k\in\mathbb N$, est~:
+    \[
+      f_X(x) = \frac{x^{\frac{k}{2}-1}e^{-\frac{x}{2}}}{2^{\frac{k}{2}}\Gamma\left(\frac{k}{2}\right)}
+    \]
+    pour tout $x>0$ et 0 sinon, où $\Gamma(z) = \int_0^{\infty}t^{z-1}e^{-t}\mathrm dt$ est la
+    fonction Gamma. On a $\mathbb E\left[ X \right]=k$ et $\mathbb V\left[ X \right] = 2k$.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Loi du $\chi^2$}
+
+  \bigskip
+
+  \begin{center}
+    \input{images/chapitre-1/chi-squared.tex}
+  \end{center}
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Loi de Student}
+
+  \begin{defn}{}
+    Soient $Z$ une variable aléatoire normale centrée réduite et une variable aléatoire $U\perp Z$ distribuéesuivant la loi du $\chi^2$ à $k$ degrés de liberté. Alors
+    \[
+      X = \frac{Z}{\sqrt{\nicefrac{U}{k}}}
+    \]
+    suit une loi de Student à $k$ degrés de liberté, notée $t_k$.
+  \end{defn}
+
+  \bigskip
+
+  \begin{prop}\label{prop:student}
+    La fonction de densité de probabilité de $X\sim t_k$,
+    avec $k\in\mathbb N$, est~:
+    \[
+      f_X(x) =
+      \frac{1}{\sqrt{k\pi}}\frac{\Gamma(\frac{k+1}{2})}{\Gamma(\frac{k}{2})}\left(1+\frac{x^2}{k}\right)^{-\frac{k+1}{2}}
+    \]
+    pour tout $x\in\mathbb R$, où $\Gamma(z) = \int_0^{\infty}t^{z-1}e^{-t}\mathrm dt$ est la
+    fonction Gamma. On a $\mathbb E\left[ X \right]=0$ si $k>1$ et $\mathbb V\left[ X \right] = \frac{k}{k-2}$ si $k>2$. La loi de student converge vers la loi normale si $k$ tend vers l'infini.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Loi de Student}
+
+  \bigskip
+
+  \begin{center}
+    \input{images/chapitre-1/student.tex}
+  \end{center}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Loi de Fisher}
+
+  \begin{defn}{}
+    Soient $U\sim\chi^2(p)$ et $V\sim\chi^2(q)$, avec  $U\perp V$. $X = \frac{\nicefrac{U}{p}}{\nicefrac{V}{q}}$ une variable aléatoire réelle distribuée selon la loi de Fisher de degrés de liberté $p$ et $q$. On note la distribution de Fisher~: $F(p,q)$.
+  \end{defn}
+
+  \bigskip
+
+  \begin{prop}\label{prop:fisher}
+    La fonction de densité de probabilité de $X\sim F(p,q)$,
+    avec $(p,q)\in\mathbb N^{\star}\times \mathbb N^{\star}$, est~:
+    \[
+      f_X(x) = \frac{\left( \frac{px}{px+q} \right)^{\frac{p}{2}}\left( 1-\frac{px}{px+q} \right)^{\frac{q}{2}}}{x B\left(\frac{p}{2},\frac{q}{2}\right)}
+    \]
+    pour tout $x\in\mathbb R_+$, où $B(\alpha,\beta) = \int_0^1t^{\alpha-1}(1-t)^{\beta-1}\mathrm dt$ est la
+    fonction Beta. On a $\mathbb E\left[ X \right]=\frac{q}{q-2}$ si $q>2$ et $\mathbb V\left[ X \right] = \frac{2q^2\left( p+q-2 \right)}{p\left( q-2 \right)^2\left( q-4 \right)}$ si $q>4$.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Loi de Fisher}
+
+  \bigskip
+
+  \begin{center}
+    \input{images/chapitre-1/fisher-snedecor-1.tex}
+  \end{center}
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Loi de Fisher}
+
+  \bigskip
+
+  \begin{center}
+    \input{images/chapitre-1/fisher-snedecor-2.tex}
+  \end{center}
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Loi de Fisher}
+
+  \bigskip
+
+  \begin{center}
+    \input{images/chapitre-1/fisher-snedecor-3.tex}
+  \end{center}
+
+
+\end{frame}
+
 
 
 \end{document}
