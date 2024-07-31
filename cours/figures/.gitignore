@@ -1,0 +1,4 @@
+# Ignore all files in this folder. They are temporary files used to factorize the creation of tikz plots.
+*
+# Do not ignore the current file
+!.gitignore
