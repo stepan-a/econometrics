@@ -1716,6 +1716,222 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 \end{notes}
 
 
+\begin{frame}
+  \frametitle{MCO avec contraintes linéaires}
+
+  \begin{itemize}
+
+  \item Le programme d'optimisation est maintenant~:
+    \[
+      \begin{split}
+        \tilde{\mathbf b} = \arg & \min_{\mathbf b} (\mathbf{y}-X\mathbf{b})'(\mathbf{y}-X\mathbf{b})\\
+                                 &\text{\underline{s.c.}} \quad R\mathbf{b} = r
+      \end{split}
+    \]
+
+    \medskip
+
+  \item Le lagrangien associé à ce programme est~:
+    \[
+      \mathcal L = (\mathbf{y}-X\mathbf{b})'(\mathbf{y}-X\mathbf{b}) + \bm{\lambda}'\left( R\mathbf{b} - r\right)
+    \]
+    où $\bm{\lambda}$ est un vecteur $m\times 1$ de multiplicateurs de Lagrange.\newline
+
+  \item Les CNO sont~:
+    \[
+      \begin{cases}
+        0 &= -2X'(\mathbf{y}-X\tilde{\mathbf b}) + R'\bm{\lambda}\\
+        0 &= R\tilde{\mathbf b} - r
+      \end{cases}
+    \]
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{MCO avec contraintes linéaires}
+
+  \begin{itemize}
+
+  \item On peut réécrire les CNO matriciellement sous la forme~:
+    \[
+      \underbrace{
+      \begin{pmatrix}
+        2X'X & R'\\
+        R & O
+      \end{pmatrix}}_{\mathbb X}
+    \underbrace{
+      \begin{pmatrix}
+        \tilde{\mathbf b}\\
+        \bm{\lambda}
+      \end{pmatrix}}_{\mathbf c}
+    =
+    \underbrace{
+      \begin{pmatrix}
+        2X'\mathbf y\\
+        r
+      \end{pmatrix}}_{\mathbf d}
+    \]
+
+    \medskip
+
+  \item Comme, par hypothèse, $X'X$ est une matrice $K\times K$ de plein rang et $R$ une matrice $m\times K$ de rang $m$, la matrice $\mathbb X$ est nécessairement invesible. On a donc~:
+    \[
+      \begin{pmatrix}
+        \tilde{\mathbf b}\\
+        \bm{\lambda}
+      \end{pmatrix} =
+      \begin{pmatrix}
+        2X'X & R'\\
+        R & O
+      \end{pmatrix}^{-1}
+      \begin{pmatrix}
+        2X'\mathbf y\\
+        r
+      \end{pmatrix}
+    \]
+
+    \medskip
+
+  \item Pour obtenir l'estimateur des MCO contraints $\tilde{\mathbf b}$ il faut inverser la matrice par blocs $\mathbb X$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{MCO avec contraintes linéaires}
+
+  \begin{prop}[Inversion d'une matrice partitionnée]\label{prop:inversion}
+    Soient $A_{11}$ et $A_{22}$ des matrices réelles $n_1\times n_1$ et $n_2\times n_2$. On suppose que $A_{11}$ est inversible. Soient $A_{12}$ une matrice $n_1\times n_2$ et $A_{21}$ une matrice $n_2\times n_1$. Si la matrice $A$ de dimension $n\times n$, avec $n = n_1+n_2$, définie par~:
+    \[
+      A =
+      \begin{pmatrix}
+        A_{11} & A_{12}\\
+        A_{21} & A_{22}
+      \end{pmatrix}
+    \]
+    est inversible, alors on a~:
+    \[
+      A^{-1} =
+      \begin{pmatrix}
+        A_{11}^{-1}\left( I + A_{12}BA_{21}A_{11}^{-1} \right) & -A_{11}^{-1}A_{12}B \\
+        -BA_{21}A_{11}^{-1} & B
+      \end{pmatrix}
+    \]
+    avec $B = \left(A_{22}-A_{21}A_{11}^{-1}A_{12}\right)^{-1}$.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve de la proposition \ref{prop:inversion}.} Il suffit de montrer que $A^{-1}A = AA^{-1}$ est une matrice identité. On montre que $A^{1}A$ est une matrice identité (le reste est laissé au lecteur). Il suffit de montrer que les blocs $\left[ A^{-1}A \right]_{11}$ et $\left[ A^{-1}A \right]_{22}$ sont des matrices identité et que les blocs $\left[ A^{-1}A \right]_{12}$ et $\left[ A^{-1}A \right]_{21}$ sont nuls. On a~:
+    \[
+      \begin{split}
+        \left[A^{-1}A\right]_{11} &= A_{11}^{-1}\left( I + A_{12}BA_{21}A_{11}^{-1} \right)A_{11}-A_{11}A_{12}BA_{21}\\
+                                  &= I + A_{11}^{-1}A_{12}BA_{21}-A_{11}^{-1}A_{12}BA_{21}\\
+                                  &= I\\
+        \left[ A^{-1}A \right]_{22} &= BA_{21}A_{11}^{-1}A_{12}+BA_{22}\\
+                                  &= B\left( A_{22}- A_{21}A_{11}^{-1}A_{12}\right)\\
+                                  &= I\quad\text{par définition de }B\\
+        \left[ A^{-1}A \right]_{12} &= A_{11}^{-1}\left( I + A_{12}BA_{21}A_{11}^{-1} \right)A_{12} - A_{11}^{-1}A_{12}BA_{22}\\
+                                  &= A_{11}^{-1}\left( A_{12} + A_{12}BA_{21}A_{11}^{-1}A_{12} - A_{12} B A_{22}  \right)\\
+                                  &= A_{11}^{-1}\left( A_{12} - A_{12}B \left(A_{22}- A_{21}A_{11}^{-1}A_{12} \right) \right)\\
+                                  &= A_{11}^{-1}\left( A_{12} - A_{12}\right) = 0\\
+        \left[A^{-1}A\right]_{21} &= -BA_{21}A_{11}^{-1}A_{11}+BA_{21}\\
+                                  &= B\left( A_{21}- A_{21}\right) = 0
+      \end{split}
+    \]
+    \qed
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{MCO avec contraintes linéaires}
+
+  \begin{theorem}\label{thm:constrained_ols}
+    L'estimateur des MCO contraints est donné par~:
+    \[
+      \tilde{\mathbf b} = \hat{\mathbf b} - (X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}\left( R\hat{\mathbf b}-r \right)
+    \]
+    Sa variance est~:
+    \[
+      \mathbb V\left[ \tilde{\mathbf b} \right] = \sigma_{\varepsilon}^2(X'X)^{-1} - \sigma_{\varepsilon}^2(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}
+    \]
+  \end{theorem}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item La variance de $\tilde{\mathbf b}$ est plus petite que celle de $\hat{\mathbf b}$.\newline
+
+  \item L'estimateur est sans biais ssi la contrainte $R\beta = r$ est vraie.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve du théorème \ref{thm:constrained_ols}.} En
+    utilisant la formule d'inversion par bloc, voir la proposition
+    \ref{prop:inversion}, on obtient~:
+    {\tiny\[
+      \mathbb X^{-1} =
+      \begin{pmatrix}
+        \frac{1}{2}(X'X)^{-1}\left[I-R'\left(R(X'X)^{-1}R'\right)^{-1}R(X'X)^{-1}\right] & (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}\\
+        \left(R(X'X)^{-1}R'\right)^{-1}R(X'X)^{-1} & -2\left(R(X'X)^{-1}R'\right)^{-1}
+      \end{pmatrix}
+    \]}
+    Le produit scalaire du premier bloc de ligne de $\mathbb X^{-1}$ avec le vecteur $\mathbf d$ donne l'estimateur $\tilde{\mathbf b}$~:
+    {\tiny
+      \[
+        \begin{split}
+          \tilde{\mathbf b} &= \frac{1}{2}(X'X)^{-1}\left[I-R'\left(R(X'X)^{-1}R'\right)^{-1}R(X'X)^{-1}\right]2X'\mathbf y + (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}r\\
+                            &= \hat{\mathbf b} - (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R\hat{\mathbf b} + (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}r\\
+                            &= \hat{\mathbf b} - (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}\left(R\hat{\mathbf b}-r\right)
+        \end{split}
+    \]}
+  Pour calculer la variance de $\tilde{\mathbf b}$, il suffit de rappeler que si $A$ et $B$ sont deux variables aléatoires alors~:
+  \[
+    \mathbb V\left[ A - B \right] = \mathbb V\left[ A \right] + \mathbb V\left[ B \right] -2 \mathrm{cov}\left(A, B\right)
+  \]
+  On connaît déjà la variance de $\hat{\mathbf b}$, la variance du second terme est~:
+  {\tiny
+  \[
+    \begin{split}
+      \mathbb V&\left[ (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}\left(R\hat{\mathbf b}-r\right) \right] = \mathbb V\left[ (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R\hat{\mathbf b} \right]\\
+      &= (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R\sigma_{\varepsilon}^2(X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R(X'X)^{-1}\\
+      &=\sigma_{\varepsilon}^2(X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R(X'X)^{-1}
+    \end{split}
+  \]}
+Enfin, on a~:
+{\tiny
+\[
+  \begin{split}
+    \mathrm{cov}\left(\hat{\mathbf b}, (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R\hat{\mathbf b}\right) &= (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R\mathbb V\left[ \hat{\mathbf b} \right]\\
+    &= \sigma_{\varepsilon}^2(X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R(X'X)^{-1}
+  \end{split}
+\]}
+\qed
+\end{itemize}
+
+\end{notes}
+
+
 \begin{notes}
 
   \begin{center}
