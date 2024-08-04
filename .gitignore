@@ -16,3 +16,4 @@ cours/*.xml
 cours/*.snm
 cours/*.synctex.gz
 cours/*.toc
+cours/*.auxlock
