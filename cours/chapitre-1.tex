@@ -1932,6 +1932,89 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
 \end{notes}
 
 
+\begin{frame}
+  \frametitle{MV avec contraintes linéaires}
+
+  \begin{theorem}\label{thm:constrained_ml}
+    L'estimateur du maximum de vraisemblance de $\beta$ sous les contraintes $R\beta=r$ est donné par~:
+    \[
+      \hat{\beta}^c = \hat{\mathbf b} - (X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}\left( R\hat{\mathbf b}-r \right)
+    \]
+    L'estimateur du maximum de vraisemblance de $\sigma_{\varepsilon}^2$ est~:
+    \[
+      \tilde{\sigma}_{\varepsilon}^2 = \frac{1}{T}\left(\mathbf y - X\hat{\beta}^c\right)'\left(\mathbf y - X\hat{\beta}^c\right)
+    \]
+  \end{theorem}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item Comme dans le cas sans contrainte, l'estimateur du MV de $\beta$ est identique à l'estimateur des MCO.\newline
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve du théorème \ref{thm:constrained_ml}.} La vraisemblance est donnée par~:
+  \[
+    l\left( \beta, \sigma_{\varepsilon}^2; \mathbf y \right) = -\frac{T}{2}\log 2\pi - \frac{T}{2} \log\sigma_{\varepsilon}^2 - \frac{1}{2\sigma_{\varepsilon}^2}\left( \mathbf y - X\beta \right)'\left( \mathbf y - X\beta \right)
+  \]
+  puisque les contraintes ne concernent pas la variance de $\varepsilon$, on obtient l'estimateur du MV de $\sigma_{\varepsilon}^2$ en annulant la dérivée partielle de la log vraissemblance par rapport à $\sigma_{\varepsilon}^2$~:
+  \[
+    \frac{\partial l\left( \beta, \sigma_{\varepsilon}^2; \mathbf y \right)}{\partial \sigma_{\varepsilon}^2} = -\frac{T}{2\tilde\sigma_{\varepsilon}^2} + \frac{1}{2\tilde\sigma_{\varepsilon}^4}\left(\mathbf y - X\beta \right)'\left(\mathbf y - X\beta\right) = 0
+  \]
+  \[
+    \Leftrightarrow \tilde \sigma_{\varepsilon}^2(\beta) = \frac{1}{T}\left(\mathbf y - X\beta \right)'\left(\mathbf y - X\beta  \right)
+  \]
+  En substituant l'estimateur de $\sigma_{\varepsilon}^2$ dans l'expression de la log vraisemblance, on obtient la log vraisemblance concentrée~:
+  \[
+    l\left( \beta ; \mathbf y \right) = -\frac{T}{2}\log 2\pi - \frac{T}{2}\log\left[\left(\mathbf y - X\beta \right)'\left(\mathbf y - X\beta  \right)\right] - \frac{T}{2}
+  \]
+  que nous devons maximiser, par rapport $\beta$, sous la contrainte $R\beta=r$ pour obtenir l'estimateur $\hat\beta^c$. Clairement cela revient à minimiser $\left(\mathbf y - X\beta \right)'\left(\mathbf y - X\beta  \right)$ sous la contrainte $R\beta=r$. Posons le lagrangien associé à ce programme d'optimisation~:
+  \[
+    \mathcal L = \mathbf y'\mathbf y - 2\beta'X'\mathbf y + \beta'X'X\beta + \lambda'\left( R\beta-r\right)
+  \]
+  où $\lambda$ est un vecteur $m\times 1$ de multiplicateurs de Lagrange. Les conditions nécessaires d'optimalité sont~:
+  \[
+    \begin{cases}
+      -2X'\mathbf y + 2X'X\hat\beta^c + R'\hat\lambda = 0\\
+      R\hat\beta^c -r = 0
+
+    \end{cases}
+  \]
+\[
+    \Leftrightarrow\begin{cases}
+      -2R(X'X)^{-1}X'\mathbf y + 2R\hat\beta^c + R(X'X)^{-1}R'\hat\lambda = 0\\
+      R\hat\beta^c -r = 0
+
+    \end{cases}
+  \]
+  \[
+    \Leftrightarrow\begin{cases}
+      -2R\hat{\mathbf b} + 2R\hat\beta^c + R(X'X)^{-1}R'\hat\lambda = 0\\
+      R\hat\beta^c -r = 0
+
+    \end{cases}
+  \]
+  De la première équation nous déduisons $\hat{\lambda}$~:
+  \[
+    \hat\lambda = \left( R(X'X)^{-1}R' \right)^{-1}\left( 2R\hat{\mathbf b} - 2R\hat{\beta}^c \right)
+  \]
+  \[
+    \Leftrightarrow \hat{\lambda} = -2 \left( R(X'X)^{-1}R' \right)^{-1}\left( r - R\hat{\mathbf b}\right)
+  \]
+  en substituant la seconde équation. Le multiplicateur de Lagrange est non nul si et seulement si l'estimateur des MCO ne satisfait les $m$ contraintes linéaires. En substituant $\hat\lambda$ dans la première équation et en résolvant pour $\hat{\beta}^c$ on obtient~:
+\[
+      \hat{\beta}^c = \hat{\mathbf b} - (X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}\left( R\hat{\mathbf b}-r \right)
+    \]
+    \qed
+
+\end{notes}
+
 \begin{notes}
 
   \begin{center}
