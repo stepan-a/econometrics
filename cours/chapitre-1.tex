@@ -2015,6 +2015,166 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
 
 \end{notes}
 
+
+\begin{frame}[c]
+  \frametitle{Tests du ratio de vraisemblance}
+
+  \begin{theorem}\label{thm:likelihood_ratio_test}
+    La statistique de Fisher définie dans le théorème \ref{thm:fisher_statistic} s'interprête comme un test
+    de ratio de vraisemblance de $R\beta=r$ contre $R\beta\neq r$.
+  \end{theorem}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve du théorème \ref{thm:likelihood_ratio_test}.} La fonction de vraisemblance est~:
+  \[
+    L\left(\beta, \sigma_{\varepsilon}^2;\mathbf y\right) = (2\pi)^{-\frac{T}{2}}\left(\sigma_{\varepsilon}^2\right)^{-\frac{T}{2}}\exp\left\{ -\frac{1}{\sigma_{\varepsilon}^2}\left( \mathbf y - X\beta \right)'\left( \mathbf y - X\beta \right) \right\}
+  \]
+  Sous l'hypothèse nulle, $R\beta=r$, la valeur du maximum de vraisemblance est~:
+  \[
+    (2\pi)^{-\frac{T}{2}}\left[ \frac{1}{T}\left(\mathbf y - X\hat\beta^c \right)'\left( \mathbf y - X\hat\beta^c \right) \right]^{-\frac{T}{2}}\exp\left\{-\frac{T}{2}\right\}
+  \]
+  Sous l'hypothèse alternative, $R\beta\neq r$, la valeur du maximum de vraisemblance est~:
+\[
+    (2\pi)^{-\frac{T}{2}}\left[ \frac{1}{T}\left(\mathbf y - X\hat\beta \right)'\left( \mathbf y - X\hat\beta \right) \right]^{-\frac{T}{2}}\exp\left\{-\frac{T}{2}\right\}
+  \]
+  La statistique du ratio de vraisemblance est donc~:
+  \[
+    \frac{(2\pi)^{-\frac{T}{2}}\left[ \frac{1}{T}\left(\mathbf y - X\hat\beta \right)'\left( \mathbf y - X\hat\beta \right) \right]^{-\frac{T}{2}}\exp\left\{-\frac{T}{2}\right\}}{(2\pi)^{-\frac{T}{2}}\left[ \frac{1}{T}\left(\mathbf y - X\hat\beta^c \right)'\left( \mathbf y - X\hat\beta^c \right) \right]^{-\frac{T}{2}}\exp\left\{-\frac{T}{2}\right\}}
+  \]
+  Le test du ratio de vraisemblance nous aménera à rejeter l'hypothèse nulle si la statistique est grande (les contraintes sont peu vraisemblables), c'est-à-dire si le ratio~:
+  \[
+    \frac{\left(\mathbf y - X\hat\beta^c \right)'\left( \mathbf y - X\hat\beta^c \right)}{\left(\mathbf y - X\hat\beta\right)'\left( \mathbf y - X\hat\beta\right)}
+  \]
+  est grand (la somme des carrés des résidus du modèle contraint est grande par rapport à la somme des carrés des résidus non contraints).\newline
+
+  Par ailleurs, on a~:
+  \[
+    \begin{split}
+      \left(\mathbf y - X\hat\beta^c\right)'\left(\mathbf y - X\hat\beta^c\right) &= \mathbf y'\mathbf y - 2\left.\hat\beta^c\right.'X'\mathbf y + \left.\hat\beta^c\right.'X'X \hat\beta^c\\
+                                                                                  &= \mathbf y'\mathbf y - 2\hat\beta'X'\mathbf y + \left.\hat\beta\right.'X'X \hat\beta\\ &\quad + 2\left(\hat\beta-\hat\beta^c \right)'X'\mathbf y - \left.\hat\beta\right.'X'X \hat\beta + \left.\hat\beta^c\right.'X'X \hat\beta^c\\
+      &= \mathbf y'\mathbf y - 2\hat\beta'X'\mathbf y + \left.\hat\beta\right.'X'X \hat\beta\\ &\quad + 2\left(\hat\beta-\hat\beta^c \right)'X'X\hat\beta - \left.\hat\beta\right.'X'X \hat\beta + \left.\hat\beta^c\right.'X'X \hat\beta^c\\
+      &= \left(\mathbf y - X\hat\beta\right)'\left(\mathbf y - X\hat\beta\right) + \left(\hat\beta-\hat\beta^c\right)'X'X\left(\hat\beta-\hat\beta^c\right)
+    \end{split}
+  \]
+  Le test du ratio de vraisemblance nous aménera donc à rejeter l'hypothèse nulle si le ratio~:
+  \[
+    \frac{\left(\hat\beta-\hat\beta^c\right)'X'X\left(\hat\beta-\hat\beta^c\right)}{\left(\mathbf y - X\hat\beta\right)'\left(\mathbf y - X\hat\beta\right)}
+  \]
+  est grand. Finalement, en utilisant la définition de l'estimateur contraint, on a~:
+  \[
+    \hat\beta - \hat\beta^c = (X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}\left( R\hat{\beta}-r \right)
+  \]
+  en substituant dans le numérateur on voit que le test du ratio de vraisemblance rejettera la nulle lorsque le ratio~:
+  \[
+    \frac{\left(r-R\hat{\beta}\right)'\left( R(X'X)^{-1}R' \right)^{-1}\left(r-R\hat{\beta}\right)}{SSE}
+  \]
+  au facteur $\nicefrac{T-K}{m}$ près, on reconnaît la statistique donnée dans le théorème \ref{thm:fisher_statistic}.\qed
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Test joint sur les paramètres}
+
+  \begin{cor}\label{cor:equality_test}
+    Sous l'hypothèse nulle $\beta = \beta^{\star}$ la statistique~:
+    \[
+      \frac{\left(\hat{\mathbf b}-\beta^{\star}\right)'X'X\left(\hat{\mathbf b}-\beta^{\star}\right)}{SSE}\frac{T-K}{K}
+    \]
+    suit une loi de Fisher de degrés de liberté $K$ et $T-K$.
+  \end{cor}
+
+  \bigskip\bigskip
+
+  \textbf{Preuve du corollaire \ref{cor:equality_test}} Direct par le théorème \ref{thm:fisher_statistic} avec $R$ une matrice identité, $r=\beta^{\star}$ et $m=K$.\qed
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Test joint sur un sous ensemble des paramètres}
+
+  \begin{prop}\label{prop:test-subset-parameters}
+    Partitionnons les régresseurs et paramètres en considérant le modèle suivant~:
+    \[
+      \mathbf y = X_1\beta_1 + X_2\beta_2 + \epsilon
+    \]
+    où $X_1$ et $X_2$ sont respectivement des matrices $T\times K_1$ et $T\times K_2$, les vecteurs $\beta_1$ et $\beta_2$ sont respectivement des vecteurs $K_1\times 1$ et $K_2\times 1$. Soient $SSE_1$ la somme des carrés des résidus quand $\mathbf y$ est régressé seulment sur $X_1$ (le modèle contraint) et $SSE_{12}$ la somme des carrés des résidus quand $\mathbf y$ est régressé sur toutes les variables explicatives (le modèle non contraint). Alors, sous l'hypothèse nulle $\beta_2=0$ la statistique~:
+    \[
+\frac{\nicefrac{\left(SSE_1-SSE_{12}\right)}{K_2}}{\nicefrac{SSE_{12}}{T-K_1-K_2}}
+    \]
+    suit une loi de Fisher à $K_2$ et $T-K_1-K_2$ degrés de liberté.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{prop:test-subset-parameters}.} Nous avons~:
+  \[
+    SSE_1 - SSE_{12} = \mathbf y' M_1\mathbf y - \mathbf y' M \mathbf y
+  \]
+  avec $M_1 = I_{T}-X_1(X_1'X_1)^{-1}X_1'$ et $M = I_{T}-X(X'X)^{-1}X'$ où  $X = \begin{pmatrix}X_1 & X_2\end{pmatrix}$. En développant, il vient~:
+  \[
+    \begin{split}
+      SSE_1 - SEE_{12} &= \left(X_1\beta_1 + X_2\beta_2 + \varepsilon\right)'M_1\left(X_1\beta_1 + X_2\beta_2 + \varepsilon\right) - \varepsilon'M\varepsilon\\
+                       &= \beta_1'X_1'M_1X_1\beta_1 + \beta_1'X_1'M_1X_2\beta_2+ \beta_1'X_1'M_1\varepsilon\\
+                       &\quad + \beta_2'X_2'M_1X_1\beta_1 + \beta_2'X_2'M_1X_2\beta_2+ \beta_2'X_2'M_1\varepsilon\\
+                       &\quad + \varepsilon'M_1X_1\beta_1 + \varepsilon'M_1X_2\beta_2+ \varepsilon'M_1\varepsilon - \varepsilon'M\varepsilon\\
+      &= \beta_2'X_2'M_1X_2\beta_2 + \beta_2'X_2'M_1\varepsilon + \varepsilon'M_1X_2\beta_2 + \varepsilon'M_1\varepsilon - \varepsilon'M\varepsilon
+    \end{split}
+  \]
+  en notant que $M_1X_1=0$ et $X_1'M_1 = 0$. Sous l'hypothèse nulle $\beta_2=0$ nous avons donc~:
+  \[
+    SSE_1 - SSE_{12} = \varepsilon'\left( M_1 - M \right)\varepsilon
+  \]
+  Puisque $M_1$ et $M$ sont des matrices symétriques, $M_1-M$ est nécessairement une matrice symétrique. On peut aussi montrer que cette matrice est idempotente. En effet~:
+  \[
+    \left( M_1-M \right)^2 = M_1^2 - M_1M - MM_1 + M^2 = M_1 - 2M_1M + M
+  \]
+  puisque les matrices $M_1$ et $M$ sont symériques et idempotentes. Pour que la matrice $M_1-M$ soit idempotente il faut et il suffit donc que $2M_1M$ soit égal à $-M$. On a~:
+  \[
+    M_1M = M - X_1(X_1'X_1)^{-1}X_1'M
+  \]
+  On sait que $X'M=0$, a fortiori $X_1'M = 0$ et donc $M_1M=M$ et $\left(M_1-M\right)^2=M_1-M$. Puisque $M_1-M$ a une trace éqale à $T-K_1-(T-K_1-K_2)=K_2$ il s'ensuit que $\nicefrac{\left(SSE_1-SSE_{12} \right)}{K_2}$ comme $\frac{\sigma_{\varepsilon}^2}{K_2}\chi^2(K_2)$. Par ailleurs nous savons déjà que $\nicefrac{SSE_{12}}{T-K_1-K_2}$ est distribué comme $\frac{\sigma_{\varepsilon}^2}{T-K_1-K_2}\chi^2(T-K_1-K_2)$. Enfin, comme le numérateur et le dénominateur de la statistique de test sont indépendants, car~:
+  \[
+    (M_1-M)M = M - M = 0
+  \]
+la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépendantes et suit donc une loi de Fisher comme annoncée dans la proposition.\qed
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Test de significativité jointes des pentes}
+
+  \begin{itemize}
+
+  \item Supposons que le modèle contienne une constante $\rightarrow$ $X_1$\newline
+
+  \item On veut tester $\beta_2=\beta_3=\dots=\beta_K=0$ contre au moins un paramètre différent de zéro.\newline
+
+  \item On utilise la statistique définie dans la proposition \ref{prop:test-subset-parameters}.\newline
+
+  \item Ici on a $SSE_1 = SST$ et donc $SSE_1-SSE_{12} = SST - SSE = SSR$.\newline
+
+  \item Ainsi la statistique s'écrit~:
+    \[
+      \frac{\nicefrac{SSR}{K-1}}{\nicefrac{SSE}{T-K}} = \frac{R^2}{1-R^2}\frac{T-K}{K-1}
+    \]
+    puisque $SSE = (1-R^2)SST$ et $SSR = R^2SST$. On accepte l'hypothèse nulle si le $R^2$ est assez proche de zéro.
+
+  \end{itemize}
+
+
+\end{frame}
+
+
 \begin{notes}
 
   \begin{center}
