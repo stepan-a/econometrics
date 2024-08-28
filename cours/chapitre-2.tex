@@ -1,0 +1,322 @@
+\synctex=1
+
+\documentclass[10pt]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage{etex}
+\usepackage{fourier-orns}
+\usepackage{ccicons}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsbsy}
+\usepackage{amsopn}
+\usepackage{amscd}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{color, colortbl}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage[nice]{nicefrac}
+\usepackage{setspace}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{algorithms/algorithm}
+\usepackage{algorithms/algorithmic}
+\usepackage{tikz,pgfplots,pgfplotstable}
+\pgfplotsset{compat=1.18}%newest}
+\usetikzlibrary{patterns, arrows, decorations.pathreplacing, decorations.markings, calc}
+\pgfplotsset{plot coordinates/math parser=false}
+\usetikzlibrary{external}
+\tikzexternalize[prefix=figures/]
+\newlength\figureheight
+\newlength\figurewidth
+\usepackage{cancel}
+\usepackage{tikz-qtree}
+\usepackage{dcolumn}
+\usepackage{adjustbox}
+\usepackage{environ}
+\usepackage[cal=boondox]{mathalfa}
+\usepackage{manfnt}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=black,
+  urlcolor=black,
+}
+\usepackage{venndiagram}
+\usepackage{subcaption}
+\usepackage{centernot}
+
+\usepackage[backend=biber,style=bwl-FU,natbib=true,doi=false,isbn=false,url=false,eprint=false]{biblatex}%bwl-FU
+\addbibresource{econometrics.bib}
+
+\makeatletter
+\@ifclassloaded{beamer}{
+\usefonttheme[onlymath]{serif}
+\uselanguage{French}
+\languagepath{French}
+% Git hash
+\usepackage{xstring}
+\usepackage{catchfile}
+\immediate\write18{git rev-parse HEAD > git.hash}
+\CatchFileDef{\HEAD}{git.hash}{\endlinechar=-1}
+\newcommand{\gitrevision}{\StrLeft{\HEAD}{7}}
+}{}
+\makeatother
+
+\newcommand{\trace}{\mathrm{tr}}
+\newcommand{\vect}{\mathrm{vec}}
+\newcommand{\tracarg}[1]{\mathrm{tr}\left\{#1\right\}}
+\newcommand{\vectarg}[1]{\mathrm{vec}\left(#1\right)}
+\newcommand{\vecth}[1]{\mathrm{vech}\left(#1\right)}
+\newcommand{\iid}[2]{\mathrm{iid}\left(#1,#2\right)}
+\newcommand{\normal}[2]{\mathcal N\left(#1,#2\right)}
+\newcommand{\sample}{\mathcal Y_T}
+\newcommand{\samplet}[1]{\mathcal Y_{#1}}
+\newcommand{\slidetitle}[1]{\fancyhead[L]{\textsc{#1}}}
+
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\binomial}[2]{\begin{pmatrix} #1 \\ #2 \end{pmatrix}}
+\newcommand{\bigO}[1]{\mathcal O \left(#1\right)}
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\newcommand\gauss[2]{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))} % Gaussian probability density function.
+
+\renewcommand{\qedsymbol}{C.Q.F.D.}
+
+\newcolumntype{d}{D{.}{.}{-1}}
+\definecolor{gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{gray}}c}
+
+
+\makeatletter
+\@ifclassloaded{beamer}{\setbeamertemplate{theorems}[numbered]{}}{}
+\makeatother
+
+\theoremstyle{plain}
+
+\makeatletter
+\@ifclassloaded{beamer}{
+\setbeamertemplate{footline}{
+  {\hfill\vspace*{1pt}\href{http://creativecommons.org/licenses/by-sa/3.0/legalcode}{\ccbysa}\hspace{.1cm}
+    \href{https://github.com/stepan-a/econometrics/blob/\HEAD/cours/chapitre-1.tex}{\gitrevision}\enspace--\enspace\today\enspace
+  }}
+
+\makeatother
+
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{caption}[numbered]
+
+\NewEnviron{notes}{\justifying\footnotesize\begin{spacing}{1.0}\BODY\vfill\pagebreak\end{spacing}}
+
+\newenvironment{exercise}[1]
+{\bgroup \small\begin{block}{Ex. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{defn}[1]
+{\bgroup \small\begin{block}{Définition. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{exemple}[1]
+{\bgroup \small\begin{block}{Exemple. #1}}
+  {\end{block}\egroup}
+}{}
+
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollaire}
+
+%\usepgfplotslibrary{external}
+%\tikzexternalize
+
+
+\begin{document}
+
+\title{Économétrie\\\small{Violations des conditions idéales}}
+\author[S. Adjemian]{Stéphane Adjemian}
+\institute{\texttt{stephane.adjemian@univ-lemans.fr}}
+\date{Septembre 2024}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Les conditions idéales}
+
+  Dans le chapitre précédent, nous avons supposé que~:\newline
+
+  \medskip
+
+  \begin{itemize}
+
+  \item Les erreurs sont centrées, \textit{ie} $\mathbb E[\varepsilon]=0$.\newline
+
+  \item Le modèle empirique est bien spécifié.\newline
+
+  \item Les erreurs sont normalement distruées.\newline
+
+  \item La matrice $X$ est de plein rang colonne.\newline
+
+  \item Les erreurs sont homoscédastiques et non autocorrélées, \textit{ie}  $\mathbb V[\varepsilon] = \sigma_{\varepsilon}^2I_T$.\newline
+
+  \end{itemize}
+
+  \medskip
+
+  $\Rightarrow$ Comment se comporte l'estimateur des MCO si ces conditions ne sont pas réunies~?
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Mauvaise spécification du modèle empirique, I}
+
+  \begin{itemize}
+
+  \item Le modèle empirique peut être différent du modèle générateur des données. Par exemple, si des variables explicatives sont omises.\newline
+
+  \item Supposons que le modèle générateur des données soit~:
+    \[
+      \mathbf y = X_1\beta_1 + X_2\beta_2 + \varepsilon
+    \]
+    où $\varepsilon$ est un vecteur aléatoire normal $T\times 1$ d'espérance nulle et de variance $\sigma_{\varepsilon}^2I_T$, $\mathbf y$ un vecteur $T\times 1$, $X_1$ et $X_2$ respectivement des matrices déterministes $T\times K_1$ et $T\times K_2$, $\beta_1$ et $\beta_2$ respectivement des vecteurs de paramètres $K_1\times 1$ et $K_2\times 1$.\newline
+
+  \item Le modèle empirique est~:
+    \[
+      \mathbf y = X_1\mathbf b_1 + \epsilon
+    \]
+    $\Rightarrow$ les variables $X_2$ sont omises.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Mauvaise spécification du modèle empirique, II}
+
+  \begin{itemize}
+
+  \item Il n'est évidemment pas possible d'estimer $\beta_2$...\newline
+
+  \item Est-il possible d'estimer $\beta_2$~? $\sigma_{\varepsilon}^2$~?\newline
+
+  \item A priori non, car les variables omises contaminent les erreurs
+    ($\epsilon$) qui n'ont plus les bonnes propriétés.\newline
+
+  \item En comparant les deux modèles, on comprend
+    que $\epsilon = \varepsilon + X_2\beta_2$. Les propriétés
+    de $\hat{\mathbf b}_1$ ou $s^2$ doivent dépendre
+    de $X_2\beta_2$...
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Mauvaise spécification du modèle empirique, III}
+
+  \begin{prop}\label{prop:mispecification}
+    Soit le modèle générateur des données~:
+    \[
+      \mathbf y = X_1\beta_1 + X_2\beta_2 + \varepsilon
+    \]
+    satisfaisant toutes les conditions idéales. On estime le modèle~:
+    \[
+      \mathbf y = X_1\mathbf b_1 + \epsilon
+    \]
+    par les MCO. On note $\hat{\mathbf b}_1$ et $s^2$ les estimateurs de $\mathbf b_1$ et $\sigma_{\varepsilon}^2$, on a~:
+    \begin{enumerate}
+
+    \item $\mathbb E\left[ \mathbf b_1 \right] = \beta_1 + (X_1'X_1)^{-1}X_1'X_2\beta_2$,
+    \item $\hat{\mathbf b}_1 \overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}} \beta_1 + \underset{T\rightarrow\infty}{\lim}\left(\frac{X_1'X_1}{T}\right)^{-1}\underset{T\rightarrow\infty}{\lim}\frac{X_1'X_2}{T}\beta_2$
+    \item $\mathbb E\left[s^2\right] = \sigma_{\varepsilon}^2  + \frac{\beta_2'X_2'M_1X_2\beta_2}{T-K}$
+    \item $s^2 \overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}} \sigma_{\varepsilon}^2 + \underset{T\rightarrow\infty}{\lim}\frac{\beta_2'X_2'M_1X_2\beta_2}{T}$
+    \end{enumerate}
+    avec $M_1 = I-X_1(X_1'X_1)^{-1}X_1'$.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Mauvaise spécification du modèle empirique, IV}
+
+  \begin{itemize}
+
+  \item Comme $X_2$ est de plein rang colonne, $\nexists$ $\beta_2\neq 0$ tel que $X_2\beta_2=0$.\newline
+
+  \item Les estimateurs ne sont pas biaisés si $\beta_2=0$.\newline
+
+  \item Les estimateurs ne sont pas biaisés si $X_1'X_2 = 0$.\newline
+
+  \item[$\Rightarrow$] Si les variables omises ne sont pas corrélées avec les variables incluses dans le modèle empirique, alors les estimateurs ne sont pas biaisés.\newline
+
+  \item Dans ce cas $X'X$ est une matrice bloc diagonale avec $X_1'X_1$ et $X_2'X_2$ le long de la diagonale. Ainsi~:
+    \[
+      \hat{\mathbf b} =
+      \begin{pmatrix}
+        (X_1'X_1)^{-1} & 0 \\
+        0 & (X_2'X_2)^{-1}
+      \end{pmatrix}
+      \begin{pmatrix}
+        X_1'\mathbf y\\
+        X_2'\mathbf y
+      \end{pmatrix}
+      =
+      \begin{pmatrix}
+        (X_1'X_1)^{-1}X_1'\mathbf y\\
+        (X_2'X_2)^{-1}X_2'\mathbf y\\
+      \end{pmatrix}
+      =
+      \begin{pmatrix}
+        \hat{\mathbf b}_1\\
+        \hat{\mathbf b}_2
+      \end{pmatrix}
+    \]
+    Les estimations du modèle mal spécifié et du modèle bien spécifié sont identiques.
+  \end{itemize}
+
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{center}
+    \begin{tabular}{c}
+      \\
+      \Huge{\textsc{Références}}\\
+      \\
+    \end{tabular}
+  \end{center}
+
+  \bigskip
+
+  \nocite{Green2017}
+
+  \nocite{Schmidt1976}
+
+  \printbibliography
+
+\end{notes}
+
+
+\end{document}
+
+
+% Local Variables:
+% ispell-check-comments: exclusive
+% ispell-local-dictionary: "french"
+% TeX-master: t
+% End:
