@@ -85,6 +85,8 @@
 \newcommand{\bigO}[1]{\mathcal O \left(#1\right)}
 \newcommand{\red}{\color{red}}
 \newcommand{\blue}{\color{blue}}
+\newcommand{\plim}{\overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}}}
+
 
 \newcommand\gauss[2]{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))} % Gaussian probability density function.
 
@@ -239,9 +241,9 @@
     \begin{enumerate}
 
     \item $\mathbb E\left[ \mathbf b_1 \right] = \beta_1 + (X_1'X_1)^{-1}X_1'X_2\beta_2$,
-    \item $\hat{\mathbf b}_1 \overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}} \beta_1 + \underset{T\rightarrow\infty}{\lim}\left(\frac{X_1'X_1}{T}\right)^{-1}\underset{T\rightarrow\infty}{\lim}\frac{X_1'X_2}{T}\beta_2$
+    \item $\hat{\mathbf b}_1 \plim \beta_1 + \underset{T\rightarrow\infty}{\lim}\left(\frac{X_1'X_1}{T}\right)^{-1}\underset{T\rightarrow\infty}{\lim}\frac{X_1'X_2}{T}\beta_2$
     \item $\mathbb E\left[s^2\right] = \sigma_{\varepsilon}^2  + \frac{\beta_2'X_2'M_1X_2\beta_2}{T-K}$
-    \item $s^2 \overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}} \sigma_{\varepsilon}^2 + \underset{T\rightarrow\infty}{\lim}\frac{\beta_2'X_2'M_1X_2\beta_2}{T}$
+    \item $s^2 \plim \sigma_{\varepsilon}^2 + \underset{T\rightarrow\infty}{\lim}\frac{\beta_2'X_2'M_1X_2\beta_2}{T}$
     \end{enumerate}
     avec $M_1 = I-X_1(X_1'X_1)^{-1}X_1'$.
   \end{prop}
