@@ -43,7 +43,7 @@
   colorlinks=true,
   linkcolor=blue,
   filecolor=black,
-  urlcolor=black,
+  urlcolor=blue,
 }
 \usepackage{venndiagram}
 \usepackage{subcaption}
@@ -86,6 +86,7 @@
 \newcommand{\red}{\color{red}}
 \newcommand{\blue}{\color{blue}}
 \newcommand{\plim}{\overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}}}
+\newcommand{\epsvar}{\sigma_{\varepsilon}^2}
 
 
 \newcommand\gauss[2]{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))} % Gaussian probability density function.
@@ -168,7 +169,7 @@
 
   \item La matrice $X$ est de plein rang colonne.\newline
 
-  \item Les erreurs sont homoscédastiques et non autocorrélées, \textit{ie}  $\mathbb V[\varepsilon] = \sigma_{\varepsilon}^2I_T$.\newline
+  \item Les erreurs sont homoscédastiques et non autocorrélées, \textit{ie}  $\mathbb V[\varepsilon] = \epsvar I_T$.\newline
 
   \end{itemize}
 
@@ -177,6 +178,284 @@
   $\Rightarrow$ Comment se comporte l'estimateur des MCO si ces conditions ne sont pas réunies~?
 
 \end{frame}
+
+
+\begin{frame}
+  \frametitle{Erreurs non centrées, I}
+
+  \begin{prop}\label{prop:bhat:non-zero-mean-error}
+    Supposons que $\mathbb E\left[\varepsilon\right] = \xi \neq 0$, alors~:
+    \begin{enumerate}
+
+    \item $\mathbb E\left[ \hat{\mathbf b} \right] = \beta + (X'X)^{-1}X'\xi$
+    \item $\hat{\mathbf b} \plim \beta + Q^{-1}\underset{T\rightarrow\infty}{\lim} \frac{X'\xi}{T}$
+
+    \end{enumerate}
+  \end{prop}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item Les colonnes de $X$ sont linéairement indépendantes $\Rightarrow$$X'\xi=0$ ssi $\xi=0$.\newline
+
+  \item $\hat{\mathbf b}$ est un estimateur sans biais de $\beta$ ssi $\xi=0$.\newline
+
+  \item \textbf{Remarque:} A priori $\xi$ est différent de $\mathbf 1 \triangleq \begin{pmatrix}1 & 1 & \dots & 1\end{pmatrix}'$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+  \textbf{Preuve de la proposition \ref{prop:bhat:non-zero-mean-error}.} Supposons que $\varepsilon = \nu + \xi$ où $\nu$ est un vecteur gaussien d'espérance nulle et de variance $\sigma_{\varepsilon}^2I_T$. En substituant le DGP dans l'espression de l'estimateur des MCO, il vient~:
+  \[
+    \begin{split}
+      \hat{\mathbf b}_T &= (X'X)^{-1}X'\left( X\beta + \xi + \nu\right)\\
+      &= \beta + (X'X)^{-1}X'\xi + (X'X)^{-1}X'\nu
+    \end{split}
+  \]
+  En prenant l'espérance, on obtient directement~:
+  \[
+    \mathbb E\left[ \hat{\mathbf b} \right] = \beta + (X'X)^{-1}X'\xi
+  \]
+  puisque le vecteur $\nu$ est d'espérance nulle. On a aussi~:
+  \[
+    \hat{\mathbf b} \plim \beta + Q^{-1}\underset{T\rightarrow\infty}{\lim}\frac{X'\xi}{T} + Q^{-1}\underset{T\rightarrow\infty}{\text{plim}}\frac{X'\nu}{T}
+  \]
+  On peut montrer que le dernier terme est nul. En effet $\mathbb E\left[\frac{X'\nu}{T}\right]=0$ et
+  \[
+    \mathbb V \left[ \frac{X'\nu}{T} \right] = \frac{\epsvar}{T}\frac{X'X}{T} \underset{T\rightarrow\infty}{\longrightarrow} 0\times Q = 0
+  \]
+  Ainsi nous avons bien~:
+  \[
+    \hat{\mathbf b} \plim \beta + Q^{-1}\underset{T\rightarrow\infty}{\lim}\frac{X'\xi}{T}
+  \]
+\qed
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Erreurs non centrées, II}
+
+  \begin{prop}\label{prop:s2:non-zero-mean-error}
+    Supposons que $\mathbb E\left[\varepsilon\right] = \xi \neq 0$, alors~:
+    \begin{enumerate}
+
+    \item $\mathbb E\left[ s^2 \right] = \epsvar + \frac{\xi'M\xi}{T-K}$
+    \item $s^2 \plim \epsvar + \underset{T\rightarrow\infty}{\lim} \frac{\xi'M\xi}{T}$
+
+    \end{enumerate}
+    où $M = I - X(X'X)^{-1}X'$.
+  \end{prop}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item  $\xi'M\xi = \xi'\xi - \xi'X(X'X)^{-1}X'\xi\geq 0$, car $M$ est semi-définie positive.\newline
+
+  \item L'estimateur est sans biais ssi $\xi=0$.\newline
+
+  \item $s^2$ sur-estime la variance des erreurs.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+  \textbf{Preuve de la proposition \ref{prop:s2:non-zero-mean-error}.} Supposons que $\varepsilon = \nu + \xi$ où $\nu$ est un vecteur gaussien d'espérance nulle et de variance $\sigma_{\varepsilon}^2I_T$. Il vient~:
+  \[
+    \begin{split}
+      s^2 &= \frac{\varepsilon'M\varepsilon}{T-K}\\
+          &= \frac{\left(\nu+\xi\right)'M\left(\nu+\xi\right)}{T-K}\\
+          &= \frac{\nu'M\nu}{T-K} + \frac{\xi'M\xi}{T-K} + 2\frac{\nu'M\xi}{T-K}
+    \end{split}
+  \]
+  En prenant l'espérance, on obtient directement (puisque $\nu$ est centré et $\xi$ déterministe)~:
+  \[
+    \mathbb E\left[ s^2 \right] = \epsvar + \frac{\xi'M\xi}{T-K}
+  \]
+  On a aussi~:
+  \[
+    s^2 \plim \epsvar + \underset{T\rightarrow\infty}{\lim}\frac{\xi'M\xi}{T} + 2\underset{T\rightarrow\infty}{\text{plim}}\frac{\nu'M\xi}{T}
+  \]
+  Si $\nicefrac{\xi'M\xi}{T}$ converge vers un nombre fini, ce que nous supposons, alors le dernier terme doit être nul. En effet, nous avons~:
+  \[
+    \mathbb E\left[ \frac{\nu'M\xi}{T} \right] = 0
+  \]
+  et
+  \[
+    \mathbb V\left[ \frac{\nu'M\xi}{T} \right] = \epsvar \frac{\xi'M\xi}{T^2} \underset{T\rightarrow\infty}{\longrightarrow} 0
+    \]
+    car la convergence vers un nombre fini de $\nicefrac{\xi'M\xi}{T}$ implique la convergence vers 0 de $\nicefrac{\xi'M\xi}{T^2}$ quand $T$ tend vers l'infini. Ainsi $\nicefrac{\nu'M\xi}{T}$ converge bien en probabilité vers 0.\qed
+
+    \bigskip
+
+    \textbf{Conclusion.} En toute généralité, si les erreurs ne sont pas centrées, il n'est pas possible d'obtenir une estimation sans biais des paramètres. La convergence en probabilité de $\hat{\mathbf b}$ vers $\beta$, même si l'estimateur est biaisé, est assurée si et seulement si la condition $\underset{T\rightarrow\infty}{\lim}\frac{X'\xi}{T}=0$ est satisfaite. La présence d'erreurs non centrées n'affecte pas seulement les estimateurs mais aussi les tests présentés dans le \href{https://le-mans.adjemian.eu/econometrics/chapitre-1.pdf}{chapitre I}.
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Erreurs non centrées, III}
+
+  \begin{prop}\label{prop:nonzero-mean-error-nobiais}
+    On considère le DGP et le modèle empirique partitionnés suivants~:
+    \[
+      \mathbf y = X_1\beta_1 + X_2\beta_2 + \varepsilon
+    \]
+    \[
+      \mathbf y = X_1\mathbf b_1 + X_2\mathbf b_2 + \epsilon
+    \]
+    avec $\begin{pmatrix}X_1 & X_2\end{pmatrix}=X$, $X_1$ une
+    matrice $T\times K_1$, $X_2$ une
+    matrice $T\times K_2$, $K = K_1+K_2$. Le DGP vérifie l'ensemble
+    des conditions idéales assurant les bonnes propriétés de
+    l'estimateur des MCO, sauf l'espérance des erreurs qui satisfait $\mathbb E \left[ \varepsilon \right] = X_1\gamma $
+    où $\gamma$ est un vecteur de paramètres $K_1\times 1$
+    (l'espérance de $\varepsilon$ est une combinaison linéaire des
+    colonnes de $X_1$). Alors $\hat{\mathbf b}_2$ est un estimateur
+    sans biais et convergent de $\beta_2$, $s^2$ est un estimateur
+    sans biais et convergent de $\epsvar$,
+    et $\mathbb E\left[ \hat{\mathbf b}_1 \right] = \beta_1+\gamma$.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Erreurs non centrées, IV}
+
+  \begin{itemize}
+
+  \item La portée de la proposition \ref{prop:nonzero-mean-error-nobiais} peut sembler relativement limitée\dots\newline
+
+  \item Mais~: Si le modèle contient une constante (disons $X_1$ se réduit à une colonne de 1) et si $\mathbf E[\varepsilon_i] = \mathbf E[\varepsilon_j] = c$ pour tout $(i,j)\in\{1,\dots,T\}^2$ alors l'estimation des paramètres de pentes (les paramètres associés aux variables explicatives non constantes) est sans biais et convergente.\newline
+
+  \item[$\Rightarrow$] La non nullité des erreurs n'est pas un problème si le modèle contient une constante.\newline
+
+  \item[\dbend] Il n'est alors pas possible d'identifier la constante et l'espérance des erreurs.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{prop:nonzero-mean-error-nobiais}.} On sait que~:
+  \[
+    \mathbb E\left[ \hat{\mathbf b} \right] = \beta + (X'X)^{-1}X'\xi
+  \]
+  En substituant l'expression de $\xi$~:
+  \[
+    \mathbb E\left[ \hat{\mathbf b} \right] = \beta + (X'X)^{-1}X'X_1\gamma
+  \]
+  En reprenant la partition~:
+  \[
+    \mathbb E\left[ \hat{\mathbf b} \right] =
+    \begin{pmatrix}
+      \beta_1\\ \beta_2
+    \end{pmatrix}
+    +
+    \begin{pmatrix}
+      X_1'X_1 & X_1'X_2\\
+      X_2'X_1 & X_2'X_2
+    \end{pmatrix}^{-1}
+    \begin{pmatrix}
+      X_1'X_1\\
+      X_2'X_1
+    \end{pmatrix}\gamma
+  \]
+  On peut montrer que~:
+  \[
+\begin{pmatrix}
+      X_1'X_1 & X_1'X_2\\
+      X_2'X_1 & X_2'X_2
+    \end{pmatrix}^{-1}
+    \begin{pmatrix}
+      X_1'X_1\\
+      X_2'X_1
+    \end{pmatrix} =
+    \begin{pmatrix}
+      I\\
+      0
+    \end{pmatrix}
+  \]
+  En effet~:
+  \[
+    \begin{pmatrix}
+      X_1'X_1 & X_1'X_2\\
+      X_2'X_1 & X_2'X_2
+    \end{pmatrix}^{-1}
+    \begin{pmatrix}
+      X_1'X_1\\
+      X_2'X_1
+    \end{pmatrix} =
+    \begin{pmatrix}
+      A\\
+      B
+    \end{pmatrix}
+  \]
+  s'écrit de façon équivalente~:
+  \[
+\begin{pmatrix}
+      X_1'X_1 & X_1'X_2\\
+      X_2'X_1 & X_2'X_2
+\end{pmatrix}
+\begin{pmatrix}
+      A\\
+      B
+    \end{pmatrix} =
+    \begin{pmatrix}
+      X_1'X_1\\
+      X_2'X_1
+    \end{pmatrix}
+  \]
+  soit~:
+  \[
+    \begin{cases}
+      X_1'X_1 A +X_1'X_2 B &= X_1'X_1\\
+      X_2'X_1 A +X_2'X_2 B &= X_2'X_1
+    \end{cases}
+  \]
+  on doit donc avoir $A=I$ et $B=0$. L'espérance del'estimateur est donc~:
+  \[
+    \mathbb E\left[ \hat{\mathbf b} \right] =
+    \begin{pmatrix}
+      \beta_1 + \gamma\\ \beta_2
+    \end{pmatrix}
+  \]
+  L'estimateur $\hat{\mathbf b}_2$ est aussi convergent~:
+  \[
+    \begin{split}
+      \underset{T\rightarrow\infty}{\text{plim}} \hat{\mathbf b} &= \beta
+    +
+    \underset{T\rightarrow\infty}{\lim} (X'X)^{-1}X'X_1\gamma
+                                                                   + \underset{T\rightarrow\infty}{\text{plim}} (X'X)^{-1}X'\nu\\
+                                                                 &= \beta
+                                                                   +
+                                                                   \begin{pmatrix}
+                                                                     \gamma I\\
+                                                                     0
+                                                                   \end{pmatrix}
+                                                                   + Q^{-1}\underset{T\rightarrow\infty}{\text{plim}} \frac{X'\nu}{T}\\
+                                                                 &=
+                                                                   \begin{pmatrix}
+                                                                     \beta_1+\gamma\\
+                                                                     \beta_2
+                                                                   \end{pmatrix}
+    \end{split}
+  \]
+  car $\nicefrac{X'\nu}{T}$ converge en probabilité vers 0. On montre facilement que le biais de $s^2$ est nul. En effet, le biais (voir la proposition \ref{prop:s2:non-zero-mean-error}) est proportionnel à~:
+  \[
+    \xi'M\xi = \gamma'X_1'M X_1\gamma
+  \]
+Puisque $MX=0$, a fortiori on doit avoir $MX_1=0$ et donc un biais nul. On montre tout aussi facilement que cet estimateur est convergent.\qed
+\end{notes}
 
 
 \begin{frame}
