@@ -568,6 +568,25 @@ Puisque $MX=0$, a fortiori on doit avoir $MX_1=0$ et donc un biais nul. On montr
     Les estimations du modèle mal spécifié et du modèle bien spécifié sont identiques.
   \end{itemize}
 
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Non normalité des erreurs, I}
+
+  \begin{itemize}
+
+  \item On suppose que $\mathbb E\left[ \varepsilon_t \right] = 0$, $\mathbb V\left[ \varepsilon_t \right] = \epsvar$ et $\varepsilon_t\perp\varepsilon_s$ ($s\neq t$) pour tout $t=1,\dots,T$, mais que $\varepsilon$ n'est pas normalement distribué.\newline
+
+  \item $\hat{\mathbf b}$ et $s^2$ sont toujours sans biais, le théorème de Gauss-Markov reste valide (puisque sa démonstration ne fait pas appel à la normalité des erreurs).\newline
+
+  \item Mais  $\hat{\mathbf b}$ n'est plus normalement distribué, $s^2$ ne suit plus une loi du khi-deux.\newline
+
+  \item Les tests développés dans le \href{https://le-mans.adjemian.eu/econometrics/chapitre-1.pdf}{chapitre I} ne sont plus valides.\newline
+
+  \item Néamoins, un théorème de la limite centrale peut être utilisé pour établir la normalité asymptotique de $\hat{\mathbf b}$, et pour obtenir les distributions asymptotiques des tests présentés dans le \href{https://le-mans.adjemian.eu/econometrics/chapitre-1.pdf}{chapitre I}.
+
+  \end{itemize}
 
 \end{frame}
 
