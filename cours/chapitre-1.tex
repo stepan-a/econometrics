@@ -13,6 +13,7 @@
 \usepackage{amscd}
 \usepackage{amsxtra}
 \usepackage{amsthm}
+\usepackage{extarrows}
 \usepackage{float}
 \usepackage{color, colortbl}
 \usepackage{mathrsfs}
@@ -2203,6 +2204,61 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
     \Huge\textbf{Probabilités}
   \end{center}
 \end{frame}
+
+\subsection{Convergences}
+
+\begin{frame}
+  \frametitle{Convergence en probabilité}
+
+  \begin{defn}{}
+    Si $\{X_n\}$ une suite de variables aléatoires. On dit que $X_n$ converge en probabilité vers $X$ si~:
+    \[
+      \underset{n\rightarrow\infty}{\lim} \mathbb P\left( |X_n-X|<\varepsilon \right) = 1
+    \]
+    pour tout $\varepsilon>0$. On note~:
+    \[
+      X_n \xlongrightarrow[n\rightarrow\infty]{\text{proba}} X
+    \]
+    ou
+    \[
+      \underset{n\rightarrow\infty}{\text{plim}} X_n = X
+    \]
+  \end{defn}
+
+  \bigskip
+
+  \begin{theorem}\label{thm:Slutsky} Soient $\{X_n\}$ une suite de variables
+    aléatoires qui converge en probabilité vers $X$ et $g$ une
+    fonction continue en $X$, alors~:
+    \[
+      g\left( X_n \right)\xlongrightarrow[n\rightarrow\infty]{\text{proba}} g(X)
+    \]
+  \end{theorem}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item Le théorème \ref{thm:Slutsky} est aussi valable pour des vecteurs de variables aléatoires (dans $\mathbb R^p$) et une fonction $g$ de $\mathbb R^p$ dans $\mathbb R^q$ continue en $X$.\newline
+
+  \item \textbf{Exemple.} Soient deux suites de variables aléatoires $\{X_n\}$ et $\{Y_n\}$ qui convergent en probabilité vers $X$ et $Y$. Le théorème \ref{thm:Slutsky} nous dit que~:
+    \[
+      X_nY_n \xlongrightarrow[n\rightarrow\infty]{\text{proba}} XY
+    \]
+    ou que
+    \[
+      \frac{X_n}{Y_n} \xlongrightarrow[n\rightarrow\infty]{\text{proba}} \frac{X}{Y}
+    \]
+    tant que $Y\neq 0$ (continuité).\newline
+
+  \item Ce résultat, fort utile pour établir les propriétés asymptotiques d'un estimateur, est remarquable. Les choses ne sont souvent pas aussi simple, penser par exemple à l'espérance et l'inégalité de Jensen.
+
+  \end{itemize}
+
+\end{notes}
 
 \subsection{Distributions utiles}
 
