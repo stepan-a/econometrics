@@ -193,7 +193,43 @@ intitulée "Regression Toward Mediocrity in Hereditary Stature" (Régression ver
 la médiocrité dans la stature héréditaire). Il a montré que la taille des
 enfants issus de parents très petits ou très grands se rapprochait de la
 moyenne. En moyenne, l'enfant de parents de grandes tailles est plus petit.
-Discuter ce résultat à l'aide de vos réponses aux questions (2) et (3).
+Discuter ce résultat à l'aide de vos réponses aux questions (2) et (3).\newline
+
+\exercice On considère un modèle générateur des données de la forme~:
+\[
+y_t = \alpha + \beta x_t + \varepsilon_t
+\]
+avec une variable explicative ($x$) aléatoire (à chaque fois que
+l'économètre s'adresse à la nature pour obtenir un nouvel échantillon,
+celle-ci retourne des $y$ \textbf{et} $x$ différents). On suppose
+que $\varepsilon$ est i.i.d. et que~:
+\[
+  \mathbb E \left[\varepsilon_t| x_s \right] = 0
+\]
+\[
+  \mathbb V \left[\varepsilon_t| x_s \right] = \sigma_{\varepsilon}^2
+\]
+pour tout $t,s$. Le modèle empirique est~:
+\[
+y_t = a + b x_t \epsilon_t
+\]
+\question{1} Écrire l'estimateur des MCO de $b$,
+noté $\hat{b}$. \question{2} Exprimer $\hat{b}$ en fonction
+de $\beta$. \question{3} Soit un couple de variables aléatoires $U$
+et $V$. Écrire la définition de l'espérance conditionnelle de $V|U$,
+que l'on notera $\Psi(U)$. \question{4} Montrer que l'espérance
+marginale de $V$ est égale à l'espérance de $\Psi(U)$, en intégrant
+sur $U$. \question{5} Montrer
+que $\mathbb E\left[ \varepsilon_t \right]=0$. Quelle est la
+covariance de $x$ et $\varepsilon$. \question{6} Montrer
+que $\mathbb E\left[ \varepsilon_t x_s\right] = 0$ pour
+tout $t, s$. \question{7} Montrer que $\varepsilon_t$ est
+homoscédastique. \question{8} L'estimateur des MCO $\hat b$ est-il sans
+biais?\newline
+
+
+
+
 
 \end{document}
 
