@@ -8,3 +8,7 @@
 
  - *Chapitre I*. [[https://le-mans.adjemian.eu/econometrics/chapitre-1.pdf][Les MCO quand tout va bien]].
  - *Chapitre II*. [[https://le-mans.adjemian.eu/econometrics/chapitre-2.pdf][Violations des conditions idéales]].
+
+\\
+
+ - [[https://le-mans.adjemian.eu/econometrics/fiche-exercices.pdf][Fiche exercices]]
