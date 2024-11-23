@@ -1,0 +1,209 @@
+\documentclass[10pt,a4paper,notitlepage]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{bbm}
+\usepackage{float}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+%\usepackage{palatino}
+
+ \usepackage[active]{srcltx}
+\usepackage{scrtime}
+
+\newcounter{xnumber}
+\setcounter{xnumber}{0}
+
+\newcommand{\exercice}{\textsc{\textbf{Exercice}} \textbf{\addtocounter{xnumber}{1}\thexnumber}\,\,}
+\newcommand{\question}[1]{\textbf{(#1)}}
+\setlength{\parindent}{0cm}
+
+\begin{document}
+
+\title{\textsc{Économétrie approfondie\\ \small{(Exercices)}}}
+\author{Stéphane Adjemian\thanks{Université du Mans. \texttt{stephane DOT adjemian AT univ DASH lemans DOT fr}}}
+\date{Le \today\ à \thistime}
+
+\maketitle
+
+\exercice La nature génère des données avec le modèle suivant~:
+\[
+y_t = \mu_1 + \mu_2 \mathbbm{1}_{\{t>\kappa\}}(t) + \varepsilon_t
+\]
+avec $\mu_1$ et $\mu_2$ des paramètres réels,
+$\varepsilon_t\sim\mathrm{iid}(0,\sigma_{\varepsilon}^2)$, $\kappa$ un entier donné entre  1 and $T$. Le modèle empirique est~:
+\[
+  y_t = c + u_t
+\]
+On note $\mathcal Y_T=\{y_1,\dots,y_T\}$ l'échantillon produit par la nature et
+à disposition de l'économètre. \question{1} Donner l'expression de l'estimateur
+des MCO de $c$, noté $\hat c_T$. \question{2} Calculer l'espérance de
+$\hat c_T$, en explicitant le rapport avec les paramètres du modèle de la
+nature. \question{3} Calculer la variance de $\hat c_T$. (4) Quel est la limite
+en probabilité de $\hat c_T$~?\newline
+
+\bigskip
+
+\exercice La nature génère des données avec le modèle suivant~:
+\[
+y_t = \mu_1 + \mu_2 \mathbbm{1}_{\{t>[\kappa T]\}}(t) + \varepsilon_t
+\]
+avec $\mu_1$ et $\mu_2$ des paramètres réels,
+$\varepsilon_t\sim\mathrm{iid}(0,\sigma_{\varepsilon}^2)$, $\kappa\in]0,1[$, et $[x]$ représente la partie entière de $x$. Le modèle empirique est~:
+\[
+  y_t = c + u_t
+\]
+On note $\mathcal Y_T=\{y_1,\dots,y_T\}$ l'échantillon produit par la nature et
+à disposition de l'économètre. Reprendre les questions de l'exercice 1 avec ce
+nouveau DGP.\newline
+
+\bigskip
+
+\exercice Soit le modèle empirique:
+\[
+y_i = \beta_0 + \beta_1x_{1,i} + \beta_2 x_{2,i} + \dots + \beta_K x_{K,i} + u_i
+\]
+L'échantillon est $\mathcal Y_T = \{y_1, \dots, y_N, x_1, \dots, x_N\}$.
+\question{1} Écrire le modèle matriciellement sous la forme $Y = X\beta+U$. \question{2} Montrer que l'estimateur des MCO est $\hat\beta = (X'X)^{-1}X'Y$. \question{3} Expliciter le contenu de $X'X$ et $X'Y$ en faisant apparaître les observations individuelles. \question{4} Dans le cas $K=1$, sur la droite de l'équation ne reste que la constante et une variable explicative $x_{1,i}$, écrire explicitement à partir des réponses aux questions (2) et (3) l'estimateur des MCO (pour la constante et la pente). En passant, montrer que le déterminant de $X'X$ est strictement positif dès lors que $N>1$ et $x_1\neq 0$. \question{5} Montrer que la somme des résidus est nulle par construction.\newline
+
+\bigskip
+
+\exercice La nature génère des données avec le modèle suivant~:
+\[
+y_t = \mu_0 + \mu_1 t  + \varepsilon_t
+\]
+avec $\mu_0$ et $\mu_1$ des paramètres réels, et
+ $\varepsilon_t\sim\mathrm{iid}(0,\sigma_{\varepsilon}^2)$. Le modèle empirique est~:
+\[
+  y_t = c + u_t
+\]
+On note $\mathcal Y_T=\{y_1,\dots,y_T\}$ l'échantillon produit par la nature et
+à disposition de l'économètre. \question{1} Donner l'expression de l'estimateur
+des MCO de $c$, noté $\hat c_T$. \question{2} Calculer l'espérance de
+$\hat c_T$. S'agit-il d'un estimateur non biaisé de $\mu_0$~?\newline
+
+\bigskip
+
+\exercice Soit la matrice carrée~:
+\[
+  \mathcal A =
+  \begin{pmatrix}
+    A_{11} & A_{12}\\
+    A_{21} & A_{22}
+  \end{pmatrix}
+\]
+où $A_{11}$ et $A_{22}$ sont des matrices carrées, $A_{11}$ et $A_{22}-A_{21}A_{11}^{-1}A_{12}$ sont des matrices de plein rang. \question{1} Montrer que~:
+\[
+  \mathcal A^{-1} =
+  \begin{pmatrix}
+    A_{11}^{-1}\left( I + A_{12}BA_{21}A_{11}^{-1}\right) & -A_{11}^{-1}A_{12}B\\
+    -BA_{21}A_{11}^{-1} & B
+  \end{pmatrix}
+\]
+avec $B=\left(A_{22}-A_{21}A_{11}^{-1}A_{12}\right)^{-1}$. \question{2} Appliquer la formule dans le cas où $A_{12}$ et $A_{21}$ sont des matrices nulles.\newline
+
+\bigskip
+
+\exercice Soit le modèle, sous forme matricielle, suivant~:
+\[
+  Y = X \beta + U
+\]
+où $Y$ et $U$ sont des vecteurs $N\times 1$, $X$ une matrice $N\times K$ et $\beta$ un vecteur $K\times 1$. On partitionne la matrice des variables explicatives de la façon suivante~:
+\[
+X = \left(X_1 \vdots X_2\right)
+\]
+où $X_1$ et $X_2$ sont des matrices $N \times K_1$ et $N\times K_2$ avec $K_1\geq 1$, $K_2\geq 1$ et $K_1+K_2=K$. On partitionne le vecteur des paramètres de la même façon $\beta_1$ contient les paramètres associés aux variables dans $X_1$, $\beta_2$ les paramètres associés aux variables dans $X_2$. \question{1} Donner les estimateurs des MCO de $\beta_1$ et $\beta_2$ dans le cas où les variables dans $X_1$ sont orthogonales à celles dans $X_2$ (c'est-à-dire dans le cas où $X_1'X_2 = 0$ et $X_2'X_1=0$). Interpréter. \question{2} Si les matrices $X_1$ et $X_2$ ne sont pas des matrices orthogonbales, donner une expression de $\hat\beta_1$ en la comparant à l'expression obtenue dans la question précédente. \question{3} Montrer que le vecteur des résidus estimés peut s'écrire sous la forme $\hat U = M Y$ (en donnant une expression pour la matrice $M$). \question{4} Montrer que la matrice $M$ est idempotente.\question{5} Montrer que les matrices $M$ et $X$ sont orthogonales. \question{6} Montrer que la prédiction $\hat Y = X\hat\beta$ peut s'écrire sous la forme $\hat Y = H Y$. La matrice $H$ est-elle idempotente~? \question{7} Éliminer $\hat\beta_1$ dans l'expression de $\hat\beta_2$, obtenu en répondant à la question (2), en faisant apparaître le projecteur orthogonal $M_1 = I-X_1(X_1'X_1)^{-1}X_1$. Commenter.\newline
+
+\bigskip
+
+\exercice On cherche à illustrer à l'aide de simulations la convergence de
+l'estimateur des MCO. On considère le DGP suivant~:
+\[
+y_i = a + b x_i + \varepsilon_i
+\]
+$i=1,\dots, N$, où $\varepsilon_i$ est un bruit blanc gaussien centré réduit,
+$a=1$ et $b=\frac{1}{2}$ sont les vraies valeurs des paramètres. On commencera
+par supposer que la variable explicative est déterministe, c'est-à-dire que la
+réalisation des $x_i$ est constante d'un échantillon à l'autre. \question{1}
+Pour $N=10$ (taille de l'échantillon), simuler les $\{x_i\}_{i=1}^N$ avec une
+loi normale centrée sur 1 et de variance 2. puis dans une boucle 50000
+échantillons $\{y_i\}_{i=1}^N$ en estimant pour chaque échantillon les
+paramètres $\alpha$ et $\beta$ dans le modèle empirique~:
+\[
+y_i = \alpha + \beta x_i + u_i
+\]
+Les 50000 valeurs obtenues pour $\widehat\beta$ devront être stockées dans un
+vecteur. Calculer la moyenne et la variance des $\widehat\beta$ obtenus. Que
+représentent ces quantités. \question{2} Reprendre la question (1) avec $N=100$,
+$N=1000$ et $N=10000$. Comparer les moyennes et variances puis commenter.
+\question{3} Reprendre les questions (1) et (2) en considérant que la variable
+explicative n'est pas déterministe (pour former chaque échantillon il faut tirer
+une réalisation différente des $\{x_i\}_{i=1}^N$ dans une loi normale centrée
+sur 1 et de variance 2). \question{4} Reprendre la question (3) en considérant
+que la variance de la variable explicative est 0.2 puis 20 (plutôt que 2).
+Comment ce changement affecte les propriétés de l'estimateur de $\beta$~?\newline
+
+\bigskip
+
+\exercice On cherche à illustrer à l'aide de simulations la distribution de
+l'estimateur des MCO. On reprend le même cadre que dans l'exercice précédent,
+mais au lieu de calculer la moyenne et la variance on représente la distribution
+de l'estimateur de $\beta$ en déviation à la vraie valeur du paramètre $b$,
+$\widehat\beta-\frac{1}{2}$. On peut utiliser des histogrammes pour représenter
+les distributions. Reprendre les mêmes scenarii que dans l'exercice précédent et
+représenter les distributions de $\widehat\beta-\frac{1}{2}$ puis
+$\sqrt{N}\left(\widehat\beta-\frac{1}{2}\right)$. Commenter.\newline
+
+\bigskip
+
+\exercice Soit un couple de variables aléatoires réelles $(X_1, X_2)$ distribué selon une loi normale bivariée~:
+\[
+  \begin{pmatrix}
+    X_1\\
+    X_2
+  \end{pmatrix}
+  \sim
+  \mathcal N
+  \left(
+    \begin{pmatrix}
+      \mu_1\\
+      \mu_2
+    \end{pmatrix},
+    \begin{pmatrix}
+      \sigma_1^2 & \rho\sigma_1\sigma_2\\
+      \rho\sigma_1\sigma_2 & \sigma_2^2
+    \end{pmatrix}
+  \right)
+\]
+avec $(\mu_1, \mu_2)\in\mathbb R^2$, $(\sigma_1, \sigma_2)\in\mathbb R_+^2$ et
+$0<\rho<1$. \question{0} Comment s'interprète le paramètre $\rho$~? \question{1}
+Écrire la densité jointe du couple $(X_1, X_2)$. \question{2} Montrer qu'il est
+possible de réécrire cette densité jointe comme le produit de la densité
+conditionnelle de $X_1|X_2$ et de la densité marginale de $X_2$. Montrer que ces
+densités sont gaussiennes. \question{3} Donner $\mathbb E[X_1|X_2]$ et
+$\mathbb V[X_1|X_2]$. \question{4} Soit $X_2$ une variable aléatoire normale
+$\mathcal N(\mu_2, \sigma_2^2)$. Quelle est la loi de
+$X_1 = a + bX_2 + \varepsilon$ si $X_1\perp\varepsilon$ et
+$\varepsilon\sim\mathcal N(0,\sigma_{\varepsilon}^2)$~? \question{5} Écrire la
+densité de $X_1|X_2$. \question{6} L'utilisation du mot "régression" a été
+introduite par le statisticien Sir Francis Galton dans une étude de 1885
+intitulée "Regression Toward Mediocrity in Hereditary Stature" (Régression vers
+la médiocrité dans la stature héréditaire). Il a montré que la taille des
+enfants issus de parents très petits ou très grands se rapprochait de la
+moyenne. En moyenne, l'enfant de parents de grandes tailles est plus petit.
+Discuter ce résultat à l'aide de vos réponses aux questions (2) et (3).
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
+% 05 68 et 05 69
+
+
+0948*, 0949*, 0162*, 0163*, 0270*, 0271*, 0377*, 0378*, 0424*, 0425*, 0568*, 0569*
