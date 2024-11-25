@@ -15,6 +15,7 @@ cours:
     - scp td/fiche-exercices.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp td/td-correction-1.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp td/td-correction-2.pdf /home/www/le-mans.adjemian.eu/econometrics
+    - scp td/td-correction-3.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp cours/codes/chapitre-1.org /home/www/le-mans.adjemian.eu/econometrics/codes
     - scp -r cours/codes/chapitre-1 /home/www/le-mans.adjemian.eu/econometrics/codes
     - scp -r cours/images /home/www/le-mans.adjemian.eu/econometrics
