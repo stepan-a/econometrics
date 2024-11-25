@@ -3,6 +3,7 @@
 \usepackage{amssymb}
 \usepackage{amsbsy}
 \usepackage{bbm}
+\usepackage{bm}
 \usepackage{float}
 \usepackage[french]{babel}
 \usepackage{graphicx}
@@ -195,6 +196,8 @@ enfants issus de parents très petits ou très grands se rapprochait de la
 moyenne. En moyenne, l'enfant de parents de grandes tailles est plus petit.
 Discuter ce résultat à l'aide de vos réponses aux questions (2) et (3).\newline
 
+\bigskip
+
 \exercice On considère un modèle générateur des données de la forme~:
 \[
 y_t = \alpha + \beta x_t + \varepsilon_t
@@ -211,7 +214,7 @@ que $\varepsilon$ est i.i.d. et que~:
 \]
 pour tout $t,s$. Le modèle empirique est~:
 \[
-y_t = a + b x_t \epsilon_t
+y_t = a + b x_t + \epsilon_t
 \]
 \question{1} Écrire l'estimateur des MCO de $b$,
 noté $\hat{b}$. \question{2} Exprimer $\hat{b}$ en fonction
@@ -227,8 +230,56 @@ tout $t, s$. \question{7} Montrer que $\varepsilon_t$ est
 homoscédastique. \question{8} L'estimateur des MCO $\hat b$ est-il sans
 biais?\newline
 
+\bigskip
 
+\exercice On considère un modèle générateur des données de la forme~:
+\[
+y_t = \alpha + \beta x_t + \varepsilon_t, \quad t=1,\dots,T
+\]
+avec une variable explicative ($x$) aléatoire. On suppose que la
+covariance de $x$ et $\varepsilon$ est non nulle. Le modèle empirique est~:
+\[
+y_t = a + b x_t + \epsilon_t
+\]
+\question{1} L'estimateur des MCO de $b$, noté $\hat{b}$, est-il sans
+biais. \question{2} Calculer la limite en probabilité de l'estimateur
+des MCO. L'estimateur des MCO est-il convergent~? \question{3} On
+suppose que l'on dispose des réalisations d'une autre variable
+aléatoire $\{z_t, t=1,\dots,T\}$. La variable aléatoire $z$ est
+corrélée avec $x$ mais non corrélée avec $\varepsilon$. On définit les
+estimateurs de $a$ et $b$ par le système suivant~:
+\[
+  \begin{cases}
+    \frac{1}{N}&\sum_{t=1}^T \left( y_t - \hat{a}_{\text{IV}} - \hat{b}_{\text{IV}} x_t \right) = 0\\
+    \frac{1}{N}&\sum_{t=1}^T z_t\left( y_t - \hat{a}_{\text{IV}} - \hat{b}_{\text{IV}} x_t \right) = 0\\
+  \end{cases}
+\]
+Justifier la définition des estimateurs. \question{4} Résoudre de
+système d'équations en donnant les expressions
+de $\hat{a}_{\text{IV}}$ et $\hat{b}_{\text{IV}}$. \question{5}
+Montrer que $\hat{b}_{\text{IV}}$ converge en probabilité
+vers $\beta$. $\hat{b}_{\text{IV}}$ est l'estimateur à variable
+instrumentale de $b$. \question{6} Calculer la variance asymptotique
+de $\sqrt{T}\left( \hat{b}_{\text{IV}} - \beta \right)$. Comparer avec
+l'estimateur des MCO.\newline
 
+\bigskip
+
+\exercice On généralise l'esimateur à variable instrumentale de l'exercice précédent. Le modèle générateur des données est~:
+\[
+  y_t= X_t\bm\beta + \varepsilon_t
+\]
+où $X_t$ est un vecteur $1\times K$, $\bm\beta$ un
+vecteur $K\times 1$, $\varepsilon_t$ une variable aléatoire iid. On
+suppose que les variables $X_t$ sont corrélées avec $\varepsilon_t$,
+mais nous disposons de $K$ instrument $Z_t$. Le modèle empirique est~:
+\[
+  y_t= X_t\bm b + \epsilon_t
+\]
+\question{1} Donner une expression matricielle de l'estimateur à
+variables instrumentales $\hat{\bm b}_{\text{IV}}$. \question{2}
+Montrer que cet estimateur est convergent. \question{3} Proposer un
+estimateur si le nombre d'instruments est strictment supérieur à $K$.
 
 
 \end{document}
