@@ -1,0 +1,160 @@
+\documentclass[12pt,a4paper,notitlepage,twocolumn]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{float}
+\usepackage[french]{babel}
+
+\usepackage{palatino}
+
+ \usepackage[active]{srcltx}
+\usepackage{scrtime}
+
+\newcounter{qnumber}
+\setcounter{qnumber}{0}
+
+\newcounter{enumber}
+\setcounter{enumber}{0}
+
+\newcommand{\question}{\textbf{(\addtocounter{qnumber}{1}\theqnumber)}\,}
+\newcommand{\exercice}{\textbf{\addtocounter{enumber}{1}\textsc{Exercice} \theenumber}.\,}
+\setlength{\parindent}{0cm}
+
+
+\begin{document}
+
+\title{\textsc{Économétrie Approfondie}}
+\date{Mercredi 18 décembre 2023}
+
+\maketitle
+
+\pagestyle{empty}
+
+\begin{quote}
+  \textit{Les réponses non commentées ou insuffisamment détaillées ne seront pas
+    considérées. Prenez le temps de faire des phrase.}
+\end{quote}
+
+\bigskip
+
+\exercice On suppose que les données sont générées par le modèle suivant~:
+\[
+  y_i = x_{1,i}\beta_1 + \ldots x_{K,i}\beta_K + \varepsilon_i
+\]
+où $x_{k,i}$, pour $k=1,\ldots,K$ sont des variables explicatives déterministes, $\beta_k$, pour $k=1,\ldots,K$, sont des paramètres réels, $\varepsilon_i$ une variable aléatoire centrée de variance $\sigma_{\varepsilon}^2$. \question Expliciter les matrices et vecteurs dans la représentation matricielle équivalente du modèle~:
+\[
+Y = X\beta + \varepsilon
+\]
+\question Définir et donner l'expression de l'estimateur des MCO de $\beta$ (en montrant comment on arrive à cette expression et en explicitant les hypothèses nécessaires pour que cet estimateur existe). \question Montrer que cet estimateur est sans biais. \question Calculer la variance de cet estimateur. \question Pourquoi l'estimateur des MCO a t-il une variance~?\newline
+
+\setcounter{qnumber}{0}
+\bigskip
+
+
+\exercice On suppose que les données sont générées par le modèle suivant~:
+\[
+  y_i = \beta_0 + x_{i}\beta_1 + \varepsilon_i, \quad i=1,\dots,N
+\]
+où $x_{i}$ est une variable explicative déterministe, $\beta_0$
+et $\beta_1$ sont des paramètres réels, $\varepsilon_i$ une variable
+aléatoire centrée de
+variance $\sigma_{i,\varepsilon}^2 = \sigma^2z_i^2$ où $z_i$ est une
+variable observée. Le modèle empirique est~:
+\[
+  y_i = b_0 + x_{i}b_1 + \epsilon_i, \quad i=1,\dots,N
+\]
+\question Calculer l'estimateur des MCO de $b_1$, que nous
+noterons $\hat b_1$. \question Calculer l'espérance de l'estimateur
+des MCO. S'agit-il d'un estimateur sans biais de $\beta_1$~? \question
+Calculer la variance de $\hat b_1$. \question Cet estimateur est-il
+efficace~? Pourquoi~?  \question Définir et calculer l'estimateur des
+MCG de $b_1$ que nous noterons $\tilde b_1$. \question Cet estimateur
+est-il sans biais~? \question Calculer la variance de  $\tilde b_1$. \question Comparer les variances de $\hat b_1$ et $\tilde b_1$. 
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice On considère le modèle suivant~:
+\[
+y_i = \beta_0 + x_i^\star\beta_1 + \varepsilon_i
+\]
+pour $i=1,\ldots,N$ avec $\beta_0$ et $\beta_1$ des paramètres
+réels, $\varepsilon_i$ une variable aléatoire réelle iid d'espérance
+nulle et de variance $\sigma_{\varepsilon}^2$, $x_i^\star$ une
+variable explicative aléatoire iid de variance $\sigma_{x^*}^2$. Malheureusement, la variable
+explicative est observée avec erreur, on n'observe pas $x_i^\star$ mais~:
+\[
+x_i = x_i^{\star} + \nu_i
+\]
+avec $\nu_i$ une variable aléaoire iid d'espérance nulle, de
+variance $\sigma^2_\nu$ et non corrélée $\varepsilon_j$ ou $x_l^\star$. Le modèle empirique est~:
+\[
+  y_i = b_0 + x_i b_1 + \epsilon_i
+\]
+\question Écrire le modèle générateur des données en exprimant $y_i$
+en fonction de $x_i$. Une estimation par les MCO peut-elle fournir un
+estimateur sans biais de $\beta_1$~? Pourquoi~? \question Écrire
+l'expression de $\hat b_1$. \question Calculer la variance de $x$ que
+nous noterons $\sigma_x^2$. \question Déterminer le comportement
+asymptotique des statistiques
+suivantes~:\\ $N^{-1}\sum_{i=1}^N\left( x_i-\bar x \right)^2$,\\ $N^{-1}\sum_{i=1}^N\left( x_i-\bar x \right)\left(\varepsilon_i-\bar\varepsilon  \right)$,\\ 
+$N^{-1}\sum_{i=1}^N\left( x_i^\star-\bar x^\star \right)\left(\nu_i-\bar\nu  \right)$, et\\
+$N^{-1}\sum_{i=1}^N\left(\nu_i-\bar\nu  \right)^2$\\
+\question Montrer que~:
+\[
+\text{plim}_{N\rightarrow\infty} \hat b_1 = \beta_1\left( 1 - \frac{\sigma_\nu^2}{\sigma_{x^\star}^2+\sigma_\nu^2} \right) 
+\]
+Interpréter et commenter ce résultat.
+
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice Sur le marché d'un bien la demande et l'offre à la date $t$ sont données par~:
+\begin{equation}\label{s1}
+  \begin{cases}
+    y_t^d &= \alpha + \beta P_t + u_t\\
+    y_t^o &= \gamma + \delta P_t + v_t
+  \end{cases}
+\end{equation}
+où $y_t^d$ et $y_t^o$ mesurent la demande et l'offre de bien, $P_t$ le
+prix du bien, $u_t$ et $v_t$ sont des variables aléatoires iid,
+centrées, de variances $\sigma_u^2$ et $\sigma_v^2$ et non corrélées, qui
+s'interprètent comme des chocs de demande et d'offre. Le système
+d'équation \ref{s1} est le modèle structurel. $\alpha$, $\beta$, $\gamma$ et $\delta$ les
+paramètres structurels, $u_t$ et $v_t$ les chocs structurels. \newline
+
+L'économètre observe les quantités échangées et les prix, on suppose
+que le marché est équilibré à chaque date. \question Montrer qu'à
+l'équilibre on doit avoir~:
+\begin{equation}\label{s2}
+  \begin{cases}
+    y_t &= \mu_y + \varepsilon_{y,t}\\
+    P_t &= \mu_P + \varepsilon_{P,t}\\
+  \end{cases}
+\end{equation}
+en définissant explicitement $\mu_y$ et $\mu_P$ en fonction des
+paramètres structurels, $\varepsilon_{y,t}$ et $\varepsilon_{P,t}$ en
+fonction des chocs et paramètres structurels. Le système d'équation
+\ref{s2} est le modèle réduit, $\mu_y$ et $\mu_P$ les paramètres
+réduits, $\varepsilon_{y,t}$ et $\varepsilon_{P,t}$ les chocs
+réduits. \question Est-il possible d'estimer sans biais les paramètres
+réduits $\mu_y$ et $\mu_P$~? Donner les expressions des
+estimateurs. \question Est-il possible de déduire les paramètres
+structurels à partir des paramètres réduits~?\newline
+
+Un économètre souhaite estimer la fonction de demande en régressant les quantités échangées, $y_t$, sur les prix observés, $P_t$. Le modèle empirique est~:
+\[
+y_t = a + b P_t + \epsilon_t, \quad t=1,\dots ,T
+\]
+\question Calculer la covariance entre $P_t$ et $u_t$. Que peut-on en déduire sur les propriétés de l'estimateur des MCO~? \question Calculer l'estimateur des MCO $\hat b$ et montrer que~:
+\[
+\text{plim}_{T\rightarrow\infty} \hat b = \frac{\sigma^2_v\beta+\sigma^2_u\delta}{\sigma^2_v+\sigma^2_u}
+\]
+Interpréter et commenter ce résultat.
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
