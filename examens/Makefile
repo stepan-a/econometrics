@@ -1,4 +1,4 @@
-all: partiel-2023.pdf correction-2023.pdf partiel-2024.pdf
+all: partiel-2023.pdf correction-2023.pdf partiel-2024.pdf correction-2024.pdf
 
 %.pdf: %.tex
 	rubber --pdf $^

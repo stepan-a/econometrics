@@ -1,0 +1,408 @@
+\documentclass[12pt,a4paper,notitlepage]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage[french]{babel}
+
+\usepackage{palatino}
+
+ \usepackage[active]{srcltx}
+\usepackage{scrtime}
+
+\newcounter{qnumber}
+\setcounter{qnumber}{0}
+
+\newcounter{enumber}
+\setcounter{enumber}{0}
+
+\newcommand{\question}{\textbf{(\addtocounter{qnumber}{1}\theqnumber)}\,}
+\newcommand{\exercice}{\textbf{\addtocounter{enumber}{1}\textsc{Exercice} \theenumber}.\,}
+\setlength{\parindent}{0cm}
+
+
+\begin{document}
+
+\title{\textsc{Économétrie Approfondie}\\ \small{(Éléments de correction)}}
+\date{Mercredi 13 décembre 2023}
+
+\maketitle
+
+\thispagestyle{empty}
+
+
+\bigskip
+
+\exercice On suppose que les données sont générées par le modèle suivant~:
+\[
+  y_i = x_{1,i}\beta_1 + \ldots x_{K,i}\beta_K + \varepsilon_i
+\]
+où $x_{k,i}$, pour $k=1,\ldots,K$ sont des variables explicatives
+déterministes, $\beta_k$, pour $k=1,\ldots,K$, sont des paramètres
+réels, $\varepsilon_i$ une variable aléatoire centrée de
+variance $\sigma_{\varepsilon}^2$. \question On obtient la représentation matricielle de ce modèle en concatément (verticalement) les observations. On pose~: $Y = \left( y_1, y_2, \dots, y_N \right)'$, $\varepsilon = \left( \varepsilon_1, \varepsilon_2, \dots, \varepsilon_N \right)'$, $\beta = \left( \beta_1, \beta_2, \dots, \beta_K \right)$ et
+\[
+  X =
+  \begin{pmatrix}
+    x_{1,1} & x_{2,1} & \ldots & x_{K,1}\\
+    x_{1,2} & x_{2,2} & \ldots & x_{K,2}\\
+    \vdots  & \vdots  &        & \vdots \\
+    x_{1,N} & x_{2,N} & \ldots & x_{K,N}\\
+  \end{pmatrix}
+\]
+
+On peut alors réécrire le modèle sous la forme~:
+\[
+Y = X\beta + \varepsilon
+\]
+\question L'estimateur des MCO est le vecteur $\hat\beta$ qui minimise la somme des carrés des résidus :
+\begin{equation*}
+  \begin{split}
+    \hat\beta &= \arg\min_{\{\beta\}} (Y-X\beta)'(Y-X\beta) \\
+              &= \arg\min_{\{\beta\}} Y'Y - \beta'X'Y - Y'X\beta + \beta'X'X\beta \\
+              &= \arg\min_{\{\beta\}}  \beta'X'X\beta -2\beta'X'Y
+  \end{split}
+\end{equation*}
+
+La condition nécessaire d'optimalité est~:
+\[
+2X'X\hat\beta - 2X'Y = 0
+\]
+\[
+\Leftrightarrow \hat\beta = \left( X'X \right)^{-1}X'Y
+\]
+en supposant que la matrice $X'X$ est inversible (c'est le cas si,
+comme nous le supposons habituellement, $X$ est une matrice de
+rang $K$). \question $\hat\beta$ est un estimateur sans biais
+de $\beta$. Pour le montrer substituons le DGP dans l'expression de
+l'estimateur :
+\[
+  \begin{split}
+    \hat \beta &= \left( X'X \right)^{-1}X'\left( X\beta + \varepsilon \right)\\
+               &= \left( X'X \right)^{-1}X'X\beta +\left( X'X \right)^{-1}X'\varepsilon\\
+               &= \beta + \left( X'X \right)^{-1}X'\varepsilon
+  \end{split}
+\]
+En supposant que les variables exogènes sont déterministes (sinon il
+faut recourrir au théorème des espérances itérées), on a donc :
+\[
+  \begin{split}
+    \mathbb E\left[\hat\beta\right] &= \beta + \mathbb E\left[\left( X'X \right)^{-1}X'\varepsilon\right]\\
+                                    &= \beta + \left( X'X \right)^{-1}X'\mathbb E\left[\varepsilon\right]\\
+                                    &= \beta
+  \end{split}
+\]
+
+\question La variance de $\hat \beta$ est définie
+par
+$\mathbb V\left[\hat\beta\right] = \mathbb E\left[\left( \hat\beta-\mathbb E\left[ \hat\beta \right] \right)^2\right]$. En
+substituant l'expression de $\hat\beta$ en fonction de $\beta$ (qui
+est aussi l'espérance de $\hat\beta$), il vient (en supposant
+que $\mathbb E\left[\varepsilon_i\varepsilon_j\right]=0$ pour
+tout $i\neq j$)~:
+\[
+  \begin{split}
+    \mathbb V\left[\hat\beta \right] &= \mathbb V\left[\left( X'X \right)^{-1}X'\varepsilon\right]\\
+                                     &= \left( X'X \right)^{-1}X'\mathbb V\left[\varepsilon\right] X\left( X'X \right)^{-1} \\
+                                     &= \left( X'X \right)^{-1}X'\sigma_{\varepsilon}^2 I_N X\left( X'X \right)^{-1} \\
+                                     &= \sigma^2_{\varepsilon}\left( X'X \right)^{-1}X'X\left( X'X \right)^{-1}\\
+                                     &= \sigma^2_{\varepsilon}\left( X'X \right)^{-1}
+  \end{split}
+\]
+Si la variance du vecteur $\varepsilon$ est différente
+de $\sigma_{\varepsilon}^2I_N$ (autocorrélation ou hétéroscédasticité)
+les matrices $X'X$ ne se simplifient plus et on obtient~:
+\[
+\mathbb V\left[\hat\beta \right] = \left( X'X \right)^{-1}X'\Sigma X\left( X'X \right)^{-1}
+\]
+où $\Sigma$ est la matrice de variance covariance
+de $\varepsilon$. \question L'estimateur des MCO est une variable
+aléatoire, \emph{i.e.} a une variance, car $\hat\beta$ est une
+fonction linéaire du vecteur aléatoire $\varepsilon$.
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice \question Vu en cours plusieurs fois. Il faut écrire le
+prgramme de minimisation de la somme des carrés des résidus. Écrire le
+système de deux équations linéaires formé par les CPO associées au
+programme de minimisation (les inconnues sont $\hat{b}_0$
+et $\hat{b}_1$. En résolvant le système, on trouve~:
+\[
+\hat b_1 = \frac{\sum_{i=1}^N(x_i- \bar x)(y_i-\bar y)}{\sum_{i=1}^N(x_i- \bar x)^2}
+\]
+Cet estimateur est sans biais, malgré la présence d'hétéroscédasticité. En effet, en substituant le modèle générateur des données dans l'expression de l'estimateur on a~:
+\[
+\hat{b}_1 = \beta_1 + \frac{\sum_{i=1}^N(x_i- \bar x)(\varepsilon_i-\bar \varepsilon)}{\sum_{i=1}^N(x_i- \bar x)^2}
+\]
+Puisque la variable explicative est déterministe et que $\varepsilon$ est d'espérance nulle, on a directement~:
+\[
+\mathbb E\left[ \hat{b}_1 \right] = \beta_1 + \frac{\sum_{i=1}^N(x_i- \bar x)\times 0}{\sum_{i=1}^N(x_i- \bar x)^2} = \beta_1
+\]
+\question En partant de l'expression de l'estimateur en fonction
+de $\beta_1$, en exploitant le fait que la variable explicative est
+déterministe et que les $\varepsilon$ sont indépendants, il vient~:
+\[
+  \begin{split}
+    \mathbb V\left[\hat b_1 \right] &= \frac{\sum_{i=1}^N(x_i- \bar x)^2\mathbb V [\varepsilon_i]}{\left(\sum_{i=1}^N(x_i- \bar x)^2 \right)^2} \\
+    &= \sigma^2\frac{\sum_{i=1}^N(x_i- \bar x)^2z_i^2}{\left(\sum_{i=1}^N(x_i- \bar x)^2 \right)^2} \\
+  \end{split}
+\]
+Notons que si $z_i$ est constant d'une observation à l'autre, disons
+sans perte de généralité $z_i=1$, on retrouve bien la variance de
+l'estimateur des MCO dans le cadre idéal (chapitre I du cours) en
+simplifiant les sommes au numérateur et au dénominateur~:
+\[
+\mathbb V\left[\hat b_1 \right] = \sigma^2\frac{1}{\sum_{i=1}^N(x_i- \bar x)^2 } \\
+\]
+
+\question L'estimateur des MCO car les conditions du théorème de Gauss-Markov ne sont pas réunies. \question L'estimateur des MCG est obtenu en appliquant les MCO à un modèle transformé. Si on divise les deux membres de l'égalité définissant le processus générateur des données par $z_i$, on obtient~:
+\[
+\frac{y_i}{z_i} = \frac{1}{z_i}\beta_0 + \frac{x_i}{z_i}\beta_1 + \frac{\varepsilon_i}{z_i}
+\]
+La variance du terme résiduel transformé, $\eta_i = \varepsilon_i/z_i$ est alors constante~:
+\[
+\mathbb V[\eta_i] = \frac{\mathbb V[\varepsilon]}{z_i^2} = \frac{\sigma^2z_i^2}{z_i^2} = \sigma^2\quad\forall i
+\]
+Le modèle empirique est donc~:
+\[
+\frac{y_i}{z_i} = \frac{1}{z_i}b_0 + \frac{x_i}{z_i}b_1 + u_i
+\]
+On obtient l'estimateur des MCO en minimisant la somme des carrés des résidus transformé~:
+\[
+\left( \tilde b_0, \tilde b_1\right) = \arg\min_{\{b_0, b_1\}}\sum_{i=1}^N\left( \frac{y_i}{z_i} - \frac{b_0}{z_i} - \frac{x_i}{z_i}b_1\right)^2
+\]
+ou de façon équivalente~:
+\[
+\left( \tilde b_0, \tilde b_1\right) = \arg\min_{\{b_0, b_1\}}\sum_{i=1}^N\frac{1}{z_i^2}\left( \underbrace{y_i - b_0 - x_ib_1}_{\epsilon_i}\right)^2
+\]
+L'estimateur des MCG est donc obtenu en minimisant une somme des
+carrés \textit{pondérés} des résidus. Le carré du résidu associé à
+l'observation $i$ est pondéré par $1/z_i^2$, la pondération est
+proportionnelle à l'inverse de la variance du résudu. Un estimateur
+des MCG donne plus de poids aux résidus qui ont une variance plus
+faible (c'est à dire pour lesquels la relation entre $y$ et $x$ est
+plus précise). Les conditions du premier ordre sont~:
+\[
+  \begin{cases}
+    0 &= -2\sum_{i=1}^N\frac{1}{z_i^2}\left( y_i - \tilde b_0 -x_i \tilde b_1 \right)\\
+    0 &= -2\sum_{i=1}^N\frac{x_i}{z_i^2}\left( y_i - \tilde b_0 -x_i \tilde b_1 \right)
+  \end{cases}
+\]
+
+En développant la première équation on obtient~:
+\[
+\tilde b_0 = \breve y - \breve x \tilde b_1
+\]
+où $\breve y$ et $\breve x$ sont des moyennes pondérées des $y_i$ et $x_i$~:
+\[
+\breve y = \frac{\sum_{i=1}^N\frac{y_i}{z_i^2}}{\sum_{i=1}^N\frac{1}{z_i^2}}\quad \breve x = \frac{\sum_{i=1}^N\frac{x_i}{z_i^2}}{\sum_{i=1}^N\frac{1}{z_i^2}}
+\]
+En substituant dans la seconde CPO, il vient~:
+\[
+ \sum_{i=1}^N\frac{x_i}{z_i^2}\left( y_i-\breve y - \left(x_i-\breve x \right)\tilde b_1 \right) = 0
+\]
+\[
+\Leftrightarrow \tilde b_1 = \frac{\sum_{i=1}^N \frac{x_i}{z_i^2}(y_i-\breve y)}{\sum_{i=1}^N \frac{x_i}{z_i^2}(x_i-\breve x)}
+\]
+Notons que l'on a~:
+\[
+  \begin{split}
+    \sum_{i=1}^N \frac{1}{z_i^2}\left(x_i-\breve x\right)^2 &= \sum_{i=1}^N \frac{x_i}{z_i^2}\left(x_i-\breve x\right) - \sum_{i=1}^N \frac{\breve x}{z_i^2}\left(x_i-\breve x\right)\\
+                                                            &= \sum_{i=1}^N \frac{x_i}{z_i^2}\left(x_i-\breve x\right) - \breve x \sum_{i=1}^N\frac{x_i}{z_i^2} + \breve x^2\sum_{i=1}^N\frac{1}{z_i^2}\\
+                                                            &= \sum_{i=1}^N \frac{x_i}{z_i^2}\left(x_i-\breve x\right) - \breve x^2 \sum_{i=1}^N\frac{1}{z_i^2} + \breve x^2\sum_{i=1}^N\frac{1}{z_i^2}\\
+                                                            &= \sum_{i=1}^N \frac{x_i}{z_i^2}\left(x_i-\breve x\right)
+  \end{split}
+\]
+De la même façon~:
+\[
+  \begin{split}
+    \sum_{i=1}^N \frac{1}{z_i^2}\left(x_i-\breve x\right)\left(y_i-\breve y\right) &= \sum_{i=1}^N \frac{x_i}{z_i^2}\left(y_i-\breve y\right) - \sum_{i=1}^N \frac{\breve x}{z_i^2}\left(y_i-\breve y\right)\\
+                                                            &= \sum_{i=1}^N \frac{x_i}{z_i^2}\left(y_i-\breve y\right) - \breve x \sum_{i=1}^N\frac{y_i}{z_i^2} + \breve x\breve y\sum_{i=1}^N\frac{1}{z_i^2}\\
+                                                            &= \sum_{i=1}^N \frac{x_i}{z_i^2}\left(y_i-\breve y\right) - \breve x\breve y \sum_{i=1}^N\frac{1}{z_i^2} + \breve x\breve y\sum_{i=1}^N\frac{1}{z_i^2}\\
+                                                            &= \sum_{i=1}^N \frac{x_i}{z_i^2}\left(y_i-\breve y\right)
+  \end{split}
+\]
+On peut donc réécrire l'estimateur $\tilde b_1$~:
+\[
+\tilde b_1 = \frac{\sum_{i=1}^N \frac{1}{z_i^2}(y_i-\breve y)(x_i - \breve x)}{\sum_{i=1}^N \frac{1}{z_i^2}(x_i-\breve x)^2}
+\]
+L'estimateur des MCG ressemble beaucoup à l'estimateur des MCO. Les
+seules différences sont les pondérations, $1/z_i^2$ à la place de 1,
+et la définition des moyennes.\newline
+
+\question Pour démontrer que l'estimateur est sans biais, on suit la
+démarche habituelle en substituant le modèle générateur des données
+dans l'expression de l'estimateur\footnote{En notant que~:
+  \[
+    \breve y = \frac{\sum_{i=1}^N\frac{1}{z_i^2}(\beta_0 + x_i\beta_1+\varepsilon_i)}{\sum_{i=1}^N\frac{1}{z_i^2}} = b_0 + \breve x b_1 + \breve \varepsilon
+  \]
+}~:
+\[
+\tilde b_1 = \frac{\sum_{i=1}^N \frac{1}{z_i^2}(\beta_0+x_i\beta_1+\varepsilon_i - \beta_0 - \breve x \beta_1 - \breve\varepsilon)(x_i - \breve x)}{\sum_{i=1}^N \frac{1}{z_i^2}(x_i-\breve x)^2}
+\]
+\[
+\Leftrightarrow \tilde b_1 = \frac{\sum_{i=1}^N \frac{1}{z_i^2}\left((x_i-\breve x)\beta_1+\varepsilon_i - \breve\varepsilon\right)(x_i - \breve x)}{\sum_{i=1}^N \frac{1}{z_i^2}(x_i-\breve x)^2}
+\]
+\[
+\Leftrightarrow \tilde b_1 = \beta_1 + \frac{\sum_{i=1}^N \frac{1}{z_i^2}\left(\varepsilon_i - \breve\varepsilon\right)(x_i - \breve x)}{\sum_{i=1}^N \frac{1}{z_i^2}(x_i-\breve x)^2}
+\]
+L'espérance du second terme est nulle car $\varepsilon_i$ est
+d'espérance nulle et les termes en $x_i$ ou $z_i$ sont supposés déterministes et
+sortent de l'espérance. Ainsi on a bien $\mathbb E[\tilde b_1] = \beta_1$. \question Pour calculer la variance de l'estimateur, on utilise la dernière expression de $\tilde b_1$~:
+\[
+  \mathbb V\left[\tilde b_1\right] = \frac{1}{\left( \sum_{i=1}^N \frac{1}{z_i^2}(x_i-\breve x)^2 \right)^2}\sum_{i=1}^N\frac{\left( x_i-\breve x \right)^2}{z_i^4}\mathbb V[\varepsilon_i]
+\]
+\[
+  \Leftrightarrow \mathbb V\left[\tilde b_1\right] = \frac{\sigma^2}{\left( \sum_{i=1}^N \frac{1}{z_i^2}(x_i-\breve x)^2 \right)^2}\sum_{i=1}^N\frac{\left( x_i-\breve x \right)^2}{z_i^2}
+\]
+\[
+\Leftrightarrow \mathbb V\left[\tilde b_1\right] = \frac{\sigma^2}{\sum_{i=1}^N \frac{1}{z_i^2}(x_i-\breve x)^2}
+\]
+\question La variance de $\tilde b_1$ (l'estimateur des MCG) est
+différente de la variance de $\hat b_1$ (l'estimateur de
+MCO). L'estimateur des MCG est plus précis (variance plus faible) par
+le théorème de Gauss Markov. Dans le cas précis qui nous intéresse, on a~:
+\[
+\frac{\mathbb V\left[\tilde b_1\right]}{\mathbb V\left[\hat b_1\right]} = \frac{\left(\sum_{i=1}^N(x_i- \bar x)^2 \right)^2}{\sum_{i=1}^N \frac{1}{z_i^2}(x_i-\breve x)^2\sum_{i=1}^N(x_i- \bar x)^2z_i^2}
+\]
+et on veut montrer que ce ratio est inférieur à 1. Pour ce faire, on
+utilise l'inégalité de Cauchy-Schwartz qui définit une borne
+supérieure pour le produit scalaire de deux vecteurs~:
+\[
+\left(\sum_{i=1}^N u_iv_i\right)^2 \leq \left(\sum_{i=1}^N u_i^2\right)\left(\sum_{i=1}^N v_i^2\right)
+\]
+En posant $u_i=z_i(x_i-\bar x)$ et $v_i=\frac{1}{z_i}(x_i-\breve x)$, il vient~:
+\[
+\left(\sum_{i=1}^N (x_i-\bar x)(x_i-\breve x)\right)^2 \leq \left(\sum_{i=1}^Nz_i^2(x_i-\bar x)^2 \right)\left(\sum_{i=1}^N\frac{1}{z_i^2}(x_i-\breve x)^2 \right) 
+\]
+\[
+\Leftrightarrow \frac{1}{\sum_{i=1}^N\frac{1}{z_i^2}(x_i-\breve x)^2} \leq \frac{\left(\sum_{i=1}^Nz_i^2(x_i-\bar x)^2 \right)}{\left(\sum_{i=1}^N (x_i-\bar x)(x_i-\breve x)\right)^2}
+\]
+Par ailleurs, on a~:
+\[
+  \sum_{i=1}^N (x_i-\bar x)(x_i-\breve x) = \sum_{i=1}^N (x_i-\bar x)\left((x_i-\bar x) - (\breve x - \bar x)  \right)
+\]
+\[
+  \Leftrightarrow \sum_{i=1}^N (x_i-\bar x)(x_i-\breve x) = \sum_{i=1}^N (x_i-\bar x)^2- (\breve x - \bar x)\sum_{i=1}^N (x_i-\bar x)
+\]
+\[
+  \Leftrightarrow \sum_{i=1}^N (x_i-\bar x)(x_i-\breve x) = \sum_{i=1}^N (x_i-\bar x)^2
+\]
+par définition de la moyenne $\bar x$. Ainsi, nous avons~:
+\[
+\Leftrightarrow \frac{\sigma}{\sum_{i=1}^N\frac{1}{z_i^2}(x_i-\breve x)^2} \leq \sigma\frac{\left(\sum_{i=1}^Nz_i^2(x_i-\bar x)^2 \right)}{\left(\sum_{i=1}^N (x_i-\bar x)^2\right)^2}
+\]
+et donc~:
+\[
+\frac{\mathbb V\left[\tilde b_1\right]}{\mathbb V\left[\hat b_1\right]} \leq 1
+\]
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice \question On a $x_i^\star = x_i - \nu_i$, en substituant dans le modèle générateur des données il vient~:
+\[
+y_i = \beta_0 + (x_i-\nu_i)\beta_1 + \varepsilon_i
+\]
+\[
+\Leftrightarrow y_i = \beta_0 + x_i\beta_1 + \underbrace{\varepsilon_i-\nu_i\beta_1}_{\eta_i}
+\]
+Il n'est pas possible d'estimer sans biais $\beta_1$ par les MCO en régressant $y_i$ sur $x_i$ car, par construction, la variable explicative est corrélée avec le résidu $\eta_i$~:
+\[
+  \begin{split}
+    \mathrm{cov}\left(x_i, \eta_i\right) &= \mathrm{cov}\left(x_i, \varepsilon_i\right) - \beta_1\mathrm{cov}\left(x_i, \nu_i\right)\\
+    &= -\beta_1\sigma_\nu^2
+  \end{split}
+\]
+\question L'estimateur des MCO de la pente est~:
+\[
+  \hat b_1 = \frac{N^{-1}\sum_{i=1}^N(y_i-\bar y)(x_i-\bar x)}{N^{-1}\sum_{i=1}^N(x_i-\bar x)^2}
+  = \beta_1 + \frac{N^{-1}\sum_{i=1}^N(\eta_i-\bar \eta)(x_i-\bar x)}{N^{-1}\sum_{i=1}^N(x_i-\bar x)^2}
+\]
+\question On a $\mathbb V[x] = \mathbb V[x^{\star}+\nu] = \sigma_{x^\star}^2 + \sigma_\nu^2$. \question Par la loi faible des grands nombres, on a~:
+\[
+N^{-1}\sum_{i=1}^N(x_i-\bar x)^2 \xrightarrow[N\to\infty]{\mathrm{proba}} \sigma_x^2= \sigma_{x^\star}^2 + \sigma_\nu^2
+\]
+ \[
+N^{-1}\sum_{i=1}^N(x_i-\bar x)(\varepsilon_i-\bar \varepsilon) \xrightarrow[N\to\infty]{\mathrm{proba}} \mathrm{cov}\left( x, \varepsilon \right) = 0
+\]
+\[
+N^{-1}\sum_{i=1}^N(x_i^\star-\bar x^\star)(\nu_i-\bar \nu) \xrightarrow[N\to\infty]{\mathrm{proba}} \mathrm{cov}\left( x^{\star}, \nu \right) = 0
+\]
+\[
+  N^{-1}\sum_{i=1}^N(\nu_i-\bar \nu)^2 \xrightarrow[N\to\infty]{\mathrm{proba}} \sigma_\nu^2
+\]
+\question À partir de l'expression de $\hat b_1$, on a~:
+\[
+  \hat b_1 \xrightarrow[N\to\infty]{\mathrm{proba}} \beta_1 - \frac{\beta_1\sigma_{\nu}^2}{\sigma_{x^\star}^2+\sigma_{\nu}^2} = \beta_1\left( 1 - \frac{\sigma_{\nu}^2}{\sigma_{x^\star}^2+\sigma_{\nu}^2} \right)
+  = \beta_1\frac{\sigma_{x^\star}^2}{\sigma_{x^\star}^2+\sigma_{\nu}^2}
+\]
+L'estimateur de la pente tend en probabilité vers une valeur inférieure à $\beta_1$. On vérifie bien que le bien asymptotoque est nulle si la variance de l'erreur de mesure est nulle, et que ce biais est d'autant plus grand que les erreurs de mesures sont grandes.
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice \question À l'équilibre, l'offre est égale à la demande, le prix doit donc être tel que~:
+\[
+\alpha + \beta P_t + u_t = \gamma + \delta P_t + v_t
+\]
+soit de façon équivalente~:
+\[
+P_t = \underbrace{\frac{\alpha-\gamma}{\delta-\beta}}_{\mu_P} + \underbrace{\frac{u_t-v_t}{\delta-\beta}}_{\varepsilon_{P,t}}
+\]
+En substituant le prix d'équilibre dans la fonction de demande, on obtient la quantité de bien échangée~:
+\[
+y_t = \alpha + \beta \left( \frac{\alpha-\gamma}{\delta-\beta} + \frac{u_t-v_t}{\delta-\beta}\right) + u_t
+\]
+\[
+ \Leftrightarrow  y_t = \underbrace{\frac{\alpha\delta-\beta\gamma}{\delta-\beta}}_{\mu_y}
+  + \underbrace{\frac{\delta u_t - \beta v_t}{\delta-\beta}}_{\varepsilon_{y,t}}
+\]
+On note que le prix d'équilibre et la quantité de bien échangée sont
+corrélés avec les deux chocs structurels. \question Il est possible
+d'estimer sans biais les deux paramètres réduits par les MCO. Il
+s'agit de régresser une variable sur une constante, on a donc~:
+\[
+\hat \mu_P = \sum_{t=1}^TP_t
+\]
+et
+\[
+\hat \mu_y = \sum_{t=1}^Ty_t
+\]
+On ne peut pas déduire les paramètres structurels à partir de ces
+estimateurs, puisque nous nous retrouvons avec un système de deux
+équations (les définitions des paramètres réduits) avec quatre
+inconnues ($\alpha$, $\beta$, $\gamma$ et $\delta$). \question On a~:
+\[
+\mathrm{cov}\left(P_t,u_t\right)=\mathrm{cov}\left(\frac{u_t-v_t}{\delta-\beta},u_t\right) = \frac{\sigma_u^2}{\delta-\beta}
+\]
+car $u$ et $v$ ne sont pas corrélés. La régression de $y$ sur une
+constante et $P$ ne permettra pas d'estimer sans biais la pente de la
+fonction de demande, car la variable explicative est corrélée avec le
+résidu. \question L'expression de l'estimateur de la pente de la fonction de demande est~:
+\[
+\hat b = \frac{T^{-1}\sum_{t=1}^T(y_t-\bar y)(P_t-\bar P)}{T^{-1}\sum_{t=1}^T(P_t-\bar P)^2}
+\]
+soit en substituant le modèle générateur des données~:
+\[
+\hat b = \beta + \frac{T^{-1}\sum_{t=1}^T(u_t-\bar u)(P_t-\bar P)}{T^{-1}\sum_{t=1}^T(P_t-\bar P)^2}
+\]
+le numérateur tend en probabilité vers la covariance entre $u$ et $P$,
+le dénominateur tend en probabilité vers la variance du prix. Cette dernière est donnée par~:
+\[
+\mathbb V[P_t] = \frac{1}{(\delta-\beta)^2}\mathbb V [u_t+v_t] = \frac{\sigma_u^2+\sigma_v^2}{(\delta-\beta)^2}
+\]
+On a donc~:
+\[
+  \hat b \xrightarrow[T\to\infty]{\mathrm{proba}} \beta + \sigma_u^2\frac{\delta-\beta}{\sigma_u^2+\sigma_v^2} =
+  \frac{\beta\sigma_v^2+\delta\sigma_u^2}{\sigma_u^2+\sigma_v^2}
+\]
+L'estimateur tend en probabilité vers une moyenne, pondérée par les variances des chocs d'offre et de demande, des pentes des fonctions d'offre et de demande. Il n'est pas possible d'estimer de façon convergente la pente de la fonction de demande (c'est la même chose pour l'offre) en régressant (par les MCO) les quantités échangées sur les prix. On remarque que la limite est d'autant plus proche de $\beta$ que les chocs d'offre sont grands par rapport aux chocs de demande. Dans ce cas la volatilité des prix s'explique essentiellement par les chocs d'offre, la fonction de demande ne \og bouge \fg\ pas, ce qui diminue l'importance du biais d'endogénéité [FAIRE UNE REPRÉSENTATION GRAPHIQUE].
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
