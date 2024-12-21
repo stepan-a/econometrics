@@ -10,8 +10,13 @@ cours:
   script:
     - make -C cours
     - make -C td
+    - make -C examens
     - scp cours/chapitre-1.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp cours/chapitre-2.pdf /home/www/le-mans.adjemian.eu/econometrics
+    - scp examens/partiel-2023.pdf /home/www/le-mans.adjemian.eu/econometrics
+    - scp examens/partiel-2024.pdf /home/www/le-mans.adjemian.eu/econometrics
+    - scp examens/correction-2023.pdf /home/www/le-mans.adjemian.eu/econometrics
+    - scp examens/correction-2024.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp td/fiche-exercices.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp td/td-correction-1.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp td/td-correction-2.pdf /home/www/le-mans.adjemian.eu/econometrics
@@ -25,5 +30,9 @@ cours:
       - cours/chapitre-1.pdf
       - cours/chapitre-1.pdf
       - td/fiche-exercices.pdf
+      - examens/partiel-2023.pdf
+      - examens/partiel-2024.pdf
+      - examens/correction-2023.pdf
+      - examens/correction-2024.pdf
   tags:
     - stepan@puck
