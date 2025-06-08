@@ -1,12 +1,17 @@
-all: partiel-2023.pdf correction-2023.pdf partiel-2024.pdf correction-2024.pdf
+TEXFILES := $(wildcard *.tex)
+PDFS     := $(TEXFILES:.tex=.pdf)
+
+all: $(PDFS)
 
 %.pdf: %.tex
-	rubber --pdf $^
-	rubber --clean $^
+	latexmk -pdf -interaction=nonstopmode -quiet $<
+	latexmk -c $<
+	rm -f *.synctex.gz
 
-clean-all:
-	rm -f partiel-*.pdf
-	rm -f correction-*.pdf
-	rm -rf auto
+clean:
+	latexmk -c
 
-.PHONY: clean-all
+distclean:
+	latexmk -C
+
+.PHONY: clean distclean
