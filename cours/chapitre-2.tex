@@ -647,6 +647,100 @@ plus générale consiste à utiliser la fonction caractéristique.
 
 \end{notes}
 
+
+\begin{frame}
+  \frametitle{Multicolinéarité, I}
+
+  \begin{itemize}
+
+  \item Si la matrice $X$ n'est pas de plein rang colonne, l'estimateur des MCO n'est pas défini.\newline
+
+  \item[$\Rightarrow$] Retirer une ou des variables explicative(s).\newline
+
+  \item Un problème plus intéressant est le cas de la colinéarité approchée des régresseurs.\newline
+
+  \item La matrice $X'X$ est alors proche d'être singulière (au moins une valeur propre est proche de zéro) :\newline
+
+    \begin{itemize}
+    \item Problème numérique dans le calcul de $(X'X)^{-1}$\newline
+    \item Faible précision de l'estimateur des MCO\newline
+    \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Multicolinéarité, II}
+
+  \begin{itemize}
+
+  \item Considérons le cas d'un modèle linéaire avec deux variables explicatives. Le DGP est~:
+    \[
+      y = X\beta + \varepsilon
+    \]
+    et le modèle empirique~:
+    \[
+      y = X \mathbf{b} + \epsilon
+    \]
+    où $X$ est une matrice $n\times 2$, $y$ une
+    vecteur $n\times 1$, $\varepsilon$ un vecteur
+    aléatoire $n\times 1$ tel que $\mathbb E[\varepsilon] = 0$
+    et $\mathbb V[\varepsilon] = \sigma^2I_n$, $\beta$ un
+    vecteur $2\times 1$.\newline
+
+  \item On suppose que la matrice des régresseurs est telle que~:
+    \[
+      \frac{1}{n} X'X =
+      \begin{pmatrix}
+        1 & \rho \\
+        \rho & 1
+      \end{pmatrix}
+    \]
+    où $\rho\in]-1,1[$ est la corrélation entre les deux régresseurs.\newline
+
+    \end{itemize}
+
+  \end{frame}
+
+
+\begin{frame}
+  \frametitle{Multicolinéarité, III}
+
+  \begin{itemize}
+
+
+  \item La variance de l'estimateur des MCO est alors~:
+    \[
+      \mathbb V[\hat{\mathbf{b}}] = \frac{\sigma^2}{n}
+      \begin{pmatrix}
+        1 & \rho\\
+        \rho & 1
+      \end{pmatrix}^{-1}
+      = \frac{\sigma^2}{n(1-\rho^2)}
+      \begin{pmatrix}
+        -\rho & 1\\
+        1 & -\rho
+      \end{pmatrix}
+    \]
+
+    \medskip
+
+  \item La variance est d'autant plus grande, l'estimateur est d'autant moins précis, que la corrélation est proche de 1.\newline
+
+  \item Comme toujours, elle est aussi d'autant plus grande que l'échantillon est petit $\rightarrow$ la colinéarité approchée peut être compensée par la taille de l'échantillon~!\newline
+
+  \item Si les variables sont trés corrélées, il faut beaucoup plus d'observations pour distinquer les effets respectifs des deux variables.\newline
+
+  \item On note que $\rho$, qui caractérise le degré de colinéarité, n'affecte pas l'espérance de l'estimateur ($\beta$).
+
+  \end{itemize}
+
+\end{frame}
+
+
+
 \begin{notes}
 
   \begin{center}
