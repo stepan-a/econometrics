@@ -591,6 +591,62 @@ Puisque $MX=0$, a fortiori on doit avoir $MX_1=0$ et donc un biais nul. On montr
 \end{frame}
 
 
+
+\begin{frame}
+  \frametitle{Théorème central limite (version simple)}
+
+  Soit $X_1, X_2, \ldots, X_n$ une suite de variables aléatoires indépendantes et identiquement distribuées (iid) avec une espérance $\mu$ et une variance $\sigma^2$ finies.
+
+  \medskip
+
+  \textbf{Enoncé :} Lorsque $n$ tend vers l'infini, la moyenne empirique $\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i$ converge en distribution vers une loi normale :
+
+  \[
+  \bar{X} \xrightarrow{d} \mathcal{N}(\mu, \frac{\sigma^2}{n}) \quad \text{ou} \quad \sqrt{n}(\bar{X} - \mu) \xrightarrow{d} \mathcal{N}(0, \sigma^2)
+  \]
+
+  \medskip
+
+  \textbf{Interprétation :} Peu importe la distribution initiale des $X_i$, la distribution de la moyenne $\bar{X}$ approche celle d'une loi normale à mesure que le nombre d'observations augmente.
+
+\end{frame}
+
+\begin{notes}
+
+  \bigskip
+
+\begin{theorem}[TCL i.i.d. via transformée de Laplace]\label{thm:tcl}
+Soient $(X_i)_{i\ge1}$ i.i.d.\ avec $\mathbb E[X_i]=\mu<\infty$, $\mathbb V(X_i)=\sigma^2<\infty$
+et supposons qu'il existe $t_0>0$ tel que $M_{X_1}(t)=\mathbb E(e^{tX_1})<\infty$ pour $|t|<t_0$.
+Notons $S_n=\sum_{i=1}^n X_i$ et $Z_n=(S_n-n\mu)/(\sigma\sqrt n)$, on a $Z_n\Rightarrow\mathcal N(0,1)$.
+\end{theorem}
+
+\bigskip
+
+\textbf{Preuve du théorème \ref{thm:tcl}.} Notons $K(t)=\log M_{X_1}(t)$. Comme $M_{X_1}$ existe près de $0$
+et $\mathbb E [X_1]=\mu$, $\mathbb V [X_1]=\sigma^2$, on a
+\[
+K(t)=\mu t+\tfrac12\sigma^2t^2+o(t^2)\quad(t\to0).
+\]
+La fonction génératrice des moments  de $Z_n$ est, pour $|t|$ assez petit,
+\[
+M_{Z_n}(t)=\Big(e^{-t\mu/(\sigma\sqrt n)}\,M_{X_1}\!\big(\tfrac{t}{\sigma\sqrt n}\big)\Big)^n,
+\]
+d'où
+\[
+\log M_{Z_n}(t)=n\Big(K\!\big(\tfrac{t}{\sigma\sqrt n}\big)-\tfrac{t\mu}{\sigma\sqrt n}\Big)
+= n\Big(\tfrac12\sigma^2 \tfrac{t^2}{\sigma^2 n}+o(1/n)\Big)=\tfrac12 t^2+o(1).
+\]
+Ainsi $M_{Z_n}(t)\to e^{t^2/2}$ lorsque $n\to\infty$ pour $t$ dans un
+voisinage de $0$ et on reconnaît la transformée de Laplace de la loi
+normale centrée réduite.  Par unicité de la loi donnée par la
+fonction génératrice des moments, $Z_n\Rightarrow\mathcal N(0,1)$.\newline
+
+Si la fonction génératrice des moments n'est pas finie, une preuve
+plus générale consiste à utiliser la fonction caractéristique.
+
+\end{notes}
+
 \begin{notes}
 
   \begin{center}
