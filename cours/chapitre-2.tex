@@ -678,21 +678,21 @@ plus générale consiste à utiliser la fonction caractéristique.
 
   \item Considérons le cas d'un modèle linéaire avec deux variables explicatives. Le DGP est~:
     \[
-      y = X\beta + \varepsilon
+      \mathbf y = X\beta + \varepsilon
     \]
     et le modèle empirique~:
     \[
-      y = X \mathbf{b} + \epsilon
+      \mathbf y = X \mathbf{b} + \epsilon
     \]
-    où $X$ est une matrice $n\times 2$, $y$ une
-    vecteur $n\times 1$, $\varepsilon$ un vecteur
-    aléatoire $n\times 1$ tel que $\mathbb E[\varepsilon] = 0$
-    et $\mathbb V[\varepsilon] = \sigma^2I_n$, $\beta$ un
+    où $X$ est une matrice $T\times 2$, $y$ une
+    vecteur $T\times 1$, $\varepsilon$ un vecteur
+    aléatoire $T\times 1$ tel que $\mathbb E[\varepsilon] = 0$
+    et $\mathbb V[\varepsilon] = \sigma^2I_T$, $\beta$ un
     vecteur $2\times 1$.\newline
 
   \item On suppose que la matrice des régresseurs est telle que~:
     \[
-      \frac{1}{n} X'X =
+      \frac{1}{T} X'X =
       \begin{pmatrix}
         1 & \rho \\
         \rho & 1
@@ -713,12 +713,12 @@ plus générale consiste à utiliser la fonction caractéristique.
 
   \item La variance de l'estimateur des MCO est alors~:
     \[
-      \mathbb V[\hat{\mathbf{b}}] = \frac{\sigma^2}{n}
+      \mathbb V[\hat{\mathbf{b}}] = \frac{\sigma^2}{T}
       \begin{pmatrix}
         1 & \rho\\
         \rho & 1
       \end{pmatrix}^{-1}
-      = \frac{\sigma^2}{n(1-\rho^2)}
+      = \frac{\sigma^2}{T(1-\rho^2)}
       \begin{pmatrix}
         -\rho & 1\\
         1 & -\rho
@@ -738,6 +738,342 @@ plus générale consiste à utiliser la fonction caractéristique.
   \end{itemize}
 
 \end{frame}
+
+
+\begin{frame}
+  \frametitle{Erreurs non sphériques, I}
+
+  \begin{itemize}
+
+  \item Supposons que, dans un modèle linéaire, le vecteur des erreus centrées soit tel que~:
+    \[
+      \mathbb V[\varepsilon] = \sigma_{\varepsilon}^2\Omega \neq \sigma_{\varepsilon}^2 I_T
+    \]
+
+  \item Le long de la diagonale d'$\Omega$ les éléments ne sont pas constants $\rightarrow$ hétéroscédasticité.\newline
+
+  \item Les éléments en dehors de la diagonale peuvent être non nuls $\rightarrow$ autocorrélation\newline
+
+  \item Pas de conséquences sur le biais, mais sur la variance
+
+  \end{itemize}
+
+
+  \begin{prop}\label{prop:bhat:non-spherical-errors-1}
+    L'estimateur des MCO, $\hat{\textbf{b}}$, est sans biais. Si $\lim_{T\rightarrow\infty}\frac{X'\Omega X}{T}$ est finie alors $\hat{\textbf{b}}$ est un estimateur convergent de $\beta$.
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{prop:bhat:non-spherical-errors-1}.} On a~:
+  \[
+    \hat{\textbf{b}} = \beta + (X'X)^{-1}X'\varepsilon
+  \]
+  En appliqaunt l'opérateur espérance, il vient directement~:
+  \[
+    \mathbf E[\hat{\textbf{b}}] = \beta
+  \]
+  La non sphéricité des erreurs ne biaise pas l'estimateur des MCO. La limite en probabilité de l'estimateur est~:
+  \[
+    \begin{split}
+      \hat{\textbf{b}} &\plim \beta + \lim_{T\rightarrow\infty}\frac{X'X}{T}\underset{T\rightarrow\infty}{\text{plim}}\frac{X'\varepsilon}{T}\\
+      &\plim \beta + Q\times \underset{T\rightarrow\infty}{\text{plim}}\frac{X'\varepsilon}{T}
+    \end{split}
+  \]
+  où, sous les hypothèses usuelles, $Q$ est une matrice de plein rang. On a~:
+  \[
+    \mathbb E\left[\frac{X'\varepsilon}{T}\right] = 0
+  \]
+  et
+  \[
+    \begin{split}
+      \mathbb V\left[\frac{X'\varepsilon}{T}\right] &= \frac{X'\mathbb V[\varepsilon]X}{T^2}\\
+                                                    &= \sigma_{\varepsilon}^2\frac{X'\Omega X}{T^2} \underset{T\rightarrow\infty}{\longrightarrow} 0
+    \end{split}
+  \]
+  car par hypothèse $\frac{X'\Omega X}{T}$ tend vers une constante finie. Ainsi, la limite en probabilité de $\frac{X'\varepsilon}{T}$ est 0.\qed
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Erreurs non sphériques, II}
+
+  \begin{prop}\label{prop:bhat:non-spherical-errors-2}
+    La variance de l'estimateur des MCO, $\hat{\textbf{b}}$, est~:
+    \[
+      \mathbb V[\hat{\textbf{b}}] = \sigma_{\varepsilon}^2 (X'X)^{-1}X'\Omega X (X'X)^{-1}
+    \]
+  \end{prop}
+
+  \begin{prop}\label{prop:bhat:non-spherical-errors-3}
+    $s^2=\frac{SSE}{T-K}$ est un estimateur biaisé et non convergent de $\sigma_{\varepsilon}^2$,
+  \end{prop}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item La variance de l'estimateur des MCO est différente de $\sigma_{\varepsilon}^2 (X'X)^{-1}$ dès lors que $\Omega\neq I_T$... Elle peut être plus grande ou plus petite (la différence peut-être semi définie positive, semi définie négative ou autre)
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{prop:bhat:non-spherical-errors-2}.} Par définition de la variance et de $\hat{\textbf{b}}$, on a~:
+  \[
+    \begin{split}
+      \mathbb V\left[\hat{\textbf{b}}\right] &= \mathbb E \left[(X'X)^{-1}X'\varepsilon\varepsilon' X (X'X-1) \right]\\
+                                             &= (X'X)^{-1}X'\mathbb E[\varepsilon\varepsilon']X(X'X)^{-1}\\
+      &= \sigma_{\varepsilon}^2(X'X)^{-1}X'\Omega X (X'X)^{-1}
+    \end{split}
+  \]
+  \qed
+
+  \bigskip
+
+  \textbf{Preuve de la proposition \ref{prop:bhat:non-spherical-errors-3}.} La somme des carrés des résidus, exprimée en fonction des erreurs, est donnée par~:
+  \[
+    SSE = \varepsilon' M \varepsilon
+  \]
+  où $M= I_T - X (X'X)^{-1}X'$ et $P = X(X'X)^{-1}X'$ est la matrice
+  de projection orthogonale sur l'espace engendré par les colonnes
+  de $X$. L'espérance de la somme des carrés des résidus est donc~:
+  \[
+    \begin{split}
+      \mathbb E[SSE] &= \mathbb E \left[\varepsilon' M \varepsilon \right]\\
+                     &= \text{trace} \mathbb E [M\varepsilon'\varepsilon]\\
+                     &= \text{trace} M \mathbb E [\varepsilon'\varepsilon]\\
+                     &= \sigma_{\varepsilon}^{2}\text{trace} M\Omega
+    \end{split}
+  \]
+  qui a priori est différent de $\sigma_{\varepsilon}^2(T-K)$, à cause de la présence de $\Omega$ sous la trace. Ainsi la limite en probabilité de $s¨2$ est a priori différente de $\sigma_{\varepsilon}^2$.\qed
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des MCG, I}
+
+  \begin{itemize}
+
+  \item Est-il possible de transformer les données, pour se ramener dans une situation où toutes les conditions idéales sont satisfaites et où l'estimateur des MCO est BLUE~?\newline
+
+  \item[$\Rightarrow$] L'estimateur des Moindres Carrés Généralisés (MCG).\newline
+
+  \item Puisque $\Omega$ est une matrice définie positive, $\Omega^{-1}$ est aussi une matrice définie positive.\newline
+
+  \item On sait donc qu'il existe une matrice de plein rang $\Lambda$ telle que $\Omega^{-1} = \Lambda'\Lambda$.\newline
+
+  \end{itemize}
+
+
+  \begin{prop}\label{prop:mcg}
+    Le modèle transformé $\Lambda \mathbf y = \Lambda X \beta + \Lambda\varepsilon$ satisfait les conditions idéales si $\lim_{T\rightarrow\infty}\frac{X'\Omega^{-1}X}{T}$ est finie (une matrice symétrique définie positive).
+  \end{prop}
+
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{prop:mcg}.} Puisque $\Lambda$ est une matrice déterministe non singulière, le vecteur aléatoire $\Lambda\varepsilon$ est normalement distribué, son espérance est~:
+  \[
+    \mathbb E [\Lambda\varepsilon] = 0
+  \]
+  et sa variance~:
+  \[
+    \begin{split}
+      \mathbb V[\Lambda\varepsilon] &= \Lambda \mathbb V[\varepsilon] \Lambda'\\
+      &= \sigma_{\varepsilon}^2 \Lambda \Omega \Lambda'
+    \end{split}
+  \]
+  En prémultipliant la variance par $\Lambda'$, on obtient~:
+  \[
+    \sigma_{\varepsilon}^2\Lambda'\Lambda \Omega\lambda' = \sigma_{\varepsilon}^2\Omega^{-1}\Omega \Lambda' = \sigma_{\varepsilon}^2\Lambda'
+  \]
+  On en déduit donc que $\Lambda \Omega \Lambda' = I_T$. Ainsi $\mathbb V [\Lambda\varepsilon] = \sigma_{\varepsilon}^2I_T$. Les erreurs du modèle transformé sont donc normalement distribuées, centrées et sphériques. Il nous reste à vérifier le comportement des régresseurs dans le modèle transformé. Puisque $\Lambda$ et $X$ sont des matrices déterministes, les régresseurs dans le modèle transformé sont déterministes. On a~:
+  \[
+    \lim_{T\rightarrow\infty}\frac{(\Lambda X)'\Lambda X}{T} = \lim_{T\rightarrow\infty}\frac{X'\Lambda'\Lambda X}{T} = \lim_{T\rightarrow\infty}\frac{X'\Omega^{-1} X}{T}
+  \]
+  qui par hypothèse est une matrice (finie) définie positive.\qed
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des MCG, II}
+
+  \begin{itemize}
+
+  \item Puisque le modèle transformé satisfait toutes les conditions idéales, on peut utiliser l'estimateur des MCO en régressant $\Lambda \mathbf y$ sur $\Lambda X$ pour obtenir un estimateur BLUE de $\beta$ $\rightarrow$estimateur MCG\newline
+
+  \item On suppose implicitement ici que la matrice $\Omega$, et donc $\Lambda$, est connue.\newline
+
+  \end{itemize}
+
+
+  \begin{prop}\label{prop:mcg:def}
+    L'estimateur des Moindres Carrés Généralisés de $\beta$ est défini par~:
+    \[
+      \tilde{\textbf{b}} = (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}\mathbf y
+    \]
+    Il s'agit d'un estimateur BLUE et convergent de $\beta$.
+  \end{prop}
+
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{prop:mcg:def}.} Par définition de l'estimateur des MCO (sur les données transformées) on a~:
+
+  \[
+    \begin{split}
+      \tilde{\textbf{b}} &= \left( (\Lambda X)'\lambda X\right)^{-1}(\Lambda X)'\Lambda \mathbf y\\
+                         &= \left( X'\Lambda' \Lambda X \right)^{-1}X'\Lambda'\Lambda \mathbf y\\
+                         &= \left( X'\Omega^{-1}X \right)^{-1}X'\Omega^{-1}\mathbf y
+    \end{split}
+  \]
+  Puisque le modèle transformé vérifie toutes les conditions idéales, il est BLUE et convergent.\qed
+
+  \bigskip
+
+  Nous verrons plus loin que l'estimateur MCG de $\beta$ est identique à l'estimateur du maximum de vraisemblance.
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des MCG, III}
+
+
+  \begin{prop}\label{prop:mcg:variance}
+    La variance de l'estimateur des Moindres Carrés Généralisés de $\beta$ est~:
+    \[
+      \mathbb V \left[\tilde{\textbf{b}}\right] = \sigma_{\varepsilon}^2(X'\Omega^{-1}X)^{-1}
+    \]
+  \end{prop}
+
+  \bigskip
+
+  \begin{prop}\label{prop:mcg:s2}
+    Un estimateur non biaisé et convergent de $\sigma_{\varepsilon}^2$ est~:
+    \[
+      \tilde s^2 = \frac{\left(y-X\tilde{\textbf{b}}\right)'\Omega^{-1}\left(y-X\tilde{\textbf{b}}\right)}{T-K}
+    \]
+  \end{prop}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \textbf{Preuve de la proposition \ref{prop:mcg:variance}.} En reprenant la formule de la variance de l'estimateur des MCO et en l'appliquant sur les données transformées~:
+  \[
+    \begin{split}
+      \mathbb V \left[\tilde{\textbf{b}}\right] &= \sigma_{\varepsilon}^2\left((\Lambda X)'\Lambda X  \right)^{-1}\\
+                                                &= \sigma_{\varepsilon}^2\left(X'\Lambda'\Lambda X  \right)^{-1}\\
+                                                &= \sigma_{\varepsilon}^2\left(X'\Omega^{-1} X \right)^{-1}\\
+    \end{split}
+  \]
+  \qed
+
+  \bigskip
+
+  \textbf{Comparaison de $\mathbb V [\tilde{\textbf{b}}]$
+    et $\mathbb V [\hat{\textbf{b}}]$.} On peut montrer que la
+  variance de la variance de l'estimateur des MCO est plus grande que
+  la variance de l'estimateur des MCG, au sens
+  où $\mathbb V [\hat{\textbf{b}}]-\mathbb V [\tilde{\textbf{b}}]$ est
+  une matrice définie positive. Nous savons déjà
+  que $\tilde{\textbf{b}}$ est BLUE est que donc sa variance doit être
+  plus petite, mais nous envisagons une preuve plus directe sans
+  s'appuer sur le théorème de Gauss-Markov. Soit le modèle~:
+
+  \[
+\mathbf y=X\beta+\varepsilon,\quad \mathbb E[\varepsilon]=0,\quad \mathbb V[\varepsilon]=\Sigma = \sigma_{\varepsilon}^2\succ 0.
+\]
+Posons~:
+\[
+  A = (X'X)^{-1}X'
+\]
+et
+\[
+  G = (X'\Sigma^{-1}X)^{-1}X'\Sigma^{-1}
+\]
+On peut alors écrire les variance des deux estimateurs comme~:
+\[
+\mathbb V[\hat{\textbf{b}}] = A\Sigma A'
+\]
+et
+\[
+\mathbb V[\tilde{\textbf{b}}] = G\Sigma G'
+\]
+Posons \(D=A-G\). On a \(AX=GX=I_K\), donc \(DX=0\). La différence des variances est~:
+\[
+  \begin{split}
+    \mathbb V[\hat{\textbf{b}}]-\mathbb V[\tilde{\textbf{b}}] &= A\Sigma A' - G\Sigma G'\\
+&= (G+D)\Sigma(G+D)' - G\Sigma G'\\
+&= D\Sigma D' + G\Sigma D' + D\Sigma G'
+  \end{split}
+\]
+Or
+\[
+G\Sigma D' = (X'\Sigma^{-1}X)^{-1}X'D' = 0
+\]
+de même pour sa transposée $D\Sigma G'$. Ainsi
+\[
+  \mathbb V[\hat{\textbf{b}}]-\mathbb V[\tilde{\textbf{b}}] = D\Sigma D \succeq 0
+\]
+est une matrice définie positive. La différence est nulle si et
+seulement si $D=0$, c'est-à-dire si $\Sigma$ est proportionnelle à une
+matrice identité. L'estimateur MCG est donc bien plus précis que
+l'estimateur des MCO quand les résidus sont non sphériques.
+
+\bigskip
+
+\textbf{Preuve de la proposition \ref{prop:mcg:s2}.} On procède comme
+pour la preuve de la proposition \ref{prop:mcg:variance} en partant de
+la définition de $\tilde{s}^2$ dans le chapitre
+\href{https://le-mans.adjemian.eu/econometrics/chapitre-1.pdf}{1} et
+en considérant les données transformées.\qed
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Estimateur des MCG, IV}
+
+  \begin{itemize}
+
+  \item Pour le reste, nous pouvons faire les tests comme dans le chapitre \href{https://le-mans.adjemian.eu/econometrics/chapitre-1.pdf}{I}.\newline
+
+  \item L'estimateur des MCG de $\beta$ est normalement distribué~:
+    \[
+      \tilde{\mathbf b} \sim \mathcal N\left(\beta, \sigma_{\varepsilon}^2\left(X'\Omega^{-1} X \right)^{-1} \right)
+    \]
+    \medskip
+
+  \item $\tilde{s}^2$ suit un khi-2~:
+    \[
+      \frac{(T-K)\tilde{s}^2}{\sigma_{\varepsilon}^2} \sim \chi^2(T-K)
+    \]
+    \medskip
+
+  \item Les variables aléatoires $\tilde{\mathbf b}$ et $\tilde{s}^2$ sont indépendantes.
+  \end{itemize}
+
+
+\end{frame}
+
+
 
 
 
