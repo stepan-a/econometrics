@@ -1074,6 +1074,77 @@ en considérant les données transformées.\qed
 \end{frame}
 
 
+\begin{frame}
+  \frametitle{Estimateur des MCQG, I}
+
+  \begin{itemize}
+
+  \item En pratique la matrice $\Omega$ n'est pas connue.\newline
+
+  \item Il faut estimer cette matrice.\newline
+
+  \item Évidemment il n'est pas possible d'estimer les $\frac{T(T+1)}{2}>T$ éléments de cette matrice...\newline
+
+  \item Il faut imposer des contraintes sur la forme de cette matrice.\newline
+
+  \item Supposons que les $\frac{T(T+1)}{2}$ éléments de $\Omega$ soient déterminés par un petit nombre de paramètres $\lambda_1$, ..., $\lambda_p$.\newline
+
+  \item Si nous disposons d'estimaeurs convergents de ces paramètres alors nous pouvons obtenir une estimation convergente de $\Omega$ que nous noterons $\widehat \Omega$. Que nous pouvons utiliser dans l'expression de l'estimateur MCG...
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Estimateur des MCQG, II}
+
+  \begin{defn}{MCQG}
+    Soit $\widehat\Omega$ un estimateur de $\Omega$. L'estimateur des Moindres Carrés Quasi Généralisés de $\beta$ est défini par~:
+    \[
+      \breve{\mathbf b} = \left( X'\widehat{\Omega}^{-1}X \right)^{-1}X'\widehat{\Omega}^{-1}\mathbf y
+    \]
+  \end{defn}
+
+  \bigskip\medskip
+
+  \begin{itemize}
+
+  \item[\dbend] Même si $\widehat\Omega$ est un estimateur convergent de $\Omega$, on ne peut pas, en toute généralité, conclure que les propriétés de l'estimateur MCQG, $\breve{\mathbf b}$, sont identiques asymptotiquement à celle de l'estimateur des MCG, $\tilde{\mathbf b}$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Estimateur des MCQG, III}
+
+  \begin{prop}\label{prop:mcqg:convergence}
+    Une condition suffisante pour que l'estimateur MCQG, $\breve{\mathbf b}$, soit convergent est~:
+    \[
+      \frac{X'\widehat{\Omega}^{-1}X}{T} \plim Q \quad \land \quad \frac{X'\widehat{\Omega}^{-1}\varepsilon}{T} \plim 0
+    \]
+    avec $Q$ une matrice définie positive.
+  \end{prop}
+
+
+  \begin{prop}\label{prop:mcqg:adist}
+    Une condition suffisante pour que les estimateurs MCQG, $\breve{\mathbf b}$, et MCG, $\tilde{b}$, aient la même distribution asymptotique est~:
+    \[
+      \frac{X'\left( \widehat{\Omega}^{-1} - \Omega^{-1} \right) X}{T} \plim 0 \quad \land \quad \frac{X' \left( \widehat{\Omega}^{-1} - \Omega^{-1} \right)  \varepsilon}{\sqrt{T}} \plim 0
+    \]
+  \end{prop}
+
+
+  \begin{itemize}
+
+  \item[\dbend] À distance finie, la distribution de l'estimateur MCQG est inconnue (non gaussienne), même si les erreurs sont normalement distribuées.
+
+  \end{itemize}
+
+\end{frame}
+
 
 
 
