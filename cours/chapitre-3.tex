@@ -1,0 +1,290 @@
+\synctex=1
+
+\documentclass[10pt]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage{etex}
+\usepackage{fourier-orns}
+\usepackage{ccicons}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsbsy}
+\usepackage{amsopn}
+\usepackage{amscd}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{color, colortbl}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage[nice]{nicefrac}
+\usepackage{setspace}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{algorithms/algorithm}
+\usepackage{algorithms/algorithmic}
+\usepackage{tikz,pgfplots,pgfplotstable}
+\pgfplotsset{compat=1.18}%newest}
+\usetikzlibrary{patterns, arrows, decorations.pathreplacing, decorations.markings, calc}
+\pgfplotsset{plot coordinates/math parser=false}
+\usetikzlibrary{external}
+\tikzexternalize[prefix=figures/]
+\newlength\figureheight
+\newlength\figurewidth
+\usepackage{cancel}
+\usepackage{tikz-qtree}
+\usepackage{dcolumn}
+\usepackage{adjustbox}
+\usepackage{environ}
+\usepackage[cal=boondox]{mathalfa}
+\usepackage{manfnt}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=black,
+  urlcolor=blue,
+}
+\usepackage{venndiagram}
+\usepackage{subcaption}
+\usepackage{centernot}
+
+\usepackage[backend=biber,style=bwl-FU,natbib=true,doi=false,isbn=false,url=false,eprint=false]{biblatex}%bwl-FU
+\addbibresource{econometrics.bib}
+
+\makeatletter
+\@ifclassloaded{beamer}{
+\usefonttheme[onlymath]{serif}
+\uselanguage{French}
+\languagepath{French}
+% Git hash
+\usepackage{xstring}
+\usepackage{catchfile}
+\immediate\write18{git rev-parse HEAD > git.hash}
+\CatchFileDef{\HEAD}{git.hash}{\endlinechar=-1}
+\newcommand{\gitrevision}{\StrLeft{\HEAD}{7}}
+}{}
+\makeatother
+
+\newcommand{\trace}{\mathrm{tr}}
+\newcommand{\vect}{\mathrm{vec}}
+\newcommand{\tracarg}[1]{\mathrm{tr}\left\{#1\right\}}
+\newcommand{\vectarg}[1]{\mathrm{vec}\left(#1\right)}
+\newcommand{\vecth}[1]{\mathrm{vech}\left(#1\right)}
+\newcommand{\iid}[2]{\mathrm{iid}\left(#1,#2\right)}
+\newcommand{\normal}[2]{\mathcal N\left(#1,#2\right)}
+\newcommand{\sample}{\mathcal Y_T}
+\newcommand{\samplet}[1]{\mathcal Y_{#1}}
+\newcommand{\slidetitle}[1]{\fancyhead[L]{\textsc{#1}}}
+
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\binomial}[2]{\begin{pmatrix} #1 \\ #2 \end{pmatrix}}
+\newcommand{\bigO}[1]{\mathcal O \left(#1\right)}
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+\newcommand{\plim}{\overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}}}
+\newcommand{\epsvar}{\sigma_{\varepsilon}^2}
+
+
+\newcommand\gauss[2]{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))} % Gaussian probability density function.
+
+\renewcommand{\qedsymbol}{C.Q.F.D.}
+
+\newcolumntype{d}{D{.}{.}{-1}}
+\definecolor{gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{gray}}c}
+
+
+\makeatletter
+\@ifclassloaded{beamer}{\setbeamertemplate{theorems}[numbered]{}}{}
+\makeatother
+
+\theoremstyle{plain}
+
+\makeatletter
+\@ifclassloaded{beamer}{
+\setbeamertemplate{footline}{
+  {\hfill\vspace*{1pt}\href{http://creativecommons.org/licenses/by-sa/3.0/legalcode}{\ccbysa}\hspace{.1cm}
+    \href{https://github.com/stepan-a/econometrics/blob/\HEAD/cours/chapitre-2.tex}{\gitrevision}\enspace--\enspace\today\enspace
+  }}
+
+\makeatother
+
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{caption}[numbered]
+
+\NewEnviron{notes}{\justifying\footnotesize\begin{spacing}{1.0}\BODY\vfill\pagebreak\end{spacing}}
+
+\newenvironment{exercise}[1]
+{\bgroup \small\begin{block}{Ex. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{defn}[1]
+{\bgroup \small\begin{block}{Définition. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{exemple}[1]
+{\bgroup \small\begin{block}{Exemple. #1}}
+  {\end{block}\egroup}
+}{}
+
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollaire}
+
+%\usepgfplotslibrary{external}
+%\tikzexternalize
+
+
+\begin{document}
+
+\title{Économétrie\\\small{Régresseurs non déterministes}}
+\author[S. Adjemian]{Stéphane Adjemian}
+\institute{\texttt{stephane.adjemian@univ-lemans.fr}}
+\date{Septembre 2025}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Régresseurs aléatoires}
+
+  \begin{itemize}
+
+  \item Dans les chapitres \href{https://le-mans.adjemian.eu/econometrics/chapitre-1.pdf}{I} et \href{https://le-mans.adjemian.eu/econometrics/chapitre-2.pdf}{II}, nous avons supposé que les variables explicatives, $X$, sont détermnistes.\newline
+
+  \item Cette hypothèse n'est généralement pas raisonnable.\newline
+
+  \item \textsc{Exemple} Si le modèle est~: $y_t = \rho y_{t-1} + \varepsilon_t$ où $\varepsilon_t$ est une variable aléatoire normale (AR(1)).\newline
+
+  \item Même si la condition initiale, $y_0$, est déterministe, la variable $y$ est clairement aléatoire (à gauche, comme d'habitude, mais aussi à droite).\newline 
+
+  \item Quelles sont les conséqences pour l'inférence~?\newline
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Erreurs de mesure}
+
+  \begin{itemize}
+
+  \item Supposons que le DGP soit $\mathbf y = X^{\star}\beta + \varepsilon$, où les conditions idéales sont vérifiées et où la matrice des régresseurs $X^{\star}$ est déterministe.\newline
+
+  \item Supposons que les variables explicatives soient mesurées avec des erreurs, on observe seulement $X = X^{\star} + \eta$, où $\eta$ est une variable aléatoire (centrée).\newline
+
+  \item Les variables explicatives sont observées à un aléa près $\Rightarrow$ Les variables explicatives, $X$, considérées par l'économètre sont aléatoires.\newline
+
+  \item Est-il possible d'obtenir une estimation sans biais de $\beta$ en régressant $\mathbf y$ sur $X$~? Convergente~? Quelles sont les propriétés de l'estimateur des MCO~? \newline
+
+  \item Ici la variable explicative est aléatoire, on verra que cela biaise l'estimation car elle est corrélée avec l'erreur du modèle.
+    
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Double causalité}
+
+  \begin{itemize}
+
+  \item Supposons que l'on s'intéresse à l'effet du revenu sur la santé dans une population. On considère le modèle~:
+    \[
+      \text{Santé}_i = \beta_0 + \beta_1 \text{Revenu}_i + u_i
+    \]
+
+  \item Les individus les plus riches mangent mieux et vivent dans de meilleurs environnements $\rightarrow$ $\beta_1>0$\newline
+
+  \item Mais une meilleure santé accroît la productivité des individus, on peut donc lire la causalité dans l'autre sens, avec par exemple un modèle de la forme~:
+    \[
+      \text{Revenu}_i = \alpha_0 + \alpha_1 \text{Santé}_i + v_i
+    \]
+    avec $\alpha_1>0$.
+
+  \item Cette double causalité induit une corrélation entre le revenu de l'individu $i$ et $u_i$.
+
+  \item[$\Rightarrow$] On verra que cela biaise l'estimation de $\beta_1$ par les MCO dans le premier modèle.
+    
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item En substituant la seconde équation dans la première (on élimine le revenu), on obtient~:
+    \[
+      \text{Santé}_i = \beta_0 + \beta_1\left( \alpha_0+\alpha_1\text{Santé}_i+v_i\right)+u_i
+    \]
+\[
+      \Leftrightarrow \text{Santé}_i = \frac{\beta_0+\beta_1\alpha_0}{1-\beta_1\alpha_1} + \frac{\beta_1 v_i}{1-\beta_1\alpha_1} + \frac{u_i}{1-\beta_1\alpha_1}
+    \]    
+  \item En substituant dans la seconde equation~:
+    \[
+      \text{Revenu}_i = \alpha_0 + \alpha_1\frac{\beta_0+\beta_1\alpha_0}{1-\beta_1\alpha_1} + \left( 1 + \frac{\alpha_1\beta_1}{1-\alpha_1\beta_1}\right)v_i  + \frac{\alpha_1u_i}{1-\alpha_1\beta_1}
+    \]
+\[
+      \Leftrightarrow\text{Revenu}_i = \alpha_0 + \alpha_1\frac{\beta_0+\beta_1\alpha_0}{1-\beta_1\alpha_1}  + \frac{v_i}{1-\alpha_1\beta_1}  + \frac{\alpha_1u_i}{1-\alpha_1\beta_1}
+    \]
+
+  \item La corrélation entre revenu et le terme d'erreur dans le premier modèle est donc non nulle:
+    \[
+      \textrm{corr}\left( \text{Revenu}_i, u_i \right) = \frac{\alpha_1\sigma_u^2}{1-\alpha_1\beta_1}
+    \]
+    en supposant que $u_i$ et $v_i$ sont non corrélés.
+
+  \item Clairement les deux variables considérée ici (le revenu et la
+    santé) sont aléatoires. C'est la corrélation, dans le premier
+    modèle, entre le revenu et le terme d'erreur qui va biaiser
+    l'estimateur de $\beta_1$.\newline
+
+  \item Si une personne est en meilleure santé pour des raisons non
+    observées (captées par $u_i$), cette meilleure santé accroît aussi
+    son revenu, le revenu observé est donc corrélé au terme d’erreur.
+
+  \end{itemize}
+
+\end{notes}
+
+
+
+\begin{notes}
+
+  \begin{center}
+    \begin{tabular}{c}
+      \\
+      \Huge{\textsc{Références}}\\
+      \\
+    \end{tabular}
+  \end{center}
+
+  \bigskip
+
+  \nocite{Green2017}
+
+  \nocite{Schmidt1976}
+
+  \printbibliography
+
+\end{notes}
+
+
+\end{document}
+
+
+% Local Variables:
+% ispell-check-comments: exclusive
+% ispell-local-dictionary: "french"
+% TeX-master: t
+% End:

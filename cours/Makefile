@@ -1,6 +1,6 @@
 LATEX = pdflatex
 
-all: chapitre-1.pdf chapitre-2.pdf clean
+all: chapitre-1.pdf chapitre-2.pdf chapitre-3.pdf clean
 
 codes/chapitre-1.log: codes/chapitre-1.org
 	cd codes ; ./babel chapitre-1.org
@@ -12,6 +12,10 @@ chapitre-1.pdf: chapitre-1.tex codes/chapitre-1.log
 chapitre-2.pdf: chapitre-2.tex
 	@rubber --src-specials --unsafe --pdf chapitre-2
 	@rubber --clean chapitre-2
+
+chapitre-3.pdf: chapitre-3.tex
+	@rubber --src-specials --unsafe --pdf chapitre-3
+	@rubber --clean chapitre-3
 
 clean:
 	@rm -f *.aux *.log *.out *.nav *.rel *.toc *.snm *.synctex.gz *.vrb *.rubbercache
