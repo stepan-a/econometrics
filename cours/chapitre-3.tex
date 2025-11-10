@@ -124,6 +124,10 @@
 {\bgroup \small\begin{block}{Ex. #1}}
   {\end{block}\egroup}
 
+\newenvironment{rem}[1]
+{\bgroup \small\begin{block}{Remarque. #1}}
+  {\end{block}\egroup}
+
 \newenvironment{defn}[1]
 {\bgroup \small\begin{block}{Définition. #1}}
   {\end{block}\egroup}
@@ -133,6 +137,7 @@
   {\end{block}\egroup}
 }{}
 
+\newtheorem{thm}{Théorème}
 \newtheorem{prop}{Proposition}
 \newtheorem{cor}{Corollaire}
 
@@ -256,6 +261,612 @@
   \end{itemize}
 
 \end{notes}
+
+
+\begin{frame}{Le modèle}
+\textbf{Un modèle de régression linéaire:}
+\[ y = X\beta + \varepsilon \]
+
+\textbf{Hypothèses maintenues:}
+\begin{itemize}
+    \item $\varepsilon \sim N(0, \sigma^2 I)$
+    \item $Q = \text{plim} \frac{1}{T}X'X$ finie et non-singulière
+    \item Les régresseurs sont linéairement indépendants avec probabilité 1
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Changement:}
+\begin{itemize}
+    \item $X$ est maintenant \textbf{aléatoire} (au moins en partie) plutôt que non-stochastique
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cas 1: $X$ et $\varepsilon$ indépendants}
+
+  \textbf{Si $X$ et $\varepsilon$ sont indépendants:}
+
+\begin{itemize}
+    \item La distribution de $\varepsilon$ conditionnelle à $X$ est identique à sa distribution marginale
+    \item Conditionnellement à $X$: $\varepsilon \sim N(0, \sigma^2 I)$
+    \item Tous les résultats du Chapitre 1 sont valides \textbf{conditionnellement à $X$}
+    \item L'estimateur MCO conserve ses propriétés désirables
+    \item Les tests usuels restent valides (conditionnellement à $X$)
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Intuition:} En conditionnant sur $X$, on le traite comme non-stochastique. L'indépendance garantit que la valeur particulière de $X$ n'affecte rien.
+
+\end{frame}
+
+\begin{frame}{Limites des énoncés conditionnels}
+\textbf{Problèmes:}
+\begin{itemize}
+    \item Si $X$ et $\varepsilon$ sont tous deux stochastiques, l'utilité d'énoncés conditionnels sur $X$ est limitée
+    \item Pour faire des inférences \textbf{non conditionnelles}, il faut connaître la distribution de $X$
+    \item Très difficile en pratique
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Exigence minimale pour la consistance:}
+\[ \text{plim} \frac{1}{T}\sum_{t=1}^{T} x_{ti}\varepsilon_t = 0 \quad (i = 1, 2, \ldots, K) \]
+
+Si $x_{ti}$ sont iid et $E(x_{ti}\varepsilon_t)$ existe (donc = 0), alors la loi des grands nombres s'applique.
+
+\textbf{Attention:} Les $x_{ti}$ n'ont pas besoin d'être iid, et $E(x_{ti}\varepsilon_t)$ peut ne pas exister!
+\end{frame}
+
+\begin{frame}{Distribution asymptotique}
+\textbf{Problème:}
+\begin{itemize}
+    \item On ne peut pas garantir que $\hat{\beta}$ sera asymptotiquement normal
+    \item Les théorèmes de limite centrale ne s'appliquent pas directement car $\hat{\beta}$ est une combinaison \textbf{non-linéaire} de $X$ et $\varepsilon$
+    \item La non-linéarité vient de l'inversion de $X'X$
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Sans information sur la distribution de $X$:}
+\begin{itemize}
+    \item Tests d'hypothèses valides impossibles, même asymptotiquement
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cas 2: Corrélation entre $X$ et $\varepsilon$}
+\textbf{Si $X_t$ et $\varepsilon_t$ sont corrélés:}
+
+Typiquement:
+\[ \text{plim} \, \hat{\beta} \neq \beta \]
+
+$\Rightarrow$ \textbf{$\hat{\beta}$ est inconsistant}
+
+\vspace{0.5cm}
+\textbf{Stratégie du chapitre:}
+
+Étudier des cas particuliers où:
+\begin{enumerate}
+    \item Les régresseurs sont stochastiques pour une raison spécifique
+    \item La nature particulière des régresseurs permet l'estimation et les tests d'hypothèses valides
+\end{enumerate}
+\end{frame}
+
+% ============================================
+% Section 3.3: Instrumental Variables
+% ============================================
+
+\section{3.3 Variables Instrumentales}
+
+\begin{frame}{3.3 Variables Instrumentales: Le problème}
+\textbf{Contexte:}
+\[ y = X\beta + \varepsilon \]
+
+\textbf{Problème:}
+\[ \text{plim} \frac{1}{T}X'\varepsilon \neq 0 \]
+
+$\Rightarrow$ L'estimateur MCO $\hat{\beta} = (X'X)^{-1}X'y$ est \textbf{inconsistant}
+
+\vspace{0.5cm}
+\textbf{Solution:} Trouver des \textbf{instruments} $Z$ qui remplacent $X$ dans la construction de l'estimateur
+\end{frame}
+
+\begin{frame}{Théorème principal}
+\begin{thm}
+Supposons qu'il existe un ensemble de variables $Z$ tel que:
+\begin{enumerate}
+    \item $Q_{ZX} = \text{plim} \frac{1}{T}Z'X$ est finie et non-singulière
+    \item $\frac{Z'\varepsilon}{\sqrt{T}} \xrightarrow{d} N(0, \Psi)$
+\end{enumerate}
+
+Alors l'estimateur
+\[ \tilde{\beta} = (Z'X)^{-1}Z'y \]
+est consistant, et la distribution asymptotique de $\sqrt{T}(\tilde{\beta} - \beta)$ est:
+\[ N\left(0, Q_{ZX}^{-1}\Psi(Q_{ZX}')^{-1}\right) \]
+\end{thm}
+\end{frame}
+
+\begin{frame}{Preuve: Consistance}
+\textbf{Preuve de la consistance:}
+
+On a:
+\[ \tilde{\beta} = (Z'X)^{-1}Z'y = (Z'X)^{-1}Z'(X\beta + \varepsilon) \]
+\[ = \beta + (Z'X)^{-1}Z'\varepsilon \]
+
+Donc:
+\[ \text{plim} \, \tilde{\beta} = \beta + Q_{ZX}^{-1} \cdot \text{plim} \frac{Z'\varepsilon}{T} \]
+
+Puisque $\frac{Z'\varepsilon}{\sqrt{T}}$ a une distribution asymptotique bien définie, nécessairement:
+\[ \text{plim} \frac{Z'\varepsilon}{T} = 0 \]
+
+D'où: $\text{plim} \, \tilde{\beta} = \beta$ \hfill $\square$
+\end{frame}
+
+\begin{frame}{Preuve: Distribution asymptotique}
+\textbf{Distribution asymptotique:}
+
+On a:
+\[ \sqrt{T}(\tilde{\beta} - \beta) = \left(\frac{Z'X}{T}\right)^{-1} \frac{Z'\varepsilon}{\sqrt{T}} \]
+
+Puisque:
+\begin{itemize}
+    \item $\frac{Z'\varepsilon}{\sqrt{T}} \xrightarrow{d} N(0, \Psi)$
+    \item $\frac{Z'X}{T} \xrightarrow{p} Q_{ZX}$
+\end{itemize}
+
+Par le théorème de Slutsky:
+\[ \sqrt{T}(\tilde{\beta} - \beta) \xrightarrow{d} N\left(0, Q_{ZX}^{-1}\Psi(Q_{ZX}')^{-1}\right) \]
+\hfill $\square$
+\end{frame}
+
+\begin{frame}{Définitions et remarques}
+\begin{defn}
+L'estimateur $\tilde{\beta} = (Z'X)^{-1}Z'y$ est appelé \textbf{estimateur par variables instrumentales} (IV) de $\beta$. La matrice $Z$ est l'ensemble des \textbf{instruments} pour $X$.
+\end{defn}
+
+\vspace{0.3cm}
+\begin{rem}
+Le cas typique est celui où:
+\[ \frac{Z'\varepsilon}{\sqrt{T}} \xrightarrow{d} N(0, \sigma^2 Q_{ZZ}) \]
+où $Q_{ZZ} = \text{plim} \frac{1}{T}Z'Z$
+\end{rem}
+\end{frame}
+
+\begin{frame}{Exemple: Modèle à retards distribués}
+\textbf{Modèle de Koyck:}
+\[ y_t^* = \beta_0 + \beta_1 x_t + \beta_1\lambda x_{t-1} + \beta_1\lambda^2 x_{t-2} + \cdots + \varepsilon_t \]
+
+Transformation de Koyck:
+\[ y_t = \beta x_t + \lambda y_{t-1} + (\varepsilon_t - \lambda\varepsilon_{t-1}) \]
+
+\textbf{Problème:}
+\[ \text{plim} \frac{1}{T}\sum_{t=1}^{T} y_{t-1}(\varepsilon_t - \lambda\varepsilon_{t-1}) = -\lambda\sigma^2 \neq 0 \]
+
+car $y_{t-1}$ et $\varepsilon_{t-1}$ sont corrélés.
+
+$\Rightarrow$ MCO est \textbf{inconsistant}
+\end{frame}
+
+\begin{frame}{Exemple (suite): Choix d'instruments}
+\textbf{Choix d'instruments:}
+\[ Z_t = (x_t, x_{t-1})' \]
+
+\textbf{Conditions vérifiées:}
+\begin{enumerate}
+    \item Sous conditions raisonnables sur $x_t$:
+    \[ \text{plim} \frac{1}{T}\sum_{t=1}^{T} (x_t, x_{t-1})'(x_t, y_{t-1}) \]
+    est finie et non-singulière
+
+    \item La perturbation $\varepsilon_t - \lambda\varepsilon_{t-1}$ est m-dépendante (avec $m=1$)
+
+    \item Théorème de limite centrale pour variables m-dépendantes $\Rightarrow$
+    \[ \frac{1}{\sqrt{T}}\sum_{t=1}^{T}(x_t, x_{t-1})'(\varepsilon_t - \lambda\varepsilon_{t-1}) \]
+    a une distribution asymptotique bien définie
+\end{enumerate}
+
+$\Rightarrow$ L'estimateur IV sera \textbf{consistant}
+\end{frame}
+
+\begin{frame}{Mise en garde importante}
+\textbf{Erreur courante dans la littérature:}
+
+\begin{itemize}
+    \item On affirme parfois que si $Q_{ZX}$ est finie et non-singulière et si:
+    \[ \text{plim} \frac{1}{T}Z'\varepsilon = 0 \]
+    alors $\tilde{\beta}$ est consistant et $\sqrt{T}(\tilde{\beta} - \beta) \xrightarrow{d} N(0, \sigma^2 Q_{ZZ}^{-1}Q_{ZX}(Q_{ZX}')^{-1})$
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{FAUX!}
+
+\begin{itemize}
+    \item La consistance est vraie
+    \item Mais l'énoncé sur la distribution asymptotique est \textbf{faux}
+    \item Raison: $\text{plim} \frac{1}{T}Z'\varepsilon = 0$ n'implique pas que $\frac{Z'\varepsilon}{\sqrt{T}} \xrightarrow{d} N(0, \sigma^2 Q_{ZZ})$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Contre-exemple}
+\textbf{Exemple:} Estimateur de classe-$k$ avec $k = 1 + \frac{c}{\sqrt{T}}$
+
+\begin{itemize}
+    \item L'estimateur classe-$k$ est un estimateur IV
+    \item On a: $Q_{ZX}$ finie et non-singulière, $Q_{ZZ}$ finie
+    \item Et: $\text{plim} \frac{1}{T}Z'\varepsilon = 0$
+\end{itemize}
+
+\textbf{Mais:}
+\begin{itemize}
+    \item $\frac{Z'\varepsilon}{\sqrt{T}}$ n'a \textbf{pas} de distribution asymptotique bien définie
+    \item Donc $\sqrt{T}(\tilde{\beta} - \beta)$ non plus
+    \item Si l'affirmation fausse était vraie, cela impliquerait que l'estimateur classe-$k$ avec ce $k$ aurait la même matrice de covariance asymptotique que l'estimateur DMC
+    \item Ce qui est manifestement faux!
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Difficulté de vérification}
+\textbf{Problème pratique:}
+
+Il est clairement plus facile de vérifier:
+\[ \text{plim} \frac{1}{T}Z'\varepsilon = 0 \]
+
+que de vérifier:
+\[ \frac{Z'\varepsilon}{\sqrt{T}} \text{ a une distribution asymptotique bien définie} \]
+
+\vspace{0.3cm}
+\textbf{Question naturelle:} Existe-t-il des conditions suffisantes facilement vérifiables?
+
+\textbf{Réponse:} Si $Z$ est non-stochastique et $Q_{ZZ} = \text{plim} \frac{1}{T}Z'Z$ est finie, c'est suffisant.
+
+\textbf{Mais:} Si $Z$ est stochastique, c'est compliqué. Les conditions suffisantes qui existent sont trop exigeantes pour être vraiment utiles.
+\end{frame}
+
+\begin{frame}{Conditions fortes (mais insuffisantes)}
+\textbf{Tentative de condition:} Les observations $Z_t$ sont iid et indépendantes de toutes les observations sur $\varepsilon$
+
+\vspace{0.3cm}
+\textbf{Mais même cela ne suffit pas!}
+
+\textbf{Contre-exemple:} Reprenons l'exemple de la Section 3.1 où:
+\[ Z_t = \frac{1}{X_t} \]
+avec $X_t$ iid $N(0, \sigma_X^2)$ et indépendant de $\varepsilon$.
+
+\begin{itemize}
+    \item Les $Z_t$ sont aussi iid et indépendants de $\varepsilon$
+    \item \textbf{Mais:} $Z_t\varepsilon_t$ a une distribution de Cauchy (dont la moyenne n'existe pas)
+    \item Donc $\frac{1}{T}\sum_{t=1}^{T} Z_t\varepsilon_t$ aussi
+    \item On n'a même pas $\text{plim} \frac{1}{T}Z'\varepsilon = 0$
+    \item Encore moins une distribution asymptotique bien définie pour $\frac{Z'\varepsilon}{\sqrt{T}}$
+\end{itemize}
+\end{frame}
+
+% ============================================
+% Section 3.4: Errors in Variables
+% ============================================
+
+\section{3.4 Erreurs de Mesure}
+
+\begin{frame}{3.4 Erreurs de Mesure: Le modèle}
+\textbf{Modèle de régression linéaire simple:}
+\[ y_t = \alpha + \beta x_t + \varepsilon_t \]
+
+\textbf{Problème:} $y$ et $x$ sont observés avec erreur
+
+\textbf{Variables observées:}
+\begin{align*}
+y_t^* &= y_t + v_t = \alpha + \beta x_t + (\varepsilon_t + v_t) \\
+x_t^* &= x_t + u_t
+\end{align*}
+
+\textbf{Forme alternative:}
+\[ y_t^* = \alpha + \beta x_t^* + (\varepsilon_t + v_t - \beta u_t) \]
+
+\textbf{Observation:} La perturbation composée dépend de $x_t^*$ via $u_t$!
+\end{frame}
+
+\begin{frame}{Théorème d'inconsistance}
+\begin{thm}
+Considérons le modèle ci-dessus, où $\varepsilon_t$, $v_t$, $u_t$ et $x_t$ sont tous indépendants entre eux, et sont de plus iid comme $N(0,\sigma_\varepsilon^2)$, $N(0,\sigma_v^2)$, $N(0,\sigma_u^2)$ et $N(\mu,\sigma_x^2)$ respectivement.
+
+Alors l'estimateur MCO $\hat{\beta}$ de $\beta$ est \textbf{inconsistant} tant que $\sigma_u^2 \neq 0$, et:
+\[ \text{plim} \, \hat{\beta} = \beta \frac{\sigma_x^2}{\sigma_x^2 + \sigma_u^2} \]
+\end{thm}
+
+\textbf{Biais:} $\text{plim} \, \hat{\beta} < \beta$ (en valeur absolue)
+
+C'est un \textbf{biais d'atténuation} vers zéro.
+\end{frame}
+
+\begin{frame}{Preuve du théorème}
+\textbf{Preuve:}
+
+L'estimateur MCO de $\beta$ est:
+\[ \hat{\beta} = \frac{\sum_t(x_t^* - \bar{x}^*)(y_t^* - \bar{y}^*)}{\sum_t(x_t^* - \bar{x}^*)^2} = \frac{(1/T)\sum_t(x_t^* - \bar{x}^*)(\varepsilon_t + v_t - \beta u_t)}{(1/T)\sum_t(x_t^* - \bar{x}^*)^2} \]
+
+Puisque $x_t^* = x_t + u_t$, sous les hypothèses:
+\begin{align*}
+\text{plim} \frac{1}{T}\sum_t(x_t^* - \bar{x}^*)(\varepsilon_t + v_t - \beta u_t) &= -\beta\sigma_u^2 \\
+\text{plim} \frac{1}{T}\sum_t(x_t^* - \bar{x}^*)^2 &= \sigma_x^2 + \sigma_u^2
+\end{align*}
+
+D'où:
+\[ \text{plim} \, \hat{\beta} = \beta \frac{-\sigma_u^2}{\sigma_x^2 + \sigma_u^2} + \beta = \beta \frac{\sigma_x^2}{\sigma_x^2 + \sigma_u^2} \]
+\hfill $\square$
+\end{frame}
+
+\begin{frame}{Remarque importante}
+\begin{rem}
+C'est l'\textbf{erreur de mesure sur $x$} qui cause le problème.
+
+L'erreur $v_t$ sur $y$ est indistinguable de la perturbation habituelle $\varepsilon_t$.
+
+Pour le reste de cette section, on incorporera donc $\varepsilon_t$ dans $v_t$.
+\end{rem}
+
+\vspace{0.5cm}
+\textbf{Simplification:}
+
+On considère désormais:
+\begin{align*}
+y_t^* &= y_t + v_t = \alpha + \beta x_t + v_t \\
+x_t^* &= x_t + u_t
+\end{align*}
+\end{frame}
+
+\begin{frame}{Théorème de non-identification}
+\begin{thm}
+Supposons que les conditions du Théorème 1 sont satisfaites (sauf la remarque précédente). Alors le seul paramètre identifié est $\mu = E(x_t)$.
+\end{thm}
+
+\textbf{Idée de la preuve:}
+
+La distribution des quantités observables $y^*$ et $x^*$ est normale, caractérisée par:
+\begin{align*}
+E(x^*) &= \mu \\
+E(y^*) &= \alpha + \beta\mu \\
+\text{Var}(x^*) &= \sigma_x^2 + \sigma_u^2 \\
+\text{Var}(y^*) &= \beta^2\sigma_x^2 + \sigma_v^2 \\
+\text{Cov}(x^*,y^*) &= \beta\sigma_x^2
+\end{align*}
+
+5 moments observables, 6 paramètres inconnus $(\alpha, \beta, \mu, \sigma_x^2, \sigma_u^2, \sigma_v^2)$
+
+$\Rightarrow$ \textbf{Sous-identification}
+\end{frame}
+
+\begin{frame}{Proposition: Forme de la distribution}
+\begin{prop}
+Soient:
+\begin{align*}
+y_t &= \alpha + \beta x_t \\
+y_t^* &= y_t + v_t \\
+x_t^* &= x_t + u_t
+\end{align*}
+avec $x_t$, $v_t$ et $u_t$ mutuellement indépendants, $v_t$ et $u_t$ iid comme $N(0,\sigma_v^2)$ et $N(0,\sigma_u^2)$ respectivement, et les $x_t$ aussi iid.
+
+Si $\beta$ n'est pas identifié, alors $x_t$ est soit \textbf{normalement distribué} soit \textbf{constant}.
+\end{prop}
+
+\textbf{Implication:} Les problèmes d'identification surviennent quand $u_t$, $v_t$ et $x_t$ sont \textbf{tous} normaux, c'est-à-dire quand $y^*$ et $x^*$ sont normaux.
+\end{frame}
+
+\begin{frame}{Idée de la preuve}
+\textbf{Sketch de preuve:}
+
+\begin{itemize}
+    \item La fonction caractéristique conjointe de $(u_t, v_t)$ est normale
+    \item La fonction caractéristique conjointe de $(x_t, y_t)$ s'écrit en fonction de celle de $x_t$
+    \item Si deux structures $(\alpha, \beta, \sigma_u^2, \sigma_x^2)$ et $(\alpha^0, \beta^0, \sigma_u^{02}, \sigma_x^{02})$ avec $\beta \neq \beta^0$ donnent la même distribution pour $(x^*, y^*)$
+    \item Alors les fonctions caractéristiques sont égales pour tout $t_1, t_2$
+    \item En manipulant avec $t_1$ et $t_2$ appropriés tels que $t_1 + \beta t_2 = 0$, on montre que $\phi_x(\cdot)$ doit être la fonction caractéristique d'une variable normale ou constante
+\end{itemize}
+
+\hfill $\square$
+\end{frame}
+
+\begin{frame}{Stratégies d'estimation}
+\textbf{Deux approches possibles:}
+
+\begin{enumerate}
+    \item \textbf{Avec information a priori supplémentaire}
+    \begin{itemize}
+        \item Utiliser la connaissance de $\sigma_v^2$, $\sigma_u^2$, ou $\lambda = \sigma_v^2/\sigma_u^2$
+        \item Permet d'identifier et d'estimer $\beta$ par maximum de vraisemblance
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \item \textbf{Sans information a priori}
+    \begin{itemize}
+        \item Méthode de regroupement des observations
+        \item L'estimateur sera consistant seulement pour certains types de régresseurs ou d'erreurs non-normaux
+    \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Estimation avec information a priori}
+Échantillon aléatoire de taille $T$ sur $(x^*, y^*)$, normalement distribué avec:
+\begin{align*}
+E(x^*) &= \mu, \quad E(y^*) = \alpha + \beta\mu \\
+\text{Var}(x^*) &= \sigma_x^2 + \sigma_u^2, \quad \text{Var}(y^*) = \beta^2\sigma_x^2 + \sigma_v^2 \\
+\text{Cov}(x^*,y^*) &= \beta\sigma_x^2
+\end{align*}
+
+\textbf{Estimateurs de maximum de vraisemblance:}
+\begin{align*}
+\hat{E}(x^*) &= \bar{x}^*, \quad \hat{E}(y^*) = \bar{y}^* \\
+\widehat{\text{Var}}(x^*) &= \frac{1}{T}\sum_t(x_t^* - \bar{x}^*)^2 \\
+\widehat{\text{Var}}(y^*) &= \frac{1}{T}\sum_t(y_t^* - \bar{y}^*)^2 \\
+\widehat{\text{Cov}}(x^*,y^*) &= \frac{1}{T}\sum_t(x_t^* - \bar{x}^*)(y_t^* - \bar{y}^*)
+\end{align*}
+
+On a 3 équations en 4 inconnues $(\beta, \sigma_x^2, \sigma_u^2, \sigma_v^2)$
+\end{frame}
+
+\begin{frame}{Proposition: Estimation avec information}
+\begin{prop}
+\begin{enumerate}
+    \item Quand $\sigma_v^2$ est connue, l'estimateur du maximum de vraisemblance de $\beta$ est:
+    \[ \hat{\beta} = \frac{\widehat{\text{Var}}(y^*) - \sigma_v^2}{\widehat{\text{Cov}}(x^*,y^*)} \]
+
+    \item Quand $\sigma_u^2$ est connue, l'estimateur du maximum de vraisemblance de $\beta$ est:
+    \[ \hat{\beta} = \frac{\widehat{\text{Cov}}(x^*,y^*)}{\widehat{\text{Var}}(x^*) - \sigma_u^2} \]
+
+    \item Quand $\lambda = \sigma_v^2/\sigma_u^2$ est connu, l'estimateur du maximum de vraisemblance de $\beta$ est:
+    \[ \hat{\beta} = \frac{[\widehat{\text{Var}}(y^*) - \lambda\widehat{\text{Var}}(x^*)] + \sqrt{[\widehat{\text{Var}}(y^*) - \lambda\widehat{\text{Var}}(x^*)]^2 + 4\lambda[\widehat{\text{Cov}}(x^*,y^*)]^2}}{2\widehat{\text{Cov}}(x^*,y^*)} \]
+\end{enumerate}
+\end{prop}
+\end{frame}
+
+\begin{frame}{Preuve (cas $\sigma_v^2$ connue)}
+\textbf{Preuve (cas 1):}
+
+Des équations:
+\begin{align*}
+\widehat{\text{Var}}(y^*) &= \beta^2\sigma_x^2 + \sigma_v^2 \\
+\widehat{\text{Cov}}(x^*,y^*) &= \beta\sigma_x^2
+\end{align*}
+
+On obtient:
+\[ \beta^2\sigma_x^2 = \widehat{\text{Var}}(y^*) - \sigma_v^2 \]
+\[ \beta\sigma_x^2 = \widehat{\text{Cov}}(x^*,y^*) \]
+
+D'où:
+\[ \beta = \frac{\widehat{\text{Var}}(y^*) - \sigma_v^2}{\widehat{\text{Cov}}(x^*,y^*)} \]
+\hfill $\square$
+
+\textbf{Note:} La preuve pour $\sigma_u^2$ connue est similaire.
+\end{frame}
+
+\begin{frame}{Preuve (cas $\lambda$ connu)}
+\textbf{Preuve (cas 3):}
+
+On a $\lambda = \sigma_v^2/\sigma_u^2$. Des équations précédentes:
+\begin{align*}
+\sigma_v^2 &= \widehat{\text{Var}}(y^*) - \beta\widehat{\text{Cov}}(x^*,y^*) \\
+\sigma_u^2 &= \widehat{\text{Var}}(x^*) - \frac{\widehat{\text{Cov}}(x^*,y^*)}{\beta}
+\end{align*}
+
+Donc:
+\[ \frac{\widehat{\text{Var}}(y^*) - \beta\widehat{\text{Cov}}(x^*,y^*)}{\widehat{\text{Var}}(x^*) - \frac{\widehat{\text{Cov}}(x^*,y^*)}{\beta}} = \lambda \]
+
+Ce qui donne l'équation quadratique:
+\[ \beta^2\widehat{\text{Cov}}(x^*,y^*) + \beta[\lambda\widehat{\text{Var}}(x^*) - \widehat{\text{Var}}(y^*)] - \lambda\widehat{\text{Cov}}(x^*,y^*) = 0 \]
+
+La solution (racine positive pour que $\hat{\beta}$ ait le même signe que $\widehat{\text{Cov}}(x^*,y^*)$) est celle donnée. \hfill $\square$
+\end{frame}
+
+\begin{frame}{Remarque pratique}
+\begin{rem}
+Rappel: on a incorporé l'erreur de mesure sur $y$ et la perturbation dans $v_t$.
+
+\begin{itemize}
+    \item La variance de la perturbation n'est généralement pas connue a priori
+    \item $\Rightarrow$ Information sur $\sigma_v^2$ ou $\lambda = \sigma_v^2/\sigma_u^2$ peu probable
+
+    \item Par contre, $\sigma_u^2$ (variance de l'erreur de mesure sur $x$) peut parfois être connue
+    \item Surtout si on connaît comment les données ont été obtenues
+\end{itemize}
+\end{rem}
+
+\textbf{Conclusion:} Le cas où $\sigma_u^2$ est connue est le plus pratique.
+\end{frame}
+
+\begin{frame}{Estimation sans information a priori}
+\textbf{Méthode de regroupement:}
+
+Diviser les $T$ observations sur $(x^*, y^*)$ en (au moins) deux groupes:
+\begin{itemize}
+    \item Groupe $G_1$ avec $T_1$ observations
+    \item Groupe $G_2$ avec $T_2$ observations
+\end{itemize}
+
+\textbf{Définir:}
+\begin{align*}
+b_1 &= \frac{1}{T_1}\sum_{t \in G_1} y_t^* - \frac{1}{T_2}\sum_{t \in G_2} y_t^* \\
+b_2 &= \frac{1}{T_1}\sum_{t \in G_1} x_t^* - \frac{1}{T_2}\sum_{t \in G_2} x_t^* \\
+\hat{\beta} &= \frac{b_1}{b_2}
+\end{align*}
+\end{frame}
+
+\begin{frame}{Proposition: Consistance par regroupement}
+\begin{prop}
+L'estimateur $\hat{\beta} = b_1/b_2$ est un estimateur consistant de $\beta$ si:
+\begin{enumerate}
+    \item Le regroupement est indépendant des erreurs de mesure ($u_t$ et $v_t$)
+    \item $\text{plim} \, b_2 \neq 0$
+\end{enumerate}
+\end{prop}
+
+\textbf{Idée:}
+\begin{itemize}
+    \item Les erreurs de mesure s'annulent en moyenne dans chaque groupe (si indépendantes du regroupement)
+    \item On compare essentiellement les moyennes vraies entre groupes
+    \item Si les $x_t$ varient suffisamment entre groupes ($b_2 \neq 0$), l'estimateur est consistant
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Preuve de consistance}
+\textbf{Preuve:}
+
+On a:
+\begin{align*}
+b_1 &= \frac{1}{T_1}\sum_{t \in G_1}(\alpha + \beta x_t + v_t) - \frac{1}{T_2}\sum_{t \in G_2}(\alpha + \beta x_t + v_t) \\
+&= \beta\left[\frac{1}{T_1}\sum_{t \in G_1} x_t - \frac{1}{T_2}\sum_{t \in G_2} x_t\right] + \left[\frac{1}{T_1}\sum_{t \in G_1} v_t - \frac{1}{T_2}\sum_{t \in G_2} v_t\right]
+\end{align*}
+
+Puisque le regroupement est indépendant de $v_t$:
+\[ \text{plim} \left[\frac{1}{T_1}\sum_{t \in G_1} v_t - \frac{1}{T_2}\sum_{t \in G_2} v_t\right] = 0 \]
+
+De même pour $b_2$. Donc:
+\[ \text{plim} \, \hat{\beta} = \text{plim} \frac{b_1}{b_2} = \beta \frac{\text{plim} \, b_2^{(x)}}{\text{plim} \, b_2} = \beta \]
+où $b_2^{(x)}$ est le $b_2$ calculé avec les $x_t$ vrais. \hfill $\square$
+\end{frame}
+
+\begin{frame}{Remarques finales}
+\textbf{Points clés:}
+
+\begin{enumerate}
+    \item Le regroupement doit être fait de manière à ce que $\text{plim} \, b_2 \neq 0$
+    \begin{itemize}
+        \item Par exemple: regrouper par ordre des $x_t^*$ observés
+        \item Groupe 1: premières $T/2$ observations (petites valeurs)
+        \item Groupe 2: dernières $T/2$ observations (grandes valeurs)
+    \end{itemize}
+
+    \item Cette méthode ne nécessite aucune information a priori
+
+    \item Mais elle n'est consistante que si les régresseurs ou erreurs ne sont pas normaux
+
+    \item L'estimateur par regroupement est généralement moins efficace que les estimateurs utilisant l'information a priori
+\end{enumerate}
+\end{frame}
+
+% ============================================
+% Conclusion
+% ============================================
+
+\begin{frame}{Conclusion}
+\textbf{Régresseurs stochastiques: défis et solutions}
+
+\begin{itemize}
+    \item \textbf{Section 3.1:} Conditions générales difficiles à vérifier
+    \begin{itemize}
+        \item Nécessité d'informations sur la distribution de $X$
+        \item Problèmes avec la corrélation entre $X_t$ et $\varepsilon_t$
+    \end{itemize}
+
+    \item \textbf{Section 3.3:} Variables instrumentales
+    \begin{itemize}
+        \item Solution quand $\text{plim} \frac{1}{T}X'\varepsilon \neq 0$
+        \item Importance de la distribution asymptotique, pas juste plim = 0
+    \end{itemize}
+
+    \item \textbf{Section 3.4:} Erreurs de mesure
+    \begin{itemize}
+        \item Biais d'atténuation avec MCO
+        \item Non-identification sans information supplémentaire
+        \item Solutions: MV avec info a priori, regroupement sans info
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
 
 
 
