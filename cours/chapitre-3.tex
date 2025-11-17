@@ -85,7 +85,7 @@
 \newcommand{\bigO}[1]{\mathcal O \left(#1\right)}
 \newcommand{\red}{\color{red}}
 \newcommand{\blue}{\color{blue}}
-\newcommand{\plim}{\overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}}}
+\newcommand{\plim}{\xrightarrow[T\rightarrow\infty]{\text{proba}}}% {\overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}}}
 \newcommand{\epsvar}{\sigma_{\varepsilon}^2}
 
 
@@ -137,13 +137,20 @@
   {\end{block}\egroup}
 }{}
 
+\newcommand{\dnote}[1]{%
+    \noindent % I guess this is intended...
+    \begin{tabular}{@{}m{0.13\textwidth}@{}m{0.87\textwidth}@{}}%
+        \huge\textdbend &#1%
+    \end{tabular}%
+    \par % ... and this too.
+}
+
 \newtheorem{thm}{Théorème}
 \newtheorem{prop}{Proposition}
 \newtheorem{cor}{Corollaire}
 
 %\usepgfplotslibrary{external}
 %\tikzexternalize
-
 
 \begin{document}
 
@@ -215,9 +222,7 @@
     \]
     avec $\alpha_1>0$.
 
-  \item Cette double causalité induit une corrélation entre le revenu de l'individu $i$ et $u_i$.
-
-  \item[$\Rightarrow$] On verra que cela biaise l'estimation de $\beta_1$ par les MCO dans le premier modèle.
+  \item Cette double causalité induit une corrélation entre le revenu de l'individu $i$ et $u_i$. $\Rightarrow$  On verra que cela biaise l'estimation de $\beta_1$ par les MCO dans le premier modèle.
     
   \end{itemize}
 
@@ -263,57 +268,67 @@
 \end{notes}
 
 
-\begin{frame}{Le modèle}
-\textbf{Un modèle de régression linéaire:}
-\[ y = X\beta + \varepsilon \]
+\begin{frame}{Le modèle de la Nature}
 
-\textbf{Hypothèses maintenues:}
+  \[ \mathbf y = X\beta + \varepsilon \]
+
 \begin{itemize}
-    \item $\varepsilon \sim N(0, \sigma^2 I)$
-    \item $Q = \text{plim} \frac{1}{T}X'X$ finie et non-singulière
-    \item Les régresseurs sont linéairement indépendants avec probabilité 1
+
+\item $\varepsilon \sim \mathcal N(0, \sigma_{\varepsilon}^2 I_T)$\newline
+
+\item $X$ est une matrice aléatoire $T\times K$\newline
+
+\item $\frac{X'X}{T} \plim  Q $ est une finie et de plein rang.\newline
+
+\item Les régresseurs sont linéairement indépendants avec probabilité 1.\newline
+
+\item Les colonnes de $X$ ne sont pas nécessairement toutes aléatoire (constante).\newline
+
+\item \textbf{Problème:} Le modèle est incomplet puisque nous ne disons rien de la loi de $X$.\newline
+  
 \end{itemize}
 
-\vspace{0.3cm}
-\textbf{Changement:}
-\begin{itemize}
-    \item $X$ est maintenant \textbf{aléatoire} (au moins en partie) plutôt que non-stochastique
-\end{itemize}
 \end{frame}
 
-\begin{frame}{Cas 1: $X$ et $\varepsilon$ indépendants}
-
-  \textbf{Si $X$ et $\varepsilon$ sont indépendants:}
+\begin{frame}{\textbf{\textsc{Cas 1:}} $X$ et $\varepsilon$ indépendants}
 
 \begin{itemize}
-    \item La distribution de $\varepsilon$ conditionnelle à $X$ est identique à sa distribution marginale
-    \item Conditionnellement à $X$: $\varepsilon \sim N(0, \sigma^2 I)$
-    \item Tous les résultats du Chapitre 1 sont valides \textbf{conditionnellement à $X$}
-    \item L'estimateur MCO conserve ses propriétés désirables
-    \item Les tests usuels restent valides (conditionnellement à $X$)
+
+\item La distribution de $\varepsilon$ conditionnelle à $X$ est identique à sa distribution marginale.\newline
+
+\item $\varepsilon | X \sim  \mathcal N(0, \sigma_{\varepsilon}^2 I_T)$\newline
+
+\item Tous les résultats du Chapitre 1 sont valides \textbf{conditionnellement à $X$}.\newline
+
+\item L'estimateur MCO conserve ses propriétés désirables.\newline
+
+\item Les tests usuels restent valides (conditionnellement à $X$)\newline
+
 \end{itemize}
 
 \vspace{0.3cm}
 
-\textbf{Intuition:} En conditionnant sur $X$, on le traite comme non-stochastique. L'indépendance garantit que la valeur particulière de $X$ n'affecte rien.
+\textbf{Intuition:} En conditionnant sur $X$, on le traite les variables explicatives comme non-stochastiques. L'indépendance garantit que la valeur particulière de $X$ soit sans conséquence.
 
 \end{frame}
 
 \begin{frame}{Limites des énoncés conditionnels}
-\textbf{Problèmes:}
-\begin{itemize}
-    \item Si $X$ et $\varepsilon$ sont tous deux stochastiques, l'utilité d'énoncés conditionnels sur $X$ est limitée
-    \item Pour faire des inférences \textbf{non conditionnelles}, il faut connaître la distribution de $X$
-    \item Très difficile en pratique
+
+  \begin{itemize}
+
+  \item Si $X$ et $\varepsilon$ sont tous deux stochastiques, l'utilité d'énoncés conditionnels sur $X$ est limitée.\newline
+
+  \item Pour faire des inférences \textbf{non conditionnelles}, il faut connaître la distribution de $X$(difficile).\newline
+
+  \item Si $x_{ti}$ sont iid et si $\mathbb E[x_{ti}\varepsilon_t]$ existe (nul), alors la loi des grands nombres s'applique~:
+    \[
+      \frac{1}{T}\sum_{t=1}^{T} x_{ti}\varepsilon_t \plim 0 \quad (i = 1, 2, \ldots, K)
+    \]    
+    Cela assure la convergence de l'estimateur des MCO.\newline
+    
 \end{itemize}
 
-\vspace{0.3cm}
-\textbf{Exigence minimale pour la consistance:}
-\[ \text{plim} \frac{1}{T}\sum_{t=1}^{T} x_{ti}\varepsilon_t = 0 \quad (i = 1, 2, \ldots, K) \]
-
-Si $x_{ti}$ sont iid et $E(x_{ti}\varepsilon_t)$ existe (donc = 0), alors la loi des grands nombres s'applique.
-
-\textbf{Attention:} Les $x_{ti}$ n'ont pas besoin d'être iid, et $E(x_{ti}\varepsilon_t)$ peut ne pas exister!
+\dnote{Les $x_{ti}$ peuvent ne pas être iid, et $\mathbb E[x_{ti}\varepsilon_t]$ peut ne pas exister~! On ne peut alors rien dire de la convergence de l'estimateur des MCO.}
 \end{frame}
 
 \begin{frame}{Distribution asymptotique}
@@ -332,21 +347,16 @@ Si $x_{ti}$ sont iid et $E(x_{ti}\varepsilon_t)$ existe (donc = 0), alors la loi
 \end{frame}
 
 \begin{frame}{Cas 2: Corrélation entre $X$ et $\varepsilon$}
-\textbf{Si $X_t$ et $\varepsilon_t$ sont corrélés:}
 
-Typiquement:
-\[ \text{plim} \, \hat{\beta} \neq \beta \]
+
+\[
+  \text{plim} \, \hat{\beta} = \beta + \text{plim} \frac{X'\varepsilon}{T} \neq \beta
+\]
+
+\bigskip\bigskip
 
 $\Rightarrow$ \textbf{$\hat{\beta}$ est inconsistant}
 
-\vspace{0.5cm}
-\textbf{Stratégie du chapitre:}
-
-Étudier des cas particuliers où:
-\begin{enumerate}
-    \item Les régresseurs sont stochastiques pour une raison spécifique
-    \item La nature particulière des régresseurs permet l'estimation et les tests d'hypothèses valides
-\end{enumerate}
 \end{frame}
 
 % ============================================
@@ -417,51 +427,136 @@ Par le théorème de Slutsky:
 \end{frame}
 
 \begin{frame}{Définitions et remarques}
-\begin{defn}
+\begin{defn}{}
 L'estimateur $\tilde{\beta} = (Z'X)^{-1}Z'y$ est appelé \textbf{estimateur par variables instrumentales} (IV) de $\beta$. La matrice $Z$ est l'ensemble des \textbf{instruments} pour $X$.
 \end{defn}
 
 \vspace{0.3cm}
-\begin{rem}
+\begin{rem}{}
 Le cas typique est celui où:
 \[ \frac{Z'\varepsilon}{\sqrt{T}} \xrightarrow{d} N(0, \sigma^2 Q_{ZZ}) \]
 où $Q_{ZZ} = \text{plim} \frac{1}{T}Z'Z$
 \end{rem}
 \end{frame}
 
-\begin{frame}{Exemple: Modèle à retards distribués}
-\textbf{Modèle de Koyck:}
-\[ y_t^* = \beta_0 + \beta_1 x_t + \beta_1\lambda x_{t-1} + \beta_1\lambda^2 x_{t-2} + \cdots + \varepsilon_t \]
+\begin{frame}{Exemple: Offre et demande (simultanéité)}
+\textbf{Modèle de marché:}
 
-Transformation de Koyck:
-\[ y_t = \beta x_t + \lambda y_{t-1} + (\varepsilon_t - \lambda\varepsilon_{t-1}) \]
+Demande (consommateurs):
+\[ Q_t^D = \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t \]
+où $R_t$ est le revenu des consommateurs, $\alpha_1 < 0$
 
-\textbf{Problème:}
-\[ \text{plim} \frac{1}{T}\sum_{t=1}^{T} y_{t-1}(\varepsilon_t - \lambda\varepsilon_{t-1}) = -\lambda\sigma^2 \neq 0 \]
+Offre (producteurs):
+\[ Q_t^S = \beta_0 + \beta_1 P_t + \beta_2 W_t + v_t \]
+où $W_t$ est le coût des inputs, $\beta_1 > 0$
 
-car $y_{t-1}$ et $\varepsilon_{t-1}$ sont corrélés.
+Équilibre:
+\[ Q_t^D = Q_t^S = Q_t \]
 
-$\Rightarrow$ MCO est \textbf{inconsistant}
+\textbf{Problème:} Le prix $P_t$ est \textbf{endogène} (déterminé simultanément avec $Q_t$)
 \end{frame}
 
-\begin{frame}{Exemple (suite): Choix d'instruments}
-\textbf{Choix d'instruments:}
-\[ Z_t = (x_t, x_{t-1})' \]
+\begin{frame}{Exemple (suite): Prix d'équilibre}
+\textbf{Résolution du système:}
 
-\textbf{Conditions vérifiées:}
+À l'équilibre, $Q_t^D = Q_t^S$:
+\[ \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t = \beta_0 + \beta_1 P_t + \beta_2 W_t + v_t \]
+
+Le prix d'équilibre est:
+\[ P_t = \frac{(\beta_0 - \alpha_0) + \beta_2 W_t - \alpha_2 R_t + (v_t - u_t)}{\alpha_1 - \beta_1} \]
+
+\textbf{Observation cruciale:}
+\[ \mathbb{E}[P_t \cdot u_t] = \mathbb{E}\left[\frac{v_t - u_t}{\alpha_1 - \beta_1} \cdot u_t\right] = \frac{-\sigma_u^2}{\alpha_1 - \beta_1} \neq 0 \]
+
+$\Rightarrow$ Le prix est corrélé avec l'erreur de demande!
+
+$\Rightarrow$ MCO sur l'équation de demande est \textbf{inconsistant}
+\end{frame}
+
+\begin{frame}{Exemple (suite): Estimation par VI}
+\textbf{Objectif:} Estimer l'équation de demande
+\[ Q_t = \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t \]
+
+\textbf{Instruments pour $P_t$:}
+\[ Z_t = (1, R_t, W_t)' \]
+
+\textbf{Justification:}
+\begin{itemize}
+    \item $W_t$ (coût des inputs) affecte l'offre mais pas directement la demande
+    \item $W_t$ est corrélé avec $P_t$ (via l'équation d'offre)
+    \item $W_t$ n'est pas corrélé avec $u_t$ (erreur de demande)
+    \item $R_t$ (revenu) peut être utilisé comme instrument pour lui-même
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Exemple (suite): Vérification des conditions}
+\textbf{Conditions du théorème IV:}
+
 \begin{enumerate}
-    \item Sous conditions raisonnables sur $x_t$:
-    \[ \text{plim} \frac{1}{T}\sum_{t=1}^{T} (x_t, x_{t-1})'(x_t, y_{t-1}) \]
-    est finie et non-singulière
+    \item \textbf{Pertinence:} $Q_{ZX} = \text{plim} \frac{1}{T}Z'X$ finie et non-singulière
+    \begin{itemize}
+        \item $X = (1, P_t, R_t)$, $Z = (1, R_t, W_t)$
+        \item $W_t$ est corrélé avec $P_t$ via l'équation d'offre
+        \item Si $\text{Var}(W_t) > 0$ et $\beta_2 \neq 0$, alors $Q_{ZX}$ est non-singulière
+    \end{itemize}
 
-    \item La perturbation $\varepsilon_t - \lambda\varepsilon_{t-1}$ est m-dépendante (avec $m=1$)
-
-    \item Théorème de limite centrale pour variables m-dépendantes $\Rightarrow$
-    \[ \frac{1}{\sqrt{T}}\sum_{t=1}^{T}(x_t, x_{t-1})'(\varepsilon_t - \lambda\varepsilon_{t-1}) \]
-    a une distribution asymptotique bien définie
+    \item \textbf{Exogénéité:} $\frac{Z'u}{\sqrt{T}} \xrightarrow{d} N(0, \Psi)$
+    \begin{itemize}
+        \item Supposons que $(R_t, W_t)$ sont stationnaires avec moments finis
+        \item Supposons que $u_t$ est iid $N(0, \sigma_u^2)$ et indépendant de $(R_s, W_s)$ pour tout $t,s$
+        \item Alors par un TCL pour processus stochastiques:
+        \[ \frac{1}{\sqrt{T}}\sum_{t=1}^{T}Z_t u_t \xrightarrow{d} N(0, \sigma_u^2 Q_{ZZ}) \]
+        où $Q_{ZZ} = \text{plim} \frac{1}{T}\sum_{t=1}^{T} Z_t Z_t'$
+    \end{itemize}
 \end{enumerate}
 
-$\Rightarrow$ L'estimateur IV sera \textbf{consistant}
+$\Rightarrow$ L'estimateur IV $\tilde{\alpha} = (Z'X)^{-1}Z'Q$ est \textbf{consistant}
+\end{frame}
+
+\begin{frame}{Exemple (suite): Pourquoi ces conditions sur $Z$?}
+\textbf{Question:} Pourquoi avons-nous besoin d'hypothèses sur $(R_t, W_t)$ pour appliquer le TCL?
+
+\vspace{0.3cm}
+\textbf{Réponse:} Le TCL s'applique à la somme $\frac{1}{\sqrt{T}}\sum_{t=1}^{T}Z_t u_t$
+
+\begin{itemize}
+    \item Même si $u_t$ est iid, le produit $Z_t u_t$ est \textbf{stochastique}\newline
+
+    \item Pour que le TCL s'applique, il faut que:\newline
+    \begin{enumerate}
+        \item $\mathbb{E}[Z_t u_t] = 0$ (exogénéité des instruments)\newline
+        \item $\text{Var}(Z_t u_t) < \infty$ (nécessite moments finis de $Z_t$)\newline
+        \item La LGN s'applique à $\frac{1}{T}\sum Z_t Z_t' u_t^2$ (stationnarité)
+    \end{enumerate}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Exemple (suite): Ce qui peut mal tourner}
+\textbf{Ce qui peut mal tourner sans conditions sur $Z$:}
+
+\begin{enumerate}
+    \item \textbf{Variance infinie:} Si $Z_t$ a des queues trop épaisses
+    \begin{itemize}
+        \item $\text{Var}(Z_t u_t)$ peut ne pas exister
+        \item Le TCL ne s'applique pas
+    \end{itemize}
+
+    \item \textbf{Dépendance temporelle:} Si $Z_t$ est très persistant
+    \begin{itemize}
+        \item Les $Z_t u_t$ ne sont pas "suffisamment indépendants"
+        \item La normalisation par $\sqrt{T}$ peut être incorrecte
+    \end{itemize}
+
+    \item \textbf{Non-stationnarité:} Si $\text{Var}(Z_t)$ croît avec $t$
+    \begin{itemize}
+        \item $Q_{ZZ} = \text{plim} \frac{1}{T}\sum Z_t Z_t'$ peut ne pas exister
+        \item La distribution asymptotique est mal définie
+    \end{itemize}
+\end{enumerate}
+
+\vspace{0.3cm}
+\textbf{Conclusion:} Les conditions sur $Z$ garantissent que la somme $\sum Z_t u_t$ se comporte "régulièrement"
 \end{frame}
 
 \begin{frame}{Mise en garde importante}
@@ -483,23 +578,6 @@ $\Rightarrow$ L'estimateur IV sera \textbf{consistant}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Contre-exemple}
-\textbf{Exemple:} Estimateur de classe-$k$ avec $k = 1 + \frac{c}{\sqrt{T}}$
-
-\begin{itemize}
-    \item L'estimateur classe-$k$ est un estimateur IV
-    \item On a: $Q_{ZX}$ finie et non-singulière, $Q_{ZZ}$ finie
-    \item Et: $\text{plim} \frac{1}{T}Z'\varepsilon = 0$
-\end{itemize}
-
-\textbf{Mais:}
-\begin{itemize}
-    \item $\frac{Z'\varepsilon}{\sqrt{T}}$ n'a \textbf{pas} de distribution asymptotique bien définie
-    \item Donc $\sqrt{T}(\tilde{\beta} - \beta)$ non plus
-    \item Si l'affirmation fausse était vraie, cela impliquerait que l'estimateur classe-$k$ avec ce $k$ aurait la même matrice de covariance asymptotique que l'estimateur DMC
-    \item Ce qui est manifestement faux!
-\end{itemize}
-\end{frame}
 
 \begin{frame}{Difficulté de vérification}
 \textbf{Problème pratique:}
@@ -591,8 +669,8 @@ D'où:
 \hfill $\square$
 \end{frame}
 
-\begin{frame}{Remarque importante}
-\begin{rem}
+\begin{frame}{La mesure de $y$ ne pose pas de problème}
+\begin{rem}{}
 C'est l'\textbf{erreur de mesure sur $x$} qui cause le problème.
 
 L'erreur $v_t$ sur $y$ est indistinguable de la perturbation habituelle $\varepsilon_t$.
@@ -610,263 +688,78 @@ x_t^* &= x_t + u_t
 \end{align*}
 \end{frame}
 
-\begin{frame}{Théorème de non-identification}
-\begin{thm}
-Supposons que les conditions du Théorème 1 sont satisfaites (sauf la remarque précédente). Alors le seul paramètre identifié est $\mu = E(x_t)$.
-\end{thm}
 
-\textbf{Idée de la preuve:}
+\begin{frame}{Lien avec les variables instrumentales}
+\textbf{Question:} Peut-on utiliser un estimateur IV pour corriger l'erreur de mesure?
 
-La distribution des quantités observables $y^*$ et $x^*$ est normale, caractérisée par:
+\vspace{0.3cm}
+\textbf{Réponse:} Oui! L'erreur de mesure est un cas particulier d'endogénéité.
+
+\vspace{0.3cm}
+\textbf{Rappel du problème:}
 \begin{align*}
-E(x^*) &= \mu \\
-E(y^*) &= \alpha + \beta\mu \\
-\text{Var}(x^*) &= \sigma_x^2 + \sigma_u^2 \\
-\text{Var}(y^*) &= \beta^2\sigma_x^2 + \sigma_v^2 \\
-\text{Cov}(x^*,y^*) &= \beta\sigma_x^2
+y_t &= \alpha + \beta x_t + v_t \\
+x_t^* &= x_t + u_t \\
+\Rightarrow y_t &= \alpha + \beta x_t^* + \underbrace{(v_t - \beta u_t)}_{\text{erreur composée}}
 \end{align*}
 
-5 moments observables, 6 paramètres inconnus $(\alpha, \beta, \mu, \sigma_x^2, \sigma_u^2, \sigma_v^2)$
+Corrélation: $\text{Cov}(x_t^*, v_t - \beta u_t) = -\beta\sigma_u^2 \neq 0$
 
-$\Rightarrow$ \textbf{Sous-identification}
+\vspace{0.3cm}
+$\Rightarrow$ Problème d'endogénéité classique, où $x_t^*$ est corrélé avec l'erreur!
 \end{frame}
 
-\begin{frame}{Proposition: Forme de la distribution}
-\begin{prop}
-Soient:
-\begin{align*}
-y_t &= \alpha + \beta x_t \\
-y_t^* &= y_t + v_t \\
-x_t^* &= x_t + u_t
-\end{align*}
-avec $x_t$, $v_t$ et $u_t$ mutuellement indépendants, $v_t$ et $u_t$ iid comme $N(0,\sigma_v^2)$ et $N(0,\sigma_u^2)$ respectivement, et les $x_t$ aussi iid.
-
-Si $\beta$ n'est pas identifié, alors $x_t$ est soit \textbf{normalement distribué} soit \textbf{constant}.
-\end{prop}
-
-\textbf{Implication:} Les problèmes d'identification surviennent quand $u_t$, $v_t$ et $x_t$ sont \textbf{tous} normaux, c'est-à-dire quand $y^*$ et $x^*$ sont normaux.
-\end{frame}
-
-\begin{frame}{Idée de la preuve}
-\textbf{Sketch de preuve:}
-
-\begin{itemize}
-    \item La fonction caractéristique conjointe de $(u_t, v_t)$ est normale
-    \item La fonction caractéristique conjointe de $(x_t, y_t)$ s'écrit en fonction de celle de $x_t$
-    \item Si deux structures $(\alpha, \beta, \sigma_u^2, \sigma_x^2)$ et $(\alpha^0, \beta^0, \sigma_u^{02}, \sigma_x^{02})$ avec $\beta \neq \beta^0$ donnent la même distribution pour $(x^*, y^*)$
-    \item Alors les fonctions caractéristiques sont égales pour tout $t_1, t_2$
-    \item En manipulant avec $t_1$ et $t_2$ appropriés tels que $t_1 + \beta t_2 = 0$, on montre que $\phi_x(\cdot)$ doit être la fonction caractéristique d'une variable normale ou constante
-\end{itemize}
-
-\hfill $\square$
-\end{frame}
-
-\begin{frame}{Stratégies d'estimation}
-\textbf{Deux approches possibles:}
+\begin{frame}{Variables instrumentales pour erreurs de mesure}
+\textbf{Solution IV:} Trouver un instrument $Z_t$ tel que:
 
 \begin{enumerate}
-    \item \textbf{Avec information a priori supplémentaire}
+    \item \textbf{Pertinence:} $Z_t$ corrélé avec $x_t$ (ou $x_t^*$)
+    \[ \text{Cov}(Z_t, x_t) \neq 0 \]
+
+    \item \textbf{Exogénéité:} $Z_t$ non corrélé avec les erreurs $u_t$ et $v_t$
+    \[ \text{Cov}(Z_t, u_t) = 0 \quad \text{et} \quad \text{Cov}(Z_t, v_t) = 0 \]
+\end{enumerate}
+
+\vspace{0.3cm}
+\textbf{Exemples d'instruments possibles:}
+
+\begin{itemize}
+    \item \textbf{Mesures multiples:} Si on a deux mesures indépendantes de $x_t$
     \begin{itemize}
-        \item Utiliser la connaissance de $\sigma_v^2$, $\sigma_u^2$, ou $\lambda = \sigma_v^2/\sigma_u^2$
-        \item Permet d'identifier et d'estimer $\beta$ par maximum de vraisemblance
+        \item $x_t^{(1)} = x_t + u_t^{(1)}$ et $x_t^{(2)} = x_t + u_t^{(2)}$
+        \item On peut utiliser $x_t^{(2)}$ comme instrument pour $x_t^{(1)}$
+        \item Si $u_t^{(1)} \perp u_t^{(2)}$, alors $\text{Cov}(x_t^{(2)}, u_t^{(1)}) = 0$
     \end{itemize}
 
-    \vspace{0.3cm}
-    \item \textbf{Sans information a priori}
-    \begin{itemize}
-        \item Méthode de regroupement des observations
-        \item L'estimateur sera consistant seulement pour certains types de régresseurs ou d'erreurs non-normaux
-    \end{itemize}
-\end{enumerate}
-\end{frame}
-
-\begin{frame}{Estimation avec information a priori}
-Échantillon aléatoire de taille $T$ sur $(x^*, y^*)$, normalement distribué avec:
-\begin{align*}
-E(x^*) &= \mu, \quad E(y^*) = \alpha + \beta\mu \\
-\text{Var}(x^*) &= \sigma_x^2 + \sigma_u^2, \quad \text{Var}(y^*) = \beta^2\sigma_x^2 + \sigma_v^2 \\
-\text{Cov}(x^*,y^*) &= \beta\sigma_x^2
-\end{align*}
-
-\textbf{Estimateurs de maximum de vraisemblance:}
-\begin{align*}
-\hat{E}(x^*) &= \bar{x}^*, \quad \hat{E}(y^*) = \bar{y}^* \\
-\widehat{\text{Var}}(x^*) &= \frac{1}{T}\sum_t(x_t^* - \bar{x}^*)^2 \\
-\widehat{\text{Var}}(y^*) &= \frac{1}{T}\sum_t(y_t^* - \bar{y}^*)^2 \\
-\widehat{\text{Cov}}(x^*,y^*) &= \frac{1}{T}\sum_t(x_t^* - \bar{x}^*)(y_t^* - \bar{y}^*)
-\end{align*}
-
-On a 3 équations en 4 inconnues $(\beta, \sigma_x^2, \sigma_u^2, \sigma_v^2)$
-\end{frame}
-
-\begin{frame}{Proposition: Estimation avec information}
-\begin{prop}
-\begin{enumerate}
-    \item Quand $\sigma_v^2$ est connue, l'estimateur du maximum de vraisemblance de $\beta$ est:
-    \[ \hat{\beta} = \frac{\widehat{\text{Var}}(y^*) - \sigma_v^2}{\widehat{\text{Cov}}(x^*,y^*)} \]
-
-    \item Quand $\sigma_u^2$ est connue, l'estimateur du maximum de vraisemblance de $\beta$ est:
-    \[ \hat{\beta} = \frac{\widehat{\text{Cov}}(x^*,y^*)}{\widehat{\text{Var}}(x^*) - \sigma_u^2} \]
-
-    \item Quand $\lambda = \sigma_v^2/\sigma_u^2$ est connu, l'estimateur du maximum de vraisemblance de $\beta$ est:
-    \[ \hat{\beta} = \frac{[\widehat{\text{Var}}(y^*) - \lambda\widehat{\text{Var}}(x^*)] + \sqrt{[\widehat{\text{Var}}(y^*) - \lambda\widehat{\text{Var}}(x^*)]^2 + 4\lambda[\widehat{\text{Cov}}(x^*,y^*)]^2}}{2\widehat{\text{Cov}}(x^*,y^*)} \]
-\end{enumerate}
-\end{prop}
-\end{frame}
-
-\begin{frame}{Preuve (cas $\sigma_v^2$ connue)}
-\textbf{Preuve (cas 1):}
-
-Des équations:
-\begin{align*}
-\widehat{\text{Var}}(y^*) &= \beta^2\sigma_x^2 + \sigma_v^2 \\
-\widehat{\text{Cov}}(x^*,y^*) &= \beta\sigma_x^2
-\end{align*}
-
-On obtient:
-\[ \beta^2\sigma_x^2 = \widehat{\text{Var}}(y^*) - \sigma_v^2 \]
-\[ \beta\sigma_x^2 = \widehat{\text{Cov}}(x^*,y^*) \]
-
-D'où:
-\[ \beta = \frac{\widehat{\text{Var}}(y^*) - \sigma_v^2}{\widehat{\text{Cov}}(x^*,y^*)} \]
-\hfill $\square$
-
-\textbf{Note:} La preuve pour $\sigma_u^2$ connue est similaire.
-\end{frame}
-
-\begin{frame}{Preuve (cas $\lambda$ connu)}
-\textbf{Preuve (cas 3):}
-
-On a $\lambda = \sigma_v^2/\sigma_u^2$. Des équations précédentes:
-\begin{align*}
-\sigma_v^2 &= \widehat{\text{Var}}(y^*) - \beta\widehat{\text{Cov}}(x^*,y^*) \\
-\sigma_u^2 &= \widehat{\text{Var}}(x^*) - \frac{\widehat{\text{Cov}}(x^*,y^*)}{\beta}
-\end{align*}
-
-Donc:
-\[ \frac{\widehat{\text{Var}}(y^*) - \beta\widehat{\text{Cov}}(x^*,y^*)}{\widehat{\text{Var}}(x^*) - \frac{\widehat{\text{Cov}}(x^*,y^*)}{\beta}} = \lambda \]
-
-Ce qui donne l'équation quadratique:
-\[ \beta^2\widehat{\text{Cov}}(x^*,y^*) + \beta[\lambda\widehat{\text{Var}}(x^*) - \widehat{\text{Var}}(y^*)] - \lambda\widehat{\text{Cov}}(x^*,y^*) = 0 \]
-
-La solution (racine positive pour que $\hat{\beta}$ ait le même signe que $\widehat{\text{Cov}}(x^*,y^*)$) est celle donnée. \hfill $\square$
-\end{frame}
-
-\begin{frame}{Remarque pratique}
-\begin{rem}
-Rappel: on a incorporé l'erreur de mesure sur $y$ et la perturbation dans $v_t$.
-
-\begin{itemize}
-    \item La variance de la perturbation n'est généralement pas connue a priori
-    \item $\Rightarrow$ Information sur $\sigma_v^2$ ou $\lambda = \sigma_v^2/\sigma_u^2$ peu probable
-
-    \item Par contre, $\sigma_u^2$ (variance de l'erreur de mesure sur $x$) peut parfois être connue
-    \item Surtout si on connaît comment les données ont été obtenues
-\end{itemize}
-\end{rem}
-
-\textbf{Conclusion:} Le cas où $\sigma_u^2$ est connue est le plus pratique.
-\end{frame}
-
-\begin{frame}{Estimation sans information a priori}
-\textbf{Méthode de regroupement:}
-
-Diviser les $T$ observations sur $(x^*, y^*)$ en (au moins) deux groupes:
-\begin{itemize}
-    \item Groupe $G_1$ avec $T_1$ observations
-    \item Groupe $G_2$ avec $T_2$ observations
-\end{itemize}
-
-\textbf{Définir:}
-\begin{align*}
-b_1 &= \frac{1}{T_1}\sum_{t \in G_1} y_t^* - \frac{1}{T_2}\sum_{t \in G_2} y_t^* \\
-b_2 &= \frac{1}{T_1}\sum_{t \in G_1} x_t^* - \frac{1}{T_2}\sum_{t \in G_2} x_t^* \\
-\hat{\beta} &= \frac{b_1}{b_2}
-\end{align*}
-\end{frame}
-
-\begin{frame}{Proposition: Consistance par regroupement}
-\begin{prop}
-L'estimateur $\hat{\beta} = b_1/b_2$ est un estimateur consistant de $\beta$ si:
-\begin{enumerate}
-    \item Le regroupement est indépendant des erreurs de mesure ($u_t$ et $v_t$)
-    \item $\text{plim} \, b_2 \neq 0$
-\end{enumerate}
-\end{prop}
-
-\textbf{Idée:}
-\begin{itemize}
-    \item Les erreurs de mesure s'annulent en moyenne dans chaque groupe (si indépendantes du regroupement)
-    \item On compare essentiellement les moyennes vraies entre groupes
-    \item Si les $x_t$ varient suffisamment entre groupes ($b_2 \neq 0$), l'estimateur est consistant
+    \item \textbf{Variables liées:} Une variable $Z_t$ qui affecte $x_t$ mais pas directement $y_t$
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Preuve de consistance}
-\textbf{Preuve:}
-
-On a:
-\begin{align*}
-b_1 &= \frac{1}{T_1}\sum_{t \in G_1}(\alpha + \beta x_t + v_t) - \frac{1}{T_2}\sum_{t \in G_2}(\alpha + \beta x_t + v_t) \\
-&= \beta\left[\frac{1}{T_1}\sum_{t \in G_1} x_t - \frac{1}{T_2}\sum_{t \in G_2} x_t\right] + \left[\frac{1}{T_1}\sum_{t \in G_1} v_t - \frac{1}{T_2}\sum_{t \in G_2} v_t\right]
-\end{align*}
-
-Puisque le regroupement est indépendant de $v_t$:
-\[ \text{plim} \left[\frac{1}{T_1}\sum_{t \in G_1} v_t - \frac{1}{T_2}\sum_{t \in G_2} v_t\right] = 0 \]
-
-De même pour $b_2$. Donc:
-\[ \text{plim} \, \hat{\beta} = \text{plim} \frac{b_1}{b_2} = \beta \frac{\text{plim} \, b_2^{(x)}}{\text{plim} \, b_2} = \beta \]
-où $b_2^{(x)}$ est le $b_2$ calculé avec les $x_t$ vrais. \hfill $\square$
-\end{frame}
-
-\begin{frame}{Remarques finales}
-\textbf{Points clés:}
-
-\begin{enumerate}
-    \item Le regroupement doit être fait de manière à ce que $\text{plim} \, b_2 \neq 0$
-    \begin{itemize}
-        \item Par exemple: regrouper par ordre des $x_t^*$ observés
-        \item Groupe 1: premières $T/2$ observations (petites valeurs)
-        \item Groupe 2: dernières $T/2$ observations (grandes valeurs)
-    \end{itemize}
-
-    \item Cette méthode ne nécessite aucune information a priori
-
-    \item Mais elle n'est consistante que si les régresseurs ou erreurs ne sont pas normaux
-
-    \item L'estimateur par regroupement est généralement moins efficace que les estimateurs utilisant l'information a priori
-\end{enumerate}
-\end{frame}
-
-% ============================================
-% Conclusion
-% ============================================
-
-\begin{frame}{Conclusion}
-\textbf{Régresseurs stochastiques: défis et solutions}
+\begin{frame}{Exemple: Mesures multiples}
+\textbf{Exemple concret:} Mesure du revenu avec erreur
 
 \begin{itemize}
-    \item \textbf{Section 3.1:} Conditions générales difficiles à vérifier
+    \item Modèle: $\text{Consommation}_t = \alpha + \beta \text{Revenu}_t + v_t$
+
+    \item Problème: Le revenu est mesuré avec erreur
     \begin{itemize}
-        \item Nécessité d'informations sur la distribution de $X$
-        \item Problèmes avec la corrélation entre $X_t$ et $\varepsilon_t$
+        \item Déclaration fiscale: $\text{Revenu}_t^{(1)} = \text{Revenu}_t + u_t^{(1)}$
+        \item Enquête auprès des ménages: $\text{Revenu}_t^{(2)} = \text{Revenu}_t + u_t^{(2)}$
     \end{itemize}
 
-    \item \textbf{Section 3.3:} Variables instrumentales
+    \item Si $u_t^{(1)}$ et $u_t^{(2)}$ sont des erreurs de mesure indépendantes:
     \begin{itemize}
-        \item Solution quand $\text{plim} \frac{1}{T}X'\varepsilon \neq 0$
-        \item Importance de la distribution asymptotique, pas juste plim = 0
-    \end{itemize}
-
-    \item \textbf{Section 3.4:} Erreurs de mesure
-    \begin{itemize}
-        \item Biais d'atténuation avec MCO
-        \item Non-identification sans information supplémentaire
-        \item Solutions: MV avec info a priori, regroupement sans info
+        \item Utiliser $\text{Revenu}_t^{(2)}$ comme instrument pour $\text{Revenu}_t^{(1)}$
+        \item Ou vice-versa
     \end{itemize}
 \end{itemize}
-\end{frame}
 
+\vspace{0.3cm}
+\textbf{Estimateur IV:}
+\[ \tilde{\beta} = \frac{\sum_t (x_t^{(2)} - \bar{x}^{(2)})(y_t - \bar{y})}{\sum_t (x_t^{(2)} - \bar{x}^{(2)})(x_t^{(1)} - \bar{x}^{(1)})} \]
+
+Cet estimateur est \textbf{consistant} pour $\beta$!
+\end{frame}
 
 
 
