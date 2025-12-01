@@ -14,6 +14,7 @@ cours:
     - scp cours/chapitre-1.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp cours/chapitre-2.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp cours/chapitre-3.pdf /home/www/le-mans.adjemian.eu/econometrics
+    - scp cours/chapitre-4.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp examens/partiel-2023.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp examens/partiel-2024.pdf /home/www/le-mans.adjemian.eu/econometrics
     - scp examens/correction-2023.pdf /home/www/le-mans.adjemian.eu/econometrics
@@ -31,6 +32,7 @@ cours:
       - cours/chapitre-1.pdf
       - cours/chapitre-2.pdf
       - cours/chapitre-3.pdf
+      - cours/chapitre-4.pdf
       - td/fiche-exercices.pdf
       - examens/partiel-2023.pdf
       - examens/partiel-2024.pdf
