@@ -6,7 +6,7 @@ variables:
 cours:
   stage: build
   only:
-    - master@stephane/econometrics
+    - master@stepan/econometrics
   script:
     - make -C cours
     - make -C td
