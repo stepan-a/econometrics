@@ -1,0 +1,118 @@
+\documentclass[12pt,a4paper,notitlepage,twocolumn]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{float}
+\usepackage[french]{babel}
+
+\usepackage{palatino}
+
+ \usepackage[active]{srcltx}
+\usepackage{scrtime}
+
+\newcounter{qnumber}
+\setcounter{qnumber}{0}
+
+\newcounter{enumber}
+\setcounter{enumber}{0}
+
+\newcommand{\question}{\textbf{(\addtocounter{qnumber}{1}\theqnumber)}\,}
+\newcommand{\exercice}{\textbf{\addtocounter{enumber}{1}\textsc{Exercice} \theenumber}.\,}
+\setlength{\parindent}{0cm}
+
+
+\begin{document}
+
+\title{\textsc{Économétrie Approfondie}}
+\date{Jeudi 18 décembre 2025}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\begin{quote}
+  \textit{Les réponses non commentées ou insuffisamment détaillées ne seront pas
+    considérées. Prenez le temps de faire des phrase.}
+\end{quote}
+
+\bigskip
+
+
+\exercice On suppose que les données sont générées par le modèle suivant~:
+\[
+  y_i = x_{i,1}\beta_1 + \ldots x_{i,K}\beta_K + \varepsilon_i
+\]
+où $x_{i,k}$, pour $k=1,\ldots,K$ sont des variables explicatives
+déterministes, $\beta_k$, pour $k=1,\ldots,K$, sont des paramètres
+réels, $\varepsilon_i$ une variable aléatoire i.i.d. centrée de
+variance $\sigma_{\varepsilon}^2$. \question Donner la représentation
+matricielle de ce modèle. \question Définir et donner l'expression de
+l'estimateur des MCO du vecteur de paramètres $\beta$, que l'on notera
+$\hat b$ (en montrant comment on arrive à cette expression et en
+explicitant les hypothèses nécessaires pour que cet estimateur
+existe). \question Montrer que cet estimateur est sans
+biais. \question Calculer la variance de cet estimateur. \question
+Pourquoi l'estimateur des MCO a t-il une variance~? \question Montrer
+que l'estimateur des MCO $\hat b$ convergent en probabilité vers $\beta$.\newline
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice On considère le modèle générateur des données suivant~:
+\[
+y_i = x_i \beta + \varepsilon_i
+\]
+pour $i=1,\ldots,N$, avec $\beta$ un vecteur colonne de paramètres
+réels, et $x_i$ un vecteur ligne de variables explicatives
+déterministes. On suppose que les erreurs $\varepsilon_i$ sont normalement distribuées et que
+\[
+\varepsilon = (\varepsilon_1, \ldots, \varepsilon_N)^T \sim \mathcal{N}(\mathbf{0}, \Omega)
+\]
+où $\Omega$ est une matrice symétrique et définie positive. On considère le modèle empirique~:
+\[
+  y_i = x_i b + \epsilon_i
+ \]
+ \question L'estimateur des MCO, $\hat b$, est-il un estimateur sans
+ biais~? Justifier. \question Calculer la variance de l'estimateur des
+ MCO . \question L'estimateur des MCO est-il efficace parmi la classe
+ des estimateurs linéaires et sans biais~? Justifier. \question
+ Proposer un estimateur efficace et calculer sa variance, en supposant
+ que la matrice $\Omega$ est connue. \question Que faire si la matrice
+ $\Omega$ est inconnue~? Proposez un nouvel estimateur. \question
+ Est-il possible d'estimer ce modèle par maximum de
+ vraisemblance~?\newline
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice Sur le marché d'un bien la demande et l'offre à la date $t$ sont données par~:
+\begin{equation}\label{s1}
+  \begin{cases}
+    y_t^d &= \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t\\
+    y_t^o &= \gamma_0 + \gamma_1 P_t + \gamma_2 W_t + v_t
+  \end{cases}
+\end{equation}
+où $y_t^d$ et $y_t^o$ mesurent la demande et l'offre de bien, $P_t$ le
+prix du bien, $R_t$ le revenu des consommateurs, $W_t$ les coûts de
+production, $u_t$ et $v_t$ sont des variables aléatoires iid,
+centrées, de variances $\sigma_u^2$ et $\sigma_v^2$ et non corrélées,
+qui s'interprètent comme des chocs de demande et d'offre. Le système
+d'équation \ref{s1} est le modèle structurel. On suppose que les
+échanges ne se font qu'à l'équilibre, c'est à dire lorsque la quantité
+demandée est égale à la quantité offerte. On suppose que les coûts de
+production et le choc de demande sont orthogonaux. On suppose que la
+variable de revenu est orthognale aux chocs. \question Quels sont
+les signes attendus des paramètres~? \question Calculer le prix
+d'équilibre pour montrer qu'il s'agit d'une variable
+aléatoire. \question Un économètre souhaite estimer l'équation de
+demande par les MCO. Pensez-vous que cela soit une bonne idée~?
+Justifier. \question Proposer une méthode d'estimation permettant
+d'obtenir un estimateur convergent des paramètres de l'équation de
+demande. \question Cet estimateur est-il sans biais~?
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
