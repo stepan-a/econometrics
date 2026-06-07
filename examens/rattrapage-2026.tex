@@ -1,0 +1,141 @@
+\documentclass[12pt,a4paper,notitlepage,twocolumn]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{float}
+\usepackage[french]{babel}
+
+\usepackage{palatino}
+
+ \usepackage[active]{srcltx}
+\usepackage{scrtime}
+
+\newcounter{qnumber}
+\setcounter{qnumber}{0}
+
+\newcounter{enumber}
+\setcounter{enumber}{0}
+
+\newcommand{\question}{\textbf{(\addtocounter{qnumber}{1}\theqnumber)}\,}
+\newcommand{\exercice}{\textbf{\addtocounter{enumber}{1}\textsc{Exercice} \theenumber}.\,}
+\setlength{\parindent}{0cm}
+
+
+\begin{document}
+
+\title{\textsc{Économétrie Approfondie}\\ \small{(Session de rattrapage)}}
+\date{Juin 2026}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\begin{quote}
+  \textit{Les réponses non commentées ou insuffisamment détaillées ne seront pas
+    considérées. Prenez le temps de faire des phrases.}
+\end{quote}
+
+\bigskip
+
+
+\exercice On suppose que les données sont générées par le modèle suivant~:
+\[
+  y_i = x_{i,1}\beta_1 + \ldots x_{i,K}\beta_K + \varepsilon_i
+\]
+où $x_{i,k}$, pour $k=1,\ldots,K$ sont des variables explicatives
+déterministes, $\beta_k$, pour $k=1,\ldots,K$, sont des paramètres
+réels, $\varepsilon_i$ une variable aléatoire i.i.d. centrée de
+variance $\sigma_{\varepsilon}^2$. \question Donner la représentation
+matricielle de ce modèle. \question Définir et donner l'expression de
+l'estimateur des MCO du vecteur de paramètres $\beta$, que l'on notera
+$\hat b$ (en montrant comment on arrive à cette expression et en
+explicitant les hypothèses nécessaires pour que cet estimateur
+existe). \question Montrer que cet estimateur est sans
+biais. \question Calculer la variance de cet estimateur. \question
+Énoncer le théorème de Gauss-Markov et montrer que l'estimateur des
+MCO est l'estimateur le plus efficace dans la classe des estimateurs
+linéaires et sans biais (BLUE).\newline
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice On considère le modèle générateur des données~:
+\[
+y_i = \beta x_i + \varepsilon_i, \quad i = 1, \ldots, N
+\]
+où $\beta$ est un paramètre réel, $x_i$ une variable explicative
+déterministe non nulle, et $\varepsilon_i$ une variable aléatoire
+d'espérance nulle. Les erreurs sont indépendantes mais
+hétéroscédastiques~:
+\[
+\mathbb V\left[\varepsilon_i\right] = \sigma^2 w_i
+\]
+où les $w_i>0$ sont des poids connus et $\sigma^2>0$. Le modèle
+empirique est~:
+\[
+y_i = b\, x_i + \epsilon_i
+\]
+\question Donner l'expression de l'estimateur des MCO $\hat b$
+de $\beta$. Cet estimateur est-il sans biais~? Justifier. \question
+Calculer la variance de $\hat b$. \question Comment, en pratique,
+pourrait-on détecter la présence d'hétéroscédasticité dans les
+données~? Citer au moins un test et en décrire le principe. \question
+L'estimateur des MCO est-il efficace~? Justifier. \question Proposer
+une transformation des données conduisant à un modèle à erreurs
+homoscédastiques, et en déduire un estimateur efficace $\hat
+b_{\textsc{mcg}}$ de $\beta$. De quel estimateur s'agit-il~? \question
+Calculer la variance de $\hat b_{\textsc{mcg}}$ et la comparer à celle
+de $\hat b$. Conclure. \question Que faire si les poids $w_i$ ne sont
+pas connus~?\newline
+
+\textbf{\textsc{Rappel}} \textit{(Inégalité de Cauchy-Schwarz) Pour
+  tous réels $a_1,\ldots,a_N$ et $c_1,\ldots,c_N$~:
+\[
+\left( \sum_{i=1}^N a_i c_i \right)^2 \leq \left( \sum_{i=1}^N a_i^2 \right)\left( \sum_{i=1}^N c_i^2 \right)
+\]}
+
+\setcounter{qnumber}{0}
+\bigskip
+
+\exercice On suppose que le salaire (en logarithme) d'un individu $i$
+est généré par le modèle~:
+\[
+y_i = \beta_0 + \beta_1 x_i + \beta_2 z_i + \varepsilon_i
+\]
+où $y_i$ est le (log) salaire, $x_i$ le nombre d'années d'études,
+$z_i$ une mesure des capacités («~talent~») de l'individu, et
+$\varepsilon_i$ une variable aléatoire i.i.d. centrée, de
+variance $\sigma_\varepsilon^2$, non corrélée à $x_i$ et $z_i$. Les
+variables $x_i$ et $z_i$ sont aléatoires, i.i.d., centrées, de
+variances $\sigma_x^2$ et $\sigma_z^2$, et l'on note
+$\sigma_{xz}=\mathrm{cov}(x_i,z_i)\neq 0$ (les individus les plus
+talentueux font en moyenne des études plus longues). \newline
+
+Malheureusement, l'économètre n'observe pas le talent $z_i$. Il estime
+donc le modèle empirique~:
+\[
+y_i = b_0 + b_1 x_i + u_i
+\]
+\question Écrire le terme d'erreur $u_i$ du modèle empirique en
+fonction de $z_i$ et $\varepsilon_i$. \question Calculer la covariance
+entre le régresseur $x_i$ et l'erreur $u_i$. Qu'en déduit-on sur les
+propriétés de l'estimateur des MCO~? \question On note $\hat b_1$
+l'estimateur des MCO de la pente. Montrer que~:
+\[
+\text{plim}_{N\rightarrow\infty}\ \hat b_1 = \beta_1 + \beta_2\,\frac{\sigma_{xz}}{\sigma_x^2}
+\]
+Interpréter et commenter ce résultat (signe du biais, cas où il
+disparaît). \question On suppose qu'il existe une variable $g_i$ (par
+exemple le nombre d'années d'études du parent de l'individu)
+corrélée avec $x_i$ ($\mathrm{cov}(g_i,x_i)=\sigma_{gx}\neq 0$) mais
+non corrélée avec $z_i$ ni avec $\varepsilon_i$. Proposer un estimateur
+convergent de $\beta_1$ et montrer sa convergence. \question Quelles
+sont les deux conditions que doit satisfaire la variable $g_i$ pour
+être un bon instrument~? Cet estimateur est-il sans biais~?
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
