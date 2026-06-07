@@ -11,24 +11,24 @@ cours:
     - make -C cours
     - make -C td
     - make -C examens
-    - scp cours/chapitre-1.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp cours/chapitre-2.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp cours/chapitre-3.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp cours/chapitre-4.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp examens/partiel-2023.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp examens/partiel-2024.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp examens/partiel-2025.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp examens/correction-2023.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp examens/correction-2024.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp examens/correction-2025.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp td/fiche-exercices.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp td/td-correction-1.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp td/td-correction-2.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp td/td-correction-3.pdf /home/www/le-mans.adjemian.eu/econometrics
-    - scp cours/codes/chapitre-1.org /home/www/le-mans.adjemian.eu/econometrics/codes
-    - scp -r cours/codes/chapitre-1 /home/www/le-mans.adjemian.eu/econometrics/codes
-    - scp -r cours/images /home/www/le-mans.adjemian.eu/econometrics
-    - scp -r cours/data /home/www/le-mans.adjemian.eu/econometrics
+    - scp cours/chapitre-1.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp cours/chapitre-2.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp cours/chapitre-3.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp cours/chapitre-4.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp examens/partiel-2023.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp examens/partiel-2024.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp examens/partiel-2025.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp examens/correction-2023.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp examens/correction-2024.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp examens/correction-2025.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp td/fiche-exercices.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp td/td-correction-1.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp td/td-correction-2.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp td/td-correction-3.pdf /puck/www/le-mans.adjemian.eu/econometrics
+    - scp cours/codes/chapitre-1.org /puck/www/le-mans.adjemian.eu/econometrics/codes
+    - scp -r cours/codes/chapitre-1 /puck/www/le-mans.adjemian.eu/econometrics/codes
+    - scp -r cours/images /puck/www/le-mans.adjemian.eu/econometrics
+    - scp -r cours/data /puck/www/le-mans.adjemian.eu/econometrics
   artifacts:
     paths:
       - cours/chapitre-1.pdf
