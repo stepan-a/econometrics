@@ -1,0 +1,32 @@
+% -*- mode: latex -*-
+%
+% Notations communes à la fiche d'exercices et à ses éléments de correction.
+%
+% Les définitions reprennent à l'identique celles de cours/preamble.tex
+% (l. 110-123), de façon que les documents de travaux dirigés emploient
+% exactement les mêmes symboles que les transparents, sans avoir à charger tout
+% le préambule beamer (qui suppose \coursfile défini et appelle git via
+% \write18).
+%
+% Convention structurante du cours, à respecter dans tous les énoncés : le
+% « modèle de la nature » (le DGP) s'écrit avec des lettres grecques (\beta,
+% \varepsilon), le « modèle de l'économètre » avec des latines grasses
+% (\mathbf b) et des erreurs \epsilon. L'estimateur des MCO est \hat{\mathbf b}.
+%
+% Il n'existe pas de macro \E ni \Var dans ce dépôt : l'espérance et la variance
+% s'écrivent \mathbb E[...] et \mathbb V[...]. Ne pas en introduire.
+
+\newcommand{\trace}{\mathrm{tr}}
+\newcommand{\tracarg}[1]{\mathrm{tr}\left\{#1\right\}}
+\newcommand{\iid}[2]{\mathrm{iid}\left(#1,#2\right)}
+\newcommand{\normal}[2]{\mathcal N\left(#1,#2\right)}
+\newcommand{\epsvar}{\sigma_{\varepsilon}^2}
+\newcommand{\sample}{\mathcal Y_T}
+\newcommand{\samplet}[1]{\mathcal Y_{#1}}
+
+% Convergences. Le cours indexe \plim et \dlim sur T ; les exercices écrits en
+% coupe individuelle ont besoin de la variante en N, d'où les deux jeux.
+\newcommand{\plimT}{\xrightarrow[T\rightarrow\infty]{\text{proba}}}
+\newcommand{\dlimT}{\xrightarrow[T\rightarrow\infty]{\text{loi}}}
+\newcommand{\plimN}{\xrightarrow[N\rightarrow\infty]{\text{proba}}}
+\newcommand{\dlimN}{\xrightarrow[N\rightarrow\infty]{\text{loi}}}

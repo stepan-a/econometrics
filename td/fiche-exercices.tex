@@ -2,6 +2,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsbsy}
+\usepackage{mathtools}
 \usepackage{bbm}
 \usepackage{bm}
 \usepackage{float}
@@ -14,12 +15,19 @@
  \usepackage[active]{srcltx}
 \usepackage{scrtime}
 
+% Notations communes avec les transparents et avec les éléments de correction.
+\input{notations}
+
 \newcounter{xnumber}
 \setcounter{xnumber}{0}
 
-\newcommand{\exercice}{\textsc{\textbf{Exercice}} \textbf{\addtocounter{xnumber}{1}\thexnumber}\,\,}
+\newcommand{\exercice}{\refstepcounter{xnumber}\textsc{\textbf{Exercice}} \textbf{\thexnumber}\,\,}
 \newcommand{\question}[1]{\textbf{(#1)}}
 \setlength{\parindent}{0cm}
+
+% Absorbe les petits dépassements de justification (lignes trop longues) en
+% répartissant l'élasticité sur les espaces plutôt que dans la marge.
+\setlength{\emergencystretch}{3em}
 
 \begin{document}
 
@@ -29,65 +37,90 @@
 
 \maketitle
 
-\exercice La nature génère des données avec le modèle suivant~:
+Les exercices sont regroupés par chapitre du cours. Sauf mention contraire, on
+respecte la convention des transparents~: le \emph{modèle de la nature} (le
+processus générateur des données) est écrit avec des lettres grecques, le
+\emph{modèle de l'économètre} avec des lettres latines, et l'estimateur des MCO
+est noté $\hat{\mathbf b}$.
+
+\bigskip
+
+\section*{Chapitre I~-- Les MCO quand tout va bien}
+
+\exercice\label{ex:rupture-fixe} La nature génère des données avec le modèle suivant~:
 \[
 y_t = \mu_1 + \mu_2 \mathbbm{1}_{\{t>\kappa\}}(t) + \varepsilon_t
 \]
 avec $\mu_1$ et $\mu_2$ des paramètres réels,
-$\varepsilon_t\sim\mathrm{iid}(0,\sigma_{\varepsilon}^2)$, $\kappa$ un entier donné entre  1 and $T$. Le modèle empirique est~:
+$\varepsilon_t\sim\iid{0}{\epsvar}$, $\kappa$ un entier donné entre $1$ et $T$.
+Le modèle empirique est~:
 \[
-  y_t = c + u_t
+  y_t = c + \epsilon_t
 \]
-On note $\mathcal Y_T=\{y_1,\dots,y_T\}$ l'échantillon produit par la nature et
+On note $\sample=\{y_1,\dots,y_T\}$ l'échantillon produit par la nature et
 à disposition de l'économètre. \question{1} Donner l'expression de l'estimateur
 des MCO de $c$, noté $\hat c_T$. \question{2} Calculer l'espérance de
 $\hat c_T$, en explicitant le rapport avec les paramètres du modèle de la
-nature. \question{3} Calculer la variance de $\hat c_T$. (4) Quel est la limite
-en probabilité de $\hat c_T$~?\newline
+nature. \question{3} Calculer la variance de $\hat c_T$. \question{4} Quel est
+la limite en probabilité de $\hat c_T$~?\newline
 
 \bigskip
 
-\exercice La nature génère des données avec le modèle suivant~:
+\exercice\label{ex:rupture-proportionnelle} La nature génère des données avec le modèle suivant~:
 \[
 y_t = \mu_1 + \mu_2 \mathbbm{1}_{\{t>[\kappa T]\}}(t) + \varepsilon_t
 \]
 avec $\mu_1$ et $\mu_2$ des paramètres réels,
-$\varepsilon_t\sim\mathrm{iid}(0,\sigma_{\varepsilon}^2)$, $\kappa\in]0,1[$, et $[x]$ représente la partie entière de $x$. Le modèle empirique est~:
+$\varepsilon_t\sim\iid{0}{\epsvar}$, $\kappa\in\left]0,1\right[$, et $[x]$
+représente la partie entière de $x$. Le modèle empirique est~:
 \[
-  y_t = c + u_t
+  y_t = c + \epsilon_t
 \]
-On note $\mathcal Y_T=\{y_1,\dots,y_T\}$ l'échantillon produit par la nature et
-à disposition de l'économètre. Reprendre les questions de l'exercice 1 avec ce
-nouveau DGP.\newline
+On note $\sample=\{y_1,\dots,y_T\}$ l'échantillon produit par la nature et
+à disposition de l'économètre. Reprendre les questions de l'exercice~\ref{ex:rupture-fixe} avec ce
+nouveau DGP. \question{5} Comparer les deux limites en probabilité obtenues et
+expliquer d'où vient la différence.\newline
 
 \bigskip
 
-\exercice Soit le modèle empirique:
+\exercice\label{ex:mco-matriciel} Soit le modèle empirique~:
 \[
-y_i = \beta_0 + \beta_1x_{1,i} + \beta_2 x_{2,i} + \dots + \beta_K x_{K,i} + u_i
+y_i = b_0 + b_1x_{1,i} + b_2 x_{2,i} + \dots + b_K x_{K,i} + \epsilon_i
 \]
-L'échantillon est $\mathcal Y_T = \{y_1, \dots, y_N, x_1, \dots, x_N\}$.
-\question{1} Écrire le modèle matriciellement sous la forme $Y = X\beta+U$. \question{2} Montrer que l'estimateur des MCO est $\hat\beta = (X'X)^{-1}X'Y$. \question{3} Expliciter le contenu de $X'X$ et $X'Y$ en faisant apparaître les observations individuelles. \question{4} Dans le cas $K=1$, sur la droite de l'équation ne reste que la constante et une variable explicative $x_{1,i}$, écrire explicitement à partir des réponses aux questions (2) et (3) l'estimateur des MCO (pour la constante et la pente). En passant, montrer que le déterminant de $X'X$ est strictement positif dès lors que $N>1$ et $x_1\neq 0$. \question{5} Montrer que la somme des résidus est nulle par construction.\newline
+L'échantillon est $\samplet{N} = \{(y_i, x_{1,i},\dots,x_{K,i})\}_{i=1}^N$.
+\question{1} Écrire le modèle matriciellement sous la forme
+$\mathbf y = X\mathbf b + \bm\epsilon$. \question{2} Montrer que l'estimateur
+des MCO est $\hat{\mathbf b} = (X'X)^{-1}X'\mathbf y$. \question{3} Expliciter
+le contenu de $X'X$ et $X'\mathbf y$ en faisant apparaître les observations
+individuelles. \question{4} Dans le cas $K=1$, sur la droite de l'équation ne
+reste que la constante et une variable explicative $x_{1,i}$, écrire
+explicitement à partir des réponses aux questions (2) et (3) l'estimateur des
+MCO (pour la constante et la pente). En passant, montrer que le déterminant
+de $X'X$ est strictement positif dès lors que $N>1$ et que les $x_{1,i}$ ne sont
+pas tous égaux. \question{5} Montrer que la somme des résidus est nulle par
+construction.\newline
 
 \bigskip
 
-\exercice La nature génère des données avec le modèle suivant~:
+\exercice\label{ex:tendance} La nature génère des données avec le modèle suivant~:
 \[
 y_t = \mu_0 + \mu_1 t  + \varepsilon_t
 \]
 avec $\mu_0$ et $\mu_1$ des paramètres réels, et
- $\varepsilon_t\sim\mathrm{iid}(0,\sigma_{\varepsilon}^2)$. Le modèle empirique est~:
+$\varepsilon_t\sim\iid{0}{\epsvar}$. Le modèle empirique est~:
 \[
-  y_t = c + u_t
+  y_t = c + \epsilon_t
 \]
-On note $\mathcal Y_T=\{y_1,\dots,y_T\}$ l'échantillon produit par la nature et
+On note $\sample=\{y_1,\dots,y_T\}$ l'échantillon produit par la nature et
 à disposition de l'économètre. \question{1} Donner l'expression de l'estimateur
 des MCO de $c$, noté $\hat c_T$. \question{2} Calculer l'espérance de
-$\hat c_T$. S'agit-il d'un estimateur non biaisé de $\mu_0$~?\newline
+$\hat c_T$. S'agit-il d'un estimateur non biaisé de $\mu_0$~? \question{3} Le
+biais disparaît-il lorsque $T$ tend vers l'infini~? Commenter au regard de
+l'hypothèse $\mathcal H_2$ du cours.\newline
 
 \bigskip
 
-\exercice Soit la matrice carrée~:
+\exercice\label{ex:inversion-blocs} Soit la matrice carrée~:
 \[
   \mathcal A =
   \begin{pmatrix}
@@ -95,7 +128,9 @@ $\hat c_T$. S'agit-il d'un estimateur non biaisé de $\mu_0$~?\newline
     A_{21} & A_{22}
   \end{pmatrix}
 \]
-où $A_{11}$ et $A_{22}$ sont des matrices carrées, $A_{11}$ et $A_{22}-A_{21}A_{11}^{-1}A_{12}$ sont des matrices de plein rang. \question{1} Montrer que~:
+où $A_{11}$ et $A_{22}$ sont des matrices carrées, $A_{11}$ et
+$A_{22}-A_{21}A_{11}^{-1}A_{12}$ sont des matrices de plein rang.
+\question{1} Montrer que~:
 \[
   \mathcal A^{-1} =
   \begin{pmatrix}
@@ -103,63 +138,87 @@ où $A_{11}$ et $A_{22}$ sont des matrices carrées, $A_{11}$ et $A_{22}-A_{21}A
     -BA_{21}A_{11}^{-1} & B
   \end{pmatrix}
 \]
-avec $B=\left(A_{22}-A_{21}A_{11}^{-1}A_{12}\right)^{-1}$. \question{2} Appliquer la formule dans le cas où $A_{12}$ et $A_{21}$ sont des matrices nulles.\newline
+avec $B=\left(A_{22}-A_{21}A_{11}^{-1}A_{12}\right)^{-1}$. \question{2}
+Appliquer la formule dans le cas où $A_{12}$ et $A_{21}$ sont des matrices
+nulles.\newline
 
 \bigskip
 
-\exercice Soit le modèle, sous forme matricielle, suivant~:
+\exercice\label{ex:fwl} Soit le modèle de la nature, sous forme matricielle, suivant~:
 \[
-  Y = X \beta + U
+  \mathbf y = X \beta + \varepsilon
 \]
-où $Y$ et $U$ sont des vecteurs $N\times 1$, $X$ une matrice $N\times K$ et $\beta$ un vecteur $K\times 1$. On partitionne la matrice des variables explicatives de la façon suivante~:
+où $\mathbf y$ et $\varepsilon$ sont des vecteurs $N\times 1$, $X$ une matrice
+$N\times K$ de plein rang colonne et $\beta$ un vecteur $K\times 1$. On
+partitionne la matrice des variables explicatives de la façon suivante~:
 \[
-X = \left(X_1 \vdots X_2\right)
+X = \left(X_1 \mid X_2\right)
 \]
-où $X_1$ et $X_2$ sont des matrices $N \times K_1$ et $N\times K_2$ avec $K_1\geq 1$, $K_2\geq 1$ et $K_1+K_2=K$. On partitionne le vecteur des paramètres de la même façon $\beta_1$ contient les paramètres associés aux variables dans $X_1$, $\beta_2$ les paramètres associés aux variables dans $X_2$. \question{1} Donner les estimateurs des MCO de $\beta_1$ et $\beta_2$ dans le cas où les variables dans $X_1$ sont orthogonales à celles dans $X_2$ (c'est-à-dire dans le cas où $X_1'X_2 = 0$ et $X_2'X_1=0$). Interpréter. \question{2} Si les matrices $X_1$ et $X_2$ ne sont pas des matrices orthogonbales, donner une expression de $\hat\beta_1$ en la comparant à l'expression obtenue dans la question précédente. \question{3} Montrer que le vecteur des résidus estimés peut s'écrire sous la forme $\hat U = M Y$ (en donnant une expression pour la matrice $M$). \question{4} Montrer que la matrice $M$ est idempotente.\question{5} Montrer que les matrices $M$ et $X$ sont orthogonales. \question{6} Montrer que la prédiction $\hat Y = X\hat\beta$ peut s'écrire sous la forme $\hat Y = H Y$. La matrice $H$ est-elle idempotente~? \question{7} Éliminer $\hat\beta_1$ dans l'expression de $\hat\beta_2$, obtenu en répondant à la question (2), en faisant apparaître le projecteur orthogonal $M_1 = I-X_1(X_1'X_1)^{-1}X_1$. Commenter.\newline
+où $X_1$ et $X_2$ sont des matrices $N \times K_1$ et $N\times K_2$ avec
+$K_1\geq 1$, $K_2\geq 1$ et $K_1+K_2=K$. On partitionne le vecteur des
+paramètres de la même façon~: $\beta_1$ contient les paramètres associés aux
+variables dans $X_1$, $\beta_2$ les paramètres associés aux variables
+dans $X_2$. \question{1} Donner les estimateurs des MCO de $\beta_1$
+et $\beta_2$ dans le cas où les variables dans $X_1$ sont orthogonales à celles
+dans $X_2$ (c'est-à-dire dans le cas où $X_1'X_2 = 0$ et $X_2'X_1=0$).
+Interpréter. \question{2} Si les matrices $X_1$ et $X_2$ ne sont pas
+orthogonales, donner une expression de $\hat{\mathbf b}_1$ en la comparant à
+l'expression obtenue dans la question précédente. \question{3} Montrer que le
+vecteur des résidus estimés peut s'écrire sous la forme
+$\hat\epsilon = M \mathbf y$ (en donnant une expression pour la matrice $M$).
+\question{4} Montrer que la matrice $M$ est idempotente. \question{5} Montrer
+que les matrices $M$ et $X$ sont orthogonales. \question{6} Montrer que la
+prédiction $\hat{\mathbf y} = X\hat{\mathbf b}$ peut s'écrire sous la forme
+$\hat{\mathbf y} = H \mathbf y$. La matrice $H$ est-elle idempotente~?
+\question{7} Éliminer $\hat{\mathbf b}_1$ dans l'expression
+de $\hat{\mathbf b}_2$, obtenue en répondant à la question (2), en faisant
+apparaître le projecteur orthogonal $M_1 = I-X_1(X_1'X_1)^{-1}X_1'$.
+Commenter.\newline
 
 \bigskip
 
-\exercice On cherche à illustrer à l'aide de simulations la convergence de
+\exercice\label{ex:mc-convergence} On cherche à illustrer à l'aide de simulations la convergence de
 l'estimateur des MCO. On considère le DGP suivant~:
 \[
-y_i = a + b x_i + \varepsilon_i
+y_i = \alpha + \beta x_i + \varepsilon_i
 \]
 $i=1,\dots, N$, où $\varepsilon_i$ est un bruit blanc gaussien centré réduit,
-$a=1$ et $b=\frac{1}{2}$ sont les vraies valeurs des paramètres. On commencera
-par supposer que la variable explicative est déterministe, c'est-à-dire que la
-réalisation des $x_i$ est constante d'un échantillon à l'autre. \question{1}
-Pour $N=10$ (taille de l'échantillon), simuler les $\{x_i\}_{i=1}^N$ avec une
-loi normale centrée sur 1 et de variance 2. puis dans une boucle 50000
-échantillons $\{y_i\}_{i=1}^N$ en estimant pour chaque échantillon les
-paramètres $\alpha$ et $\beta$ dans le modèle empirique~:
+$\alpha=1$ et $\beta=\frac{1}{2}$ sont les vraies valeurs des paramètres. On
+commencera par supposer que la variable explicative est déterministe,
+c'est-à-dire que la réalisation des $x_i$ est constante d'un échantillon à
+l'autre. \question{1} Pour $N=10$ (taille de l'échantillon), simuler
+les $\{x_i\}_{i=1}^N$ avec une loi normale centrée sur 1 et de variance 2, puis
+dans une boucle 50000 échantillons $\{y_i\}_{i=1}^N$ en estimant pour chaque
+échantillon les paramètres $a$ et $b$ dans le modèle empirique~:
 \[
-y_i = \alpha + \beta x_i + u_i
+y_i = a + b x_i + \epsilon_i
 \]
-Les 50000 valeurs obtenues pour $\widehat\beta$ devront être stockées dans un
-vecteur. Calculer la moyenne et la variance des $\widehat\beta$ obtenus. Que
-représentent ces quantités. \question{2} Reprendre la question (1) avec $N=100$,
-$N=1000$ et $N=10000$. Comparer les moyennes et variances puis commenter.
-\question{3} Reprendre les questions (1) et (2) en considérant que la variable
-explicative n'est pas déterministe (pour former chaque échantillon il faut tirer
-une réalisation différente des $\{x_i\}_{i=1}^N$ dans une loi normale centrée
-sur 1 et de variance 2). \question{4} Reprendre la question (3) en considérant
-que la variance de la variable explicative est 0.2 puis 20 (plutôt que 2).
-Comment ce changement affecte les propriétés de l'estimateur de $\beta$~?\newline
+Les 50000 valeurs obtenues pour $\hat b$ devront être stockées dans un
+vecteur. Calculer la moyenne et la variance des $\hat b$ obtenus. Que
+représentent ces quantités~? \question{2} Reprendre la question (1) avec
+$N=100$, $N=1000$ et $N=10000$. Comparer les moyennes et variances puis
+commenter. \question{3} Reprendre les questions (1) et (2) en considérant que la
+variable explicative n'est pas déterministe (pour former chaque échantillon il
+faut tirer une réalisation différente des $\{x_i\}_{i=1}^N$ dans une loi normale
+centrée sur 1 et de variance 2). \question{4} Reprendre la question (3) en
+considérant que la variance de la variable explicative est $0{,}2$ puis $20$
+(plutôt que 2). Comment ce changement affecte-t-il les propriétés de
+l'estimateur de $\beta$~?\newline
 
 \bigskip
 
-\exercice On cherche à illustrer à l'aide de simulations la distribution de
+\exercice\label{ex:mc-distribution} On cherche à illustrer à l'aide de simulations la distribution de
 l'estimateur des MCO. On reprend le même cadre que dans l'exercice précédent,
 mais au lieu de calculer la moyenne et la variance on représente la distribution
-de l'estimateur de $\beta$ en déviation à la vraie valeur du paramètre $b$,
-$\widehat\beta-\frac{1}{2}$. On peut utiliser des histogrammes pour représenter
+de l'estimateur de $\beta$ en déviation à la vraie valeur du paramètre,
+$\hat b-\frac{1}{2}$. On peut utiliser des histogrammes pour représenter
 les distributions. Reprendre les mêmes scenarii que dans l'exercice précédent et
-représenter les distributions de $\widehat\beta-\frac{1}{2}$ puis
-$\sqrt{N}\left(\widehat\beta-\frac{1}{2}\right)$. Commenter.\newline
+représenter les distributions de $\hat b-\frac{1}{2}$ puis
+$\sqrt{N}\left(\hat b-\frac{1}{2}\right)$. Commenter.\newline
 
 \bigskip
 
-\exercice Soit un couple de variables aléatoires réelles $(X_1, X_2)$ distribué selon une loi normale bivariée~:
+\exercice\label{ex:normale-bivariee} Soit un couple de variables aléatoires réelles $(X_1, X_2)$ distribué selon une loi normale bivariée~:
 \[
   \begin{pmatrix}
     X_1\\
@@ -185,32 +244,495 @@ possible de réécrire cette densité jointe comme le produit de la densité
 conditionnelle de $X_1|X_2$ et de la densité marginale de $X_2$. Montrer que ces
 densités sont gaussiennes. \question{3} Donner $\mathbb E[X_1|X_2]$ et
 $\mathbb V[X_1|X_2]$. \question{4} Soit $X_2$ une variable aléatoire normale
-$\mathcal N(\mu_2, \sigma_2^2)$. Quelle est la loi de
-$X_1 = a + bX_2 + \varepsilon$ si $X_1\perp\varepsilon$ et
-$\varepsilon\sim\mathcal N(0,\sigma_{\varepsilon}^2)$~? \question{5} Écrire la
-densité de $X_1|X_2$. \question{6} L'utilisation du mot "régression" a été
+$\normal{\mu_2}{\sigma_2^2}$. Quelle est la loi de
+$X_1 = a + bX_2 + \varepsilon$ si $X_2\perp\varepsilon$ et
+$\varepsilon\sim\normal{0}{\epsvar}$~? \question{5} Écrire la
+densité de $X_1|X_2$. \question{6} L'utilisation du mot «~régression~» a été
 introduite par le statisticien Sir Francis Galton dans une étude de 1885
-intitulée "Regression Toward Mediocrity in Hereditary Stature" (Régression vers
-la médiocrité dans la stature héréditaire). Il a montré que la taille des
-enfants issus de parents très petits ou très grands se rapprochait de la
-moyenne. En moyenne, l'enfant de parents de grandes tailles est plus petit.
+intitulée \emph{Regression Toward Mediocrity in Hereditary Stature}
+(Régression vers la médiocrité dans la stature héréditaire). Il a montré que la
+taille des enfants issus de parents très petits ou très grands se rapprochait de
+la moyenne. En moyenne, l'enfant de parents de grandes tailles est plus petit.
 Discuter ce résultat à l'aide de vos réponses aux questions (2) et (3).\newline
 
 \bigskip
+\exercice\label{ex:r2} On considère le modèle empirique $\mathbf y = X\mathbf b + \bm\epsilon$,
+où $X$ est une matrice $T\times K$ de plein rang colonne \textbf{dont la première
+colonne est un vecteur de uns}. On note $\hat{\mathbf b}$ l'estimateur des MCO,
+$\hat{\mathbf y}=X\hat{\mathbf b}$ la prédiction, $\hat\epsilon$ les résidus, et~:
+\[
+  SST = \sum_{t=1}^T (y_t-\bar y)^2,\quad
+  SSR = \sum_{t=1}^T (\hat y_t-\bar y)^2,\quad
+  SSE = \sum_{t=1}^T \hat\epsilon_t^{\,2}
+\]
+\question{1} Montrer que $\bar{\hat y} = \bar y$, puis que $SST = SSR + SSE$. Où
+la présence d'une constante intervient-elle~? \question{2} Le coefficient de
+détermination est $R^2 = 1-SSE/SST$. Montrer que $R^2 = SSR/SST$ et que
+$0\leq R^2\leq 1$. \question{3} Montrer que $\sqrt{R^2}$ est le coefficient de
+corrélation empirique entre $\mathbf y$ et $\hat{\mathbf y}$. \question{4}
+Montrer que le $R^2$ ne peut pas diminuer lorsqu'on ajoute une variable
+explicative au modèle. (On pourra remarquer que minimiser la somme des carrés
+des résidus sur un espace plus grand ne peut pas conduire à un minimum plus
+élevé.) \question{5} Le $R^2$ ajusté est
+$\bar R^2 = 1-(1-R^2)\frac{T-1}{T-K}$. Montrer que $\bar R^2\leq R^2$, et que
+$\bar R^2$ peut être négatif. Que corrige-t-il~? \question{6} Que devient la
+décomposition de la question (1) si le modèle ne contient pas de constante~?
+En déduire pourquoi le $R^2$ perd alors son interprétation. \question{7} Les
+quatre jeux de données d'Anscombe (1973) partagent les mêmes moyennes, les mêmes
+variances et le même $R^2$, mais racontent quatre histoires différentes. Que
+peut-on en conclure sur l'usage du $R^2$ comme critère de qualité~?\newline
 
-\exercice On considère un modèle générateur des données de la forme~:
+\bigskip
+
+\exercice\label{ex:s2} On se place sous les conditions idéales du cours~: $X$ déterministe de
+plein rang colonne ($\mathcal H_1$, $\mathcal H_2$) et
+$\varepsilon\sim\normal{0}{\epsvar I_T}$ ($\mathcal H_3$). On note
+$P=X(X'X)^{-1}X'$, $M=I_T-P$ et $s^2 = SSE/(T-K)$. \question{1} Montrer que
+$\hat\epsilon = M\varepsilon$, puis que $M$ est symétrique, idempotente, et que
+$\trace(M) = T-K$. \question{2} Montrer que
+$\mathbb E\left[SSE\right] = \epsvar (T-K)$. (On pourra utiliser
+$\mathbb E[\varepsilon'A\varepsilon] = \tracarg{A\,\mathbb V[\varepsilon]}$ pour
+$A$ déterministe.) En déduire que $s^2$ est un estimateur sans biais
+de $\epsvar$. \question{3} Sachant qu'une forme quadratique
+$\varepsilon'A\varepsilon/\epsvar$, avec $A$ symétrique idempotente, suit une loi
+du khi-deux à $\trace(A)$ degrés de liberté, donner la loi
+de $(T-K)s^2/\epsvar$. \question{4} En déduire $\mathbb V\left[s^2\right]$.
+\question{5} Montrer que $\hat{\mathbf b}$ et $s^2$ sont indépendants. (On
+pourra montrer que $(X'X)^{-1}X'M = 0$ et invoquer le fait que, pour un vecteur
+gaussien, $B\varepsilon$ et $\varepsilon'A\varepsilon$ sont indépendants dès
+lors que $BA=0$.) \question{6} En déduire que la statistique de Student du cours
+suit bien une loi de Student, en rappelant la définition de cette loi.
+\question{7} Montrer que $s^2$ est un estimateur convergent de $\epsvar$.\newline
+
+\bigskip
+
+\exercice\label{ex:vraisemblance} On reste sous les conditions idéales, avec
+$\varepsilon\sim\normal{0}{\epsvar I_T}$. \question{1} Écrire la vraisemblance
+$L(\beta,\epsvar;\mathbf y)$ puis la log-vraisemblance de l'échantillon.
+\question{2} Montrer que l'estimateur du maximum de vraisemblance de $\beta$
+coïncide avec l'estimateur des MCO, et que celui de $\epsvar$ est
+$\hat\sigma^2_{\varepsilon} = SSE/T$. \question{3} L'estimateur
+$\hat\sigma^2_{\varepsilon}$ est-il sans biais~? Calculer son biais et montrer
+qu'il disparaît asymptotiquement. \question{4} Calculer la matrice d'information
+de Fisher associée à $\theta = (\beta', \epsvar)'$. Montrer qu'elle est
+bloc-diagonale et commenter cette propriété. \question{5} En déduire les bornes
+de Cramer-Darmois-Fréchet-Rao. L'estimateur des MCO de $\beta$ atteint-il sa
+borne~? Et $s^2$~? \question{6} On considère la famille d'estimateurs
+$\sigma^2_{(c)} = SSE/c$, indexée par $c>0$. Calculer l'erreur quadratique
+moyenne de $\sigma^2_{(c)}$ et montrer qu'elle est minimale pour
+$c = T-K+2$. \question{7} Commenter~: entre $s^2$ (sans biais) et
+$\hat\sigma^2_{\varepsilon}$ (biaisé), lequel a la plus petite erreur
+quadratique moyenne~? Que nous apprend cet exercice sur l'arbitrage
+biais-variance~?\newline
+
+\bigskip
+
+\exercice\label{ex:tests} On se place toujours sous les conditions idéales. Soit $R$ une matrice
+$m\times K$ de rang $m\leq K$ et $r$ un vecteur $m\times 1$. On souhaite tester
+$\mathcal H_0~: R\beta = r$. \question{1} Donner la loi
+de $R\hat{\mathbf b}-r$ sous $\mathcal H_0$. \question{2} Dans le cas $m=1$,
+construire une statistique de test dont la loi est connue et ne dépend d'aucun
+paramètre inconnu. Quelle loi suit-elle, et pourquoi faut-il remplacer $\epsvar$
+par $s^2$~? \question{3} Spécialiser la question précédente au test de
+significativité individuelle $\mathcal H_0~: \beta_i = 0$, en explicitant $R$
+et $r$. \question{4} Dans le cas général $m\geq 1$, montrer que~:
+\[
+  F = \frac{\left(R\hat{\mathbf b}-r\right)'\left(R(X'X)^{-1}R'\right)^{-1}\left(R\hat{\mathbf b}-r\right)/m}{SSE/(T-K)}
+\]
+suit une loi de Fisher dont on précisera les degrés de liberté. \question{5}
+Montrer que pour $m=1$ on a $F = t^2$, où $t$ est la statistique de la question
+(2). \question{6} On teste la significativité jointe de toutes les pentes,
+$\mathcal H_0~: \beta_2 = \dots = \beta_K = 0$. Montrer que la statistique de
+Fisher s'écrit~:
+\[
+  F = \frac{R^2}{1-R^2}\,\frac{T-K}{K-1}
+\]
+\question{7} Peut-on avoir simultanément toutes les statistiques de Student
+individuelles non significatives et une statistique de Fisher jointe très
+significative~? Proposer une explication.\newline
+
+\bigskip
+
+\exercice\label{ex:contraintes} On considère le programme des MCO sous $m$ contraintes linéaires~:
+\[
+  \begin{split}
+    \tilde{\mathbf b} = \arg & \min_{\mathbf b} (\mathbf{y}-X\mathbf{b})'(\mathbf{y}-X\mathbf{b})\\
+                             &\text{s.c.} \quad R\mathbf{b} = r
+  \end{split}
+\]
+avec $R$ de dimension $m\times K$ et de rang $m$. \question{1} Écrire le
+lagrangien du programme et donner les conditions du premier ordre. \question{2}
+En résolvant ce système, montrer que~:
+\[
+  \tilde{\mathbf b} = \hat{\mathbf b} - (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}\left(R\hat{\mathbf b}-r\right)
+\]
+\question{3} Calculer $\mathbb E[\tilde{\mathbf b}]$. À quelle condition
+l'estimateur contraint est-il sans biais~? \question{4} Calculer
+$\mathbb V[\tilde{\mathbf b}]$ et montrer que
+$\mathbb V[\hat{\mathbf b}]-\mathbb V[\tilde{\mathbf b}]$ est une matrice
+semi-définie positive. \question{5} Commenter~: pourquoi imposer une contrainte
+\emph{fausse} peut-il malgré tout améliorer l'estimation~? \question{6}
+Application. Soit la fonction de production Cobb-Douglas~:
+\[
+  \log Q_t = \beta_1 + \beta_2 \log K_t + \beta_3 \log L_t + \varepsilon_t
+\]
+Écrire $R$ et $r$ correspondant à l'hypothèse de rendements d'échelle
+constants. Montrer que, sous cette contrainte, le modèle peut se réécrire comme
+une régression de $\log (Q_t/L_t)$ sur $\log (K_t/L_t)$. \question{7} Comment
+tester cette hypothèse~? Relier la statistique de Fisher de l'exercice précédent
+à un test du rapport des vraisemblances.\newline
+
+\bigskip
+\exercice\label{ex:indicatrice} \textbf{Une régression que vous connaissez déjà.}
+On dispose de $N$ individus, dont $N_1$ ont reçu un traitement et $N_0 = N-N_1$
+ne l'ont pas reçu. On note $d_i\in\{0,1\}$ l'indicatrice de traitement, et l'on
+estime par les MCO~:
+\[
+  y_i = b_1 + b_2\,d_i + \epsilon_i
+\]
+\question{1} Expliciter $X$, $X'X$ et $X'\mathbf y$ en fonction de $N_0$, $N_1$
+et des sommes de $y_i$ dans chaque groupe. \question{2} En déduire que
+$\hat b_2 = \bar y_1 - \bar y_0$ et $\hat b_1 = \bar y_0$, où $\bar y_g$ désigne
+la moyenne du groupe $g$. \question{3} Montrer que la prédiction
+$\hat y_i$ ne prend que deux valeurs, et en déduire que
+$SSE = \sum_{g\in\{0,1\}}\sum_{i\in g}\left(y_i-\bar y_g\right)^2$.
+\question{4} En déduire que $s^2$ est la variance «~intra-groupe~» usuelle.
+\question{5} Montrer que la statistique de Student de $\hat b_2$ est
+\emph{exactement} celle du test de comparaison de deux moyennes à variances
+égales, que vous connaissez du cours de statistique. \question{6} Que vaut le
+$R^2$ de cette régression~? \question{7} Un étudiant décide d'introduire
+\emph{deux} indicatrices, $d_i$ pour les traités et $e_i = 1-d_i$ pour les
+autres, en conservant la constante. Que se passe-t-il~? Relier à
+l'exercice~\ref{ex:multicolinearite}.\newline
+
+\bigskip
+
+\exercice\label{ex:regression-inverse} \textbf{Régresser $y$ sur $x$ ou $x$ sur
+$y$~?} On dispose de $N$ couples $(x_i,y_i)$ et l'on considère les deux
+régressions simples, avec constante~: celle de $y$ sur $x$, de pente estimée
+$\hat b_{y|x}$, et celle de $x$ sur $y$, de pente estimée $\hat b_{x|y}$.
+\question{1} Donner l'expression de chacune des deux pentes. \question{2}
+Montrer que~:
+\[
+  \hat b_{y|x}\times\hat b_{x|y} = R^2
+\]
+où $R^2$ est le coefficient de détermination, identique dans les deux
+régressions. \question{3} En déduire que la droite «~$y$ sur $x$~» et la droite
+«~$x$ sur $y$~», tracées dans le même plan, ne coïncident que si $R^2=1$.
+Montrer qu'elles se coupent toujours en $(\bar x,\bar y)$. \question{4} Montrer
+que $\hat b_{y|x} \leq 1/\hat b_{x|y}$ lorsque les deux pentes sont positives~:
+la droite des MCO est toujours «~plus plate~» que celle obtenue en inversant la
+régression inverse. \question{5} Relier ce résultat au phénomène de régression
+vers la moyenne de l'exercice~\ref{ex:normale-bivariee}. \question{6} Un
+économiste veut estimer l'élasticité-prix de la demande. Il régresse d'abord
+$\log Q$ sur $\log P$, puis $\log P$ sur $\log Q$ et prend l'inverse de la
+pente. Il obtient deux nombres différents et vous demande lequel est le bon. Que
+lui répondez-vous~? \question{7} Dans quel cas la question «~qui régresser sur
+qui~?~» n'est-elle \emph{pas} arbitraire~? (On pourra songer au sens de
+causalité et à l'exercice~\ref{ex:erreurs-mesure}.)\newline
+
+\bigskip
+
+\exercice\label{ex:leave-one-out} \textbf{Que devient l'estimation si l'on
+retire une observation~?} On note $\hat{\mathbf b}$ l'estimateur des MCO calculé
+sur les $T$ observations, et $\hat{\mathbf b}_{(t)}$ celui calculé sur les
+$T-1$ observations restantes après avoir retiré l'observation $t$. On pose
+$h_{tt} = \mathbf x_t'(X'X)^{-1}\mathbf x_t$. \question{1} En s'inspirant de la
+formule d'inversion par blocs de l'exercice~\ref{ex:inversion-blocs}, établir la
+formule de mise à jour de rang un~:
+\[
+  \left(A-\mathbf u\mathbf u'\right)^{-1} = A^{-1} + \frac{A^{-1}\mathbf u\mathbf u'A^{-1}}{1-\mathbf u'A^{-1}\mathbf u}
+\]
+valable dès que $\mathbf u'A^{-1}\mathbf u\neq1$. \question{2} L'appliquer avec
+$A = X'X$ et $\mathbf u = \mathbf x_t$ pour exprimer
+$\left(X_{(t)}'X_{(t)}\right)^{-1}$ en fonction de $(X'X)^{-1}$ et de $h_{tt}$.
+\question{3} En déduire~:
+\[
+  \hat{\mathbf b}_{(t)} = \hat{\mathbf b} - \frac{(X'X)^{-1}\mathbf x_t\,\hat\epsilon_t}{1-h_{tt}}
+\]
+\question{4} En déduire l'erreur de prévision commise sur l'observation
+écartée~:
+\[
+  y_t - \mathbf x_t'\hat{\mathbf b}_{(t)} = \frac{\hat\epsilon_t}{1-h_{tt}}
+\]
+Commenter~: pourquoi ce résidu est-il toujours plus grand, en valeur absolue,
+que le résidu ordinaire~? \question{5} Montrer que $0\leq h_{tt}\leq 1$ et que
+$\sum_t h_{tt} = K$. Quelle est la valeur moyenne d'un levier~? \question{6}
+Interpréter $h_{tt}$ comme une mesure d'influence de l'observation $t$. Que se
+passe-t-il lorsque $h_{tt}$ est proche de $1$~? \question{7} Cet exercice éclaire
+la construction des écarts-types robustes du chapitre~IV~: anticiper en
+expliquant pourquoi la variante HC3 divise $\hat\epsilon_t^{\,2}$ par
+$(1-h_{tt})^2$ (cf. exercice~\ref{ex:hc}).\newline
+
+\bigskip
+
+\section*{Chapitre II~-- Violations des conditions idéales}
+
+\exercice\label{ex:erreurs-non-centrees} La nature génère $\mathbf y = X\beta + \varepsilon$ avec $X$
+déterministe de plein rang colonne, mais les erreurs ne sont pas centrées~:
+$\mathbb E[\varepsilon] = \xi \neq 0$, et
+$\mathbb V[\varepsilon] = \epsvar I_T$. \question{1} Calculer
+$\mathbb E[\hat{\mathbf b}]$ et donner l'expression du biais. \question{2}
+Donner la limite en probabilité de $\hat{\mathbf b}$. \question{3} Montrer
+que~:
+\[
+  \mathbb E\left[s^2\right] = \epsvar + \frac{\xi'M\xi}{T-K}
+\]
+L'estimateur $s^2$ sur-estime-t-il ou sous-estime-t-il $\epsvar$~? Quelle
+conséquence pour les tests~? \question{4} On suppose maintenant que $X$ contient
+une constante et que $\xi = \mu\,\iota$, où $\iota$ est un vecteur de uns et
+$\mu$ un réel. Montrer que seuls les paramètres associés à la constante sont
+affectés, et que les pentes restent estimées sans biais. \question{5} Généraliser
+au cas $\xi = X_1\gamma$, où $X_1$ regroupe une partie des colonnes de $X$.
+\question{6} Que devient $\mathbb E[s^2]$ dans le cas de la question (4)~?
+\question{7} Conclure~: pourquoi inclut-on systématiquement une constante dans
+le modèle empirique, et que peut-on identifier séparément de $\mu$~?\newline
+
+\bigskip
+
+\exercice\label{ex:variable-omise} La nature génère les données selon~:
+\[
+  \mathbf y = X_1\beta_1 + X_2\beta_2 + \varepsilon
+\]
+avec $\varepsilon\sim\iid{0}{\epsvar}$ et $X_1$, $X_2$ déterministes, de
+dimensions $T\times K_1$ et $T\times K_2$. L'économètre, lui, estime le modèle
+tronqué $\mathbf y = X_1\mathbf b_1 + \bm\epsilon$. \question{1} Montrer que~:
+\[
+  \mathbb E\left[\hat{\mathbf b}_1\right] = \beta_1 + (X_1'X_1)^{-1}X_1'X_2\,\beta_2
+\]
+Comment interpréter la matrice $(X_1'X_1)^{-1}X_1'X_2$~? \question{2} À quelles
+conditions l'estimateur est-il sans biais~? \question{3} On se place dans le cas
+$K_1 = K_2 = 1$, avec $X_1 = x$ et $X_2 = z$ aléatoires. Montrer que~:
+\[
+  \mathrm{plim}\ \hat b_1 = \beta_1 + \beta_2\,\frac{\sigma_{xz}}{\sigma_x^2}
+\]
+Discuter le signe du biais selon les signes de $\beta_2$ et de $\sigma_{xz}$, en
+prenant l'exemple de l'équation de salaire où $z$ est le talent (non observé) et
+$x$ le nombre d'années d'études. \question{4} Montrer que
+$\mathbb E[s^2] = \epsvar + \frac{\beta_2'X_2'M_1X_2\beta_2}{T-K_1}$, où
+$M_1 = I-X_1(X_1'X_1)^{-1}X_1'$. Commenter le signe. \question{5} On considère
+maintenant la situation inverse~: la nature génère
+$\mathbf y = X_1\beta_1 + \varepsilon$, mais l'économètre estime le modèle
+\emph{augmenté} $\mathbf y = X_1\mathbf b_1 + X_2\mathbf b_2 + \bm\epsilon$.
+Montrer que $\hat{\mathbf b}_1$ reste sans biais. \question{6} En utilisant le
+théorème de Frisch-Waugh (exercice~\ref{ex:fwl}), comparer
+$\mathbb V[\hat{\mathbf b}_1]$ dans le modèle augmenté et dans le modèle
+correct. Conclure. \question{7} Résumer l'arbitrage auquel fait face
+l'économètre entre omettre et ajouter une variable.\newline
+
+\bigskip
+
+\exercice\label{ex:multicolinearite} On considère le modèle empirique~:
+\[
+  y_t = b_1 + b_2 x_{2,t} + b_3 x_{3,t} + \epsilon_t
+\]
+où les variables $x_2$ et $x_3$ sont centrées, réduites, et de corrélation
+empirique $\rho$, avec $|\rho|<1$. \question{1} Écrire la matrice
+$\frac{1}{T}X'X$ associée aux deux pentes. \question{2} En déduire que~:
+\[
+  \mathbb V\begin{pmatrix}\hat b_2\\ \hat b_3\end{pmatrix}
+  = \frac{\epsvar}{T\left(1-\rho^2\right)}
+  \begin{pmatrix} 1 & -\rho\\ -\rho & 1\end{pmatrix}
+\]
+\question{3} Que devient cette variance lorsque $\rho \to 1$~? Et la covariance
+entre $\hat b_2$ et $\hat b_3$~? \question{4} Le facteur d'inflation de la
+variance est $\mathrm{VIF}_k = 1/(1-R_k^2)$, où $R_k^2$ est le coefficient de
+détermination de la régression de $x_k$ sur les autres explicatives. Vérifier
+la cohérence avec la question (2). \question{5} Que se passe-t-il si $\rho = 1$
+exactement~? Quelle hypothèse du cours est alors violée~? \question{6} La
+multicolinéarité (imparfaite) est-elle une violation des conditions idéales~?
+L'estimateur des MCO reste-t-il sans biais~? Reste-t-il BLUE~? \question{7}
+Quels symptômes observe-t-on sur une sortie de régression, et que peut-on y
+faire~? Relier à la question (7) de l'exercice~\ref{ex:tests}.\newline
+
+\bigskip
+
+\exercice\label{ex:mcg} La nature génère $\mathbf y = X\beta + \varepsilon$ avec $X$
+déterministe de plein rang colonne, mais les erreurs ne sont pas
+sphériques~: $\mathbb E[\varepsilon] = 0$ et
+$\mathbb V[\varepsilon] = \epsvar\Omega$, où $\Omega$ est une matrice symétrique
+définie positive \textbf{connue}, normalisée de sorte que $\Omega = I_T$ dans le
+cas sphérique. \question{1} Montrer que $\hat{\mathbf b}$ reste sans biais. À
+quelle condition reste-t-il convergent~? \question{2} Montrer que~:
+\[
+  \mathbb V\left[\hat{\mathbf b}\right] = \epsvar (X'X)^{-1}X'\Omega X (X'X)^{-1}
+\]
+Pourquoi appelle-t-on cette expression une «~variance sandwich~»~? \question{3}
+Montrer que $\mathbb E[SSE] = \epsvar\tracarg{M\Omega}$. L'estimateur $s^2$
+est-il sans biais~? En déduire pourquoi les écarts-types imprimés par les
+logiciels sont trompeurs. \question{4} Comme $\Omega$ est symétrique définie
+positive, il existe $\Lambda$ telle que $\Omega^{-1} = \Lambda'\Lambda$. Montrer
+que le modèle transformé $\Lambda\mathbf y = \Lambda X\beta + \Lambda\varepsilon$
+satisfait les conditions idéales. \question{5} En déduire l'expression de
+l'estimateur des moindres carrés généralisés $\hat{\mathbf b}_{\textsc{mcg}}$,
+et montrer qu'il est sans biais. \question{6} Donner
+$\mathbb V[\hat{\mathbf b}_{\textsc{mcg}}]$ et montrer que
+$\mathbb V[\hat{\mathbf b}]-\mathbb V[\hat{\mathbf b}_{\textsc{mcg}}]$ est
+semi-définie positive. Quel théorème retrouve-t-on~? \question{7} Proposer un
+estimateur sans biais de $\epsvar$ dans le modèle transformé.\newline
+
+\bigskip
+
+\exercice\label{ex:ar1-cochrane} On reprend le cadre de l'exercice précédent en spécialisant $\Omega$
+au cas d'erreurs autocorrélées d'ordre un~:
+\[
+  \varepsilon_t = \varphi\,\varepsilon_{t-1} + \nu_t, \qquad |\varphi|<1,
+  \qquad \nu_t\sim\iid{0}{\sigma_{\nu}^2}
+\]
+\question{1} Calculer $\mathbb V[\varepsilon_t]$ et
+$\mathrm{cov}(\varepsilon_t,\varepsilon_{t-s})$ pour $s\geq 0$. En déduire la
+forme de $\Omega$. \question{2} Vérifier que la matrice~:
+\[
+  \Lambda =
+  \begin{pmatrix}
+    \sqrt{1-\varphi^2} & 0 & 0 &\cdots & 0\\
+    -\varphi & 1 & 0 & \cdots & 0\\
+    0 & -\varphi & 1 & \cdots & 0\\
+    \vdots & & \ddots & \ddots & \vdots\\
+    0 & \cdots & 0 & -\varphi & 1
+  \end{pmatrix}
+\]
+convient, c'est-à-dire que $\Lambda'\Lambda = \Omega^{-1}$ à un facteur
+d'échelle près. \question{3} Expliciter les observations du modèle transformé.
+Pourquoi la première observation reçoit-elle un traitement particulier, et que
+se passe-t-il si on la néglige~? \question{4} En pratique $\varphi$ est inconnu.
+Proposer une procédure en deux étapes (moindres carrés quasi généralisés) et
+préciser comment estimer $\varphi$. \question{5} Énoncer les conditions sous
+lesquelles l'estimateur des MCQG est convergent, puis celles sous lesquelles il
+est asymptotiquement équivalent à l'estimateur des MCG. \question{6} Ces
+propriétés valent-elles à distance finie~? \question{7} Un économètre ignore
+l'autocorrélation et utilise $s^2(X'X)^{-1}$. Dans le cas $\varphi>0$ et d'un
+régresseur lui-même positivement autocorrélé, sous-estime-t-il ou sur-estime-t-il
+les écarts-types~? Conséquence pour les tests~?\newline
+
+\bigskip
+
+\exercice\label{ex:tcl} \emph{(Exercice de simulation.)} On souhaite illustrer le rôle du
+théorème central limite lorsque l'hypothèse de normalité des erreurs
+($\mathcal H_3$) est abandonnée. On considère le DGP
+$y_t = \alpha + \beta x_t + \varepsilon_t$ avec $\alpha=1$, $\beta=2$, $x_t$
+déterministe, et $\varepsilon_t$ i.i.d.\ centré de variance $\epsvar$ mais
+\textbf{non gaussien}. \question{1} Simuler $\varepsilon_t$ selon trois lois
+centrées et de variance unitaire~: une loi uniforme, une loi exponentielle
+translatée, et une loi de Student à 5 degrés de liberté (rééchelonnée).
+\question{2} Pour $T=10$, estimer $\hat b$ sur 50000 échantillons. Vérifier
+numériquement que $\hat b$ reste sans biais. Le théorème de Gauss-Markov
+est-il encore valide~? \question{3} Représenter la distribution de
+$\hat b - \beta$ pour $T=10$. Est-elle gaussienne~? \question{4} Représenter la
+distribution de $\sqrt{T}\left(\hat b-\beta\right)$ pour
+$T=10,\,100,\,1000$. Que constate-t-on~? \question{5} Pour chaque taille
+d'échantillon, calculer la proportion de rejets d'un test de Student de
+$\mathcal H_0:\beta=2$ au seuil nominal de $5\,\%$. Comparer la taille effective
+à la taille nominale et commenter. \question{6} Reprendre avec des erreurs
+suivant une loi de Cauchy. Que se passe-t-il, et pourquoi le théorème central
+limite ne s'applique-t-il plus~? \question{7} Conclure sur la portée pratique de
+l'hypothèse de normalité~: pour quoi est-elle nécessaire, et pour quoi ne
+l'est-elle pas~?\newline
+
+\bigskip
+\exercice\label{ex:donnees-groupees} \textbf{Quand $\Omega$ est connue~: les
+données agrégées.} La nature engendre des données \emph{individuelles}~:
+\[
+  y_{ig} = \mathbf x_g'\beta + \varepsilon_{ig},
+  \qquad i=1,\dots,n_g,\quad g=1,\dots,G
+\]
+où $\varepsilon_{ig}\sim\iid{0}{\epsvar}$ et où les explicatives ne varient
+qu'au niveau du groupe (par exemple une politique appliquée à une région).
+L'économètre, lui, ne dispose que des \textbf{moyennes par groupe}
+$\bar y_g$, des $\mathbf x_g$ et des effectifs $n_g$. \question{1} Écrire le
+modèle portant sur les moyennes et montrer que
+$\mathbb V[\bar\varepsilon_g] = \epsvar/n_g$. \question{2} Expliciter la matrice
+$\Omega$ du modèle agrégé. En quoi cette situation est-elle exceptionnelle par
+rapport au chapitre~II~? \question{3} Donner l'estimateur des MCG et montrer
+qu'il revient à multiplier chaque observation agrégée par $\sqrt{n_g}$.
+\question{4} Montrer que cet estimateur des MCG sur données agrégées coïncide
+\emph{exactement} avec l'estimateur des MCO qu'on obtiendrait sur les données
+individuelles. Commenter. \question{5} Que perd-on à appliquer les MCO ordinaires
+aux moyennes, sans pondérer~? L'estimateur est-il biaisé~? \question{6}
+Application numérique~: on estime une simple moyenne ($\mathbf x_g = 1$) avec
+$G=2$, $n_1 = 100$ et $n_2 = 10$. Calculer la variance de l'estimateur des MCG
+et celle des MCO non pondérés. Quel est le rapport~? \question{7} Que faire si
+les effectifs $n_g$ ne sont pas connus~?\newline
+
+\bigskip
+
+\exercice\label{ex:mauvais-controle} \textbf{Faut-il toujours ajouter des
+variables de contrôle~?} La nature engendre~:
+\[
+  \begin{cases}
+    m_i = \gamma\,x_i + u_i\\
+    y_i = \beta\,x_i + \delta\,m_i + \varepsilon_i
+  \end{cases}
+\]
+où $x$ est exogène, et $u$ et $\varepsilon$ sont centrés et indépendants de $x$.
+La variable $x$ agit donc sur $y$ de deux façons~: directement, et
+indirectement en passant par $m$. \question{1} Écrire $y_i$ en fonction de
+$x_i$ seul et identifier l'\emph{effet total} de $x$ sur $y$. \question{2} On
+régresse $y$ sur $x$ seul («~régression courte~»). Vers quoi converge
+$\hat b_x$~? \question{3} On régresse $y$ sur $x$ \emph{et} $m$ («~régression
+longue~»), en supposant $\mathrm{cov}(u,\varepsilon)=0$. Vers quoi convergent
+$\hat b_x$ et $\hat b_m$~? \question{4} Les deux régressions sont donc
+convergentes --- mais vers des quantités différentes. Laquelle répond à la
+question «~de combien le salaire augmente-t-il si l'on étudie un an de plus~?~»
+\question{5} On suppose maintenant $\mathrm{cov}(u,\varepsilon)=\sigma_{u\varepsilon}\neq0$.
+Montrer que la régression longue donne~:
+\[
+  \mathrm{plim}\ \hat b_x = \beta - \gamma\,\frac{\sigma_{u\varepsilon}}{\sigma_u^2}
+\]
+Ajouter $m$ a donc \emph{créé} un biais sur le coefficient de $x$, alors que $x$
+était exogène. \question{6} Illustrer avec $x$ = années d'études, $m$ =
+profession occupée, $y$ = salaire. Que mesure-t-on en contrôlant par la
+profession~? \question{7} Confronter cette conclusion à celle de
+l'exercice~\ref{ex:variable-omise}, question 7. Comment choisir ses variables de
+contrôle~?\newline
+
+\bigskip
+
+\exercice\label{ex:moulton} \textbf{Une erreur qui coûte cher~: les erreurs
+groupées.} On étudie l'effet d'une politique définie au niveau de $G$ régions
+sur une variable individuelle~:
+\[
+  y_{ig} = \alpha + \beta\,x_g + \varepsilon_{ig},
+  \qquad i=1,\dots,n,\quad g=1,\dots,G
+\]
+La variable explicative ne varie qu'\emph{entre} régions. Les erreurs se
+décomposent en un choc régional et un choc individuel~:
+\[
+  \varepsilon_{ig} = v_g + w_{ig}
+\]
+avec $v_g$ et $w_{ig}$ centrés, indépendants entre eux et entre observations, de
+variances $\sigma_v^2$ et $\sigma_w^2$. On pose $\epsvar = \sigma_v^2+\sigma_w^2$
+et $N = Gn$. \question{1} Calculer $\mathbb V[\varepsilon_{ig}]$ et
+$\mathrm{cov}(\varepsilon_{ig},\varepsilon_{jg})$ pour $i\neq j$. En déduire le
+coefficient de corrélation intra-groupe $\rho$. \question{2} Écrire la matrice
+$\Omega$. Est-elle diagonale~? \question{3} Calculer la \emph{vraie} variance de
+$\hat\beta$. \question{4} La comparer à la formule usuelle
+$\epsvar/\sum_{i,g}(x_g-\bar x)^2$ et montrer que le rapport vaut~:
+\[
+  1+(n-1)\rho
+\]
+\question{5} Application numérique~: $n=30$ individus par région et
+$\rho = 0{,}1$. De quel facteur les écarts-types usuels sont-ils sous-estimés~?
+Et les statistiques de Student, sur-estimées~? Commenter. \question{6}
+L'estimateur sandwich de l'exercice~\ref{ex:hc} corrige-t-il ce problème~?
+Justifier précisément. \question{7} Proposer deux solutions.\newline
+
+\bigskip
+
+\section*{Chapitre III~-- Régresseurs aléatoires et variables instrumentales}
+
+\exercice\label{ex:lie} On considère un modèle générateur des données de la forme~:
 \[
 y_t = \alpha + \beta x_t + \varepsilon_t
 \]
 avec une variable explicative ($x$) aléatoire (à chaque fois que
 l'économètre s'adresse à la nature pour obtenir un nouvel échantillon,
 celle-ci retourne des $y$ \textbf{et} $x$ différents). On suppose
-que $\varepsilon$ est i.i.d. et que~:
+que $\varepsilon$ est i.i.d.\ et que~:
 \[
   \mathbb E \left[\varepsilon_t| x_s \right] = 0
-\]
-\[
-  \mathbb V \left[\varepsilon_t| x_s \right] = \sigma_{\varepsilon}^2
+  \qquad\text{et}\qquad
+  \mathbb V \left[\varepsilon_t| x_s \right] = \epsvar
 \]
 pour tout $t,s$. Le modèle empirique est~:
 \[
@@ -227,11 +749,11 @@ que $\mathbb E\left[ \varepsilon_t \right]=0$. \question{6} Montrer
 que $\mathbb E\left[ \varepsilon_t x_s\right] = 0$ pour
 tout $t, s$. \question{7} Montrer que $\varepsilon_t$ est
 homoscédastique. \question{8} L'estimateur des MCO $\hat b$ est-il sans
-biais?\newline
+biais~?\newline
 
 \bigskip
 
-\exercice On considère un modèle générateur des données de la forme~:
+\exercice\label{ex:vi-simple} On considère un modèle générateur des données de la forme~:
 \[
 y_t = \alpha + \beta x_t + \varepsilon_t, \quad t=1,\dots,T
 \]
@@ -241,7 +763,7 @@ covariance de $x$ et $\varepsilon$ est non nulle. Le modèle empirique est~:
 y_t = a + b x_t + \epsilon_t
 \]
 \question{1} L'estimateur des MCO de $b$, noté $\hat{b}$, est-il sans
-biais. \question{2} Calculer la limite en probabilité de l'estimateur
+biais~? \question{2} Calculer la limite en probabilité de l'estimateur
 des MCO. L'estimateur des MCO est-il convergent~? \question{3} On
 suppose que l'on dispose des réalisations d'une autre variable
 aléatoire $\{z_t, t=1,\dots,T\}$. La variable aléatoire $z$ est
@@ -249,47 +771,392 @@ corrélée avec $x$ mais non corrélée avec $\varepsilon$. On définit les
 estimateurs de $a$ et $b$ par le système suivant~:
 \[
   \begin{cases}
-    &\frac{1}{T}\sum_{t=1}^T \left( y_t - \hat{a}_{\text{IV}} - \hat{b}_{\text{IV}} x_t \right) = 0\\
-    &\frac{1}{T}\sum_{t=1}^T z_t\left( y_t - \hat{a}_{\text{IV}} - \hat{b}_{\text{IV}} x_t \right) = 0\\
+    &\frac{1}{T}\sum_{t=1}^T \left( y_t - \hat{a}_{\textsc{vi}} - \hat{b}_{\textsc{vi}} x_t \right) = 0\\
+    &\frac{1}{T}\sum_{t=1}^T z_t\left( y_t - \hat{a}_{\textsc{vi}} - \hat{b}_{\textsc{vi}} x_t \right) = 0\\
   \end{cases}
 \]
-Justifier la définition des estimateurs. \question{4} Résoudre de
+Justifier la définition des estimateurs. \question{4} Résoudre ce
 système d'équations en donnant les expressions
-de $\hat{a}_{\text{IV}}$ et $\hat{b}_{\text{IV}}$. \question{5}
-Montrer que $\hat{b}_{\text{IV}}$ converge en probabilité
-vers $\beta$. $\hat{b}_{\text{IV}}$ est l'estimateur à variable
+de $\hat{a}_{\textsc{vi}}$ et $\hat{b}_{\textsc{vi}}$. \question{5}
+Montrer que $\hat{b}_{\textsc{vi}}$ converge en probabilité
+vers $\beta$. $\hat{b}_{\textsc{vi}}$ est l'estimateur à variable
 instrumentale de $b$. \question{6} Calculer la variance asymptotique
-de $\sqrt{T}\left( \hat{b}_{\text{IV}} - \beta \right)$. Comparer avec
+de $\sqrt{T}\left( \hat{b}_{\textsc{vi}} - \beta \right)$. Comparer avec
 l'estimateur des MCO.\newline
 
 \bigskip
 
-\exercice On généralise l'esimateur à variable instrumentale de l'exercice précédent. Le modèle générateur des données est~:
+\exercice\label{ex:vi-matriciel} On généralise l'estimateur à variable instrumentale de l'exercice
+précédent. Le modèle générateur des données est~:
 \[
-  y_t= X_t\bm\beta + \varepsilon_t
+  y_t= X_t\beta + \varepsilon_t
 \]
-où $X_t$ est un vecteur $1\times K$, $\bm\beta$ un
-vecteur $K\times 1$, $\varepsilon_t$ une variable aléatoire iid. On
+où $X_t$ est un vecteur $1\times K$, $\beta$ un
+vecteur $K\times 1$, $\varepsilon_t$ une variable aléatoire i.i.d. On
 suppose que les variables $X_t$ sont corrélées avec $\varepsilon_t$,
-mais nous disposons de $K$ instrument $Z_t$. Le modèle empirique est~:
+mais nous disposons de $K$ instruments $Z_t$. Le modèle empirique est~:
 \[
-  y_t= X_t\bm b + \epsilon_t
+  y_t= X_t\mathbf b + \epsilon_t
 \]
 \question{1} Donner une expression matricielle de l'estimateur à
-variables instrumentales $\hat{\bm b}_{\text{IV}}$. \question{2}
-Montrer que cet estimateur est convergent. \question{3} Proposer un
-estimateur si le nombre d'instruments est strictment supérieur à $K$.
+variables instrumentales $\hat{\mathbf b}_{\textsc{vi}}$. \question{2}
+Énoncer précisément les deux conditions (pertinence, exogénéité) requises, puis
+montrer que cet estimateur est convergent. \question{3} Donner sa distribution
+asymptotique. \question{4} Proposer un estimateur si le nombre d'instruments est
+strictement supérieur à $K$.\newline
 
+\bigskip
+
+\exercice\label{ex:ar1-biais} On considère le processus autorégressif d'ordre un~:
+\[
+  y_t = \rho\, y_{t-1} + \varepsilon_t, \qquad |\rho|<1,
+  \qquad \varepsilon_t\sim\iid{0}{\epsvar}
+\]
+le processus étant supposé stationnaire. L'économètre estime $\rho$ par les MCO.
+\question{1} Le régresseur $y_{t-1}$ est-il déterministe~? Est-il indépendant
+de $\varepsilon_t$~? Est-il indépendant de $\varepsilon_{t-1}$~? \question{2}
+Montrer que $\mathbb E[y_{t-1}\varepsilon_t] = 0$, mais que
+$\mathbb E[\hat\rho]\neq\rho$. Pourquoi les deux propriétés ne sont-elles pas
+contradictoires~? \question{3} Montrer que $\hat\rho$ est néanmoins convergent.
+Quelle condition de moment est ici suffisante~? \question{4} On admet que le
+biais à distance finie vaut approximativement $-2\rho/T$. La persistance du
+processus est-elle sur-estimée ou sous-estimée~? \question{5} Vérifier ce
+résultat par simulation pour $\rho = 0{,}9$ et $T = 25,\,50,\,100,\,500$.
+\question{6} Ce cas est qualifié d'«~intermédiaire~» dans le cours~: entre quels
+deux cas se situe-t-il~? \question{7} Que se passerait-il si les erreurs
+$\varepsilon_t$ étaient elles-mêmes autocorrélées~? L'estimateur resterait-il
+convergent~?\newline
+
+\bigskip
+
+\exercice\label{ex:erreurs-mesure} \textbf{Erreurs de mesure.} La nature génère
+$y_t = \alpha + \beta x_t + \varepsilon_t$, mais ni $y$ ni $x$ ne sont observés
+exactement. L'économètre observe~:
+\[
+  y_t^{*} = y_t + v_t
+  \qquad\text{et}\qquad
+  x_t^{*} = x_t + u_t
+\]
+où $u_t$ et $v_t$ sont des bruits de mesure centrés, de variances $\sigma_u^2$
+et $\sigma_v^2$, mutuellement indépendants et indépendants de $x_t$ et
+$\varepsilon_t$. \question{1} Écrire le modèle reliant $y_t^{*}$ à $x_t^{*}$ et
+expliciter la perturbation composée. \question{2} Montrer que cette perturbation
+est corrélée à $x_t^{*}$, et calculer cette covariance. \question{3} Montrer
+que~:
+\[
+  \mathrm{plim}\ \hat b = \beta\,\frac{\sigma_x^2}{\sigma_x^2+\sigma_u^2}
+\]
+Ce résultat porte le nom de \emph{théorème d'atténuation}~: justifier
+l'appellation, et préciser vers quoi le biais pousse l'estimateur. \question{4}
+Que se passe-t-il si seule la variable expliquée est mesurée avec erreur
+($\sigma_u^2 = 0$, $\sigma_v^2>0$)~? Commenter. \question{5} On dispose d'une
+seconde mesure indépendante $x_t^{(2)} = x_t + u_t^{(2)}$ de la même grandeur.
+Montrer qu'elle constitue un instrument valide pour $x_t^{*}$, en vérifiant les
+deux conditions du théorème des variables instrumentales. \question{6} Le
+résultat d'atténuation se transpose-t-il à une régression multiple où une seule
+variable est mal mesurée~? \question{7} Illustrer par simulation la relation
+entre $\sigma_u^2/\sigma_x^2$ et l'ampleur du biais.\newline
+
+\bigskip
+
+\exercice\label{ex:offre-demande} \textbf{Offre, demande et doubles moindres carrés.} On considère le
+marché d'un bien agricole, décrit par~:
+\[
+  \begin{cases}
+    Q_t^{d} = \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t & \text{(demande)}\\
+    Q_t^{s} = \gamma_0 + \gamma_1 P_t + \gamma_2 W_t + v_t & \text{(offre)}
+  \end{cases}
+\]
+où $R_t$ est le revenu des ménages, $W_t$ une variable météorologique, et
+l'équilibre impose $Q_t^d = Q_t^s = Q_t$. On suppose $\alpha_1<0<\gamma_1$.
+\question{1} Résoudre pour le prix d'équilibre $P_t$ en fonction des variables
+exogènes et des chocs. \question{2} Montrer que
+$\mathbb E[P_t u_t]\neq 0$~: estimer l'équation de demande par les MCO
+conduit-il à un estimateur convergent de $\alpha_1$~? \question{3} Quelles
+variables peuvent servir d'instruments pour estimer l'équation de demande~? Et
+pour l'équation d'offre~? Justifier à l'aide des conditions de pertinence et
+d'exogénéité. \question{4} On note $P_Z = Z(Z'Z)^{-1}Z'$. Donner l'expression de
+l'estimateur des doubles moindres carrés $\hat{\mathbf b}_{\textsc{dmc}}$ et
+montrer qu'il se lit comme deux régressions successives. \question{5} Montrer
+que, lorsque le nombre d'instruments égale le nombre de régresseurs,
+l'estimateur des doubles moindres carrés coïncide avec celui à variables
+instrumentales. \question{6} On dispose de $L>K$ instruments. Décrire le test de
+suridentification de Sargan~: quelle régression auxiliaire, quelle statistique,
+quelle loi asymptotique, et surtout que teste-t-on exactement~? \question{7} Un
+rejet du test de Sargan permet-il de savoir \emph{quel} instrument est
+invalide~?\newline
+
+\bigskip
+
+\exercice\label{ex:instruments-faibles} \textbf{Instruments faibles et test d'exogénéité.} On reprend le
+modèle simple $y_t = \alpha + \beta x_t + \varepsilon_t$ avec $x$ endogène, et
+un instrument $z$ relié à $x$ par l'équation de première étape~:
+\[
+  x_t = \pi_0 + \pi\, z_t + \eta_t
+\]
+\question{1} Exprimer $\mathrm{plim}\ \hat b_{\textsc{vi}}$ en fonction de
+$\pi$ et des covariances. Que se passe-t-il lorsque $\pi\to 0$~? \question{2}
+Montrer que la variance asymptotique de l'estimateur à variables instrumentales
+explose lorsque la corrélation entre $z$ et $x$ tend vers zéro. \question{3} Le
+cours établit que si $Z_t = 1/X_t$ avec $X_t\sim\normal{0}{\sigma_X^2}$, alors
+$\frac1T\sum_t Z_t\varepsilon_t$ ne converge vers rien (loi de Cauchy). Quelle
+leçon en tirer sur la différence entre \emph{non-corrélation} et
+\emph{convergence}~? \question{4} En juste identification, l'estimateur à
+variables instrumentales possède-t-il une espérance~? \question{5} Quelle
+statistique diagnostique utilise-t-on en pratique sur l'équation de première
+étape, et quelle règle empirique~? Quelles sont les limites de cette règle~?
+\question{6} On souhaite maintenant tester l'exogénéité de $x$. Décrire le test
+de Hausman~: statistique, loi asymptotique, degrés de liberté, et pourquoi un
+inverse généralisé est nécessaire. \question{7} Décrire la variante de
+Durbin-Wu, fondée sur une régression augmentée des résidus de première étape.
+Quel est l'avantage pratique de cette formulation~?\newline
+
+\bigskip
+\exercice\label{ex:wald} \textbf{Un instrument binaire~: l'estimateur de Wald.}
+On considère le modèle $y_i = \alpha+\beta x_i+\varepsilon_i$ avec $x$ endogène,
+et l'on dispose d'un instrument $z_i\in\{0,1\}$. On note $p$ la proportion
+d'observations telles que $z_i=1$, et $\bar y_1$, $\bar y_0$, $\bar x_1$,
+$\bar x_0$ les moyennes de $y$ et de $x$ dans chacun des deux groupes.
+\question{1} Rappeler l'expression de $\hat b_{\textsc{vi}}$ construite sur
+l'instrument $z$. \question{2} Montrer que~:
+\[
+  \sum_i \left(z_i-\bar z\right)\left(y_i-\bar y\right) = N\,p(1-p)\left(\bar y_1-\bar y_0\right)
+\]
+et établir l'expression analogue pour $x$. \question{3} En déduire
+l'\emph{estimateur de Wald}~:
+\[
+  \hat b_{\textsc{vi}} = \frac{\bar y_1-\bar y_0}{\bar x_1-\bar x_0}
+\]
+\question{4} Interpréter cette formule. Que devient la condition de pertinence~?
+\question{5} \textbf{Application.} On évalue un programme de formation. Les
+individus sont tirés au sort pour se voir \emph{proposer} la formation
+($z_i=1$), mais certains refusent et d'autres, non sélectionnés, y accèdent
+autrement~: la participation effective est $x_i\in\{0,1\}$. Montrer que le
+numérateur est l'effet de l'\emph{intention de traiter} et le dénominateur le
+taux de conformité au tirage. \question{6} Que devient l'estimateur si le taux
+de conformité est faible~? Relier à l'exercice~\ref{ex:instruments-faibles}.
+\question{7} Pourquoi le tirage au sort garantit-il l'exogénéité de $z$ mais
+\emph{pas} celle de $x$~? Que se passerait-il si l'on régressait simplement $y$
+sur $x$~?\newline
+
+\bigskip
+
+\section*{Chapitre IV~-- Hétéroscédasticité}
+
+\textit{Dans tout ce chapitre, et conformément aux transparents, on écrit
+directement $\mathbb V[\varepsilon] = \Omega = \mathrm{diag}(\sigma_1^2,\dots,\sigma_T^2)$~:
+les variances sont \emph{dans} $\Omega$, à la différence du chapitre~II où l'on
+posait $\mathbb V[\varepsilon] = \epsvar\Omega$.}
+
+\bigskip
+
+\exercice\label{ex:cout-hetero} La nature génère $\mathbf y = X\beta+\varepsilon$ avec $X$
+déterministe de plein rang, $\mathbb E[\varepsilon]=0$ et
+$\mathbb V[\varepsilon] = \Omega = \mathrm{diag}(\sigma_1^2,\dots,\sigma_T^2)$,
+les $\sigma_t^2$ n'étant pas tous égaux. \question{1} Montrer que
+$\hat{\mathbf b}$ reste sans biais. Sous quelle condition reste-t-il
+convergent~? \question{2} Donner $\mathbb V[\hat{\mathbf b}]$ et expliquer
+pourquoi elle diffère de $\epsvar(X'X)^{-1}$. \question{3} L'estimateur des MCO
+est-il encore BLUE~? Quelle hypothèse du théorème de Gauss-Markov est
+violée~? \question{4} Un logiciel qui ignore l'hétéroscédasticité imprime
+$s^2(X'X)^{-1}$. Cette quantité estime-t-elle quelque chose de pertinent~? Les
+tests de Student et de Fisher restent-ils valides, ne serait-ce
+qu'asymptotiquement~? \question{5} Le danger réside-t-il dans l'estimateur
+lui-même ou dans son écart-type~? Formuler la réponse en une phrase.
+\question{6} On considère le cas d'observations groupées~: la variable
+$y_g$ est la moyenne de $n_g$ observations individuelles homoscédastiques de
+variance $\epsvar$. Montrer que $\mathbb V[\varepsilon_g] = \epsvar/n_g$ et
+qu'on est bien dans le cadre hétéroscédastique. \question{7} Citer trois autres
+situations économiques engendrant naturellement de l'hétéroscédasticité.\newline
+
+\bigskip
+
+\exercice\label{ex:breusch-pagan} \textbf{Le test de Breusch-Pagan.} On suppose que la variance suit le
+modèle $\sigma_t^2 = h\left(\alpha_0 + z_t'\alpha\right)$, où $h$ est une
+fonction régulière strictement positive, $z_t$ un vecteur $p\times 1$ de
+variables observées, et où l'hypothèse nulle d'homoscédasticité s'écrit
+$\mathcal H_0~: \alpha = 0$. \question{1} Pourquoi la forme précise de $h$
+n'a-t-elle pas d'importance pour construire le test~? \question{2} On note
+$\hat\varepsilon_t$ les résidus des MCO et
+$\hat\sigma^2 = \frac1T\sum_t\hat\varepsilon_t^{\,2}$. Décrire la régression
+auxiliaire de la version originale du test (1979). \question{3} Sous normalité
+des erreurs, montrer que $\mathbb V[\varepsilon_t^2/\sigma_t^2] = 2$. En déduire
+d'où vient le facteur $2$ dans la statistique $LM = SCE/2$. \question{4} Donner
+la loi asymptotique de $LM$ sous $\mathcal H_0$ et la règle de décision.
+\question{5} Que devient le test si les erreurs ne sont pas gaussiennes~?
+Décrire la version studentisée de Koenker (1981), sa statistique $TR^2$ et sa
+loi. \question{6} Comparer les deux versions~: laquelle est la plus puissante
+sous normalité, laquelle est la plus robuste~? \question{7} Le test de
+Breusch-Pagan détecte-t-il une hétéroscédasticité dont la forme ne dépendrait
+pas linéairement de $z_t$~?\newline
+
+\bigskip
+
+\exercice\label{ex:white} \textbf{Le test de White.} On considère le modèle empirique à
+$K$ régresseurs dont une constante, et on pose $J = K-1$. \question{1} Décrire
+la régression auxiliaire du test de White~: quelle variable expliquée, et
+quelles variables explicatives~? \question{2} Justifier le choix de ces
+variables auxiliaires par un développement de Taylor d'ordre deux d'une fonction
+de variance inconnue. \question{3} Montrer que le nombre de variables
+auxiliaires (hors constante) vaut $q = J + \frac{J(J+1)}{2}$. \question{4}
+Donner la statistique de test, sa loi asymptotique et les degrés de liberté.
+\question{5} On estime une équation de salaire contenant $educ$, $exper$ et
+$exper^2$. Montrer que le décompte de la question (3) doit être corrigé, et
+donner la valeur effective de $q$. Pourquoi~? \question{6} Comparer le test de
+White au test de Breusch-Pagan~: lequel est le plus général, lequel est le plus
+puissant lorsque la forme de l'hétéroscédasticité est connue~? \question{7} Le
+test de White rejette. Peut-on en conclure que le modèle est hétéroscédastique~?
+(On réfléchira à ce que la régression auxiliaire capte d'autre.)\newline
+
+\bigskip
+
+\exercice\label{ex:goldfeld-quandt} \textbf{Le test de Goldfeld-Quandt.} On suppose que la variance des
+erreurs est une fonction monotone d'une variable observée $z$. \question{1}
+Décrire la procédure~: ordonnancement, partition de l'échantillon, rôle du
+nombre $c$ d'observations centrales écartées. \question{2} Pourquoi écarte-t-on
+des observations centrales~? Quel est l'effet du choix de $c$ sur la puissance~?
+Le cours suggère $c\simeq T/4$. \question{3} On note $SCR_1$ et $SCR_2$ les
+sommes des carrés des résidus des deux sous-échantillons, chacun de taille $m$.
+Montrer que sous $\mathcal H_0$ et sous normalité~:
+\[
+  F = \frac{SCR_2/(m-K)}{SCR_1/(m-K)} \sim \mathcal F(m-K,\,m-K)
+\]
+\question{4} S'agit-il d'une loi exacte ou asymptotique~? Quelle hypothèse est
+indispensable pour l'obtenir~? \question{5} Pourquoi le test est-il
+unilatéral, et comment choisit-on l'ordre des deux sous-échantillons~?
+\question{6} Quelle est la principale limite de ce test par rapport à ceux des
+deux exercices précédents~? \question{7} Construire un tableau comparatif des
+trois tests (Breusch-Pagan/Koenker, White, Goldfeld-Quandt) selon~: forme
+d'hétéroscédasticité testée, normalité requise, loi sous $\mathcal H_0$, degrés
+de liberté.\newline
+
+\bigskip
+
+\exercice\label{ex:hc} \textbf{Les écarts-types robustes.} On conserve les MCO, mais on
+corrige l'estimation de leur variance. \question{1} Rappeler pourquoi
+$\mathbb V[\hat{\mathbf b}] = (X'X)^{-1}\left(\sum_t\sigma_t^2 x_tx_t'\right)(X'X)^{-1}$
+ne peut pas être estimée en estimant les $T$ variances $\sigma_t^2$ une à une.
+\question{2} L'estimateur d'Eicker-Huber-White (HC0) remplace $\sigma_t^2$ par
+$\hat\varepsilon_t^{\,2}$. Écrire $\widehat{\mathbb V}_{HC0}$. \question{3}
+Énoncer le résultat de convergence associé. Attention~: sur quelle quantité
+porte-t-il exactement, et pourquoi n'est-ce pas
+$\widehat{\mathbb V}_{HC0}\to\mathbb V[\hat{\mathbf b}]$~? \question{4} On note
+$H = X(X'X)^{-1}X'$ la matrice chapeau et $h_{tt}$ ses éléments diagonaux
+(les leviers). Montrer que $\sum_t h_{tt} = K$ et que, sous homoscédasticité,
+$\mathbb E[\hat\varepsilon_t^{\,2}] = (1-h_{tt})\epsvar$. \question{5} En
+déduire que HC0 est biaisé à distance finie, et dans quel sens. \question{6}
+Définir HC1, HC2 et HC3 à partir de $\hat\varepsilon_t^{\,2}$, $T$, $K$ et
+$h_{tt}$. Laquelle corrige le plus fortement~? \question{7} Quelle règle
+pratique le cours propose-t-il pour choisir entre HC0 et HC3~? Illustrer par
+simulation le taux de rejet effectif d'un test au seuil nominal de $5\,\%$ pour
+$T=30$ selon la variante retenue.\newline
+
+\bigskip
+
+\exercice\label{ex:mcp} \textbf{Les moindres carrés pondérés.} Plutôt que de corriger
+l'écart-type, on corrige l'estimateur. \question{1} Montrer que lorsque $\Omega$
+est diagonale, l'estimateur des MCG s'écrit~:
+\[
+  \hat{\mathbf b}_{\textsc{mcg}} = \left(\sum_{t=1}^T \frac{x_tx_t'}{\sigma_t^2}\right)^{-1}\sum_{t=1}^T \frac{x_ty_t}{\sigma_t^2}
+\]
+Justifier l'appellation «~moindres carrés pondérés~». \question{2} Quelle
+transformation des données conduit à cet estimateur~? Vérifier que le modèle
+transformé est homoscédastique. \question{3} Interpréter la pondération~: quelles
+observations pèsent le plus, et est-ce intuitif~? \question{4} En pratique les
+$\sigma_t^2$ sont inconnues. On retient la spécification multiplicative de
+Harvey (1976), $\sigma_t^2 = \sigma^2\exp(z_t'\gamma)$. Pourquoi cette forme
+garantit-elle la positivité~? \question{5} Décrire la procédure d'estimation en
+quatre étapes. \question{6} On montre que
+$\mathbb E[\log\varepsilon_t^2] = \log\sigma_t^2 - 1{,}2704$. Pourquoi cette
+constante n'affecte-t-elle pas l'estimateur des pentes $\gamma$, ni
+$\hat{\mathbf b}_{\textsc{mcqg}}$~? \question{7} Quel est le risque de la
+pondération si le modèle de variance est mal spécifié~? Comparer avec la
+stratégie des écarts-types robustes de l'exercice précédent~: dans quelles
+circonstances préférer l'une ou l'autre~?\newline
+
+\bigskip
+
+\exercice\label{ex:mv-recap} \textbf{Maximum de vraisemblance et récapitulation.} On suppose
+$\varepsilon\sim\normal{0}{\Omega}$ avec $\Omega$ diagonale. \question{1} Écrire
+la log-vraisemblance du modèle hétéroscédastique. \question{2} On suppose
+$\Omega$ \emph{connue}. Montrer que l'estimateur du maximum de vraisemblance
+de $\beta$ coïncide \textbf{exactement} avec l'estimateur des MCG, et ce quelle
+que soit la taille de l'échantillon. \question{3} On paramètre maintenant
+$\sigma_t^2 = \sigma^2\exp(z_t'\gamma)$ et on pose
+$\theta = (\beta',\gamma')'$. Montrer que la matrice d'information de Fisher
+est bloc-diagonale. \question{4} Quelle conséquence en tirer sur le coût
+asymptotique de l'estimation de $\Omega$~? \question{5} En déduire que les MCQG
+et le maximum de vraisemblance ont la même distribution asymptotique. La
+préciser. \question{6} Construire un tableau récapitulatif des estimateurs
+MCG, MCQG et MV selon~: connaissance de $\Omega$, hypothèse de normalité,
+optimalité (à distance finie ou asymptotique), mise en œuvre pratique.
+\question{7} Le cours mentionne que les corrections de Newey-West et les
+écarts-types en grappes sont hors programme. Dans quelles situations
+seraient-ils requis, et pourquoi l'estimateur sandwich de l'exercice~\ref{ex:hc} ne
+suffit-il pas~?\newline
+
+\bigskip
+
+\exercice\label{ex:salaire} \emph{(Exercice sur données réelles.)} On reprend l'équation de
+salaire du chapitre~I, estimée sur le fichier \texttt{wage1.csv}
+($T = 526$ observations issues du CPS 1976, variables \texttt{wage},
+\texttt{educ}, \texttt{exper}, \texttt{tenure}, \texttt{female})~:
+\[
+  \log wage_i = \beta_1 + \beta_2\, educ_i + \beta_3\, exper_i
+              + \beta_4\, exper_i^2 + \beta_5\, female_i + \varepsilon_i
+\]
+\question{1} Estimer ce modèle par les MCO et commenter les coefficients.
+Pourquoi travaille-t-on sur le logarithme du salaire, et comment interprète-t-on
+alors $\beta_2$~? \question{2} Représenter les résidus en fonction de
+$educ_i$ puis de la prédiction $\widehat{\log wage_i}$. Que suggèrent ces
+graphiques~? \question{3} Mettre en œuvre le test de Breusch-Pagan (versions
+originale et de Koenker), le test de White et le test de Goldfeld-Quandt (en
+ordonnant selon $educ$). Les conclusions concordent-elles~? \question{4}
+Comparer les écarts-types usuels et les écarts-types robustes HC0, HC1, HC2
+et HC3. Quels coefficients voient leur significativité modifiée~? \question{5}
+Au vu de $T$ et des leviers $h_{ii}$, quelle variante recommande le cours~?
+\question{6} Estimer le modèle par moindres carrés quasi généralisés en
+spécifiant $\sigma_i^2 = \sigma^2\exp(z_i'\gamma)$ avec $z_i$ contenant
+$educ_i$ et $exper_i$. Comparer les coefficients et leur précision à ceux des
+MCO. \question{7} Conclure~: dans ce cas précis, l'hétéroscédasticité
+change-t-elle les conclusions économiques de l'étude~? Que privilégier entre
+écarts-types robustes et pondération~?\newline
+
+\bigskip
+
+\exercice\label{ex:mpl} \textbf{Le modèle de probabilité linéaire.} La variable
+expliquée est binaire, $y_i\in\{0,1\}$, et l'on postule que l'espérance
+conditionnelle est linéaire~:
+\[
+  \mathbb E\left[y_i\,\middle|\,\mathbf x_i\right] = \mathbf x_i'\beta
+  \qquad\text{c'est-à-dire}\qquad
+  \mathbb P\left(y_i=1\,\middle|\,\mathbf x_i\right) = \mathbf x_i'\beta
+\]
+On estime $\beta$ par les MCO~: c'est le \emph{modèle de probabilité linéaire}.
+\question{1} On pose $\varepsilon_i = y_i-\mathbf x_i'\beta$. Montrer que
+$\varepsilon_i$ ne peut prendre que deux valeurs, et donner leurs probabilités.
+\question{2} En déduire que $\mathbb E[\varepsilon_i|\mathbf x_i]=0$ et que~:
+\[
+  \mathbb V\left[\varepsilon_i\,\middle|\,\mathbf x_i\right] = \mathbf x_i'\beta\left(1-\mathbf x_i'\beta\right)
+\]
+Commenter~: dans ce modèle, l'hétéroscédasticité n'est pas un accident, elle est
+\emph{inévitable}. \question{3} L'estimateur des MCO est-il sans biais~?
+Convergent~? Efficace~? \question{4} Écrire les poids des moindres carrés
+généralisés. Pourquoi ne peut-on pas les utiliser directement, et quelle
+procédure en deux étapes propose-t-on~? \question{5} Montrer que la prédiction
+$\mathbf x_i'\hat{\mathbf b}$ peut sortir de l'intervalle $[0,1]$. Quelle
+conséquence pour les poids de la question précédente~? Proposer deux remèdes
+pratiques. \question{6} Pourquoi les écarts-types robustes de
+l'exercice~\ref{ex:hc} sont-ils la solution usuellement retenue pour ce modèle~?
+\question{7} Comparer aux modèles probit et logit (cf. les scripts
+\texttt{exercices/E03.py} et \texttt{E04.py})~: quels sont les avantages et les
+inconvénients respectifs du modèle de probabilité linéaire~?\newline
+
+\bigskip
 
 \end{document}
-
 
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: t
 %%% End:
-
-% 05 68 et 05 69
-
-
-0948*, 0949*, 0162*, 0163*, 0270*, 0271*, 0377*, 0378*, 0424*, 0425*, 0568*, 0569*
