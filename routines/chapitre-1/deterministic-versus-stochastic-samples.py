@@ -6,7 +6,7 @@ Produit sample-nonstochastic-x.tex et sample-stochastic-x.tex.
 import numpy as np
 import matplotlib.pyplot as plt
 
-from chemins import IMAGES
+from chemins import PGF
 
 rng = np.random.default_rng(2211)
 
@@ -39,7 +39,7 @@ fig, ax = plt.subplots()
 for i in range(N):
     ax.scatter(x, YD[:,i], marker='o', facecolors='none', edgecolor='black')
 
-plt.savefig(IMAGES / 'sample-nonstochastic-x.tex', format='pgf')
+plt.savefig(PGF / 'sample-nonstochastic-x.tex', format='pgf')
 
 # Échantillons avec variable exogène stochastique
 
@@ -48,4 +48,4 @@ fig, ax = plt.subplots()
 for i in range(N):
     ax.scatter(XS[:,i], YS[:,i], marker='o', facecolors='none', edgecolor='black')
 
-plt.savefig(IMAGES / 'sample-stochastic-x.tex', format='pgf')
+plt.savefig(PGF / 'sample-stochastic-x.tex', format='pgf')

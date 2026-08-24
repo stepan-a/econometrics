@@ -7,7 +7,7 @@ slope-estimate-sample-stochastic-x.tex.
 import numpy as np
 import matplotlib.pyplot as plt
 
-from chemins import IMAGES
+from chemins import PGF
 
 rng = np.random.default_rng(2211)
 
@@ -38,10 +38,10 @@ for i in range(N):
 
 fig, ax = plt.subplots()
 ax.hist(Bd, bins='auto', density=True, histtype='step')
-plt.savefig(IMAGES / 'slope-estimate-sample-nonstochastic-x.tex', format='pgf')
+plt.savefig(PGF / 'slope-estimate-sample-nonstochastic-x.tex', format='pgf')
 
 # Distribution empirique de la pente estimée, exogène stochastique
 
 fig, ax = plt.subplots()
 ax.hist(Bs, bins='auto', density=True, histtype='step')
-plt.savefig(IMAGES / 'slope-estimate-sample-stochastic-x.tex', format='pgf')
+plt.savefig(PGF / 'slope-estimate-sample-stochastic-x.tex', format='pgf')

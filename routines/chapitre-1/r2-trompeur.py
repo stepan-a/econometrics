@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from chemins import IMAGES
+from chemins import PGF
 
 rng = np.random.default_rng(2211)
 
@@ -34,5 +34,5 @@ for ax, R2 in zip(axes, [0.10, 0.90]):
 axes[0].set_ylabel('y')
 fig.tight_layout()
 
-plt.savefig(IMAGES / 'r2-trompeur.tex', format='pgf')
+plt.savefig(PGF / 'r2-trompeur.tex', format='pgf')
 

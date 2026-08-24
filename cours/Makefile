@@ -6,7 +6,8 @@ all: chapitre-1.pdf chapitre-2.pdf chapitre-3.pdf chapitre-4.pdf clean
 
 # Les figures engendrées sont versionnées : leur reconstruction relève du
 # Makefile racine (`make figures`), qui seul a besoin de Python.
-chapitre-1.pdf: chapitre-1.tex preamble.tex $(wildcard images/chapitre-1/*.tex)
+chapitre-1.pdf: chapitre-1.tex preamble.tex \
+                $(wildcard ../pgf/chapitre-1/*.tex) $(wildcard ../tikz/chapitre-1/*.tex)
 	@rubber --src-specials --unsafe --pdf chapitre-1
 	@rubber --clean chapitre-1
 

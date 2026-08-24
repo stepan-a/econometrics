@@ -6,7 +6,7 @@ Produit ols-convergence.tex.
 import numpy as np
 import matplotlib.pyplot as plt
 
-from chemins import IMAGES
+from chemins import PGF
 
 rng = np.random.default_rng(2211)
 
@@ -33,4 +33,4 @@ for t in range(0,3):
     ax.hist(B, bins='auto', density=True, histtype='step', color=colours[t], label=f"T = {T}")
 
 ax.legend()
-plt.savefig(IMAGES / 'ols-convergence.tex', format='pgf')
+plt.savefig(PGF / 'ols-convergence.tex', format='pgf')

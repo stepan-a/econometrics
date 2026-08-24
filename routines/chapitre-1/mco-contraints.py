@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from chemins import IMAGES
+from chemins import PGF
 
 rng = np.random.default_rng(2211)
 
@@ -49,5 +49,5 @@ for ax, (β, titre) in zip(axes, scénarios):
 axes[0].set_ylabel('Densité')
 fig.tight_layout()
 
-plt.savefig(IMAGES / 'mco-contraints.tex', format='pgf')
+plt.savefig(PGF / 'mco-contraints.tex', format='pgf')
 

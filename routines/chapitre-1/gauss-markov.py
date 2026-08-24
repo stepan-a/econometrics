@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from chemins import IMAGES
+from chemins import PGF
 
 rng = np.random.default_rng(2211)
 
@@ -36,5 +36,5 @@ ax.set_ylabel('Densité')
 ax.legend(loc='upper left', fontsize='small')
 fig.tight_layout()
 
-plt.savefig(IMAGES / 'gauss-markov.tex', format='pgf')
+plt.savefig(PGF / 'gauss-markov.tex', format='pgf')
 

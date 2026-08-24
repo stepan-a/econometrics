@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 import matplotlib.pyplot as plt
-from chemins import DONNEES, IMAGES
+from chemins import DONNEES, PGF
 
 def plot(ax, x, y, title=''):
   """
@@ -68,4 +68,4 @@ regression = plot(ax, x, y, title=f'IV')
 # fig.suptitle(f"Les quatre échantillons d'Anscombe ($R^2 = {regression.rvalue**2:.2f}$)", fontsize='x-large')
 fig.tight_layout()
 
-plt.savefig(IMAGES / 'anscombe.tex', format='pgf')
+plt.savefig(PGF / 'anscombe.tex', format='pgf')

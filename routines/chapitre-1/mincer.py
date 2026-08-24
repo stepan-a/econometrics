@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
-from chemins import DONNEES, IMAGES
+from chemins import DONNEES, PGF
 
 data = pd.read_csv(DONNEES / 'wage1.csv')
 
@@ -47,9 +47,9 @@ $F(%d,\,%d) = %s$ & p-value $< 10^{-3}$\\
     (T, K, fr(ols.rsquared, 4), fr(np.sqrt(ols.mse_resid), 4),
      fr(ols.rsquared_adj, 4), K-1, T-K, fr(ols.fvalue, 2)))
 
-with open(IMAGES / 'sortie-mincer.tex', 'w') as f:
+with open(PGF / 'sortie-mincer.tex', 'w') as f:
     f.write(tableau + '\n')
 
-with open(IMAGES / 'sortie-mincer-synthese.tex', 'w') as f:
+with open(PGF / 'sortie-mincer-synthese.tex', 'w') as f:
     f.write(synthese + '\n')
 

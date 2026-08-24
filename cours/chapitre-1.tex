@@ -87,14 +87,14 @@
     \centering
     \begin{subfigure}{0.48\textwidth}
       \scalebox{.3}{
-    \input{images/chapitre-1/sample-nonstochastic-x.tex}}
+    \input{../pgf/chapitre-1/sample-nonstochastic-x.tex}}
     \caption{$x$ déterministe.}
     \label{fig:01:a}
   \end{subfigure}
   \hfill
   \begin{subfigure}{0.48\textwidth}
     \scalebox{.3}{
-    \input{images/chapitre-1/sample-stochastic-x.tex}}
+    \input{../pgf/chapitre-1/sample-stochastic-x.tex}}
     \caption{$x$ stochastique.}
     \label{fig:01:b}
   \end{subfigure}
@@ -408,7 +408,7 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
   \framesubtitle{Les courbes de niveau de l'objectif}
 
   \begin{center}
-    \scalebox{.86}{\input{images/chapitre-1/objectif-mco.tex}}
+    \scalebox{.86}{\input{../tikz/chapitre-1/objectif-mco.tex}}
   \end{center}
 
   \medskip
@@ -520,7 +520,7 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
   \framesubtitle{Interprétation géométrique}
 
   \begin{center}
-    \scalebox{.82}{\input{images/chapitre-1/projection-orthogonale.tex}}
+    \scalebox{.82}{\input{../tikz/chapitre-1/projection-orthogonale.tex}}
   \end{center}
 
   \medskip
@@ -823,7 +823,7 @@ Ainsi, nous avons finalement~:
   \begin{figure}
     \centering
     \scalebox{.44}{
-      \input{images/chapitre-1/anscombe.tex}}
+      \input{../pgf/chapitre-1/anscombe.tex}}
     \caption{Les quatre échantillons d'\cite{Anscombe1973}}
     \label{fig:02}
   \end{figure}
@@ -837,7 +837,7 @@ Ainsi, nous avons finalement~:
 
   \begin{figure}
     \centering
-    \scalebox{.46}{\input{images/chapitre-1/r2-trompeur.tex}}
+    \scalebox{.46}{\input{../pgf/chapitre-1/r2-trompeur.tex}}
     \caption{$y_t = 1 + 0{,}5\,x_t + \varepsilon_t$ dans les deux cas ($T=400$)~; seule la variance des perturbations change. \textbf{Un $R^2$ faible ne signifie pas que $x$ est sans effet sur $y$}~: la pente est ici tout aussi significative à gauche qu'à droite. Codes \coderef{r2-trompeur.py}.}
   \end{figure}
 
@@ -937,14 +937,14 @@ Puisque $X$ est déterministe~:
     \centering
     \begin{subfigure}{0.48\textwidth}
       \scalebox{.3}{
-    \input{images/chapitre-1/slope-estimate-sample-nonstochastic-x.tex}}
+    \input{../pgf/chapitre-1/slope-estimate-sample-nonstochastic-x.tex}}
     \caption{$x$ déterministe.}
     \label{fig:slope:a}
   \end{subfigure}
   \hfill
   \begin{subfigure}{0.48\textwidth}
     \scalebox{.3}{
-    \input{images/chapitre-1/slope-estimate-sample-stochastic-x.tex}}
+    \input{../pgf/chapitre-1/slope-estimate-sample-stochastic-x.tex}}
     \caption{$x$ stochastique.}
     \label{fig:slope:b}
   \end{subfigure}
@@ -960,7 +960,7 @@ Puisque $X$ est déterministe~:
 
   \begin{figure}
     \centering
-    \scalebox{.46}{\input{images/chapitre-1/signal-bruit.tex}}
+    \scalebox{.46}{\input{../pgf/chapitre-1/signal-bruit.tex}}
     \caption{$y_t = 1 + 0{,}5\,x_t + \varepsilon_t$, $\varepsilon$ d'écart-type $2$~; droites estimées sur $60$ échantillons de $25$ observations. Seule change la dispersion de $x$. Le faisceau se resserre à droite~: c'est $\mathbb V[\hat{\mathbf b}] = \sigma_{\varepsilon}^2 (X'X)^{-1}$ vu sur les données. Les codes pour reproduire ce graphique sont disponibles \coderef{signal-bruit.py}.}
   \end{figure}
 
@@ -988,7 +988,7 @@ Puisque $X$ est déterministe~:
 
   \begin{figure}
     \centering
-    \scalebox{.46}{\input{images/chapitre-1/gauss-markov.tex}}
+    \scalebox{.46}{\input{../pgf/chapitre-1/gauss-markov.tex}}
     \caption{$y_t = 1 + x_t + \varepsilon_t$, $50000$ échantillons de $20$ observations. L'estimateur \guillemotleft en deux points \guillemotright{} est linéaire et sans biais, mais nettement plus dispersé que les MCO~: c'est le théorème~\ref{thm:Gauss-Markov}. Les codes pour reproduire ce graphique sont disponibles \coderef{gauss-markov.py}.}
   \end{figure}
 
@@ -1088,7 +1088,7 @@ Comme $DD'$ est une matrice semi-définie positive, la variance de $\tilde{\math
   \begin{figure}
     \centering
       \scalebox{.40}{
-    \input{images/chapitre-1/ols-convergence.tex}}
+    \input{../pgf/chapitre-1/ols-convergence.tex}}
   \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène déterministe prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ un bruit blanc gaussien. On simule 100000  échantillons de 10, 100 ou 1000 observations, pour chaque échantillon on estime le modèle empirique $y_t = b_0 + b_1 x_t + \epsilon_t$. Chaque figure représente la distribution de l'estimateur $\hat b_1$. Les codes pour reproduire ces graphiques sont disponibles \coderef{ols-convergence.py}.}
 \end{figure}
 \end{frame}
@@ -1619,7 +1619,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \framesubtitle{Arbitrage biais-variance}
 
   \begin{center}
-    \scalebox{.80}{\input{images/chapitre-1/mse-s2-mv.tex}}
+    \scalebox{.80}{\input{../tikz/chapitre-1/mse-s2-mv.tex}}
   \end{center}
 
   \medskip
@@ -1911,7 +1911,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \framesubtitle{Comment un test décide}
 
   \begin{center}
-    \scalebox{.78}{\input{images/chapitre-1/region-rejet-student.tex}}
+    \scalebox{.78}{\input{../tikz/chapitre-1/region-rejet-student.tex}}
   \end{center}
 
   \medskip
@@ -1989,7 +1989,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \framesubtitle{Pourquoi le test joint n'est pas $m$ tests individuels}
 
   \begin{center}
-    \scalebox{.74}{\input{images/chapitre-1/ellipse-vs-rectangle.tex}}
+    \scalebox{.74}{\input{../tikz/chapitre-1/ellipse-vs-rectangle.tex}}
   \end{center}
 
   \medskip
@@ -2286,7 +2286,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \begin{figure}
     \centering
-    \scalebox{.46}{\input{images/chapitre-1/mco-contraints.tex}}
+    \scalebox{.46}{\input{../pgf/chapitre-1/mco-contraints.tex}}
     \caption{Deux régresseurs négativement corrélés ($\mathrm{corr}=-0{,}9$), $20000$ échantillons de $40$ observations~; on impose $\beta_2+\beta_3=1$. À gauche la contrainte est vraie, à droite elle est fausse. Contraindre échange toujours de la variance contre du biais. Les codes pour reproduire ce graphique sont disponibles \coderef{mco-contraints.py}.}
   \end{figure}
 
@@ -2592,12 +2592,12 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
     \small
     \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{4pt}
-    \input{images/chapitre-1/sortie-mincer.tex}
+    \input{../pgf/chapitre-1/sortie-mincer.tex}
 
     \bigskip
 
     \footnotesize
-    \input{images/chapitre-1/sortie-mincer-synthese.tex}
+    \input{../pgf/chapitre-1/sortie-mincer-synthese.tex}
   \end{center}
 
 \end{frame}
@@ -2668,8 +2668,8 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
     conditionnelle}, pas le rendement causal d'une année d'études.\newline
 
   \item Les données et le code sont dans le dépôt~:
-    \texttt{cours/data/\allowbreak chapitre-1/\allowbreak wage1.csv} et
-    \texttt{cours/codes/\allowbreak chapitre-1/\allowbreak mincer.py}. Il s'agit de l'échantillon \texttt{wage1}
+    \texttt{data/\allowbreak chapitre-1/\allowbreak wage1.csv} et
+    \texttt{routines/\allowbreak chapitre-1/\allowbreak mincer.py}. Il s'agit de l'échantillon \texttt{wage1}
     diffusé avec le manuel de Wooldridge (Current Population Survey, 1976).
 
   \end{itemize}
@@ -2819,7 +2819,7 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
   \bigskip
 
   \begin{center}
-    \input{images/chapitre-1/chi-squared.tex}
+    \input{../tikz/chapitre-1/chi-squared.tex}
   \end{center}
 
 
@@ -2859,7 +2859,7 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
   \bigskip
 
   \begin{center}
-    \input{images/chapitre-1/student.tex}
+    \input{../tikz/chapitre-1/student.tex}
   \end{center}
 
 
@@ -2895,7 +2895,7 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
   \bigskip
 
   \begin{center}
-    \input{images/chapitre-1/fisher-snedecor-1.tex}
+    \input{../tikz/chapitre-1/fisher-snedecor-1.tex}
   \end{center}
 
 
@@ -2908,7 +2908,7 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
   \bigskip
 
   \begin{center}
-    \input{images/chapitre-1/fisher-snedecor-2.tex}
+    \input{../tikz/chapitre-1/fisher-snedecor-2.tex}
   \end{center}
 
 
@@ -2921,7 +2921,7 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
   \bigskip
 
   \begin{center}
-    \input{images/chapitre-1/fisher-snedecor-3.tex}
+    \input{../tikz/chapitre-1/fisher-snedecor-3.tex}
   \end{center}
 
 
