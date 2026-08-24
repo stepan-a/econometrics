@@ -17,3 +17,30 @@
  -  [[https://le-mans.adjemian.eu/econometrics/partiel-2023.pdf][Sujet 2023]], [[https://le-mans.adjemian.eu/econometrics/correction-2023.pdf][Éléments de correction]].
  -  [[https://le-mans.adjemian.eu/econometrics/partiel-2024.pdf][Sujet 2024]], [[https://le-mans.adjemian.eu/econometrics/correction-2024.pdf][Éléments de correction]].
  -  [[https://le-mans.adjemian.eu/econometrics/partiel-2025.pdf][Sujet 2025]], [[https://le-mans.adjemian.eu/econometrics/correction-2025.pdf][Éléments de correction]].
+
+*** Construire le dépôt
+
+Tout passe par GNU Make. Deux familles d'outils sont nécessaires : une
+distribution LaTeX (avec =rubber= et =biber=) pour les documents, et Python 3
+pour les figures engendrées.
+
+ - =make venv= installe les dépendances Python dans =.venv=, à partir de
+   =requirements.txt=. À faire une fois après le clonage. C'est aussi cet
+   environnement qu'utilisent les scripts de =exercices/=.
+ - =make= régénère les figures dont le script a changé, puis construit tous
+   les documents.
+ - =make figures= s'arrête aux figures.
+ - =make clean= efface les fichiers auxiliaires ; =make clean-all= y ajoute
+   les PDF, le cache de figures externalisées et l'environnement virtuel.
+
+Les figures étant versionnées, =make -C cours= compile les transparents sans
+Python : c'est ce que fait l'intégration continue.
+
+*** Organisation
+
+ - =cours/= les transparents, un fichier par chapitre, plus =preamble.tex=
+   qui leur est commun.
+ - =routines/= les scripts Python qui engendrent les figures.
+ - =data/= les jeux de données qu'ils lisent.
+ - =pgf/= les figures qu'ils produisent, =tikz/= celles écrites à la main.
+ - =td/= et =examens/= les fiches d'exercices et les annales.
