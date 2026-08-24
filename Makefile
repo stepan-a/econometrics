@@ -18,11 +18,16 @@ PY = .venv/bin/python3
 # symbolique vers l'interpréteur système, qu'on ne peut pas dater soi-même.
 VENV = .venv/.stamp
 
-CODES  = routines/chapitre-1
-DATA   = data/chapitre-1
-PGF    = pgf/chapitre-1
+# Un jeu de variables par chapitre ayant des figures engendrées. En ajouter un
+# suffit à étendre la chaîne à un nouveau chapitre.
+CODES1 = routines/chapitre-1
+DATA1  = data/chapitre-1
+PGF1   = pgf/chapitre-1
 
-.PHONY: all figures venv cours td examens clean clean-all
+CODES2 = routines/chapitre-2
+PGF2   = pgf/chapitre-2
+
+.PHONY: all figures figures-1 figures-2 venv cours td examens clean clean-all
 
 all: figures cours td examens
 
@@ -46,53 +51,85 @@ $(VENV): requirements.txt
 # une cible groupée (« &: »), afin que make ne les lance qu'une seule fois.
 # ----------------------------------------------------------------------------
 
-figures: $(PGF)/anscombe.tex \
-         $(PGF)/sample-nonstochastic-x.tex \
-         $(PGF)/slope-estimate-sample-nonstochastic-x.tex \
-         $(PGF)/ols-convergence.tex \
-         $(PGF)/signal-bruit.tex \
-         $(PGF)/gauss-markov.tex \
-         $(PGF)/mco-contraints.tex \
-         $(PGF)/r2-trompeur.tex \
-         $(PGF)/sortie-mincer.tex
+figures: figures-1 figures-2
 
-$(PGF)/anscombe.tex: $(CODES)/anscombe-samples.py $(DATA)/anscombe.csv $(CODES)/chemins.py | $(VENV)
+figures-1: $(PGF1)/anscombe.tex \
+         $(PGF1)/sample-nonstochastic-x.tex \
+         $(PGF1)/slope-estimate-sample-nonstochastic-x.tex \
+         $(PGF1)/ols-convergence.tex \
+         $(PGF1)/signal-bruit.tex \
+         $(PGF1)/gauss-markov.tex \
+         $(PGF1)/mco-contraints.tex \
+         $(PGF1)/r2-trompeur.tex \
+         $(PGF1)/sortie-mincer.tex
+
+$(PGF1)/anscombe.tex: $(CODES1)/anscombe-samples.py $(DATA1)/anscombe.csv $(CODES1)/chemins.py | $(VENV)
 	@echo "Les quatre échantillons d'Anscombe..."
 	@$(PY) $<
 
-$(PGF)/sample-nonstochastic-x.tex $(PGF)/sample-stochastic-x.tex &: \
-		$(CODES)/deterministic-versus-stochastic-samples.py $(CODES)/chemins.py | $(VENV)
+$(PGF1)/sample-nonstochastic-x.tex $(PGF1)/sample-stochastic-x.tex &: \
+		$(CODES1)/deterministic-versus-stochastic-samples.py $(CODES1)/chemins.py | $(VENV)
 	@echo "Échantillons à exogène déterministe ou stochastique..."
 	@$(PY) $<
 
-$(PGF)/slope-estimate-sample-nonstochastic-x.tex $(PGF)/slope-estimate-sample-stochastic-x.tex &: \
-		$(CODES)/estimator-with-deterministic-versus-stochastic-samples.py $(CODES)/chemins.py | $(VENV)
+$(PGF1)/slope-estimate-sample-nonstochastic-x.tex $(PGF1)/slope-estimate-sample-stochastic-x.tex &: \
+		$(CODES1)/estimator-with-deterministic-versus-stochastic-samples.py $(CODES1)/chemins.py | $(VENV)
 	@echo "Distribution de la pente estimée (100000 échantillons)..."
 	@$(PY) $<
 
-$(PGF)/ols-convergence.tex: $(CODES)/ols-convergence.py $(CODES)/chemins.py | $(VENV)
+$(PGF1)/ols-convergence.tex: $(CODES1)/ols-convergence.py $(CODES1)/chemins.py | $(VENV)
 	@echo "Convergence de l'estimateur des MCO (100000 échantillons)..."
 	@$(PY) $<
 
-$(PGF)/signal-bruit.tex: $(CODES)/signal-bruit.py $(CODES)/chemins.py | $(VENV)
+$(PGF1)/signal-bruit.tex: $(CODES1)/signal-bruit.py $(CODES1)/chemins.py | $(VENV)
 	@echo "Signal contre bruit..."
 	@$(PY) $<
 
-$(PGF)/gauss-markov.tex: $(CODES)/gauss-markov.py $(CODES)/chemins.py | $(VENV)
+$(PGF1)/gauss-markov.tex: $(CODES1)/gauss-markov.py $(CODES1)/chemins.py | $(VENV)
 	@echo "Gauss-Markov contre l'estimateur en deux points..."
 	@$(PY) $<
 
-$(PGF)/mco-contraints.tex: $(CODES)/mco-contraints.py $(CODES)/chemins.py | $(VENV)
+$(PGF1)/mco-contraints.tex: $(CODES1)/mco-contraints.py $(CODES1)/chemins.py | $(VENV)
 	@echo "MCO contraints : variance contre biais..."
 	@$(PY) $<
 
-$(PGF)/r2-trompeur.tex: $(CODES)/r2-trompeur.py $(CODES)/chemins.py | $(VENV)
+$(PGF1)/r2-trompeur.tex: $(CODES1)/r2-trompeur.py $(CODES1)/chemins.py | $(VENV)
 	@echo "Ce que le coefficient de détermination ne dit pas..."
 	@$(PY) $<
 
-$(PGF)/sortie-mincer.tex $(PGF)/sortie-mincer-synthese.tex &: \
-		$(CODES)/mincer.py $(DATA)/wage1.csv $(CODES)/chemins.py | $(VENV)
+$(PGF1)/sortie-mincer.tex $(PGF1)/sortie-mincer-synthese.tex &: \
+		$(CODES1)/mincer.py $(DATA1)/wage1.csv $(CODES1)/chemins.py | $(VENV)
 	@echo "Estimation de l'équation de salaire..."
+	@$(PY) $<
+
+# ----------------------------------------------------------------------------
+# Figures du chapitre 2
+# ----------------------------------------------------------------------------
+
+figures-2: $(PGF2)/biais-variable-omise.tex \
+           $(PGF2)/erreurs-non-spheriques.tex \
+           $(PGF2)/mcg-vs-mco.tex \
+           $(PGF2)/normalite-asymptotique-bhat.tex \
+           $(PGF2)/tcl.tex
+
+$(PGF2)/biais-variable-omise.tex: $(CODES2)/biais-variable-omise.py $(CODES2)/chemins.py | $(VENV)
+	@echo "Biais de variable omise selon la corrélation des régresseurs..."
+	@$(PY) $<
+
+$(PGF2)/erreurs-non-spheriques.tex: $(CODES2)/erreurs-non-spheriques.py $(CODES2)/chemins.py | $(VENV)
+	@echo "Erreurs sphériques, hétéroscédastiques, autocorrélées..."
+	@$(PY) $<
+
+$(PGF2)/mcg-vs-mco.tex: $(CODES2)/mcg-vs-mco.py $(CODES2)/chemins.py | $(VENV)
+	@echo "MCG contre MCO sous hétéroscédasticité..."
+	@$(PY) $<
+
+$(PGF2)/normalite-asymptotique-bhat.tex: $(CODES2)/normalite-asymptotique-bhat.py $(CODES2)/chemins.py | $(VENV)
+	@echo "Normalité asymptotique de b̂ sous erreurs non normales..."
+	@$(PY) $<
+
+$(PGF2)/tcl.tex: $(CODES2)/tcl.py $(CODES2)/chemins.py | $(VENV)
+	@echo "Théorème central limite..."
 	@$(PY) $<
 
 # ----------------------------------------------------------------------------
@@ -116,10 +153,10 @@ clean:
 	$(MAKE) -C cours clean
 	$(MAKE) -C td clean
 	$(MAKE) -C examens clean
-	@rm -rf $(LATEX_JUNK_DIRS) $(CODES)/__pycache__
+	@rm -rf $(LATEX_JUNK_DIRS) routines/*/__pycache__
 
 clean-all:
 	$(MAKE) -C cours clean-all
 	$(MAKE) -C td clean-all
 	$(MAKE) -C examens clean-all
-	@rm -rf $(LATEX_JUNK_DIRS) $(CODES)/__pycache__ .venv
+	@rm -rf $(LATEX_JUNK_DIRS) routines/*/__pycache__ .venv
