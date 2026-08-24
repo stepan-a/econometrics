@@ -7,32 +7,48 @@
 
 \begin{document}
 
-\title{Économétrie\\\small{Régresseurs non déterministes}}
+\title{Économétrie\\\small{Régresseurs aléatoires et variables instrumentales}}
 \author[S. Adjemian]{Stéphane Adjemian}
 \institute{\texttt{stephane.adjemian@univ-lemans.fr}}
-\date{Septembre 2025}
+\date{Septembre 2026}
 
 \begin{frame}
   \titlepage{}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Plan}
+  \tableofcontents
+\end{frame}
+
+
+\section{Pourquoi les régresseurs sont aléatoires}
 
 \begin{frame}
   \frametitle{Régresseurs aléatoires}
 
   \begin{itemize}
 
-  \item Dans le \chapref{1}{I} et le \chapref{2}{II}, nous avons supposé que les variables explicatives, $X$, sont détermnistes.\newline
+  \item Dans le \chapref{1}{I} et le \chapref{2}{II}, nous avons supposé que les
+    variables explicatives, $X$, sont déterministes.\newline
 
   \item Cette hypothèse n'est généralement pas raisonnable.\newline
 
-  \item \textsc{Exemple} Si le modèle est~: $y_t = \rho y_{t-1} + \varepsilon_t$ où $\varepsilon_t$ est une variable aléatoire normale (AR(1)).\newline
+  \item \textsc{Exemple} Si le modèle est~: $y_t = \rho y_{t-1} + \varepsilon_t$
+    où $\varepsilon_t$ est une variable aléatoire normale (AR(1)).\newline
 
-  \item Même si la condition initiale, $y_0$, est déterministe, la variable $y$ est clairement aléatoire (à gauche, comme d'habitude, mais aussi à droite).\newline 
+  \item Même si la condition initiale, $y_0$, est déterministe, la variable $y$
+    est clairement aléatoire (à gauche, comme d'habitude, mais aussi à
+    droite).\newline
 
-  \item Quelles sont les conséqences pour l'inférence~?\newline
+  \item Quelles sont les conséquences pour l'inférence~?\newline
 
   \end{itemize}
+
+  \dnote{Nous verrons que tout dépend de la façon dont $X$ et $\varepsilon$ sont
+    liés. Trois situations se présenteront~: indépendance (rien ne change),
+    orthogonalité contemporaine seulement (biais mais convergence), corrélation
+    (les MCO ne valent plus rien).}
 
 \end{frame}
 
@@ -42,16 +58,25 @@
 
   \begin{itemize}
 
-  \item Supposons que le DGP soit $\mathbf y = X^{\star}\beta + \varepsilon$, où les conditions idéales sont vérifiées et où la matrice des régresseurs $X^{\star}$ est déterministe.\newline
+  \item Supposons que le DGP soit $\mathbf y = X^{\star}\beta + \varepsilon$, où
+    les conditions idéales sont vérifiées et où la matrice des
+    régresseurs $X^{\star}$ est déterministe.\newline
 
-  \item Supposons que les variables explicatives soient mesurées avec des erreurs, on observe seulement $X = X^{\star} + \eta$, où $\eta$ est une variable aléatoire (centrée).\newline
+  \item Supposons que les variables explicatives soient mesurées avec des
+    erreurs, on observe seulement $X = X^{\star} + \eta$, où $\eta$ est une
+    variable aléatoire (centrée).\newline
 
-  \item Les variables explicatives sont observées à un aléa près $\Rightarrow$ Les variables explicatives, $X$, considérées par l'économètre sont aléatoires.\newline
+  \item Les variables explicatives sont observées à un aléa
+    près $\Rightarrow$ Les variables explicatives, $X$, considérées par
+    l'économètre sont aléatoires.\newline
 
-  \item Est-il possible d'obtenir une estimation sans biais de $\beta$ en régressant $\mathbf y$ sur $X$~? Convergente~? Quelles sont les propriétés de l'estimateur des MCO~? \newline
+  \item Est-il possible d'obtenir une estimation sans biais de $\beta$ en
+    régressant $\mathbf y$ sur $X$~? Convergente~? Quelles sont les propriétés
+    de l'estimateur des MCO~?\newline
 
-  \item Ici la variable explicative est aléatoire, on verra que cela biaise l'estimation car elle est corrélée avec l'erreur du modèle.
-    
+  \item Ici la variable explicative est aléatoire, on verra que cela biaise
+    l'estimation car elle est corrélée avec l'erreur du modèle.
+
   \end{itemize}
 
 \end{frame}
@@ -62,21 +87,27 @@
 
   \begin{itemize}
 
-  \item Supposons que l'on s'intéresse à l'effet du revenu sur la santé dans une population. On considère le modèle~:
+  \item Supposons que l'on s'intéresse à l'effet du revenu sur la santé dans une
+    population. On considère le modèle~:
     \[
       \text{Santé}_i = \beta_0 + \beta_1 \text{Revenu}_i + u_i
     \]
 
-  \item Les individus les plus riches mangent mieux et vivent dans de meilleurs environnements $\rightarrow$ $\beta_1>0$\newline
+  \item Les individus les plus riches mangent mieux et vivent dans de meilleurs
+    environnements $\rightarrow$ $\beta_1>0$\newline
 
-  \item Mais une meilleure santé accroît la productivité des individus, on peut donc lire la causalité dans l'autre sens, avec par exemple un modèle de la forme~:
+  \item Mais une meilleure santé accroît la productivité des individus, on peut
+    donc lire la causalité dans l'autre sens, avec par exemple un modèle de la
+    forme~:
     \[
       \text{Revenu}_i = \alpha_0 + \alpha_1 \text{Santé}_i + v_i
     \]
     avec $\alpha_1>0$.
 
-  \item Cette double causalité induit une corrélation entre le revenu de l'individu $i$ et $u_i$. $\Rightarrow$  On verra que cela biaise l'estimation de $\beta_1$ par les MCO dans le premier modèle.
-    
+  \item Cette double causalité induit une corrélation entre le revenu de
+    l'individu $i$ et $u_i$. $\Rightarrow$ On verra que cela biaise l'estimation
+    de $\beta_1$ par les MCO dans le premier modèle.
+
   \end{itemize}
 
 \end{frame}
@@ -86,534 +117,1413 @@
 
   \begin{itemize}
 
-  \item En substituant la seconde équation dans la première (on élimine le revenu), on obtient~:
+  \item En substituant la seconde équation dans la première (on élimine le
+    revenu), on obtient~:
     \[
       \text{Santé}_i = \beta_0 + \beta_1\left( \alpha_0+\alpha_1\text{Santé}_i+v_i\right)+u_i
     \]
-\[
+    \[
       \Leftrightarrow \text{Santé}_i = \frac{\beta_0+\beta_1\alpha_0}{1-\beta_1\alpha_1} + \frac{\beta_1 v_i}{1-\beta_1\alpha_1} + \frac{u_i}{1-\beta_1\alpha_1}
-    \]    
-  \item En substituant dans la seconde equation~:
+    \]
+  \item En substituant dans la seconde équation~:
     \[
       \text{Revenu}_i = \alpha_0 + \alpha_1\frac{\beta_0+\beta_1\alpha_0}{1-\beta_1\alpha_1} + \left( 1 + \frac{\alpha_1\beta_1}{1-\alpha_1\beta_1}\right)v_i  + \frac{\alpha_1u_i}{1-\alpha_1\beta_1}
     \]
-\[
+    \[
       \Leftrightarrow\text{Revenu}_i = \alpha_0 + \alpha_1\frac{\beta_0+\beta_1\alpha_0}{1-\beta_1\alpha_1}  + \frac{v_i}{1-\alpha_1\beta_1}  + \frac{\alpha_1u_i}{1-\alpha_1\beta_1}
     \]
 
-  \item La corrélation entre revenu et le terme d'erreur dans le premier modèle est donc non nulle:
+  \item En supposant que $u_i$ et $v_i$ sont non corrélés, la covariance entre le
+    revenu et le terme d'erreur du premier modèle est donc non nulle~:
     \[
-      \textrm{corr}\left( \text{Revenu}_i, u_i \right) = \frac{\alpha_1\sigma_u^2}{1-\alpha_1\beta_1}
+      \mathrm{Cov}\left( \text{Revenu}_i, u_i \right) = \frac{\alpha_1\sigma_u^2}{1-\alpha_1\beta_1}
     \]
-    en supposant que $u_i$ et $v_i$ sont non corrélés.
+    C'est bien une covariance, et non une corrélation~: elle n'est ni sans
+    dimension ni bornée par un.\newline
 
-  \item Clairement les deux variables considérée ici (le revenu et la
-    santé) sont aléatoires. C'est la corrélation, dans le premier
-    modèle, entre le revenu et le terme d'erreur qui va biaiser
-    l'estimateur de $\beta_1$.\newline
+  \item Clairement les deux variables considérées ici (le revenu et la santé)
+    sont aléatoires. C'est la corrélation, dans le premier modèle, entre le
+    revenu et le terme d'erreur qui va biaiser l'estimateur de $\beta_1$.\newline
 
-  \item Si une personne est en meilleure santé pour des raisons non
-    observées (captées par $u_i$), cette meilleure santé accroît aussi
-    son revenu, le revenu observé est donc corrélé au terme d’erreur.
+  \item Si une personne est en meilleure santé pour des raisons non observées
+    (captées par $u_i$), cette meilleure santé accroît aussi son revenu, le
+    revenu observé est donc corrélé au terme d'erreur.
 
   \end{itemize}
 
 \end{notes}
 
 
-\begin{frame}{Le modèle de la Nature}
-
-  \[ \mathbf y = X\beta + \varepsilon \]
-
-\begin{itemize}
-
-\item $\varepsilon \sim \mathcal N(0, \sigma_{\varepsilon}^2 I_T)$\newline
-
-\item $X$ est une matrice aléatoire $T\times K$\newline
-
-\item $\frac{X'X}{T} \plim  Q $ est une finie et de plein rang.\newline
-
-\item Les régresseurs sont linéairement indépendants avec probabilité 1.\newline
-
-\item Les colonnes de $X$ ne sont pas nécessairement toutes aléatoire (constante).\newline
-
-\item \textbf{Problème:} Le modèle est incomplet puisque nous ne disons rien de la loi de $X$.\newline
-  
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}{\textbf{\textsc{Cas 1:}} $X$ et $\varepsilon$ indépendants}
-
-\begin{itemize}
-
-\item La distribution de $\varepsilon$ conditionnelle à $X$ est identique à sa distribution marginale.\newline
-
-\item $\varepsilon | X \sim  \mathcal N(0, \sigma_{\varepsilon}^2 I_T)$\newline
-
-\item Tous les résultats du Chapitre 1 sont valides \textbf{conditionnellement à $X$}.\newline
-
-\item L'estimateur MCO conserve ses propriétés désirables.\newline
-
-\item Les tests usuels restent valides (conditionnellement à $X$)\newline
-
-\end{itemize}
-
-\vspace{0.3cm}
-
-\textbf{Intuition:} En conditionnant sur $X$, on le traite les variables explicatives comme non-stochastiques. L'indépendance garantit que la valeur particulière de $X$ soit sans conséquence.
-
-\end{frame}
-
-\begin{frame}{Limites des énoncés conditionnels}
+\begin{frame}
+  \frametitle{Variable omise}
 
   \begin{itemize}
 
-  \item Si $X$ et $\varepsilon$ sont tous deux stochastiques, l'utilité d'énoncés conditionnels sur $X$ est limitée.\newline
+  \item Au \chapref{2}{II}, nous avions étudié l'omission de $X_2$ dans~:
+    \[
+      \mathbf y = X_1\beta_1 + X_2\beta_2 + \varepsilon
+    \]
+    en supposant $X_1$ et $X_2$ \textbf{déterministes}.\newline
 
-  \item Pour faire des inférences \textbf{non conditionnelles}, il faut connaître la distribution de $X$(difficile).\newline
+  \item L'erreur du modèle empirique est $\epsilon = \varepsilon + X_2\beta_2$.
+    Si $X_1$ est aléatoire et corrélée à $X_2$, alors $X_1$ est corrélée
+    à $\epsilon$.\newline
 
-  \item Si $x_{ti}$ sont iid et si $\mathbb E[x_{ti}\varepsilon_t]$ existe (nul), alors la loi des grands nombres s'applique~:
+  \item[$\Rightarrow$] Le biais de variable omise n'est qu'un cas particulier du
+    problème de ce chapitre~: un régresseur corrélé à l'erreur.\newline
+
+  \item C'est même le cas le plus courant~: le talent de l'équation de salaire,
+    inobservé, est corrélé à l'éducation.
+
+  \end{itemize}
+
+  \bigskip
+
+  $\Rightarrow$ Erreur de mesure, double causalité, variable omise~: trois
+  chemins vers la même pathologie, l'\textbf{endogénéité}.
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de la nature}
+
+  \[ \mathbf y = X\beta + \varepsilon \]
+
+  \begin{itemize}
+
+  \item $\varepsilon \sim \normal{0}{\epsvar I_T}$\newline
+
+  \item $X$ est une matrice aléatoire $T\times K$\newline
+
+  \item $\frac{X'X}{T} \plim Q$, où $Q$ est une matrice finie et de plein
+    rang.\newline
+
+  \item Les régresseurs sont linéairement indépendants avec probabilité 1.\newline
+
+  \item Les colonnes de $X$ ne sont pas nécessairement toutes aléatoires
+    (constante).\newline
+
+  \item \textbf{Problème~:} Le modèle est incomplet puisque nous ne disons rien
+    de la loi de $X$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\section{Régresseurs indépendants des erreurs}
+
+\begin{frame}
+  \frametitle{\textsc{Cas 1~:} $X$ et $\varepsilon$ indépendants}
+
+  \begin{itemize}
+
+  \item La distribution de $\varepsilon$ conditionnelle à $X$ est identique à sa
+    distribution marginale.\newline
+
+  \item $\varepsilon \mid X \sim \normal{0}{\epsvar I_T}$\newline
+
+  \item Tous les résultats du \chapref{1}{I} sont valides
+    \textbf{conditionnellement à $X$}.\newline
+
+  \item L'estimateur des MCO conserve ses propriétés désirables.\newline
+
+  \item Les tests usuels restent valides (conditionnellement à $X$).\newline
+
+  \end{itemize}
+
+  \medskip
+
+  \textbf{Intuition~:} En conditionnant sur $X$, on traite les variables
+  explicatives comme non stochastiques. L'indépendance garantit que la valeur
+  particulière prise par $X$ est sans conséquence.
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Limites des énoncés conditionnels}
+
+  \begin{itemize}
+
+  \item Si $X$ et $\varepsilon$ sont tous deux stochastiques, l'utilité
+    d'énoncés conditionnels sur $X$ est limitée.\newline
+
+  \item Pour faire des inférences \textbf{non conditionnelles}, il faut
+    connaître la distribution de $X$ (difficile).\newline
+
+  \item Si les $x_{ti}$ sont iid et si $\mathbb E[x_{ti}\varepsilon_t]$ existe
+    (et est nul), alors la loi des grands nombres s'applique~:
     \[
       \frac{1}{T}\sum_{t=1}^{T} x_{ti}\varepsilon_t \plim 0 \quad (i = 1, 2, \ldots, K)
-    \]    
+    \]
     Cela assure la convergence de l'estimateur des MCO.\newline
-    
-\end{itemize}
 
-\dnote{Les $x_{ti}$ peuvent ne pas être iid, et $\mathbb E[x_{ti}\varepsilon_t]$ peut ne pas exister~! On ne peut alors rien dire de la convergence de l'estimateur des MCO.}
-\end{frame}
+  \end{itemize}
 
-\begin{frame}{Distribution asymptotique}
-\textbf{Problème:}
-\begin{itemize}
-    \item On ne peut pas garantir que $\hat{\beta}$ sera asymptotiquement normal
-    \item Les théorèmes de limite centrale ne s'appliquent pas directement car $\hat{\beta}$ est une combinaison \textbf{non-linéaire} de $X$ et $\varepsilon$
-    \item La non-linéarité vient de l'inversion de $X'X$
-\end{itemize}
-
-\vspace{0.3cm}
-\textbf{Sans information sur la distribution de $X$:}
-\begin{itemize}
-    \item Tests d'hypothèses valides impossibles, même asymptotiquement
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Cas 2: Corrélation entre $X$ et $\varepsilon$}
-
-
-\[
-  \text{plim} \, \hat{\beta} = \beta + \text{plim} \frac{X'\varepsilon}{T} \neq \beta
-\]
-
-\bigskip\bigskip
-
-$\Rightarrow$ \textbf{$\hat{\beta}$ est inconsistant}
+  \dnote{Les $x_{ti}$ peuvent ne pas être iid, et $\mathbb E[x_{ti}\varepsilon_t]$
+    peut ne pas exister~! On ne peut alors rien dire de la convergence de
+    l'estimateur des MCO.}
 
 \end{frame}
 
-% ============================================
-% Section 3.3: Instrumental Variables
-% ============================================
 
-\section{3.3 Variables Instrumentales}
+\begin{frame}
+  \frametitle{L'indépendance ne suffit pas}
 
-\begin{frame}{3.3 Variables Instrumentales: Le problème}
-\textbf{Contexte:}
-\[ y = X\beta + \varepsilon \]
+  \begin{prop}\label{prop:cauchy}
+    Soient $\{X_t\}$ une suite iid $\normal{0}{\sigma_X^2}$ et $\{\varepsilon_t\}$
+    une suite iid $\normal{0}{\epsvar}$, indépendante de $\{X_t\}$. Posons
+    $Z_t = \nicefrac{1}{X_t}$. Alors les $Z_t$ sont iid et indépendants
+    de $\varepsilon$, mais~:
+    \[
+      \frac{1}{T}\sum_{t=1}^{T} Z_t\varepsilon_t \quad\text{ne converge vers rien.}
+    \]
+  \end{prop}
 
-\textbf{Problème:}
-\[ \text{plim} \frac{1}{T}X'\varepsilon \neq 0 \]
+  \bigskip
 
-$\Rightarrow$ L'estimateur MCO $\hat{\beta} = (X'X)^{-1}X'y$ est \textbf{inconsistant}
+  \begin{itemize}
 
-\vspace{0.5cm}
-\textbf{Solution:} Trouver des \textbf{instruments} $Z$ qui remplacent $X$ dans la construction de l'estimateur
+  \item $Z_t\varepsilon_t = \nicefrac{\varepsilon_t}{X_t}$ est un rapport de deux
+    normales centrées indépendantes~: c'est une variable de \textbf{Cauchy},
+    qui n'a pas d'espérance.\newline
+
+  \item[\dbend] La moyenne empirique de variables de Cauchy iid suit une loi de
+    Cauchy, \emph{quelle que soit} la taille de l'échantillon.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Théorème principal}
-\begin{thm}
-Supposons qu'il existe un ensemble de variables $Z$ tel que:
-\begin{enumerate}
-    \item $Q_{ZX} = \text{plim} \frac{1}{T}Z'X$ est finie et non-singulière
-    \item $\frac{Z'\varepsilon}{\sqrt{T}} \xrightarrow{d} N(0, \Psi)$
-\end{enumerate}
 
-Alors l'estimateur
-\[ \tilde{\beta} = (Z'X)^{-1}Z'y \]
-est consistant, et la distribution asymptotique de $\sqrt{T}(\tilde{\beta} - \beta)$ est:
-\[ N\left(0, Q_{ZX}^{-1}\Psi(Q_{ZX}')^{-1}\right) \]
-\end{thm}
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve de la proposition~\ref{prop:cauchy}.} La fonction
+    $x\mapsto \nicefrac{1}{x}$ étant mesurable, les $Z_t$ héritent du caractère
+    iid des $X_t$ et de leur indépendance vis-à-vis de $\varepsilon$. Le rapport
+    de deux variables normales centrées indépendantes suit une loi de Cauchy de
+    paramètre d'échelle $\nicefrac{\sigma_{\varepsilon}}{\sigma_X}$~; cette loi
+    est stable par moyenne, de sorte que
+    $\nicefrac{1}{T}\sum_t Z_t\varepsilon_t$ suit exactement la même loi de
+    Cauchy pour tout $T$. Elle ne se concentre donc nulle part.\qed\newline
+
+  \item L'exemple est instructif~: l'indépendance entre $X$ et $\varepsilon$ est
+    une hypothèse très forte, et pourtant elle ne suffit pas. Il faut de surcroît
+    des \textbf{moments}. C'est la condition d'existence dans le théorème central
+    limite (annexe A du \chapref{1}{I}) qui est en
+    cause, pas l'indépendance.\newline
+
+  \item Nous retrouverons la proposition~\ref{prop:cauchy} plus loin, à propos
+    des conditions à imposer aux instruments.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Distribution asymptotique}
+
+  \textbf{Problème~:}
+  \begin{itemize}
+
+  \item On ne peut pas garantir que $\hat{\mathbf b}$ sera asymptotiquement
+    normal.\newline
+
+  \item Le théorème central limite ne s'applique pas directement
+    car $\hat{\mathbf b}$ est une combinaison \textbf{non linéaire}
+    de $X$ et $\varepsilon$.\newline
+
+  \item La non-linéarité vient de l'inversion de $X'X$.\newline
+
+  \end{itemize}
+
+  \medskip
+
+  \textbf{Sans information sur la distribution de $X$~:}
+  \begin{itemize}
+  \item On ne peut pas garantir la validité des tests d'hypothèses, même
+    asymptotiquement.
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Preuve: Consistance}
-\textbf{Preuve de la consistance:}
 
-On a:
-\[ \tilde{\beta} = (Z'X)^{-1}Z'y = (Z'X)^{-1}Z'(X\beta + \varepsilon) \]
-\[ = \beta + (Z'X)^{-1}Z'\varepsilon \]
+\section{Le cas intermédiaire~: la variable retardée}
 
-Donc:
-\[ \text{plim} \, \tilde{\beta} = \beta + Q_{ZX}^{-1} \cdot \text{plim} \frac{Z'\varepsilon}{T} \]
+\begin{frame}
+  \frametitle{Retour sur l'AR(1)}
 
-Puisque $\frac{Z'\varepsilon}{\sqrt{T}}$ a une distribution asymptotique bien définie, nécessairement:
-\[ \text{plim} \frac{Z'\varepsilon}{T} = 0 \]
+  \[ y_t = \rho y_{t-1} + \varepsilon_t, \qquad |\rho|<1, \qquad \varepsilon_t \iid{0}{\epsvar} \]
 
-D'où: $\text{plim} \, \tilde{\beta} = \beta$ \hfill $\square$
+  \begin{itemize}
+
+  \item Le régresseur $y_{t-1}$ est aléatoire, et il n'est \textbf{pas}
+    indépendant de $\varepsilon$~: $y_{t-1}$ dépend
+    de $\varepsilon_{t-1}, \varepsilon_{t-2}, \ldots$\newline
+
+  \item Mais il est orthogonal à l'erreur \textbf{contemporaine}~:
+    \[
+      \mathbb E\left[ y_{t-1}\varepsilon_t \right] = 0
+      \qquad\text{alors que}\qquad
+      \mathbb E\left[ y_{t}\varepsilon_t \right] = \epsvar \neq 0
+    \]
+
+  \item[$\Rightarrow$] Ni le cas 1 (indépendance), ni le cas 2 (corrélation
+    contemporaine). C'est le cas intermédiaire, et le plus fréquent en séries
+    temporelles.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Preuve: Distribution asymptotique}
-\textbf{Distribution asymptotique:}
 
-On a:
-\[ \sqrt{T}(\tilde{\beta} - \beta) = \left(\frac{Z'X}{T}\right)^{-1} \frac{Z'\varepsilon}{\sqrt{T}} \]
+\begin{frame}
+  \frametitle{Biaisé mais convergent}
 
-Puisque:
-\begin{itemize}
-    \item $\frac{Z'\varepsilon}{\sqrt{T}} \xrightarrow{d} N(0, \Psi)$
-    \item $\frac{Z'X}{T} \xrightarrow{p} Q_{ZX}$
-\end{itemize}
+  \begin{prop}\label{prop:ar1}
+    Dans le modèle AR(1) ci-dessus, l'estimateur des MCO
+    \[
+      \hat\rho = \rho + \frac{\sum_{t=1}^T y_{t-1}\varepsilon_t}{\sum_{t=1}^T y_{t-1}^2}
+    \]
+    est \textbf{biaisé} à distance finie, mais \textbf{convergent}~:
+    $\hat\rho\plim\rho$.
+  \end{prop}
 
-Par le théorème de Slutsky:
-\[ \sqrt{T}(\tilde{\beta} - \beta) \xrightarrow{d} N\left(0, Q_{ZX}^{-1}\Psi(Q_{ZX}')^{-1}\right) \]
-\hfill $\square$
+  \bigskip
+
+  \begin{itemize}
+
+  \item Le biais est en $\nicefrac{1}{T}$. L'approximation classique
+    est $\mathbb E\left[ \hat\rho \right]-\rho \simeq -\nicefrac{2\rho}{T}$~: la
+    persistance est \textbf{sous-estimée}.\newline
+
+  \item L'orthogonalité contemporaine suffit pour la convergence, et même pour la
+    normalité asymptotique. Elle ne suffit pas pour l'absence de biais.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Définitions et remarques}
-\begin{defn}{}
-L'estimateur $\tilde{\beta} = (Z'X)^{-1}Z'y$ est appelé \textbf{estimateur par variables instrumentales} (IV) de $\beta$. La matrice $Z$ est l'ensemble des \textbf{instruments} pour $X$.
-\end{defn}
 
-\vspace{0.3cm}
-\begin{rem}{}
-Le cas typique est celui où:
-\[ \frac{Z'\varepsilon}{\sqrt{T}} \xrightarrow{d} N(0, \sigma^2 Q_{ZZ}) \]
-où $Q_{ZZ} = \text{plim} \frac{1}{T}Z'Z$
-\end{rem}
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve de la proposition~\ref{prop:ar1}.} La convergence
+    s'obtient en écrivant~:
+    \[
+      \hat\rho - \rho = \frac{\nicefrac{1}{T}\sum_t y_{t-1}\varepsilon_t}{\nicefrac{1}{T}\sum_t y_{t-1}^2}
+    \]
+    Le dénominateur converge en probabilité vers la variance non conditionnelle
+    du processus, $\nicefrac{\epsvar}{(1-\rho^2)}$, qui est finie et non nulle
+    puisque $|\rho|<1$. Le numérateur est une moyenne de différences de
+    martingale, d'espérance nulle et de variance finie~: il converge en
+    probabilité vers zéro. Le théorème de Slutsky (annexe A du \chapref{1}{I})
+    permet de conclure.\qed\newline
+
+  \item Le biais, lui, vient de ce que l'espérance d'un rapport n'est pas le
+    rapport des espérances. Même si $\mathbb E[y_{t-1}\varepsilon_t]=0$, le
+    numérateur et le dénominateur ne sont pas indépendants~: un choc positif
+    en $t-1$ gonfle à la fois $y_{t-1}\varepsilon_t$ et $y_{t-1}^2$.\newline
+
+  \item C'est exactement la distinction entre \textbf{sans biais} (propriété à
+    distance finie) et \textbf{convergent} (propriété asymptotique) discutée au
+    \chapref{1}{I}. On a ici la seconde sans la première.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}[c]
+  \frametitle{Le cas intermédiaire~: la variable retardée}
+  \framesubtitle{Le biais s'évanouit}
+
+  \begin{figure}
+    \centering
+    \scalebox{.42}{\input{../pgf/chapitre-3/mco-convergent-ar1.tex}}
+    \caption{AR(1) de coefficient $\rho=0{,}8$, condition initiale tirée dans la
+      loi stationnaire, $50000$ échantillons par taille. Le biais vaut $-0{,}11$
+      à $T=10$, $-0{,}015$ à $T=100$ et $-0{,}002$ à $T=500$~: il s'annule en
+      $\nicefrac{1}{T}$, comme l'annonce l'approximation $-\nicefrac{2\rho}{T}$,
+      excellente dès $T=50$. Codes \coderef{mco-convergent-ar1.py}.}
+  \end{figure}
+
 \end{frame}
 
-\begin{frame}{Exemple: Offre et demande (simultanéité)}
-\textbf{Modèle de marché:}
 
-Demande (consommateurs):
-\[ Q_t^D = \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t \]
-où $R_t$ est le revenu des consommateurs, $\alpha_1 < 0$
+\section{Régresseurs corrélés aux erreurs}
 
-Offre (producteurs):
-\[ Q_t^S = \beta_0 + \beta_1 P_t + \beta_2 W_t + v_t \]
-où $W_t$ est le coût des inputs, $\beta_1 > 0$
+\begin{frame}
+  \frametitle{\textsc{Cas 2~:} corrélation entre $X$ et $\varepsilon$}
 
-Équilibre:
-\[ Q_t^D = Q_t^S = Q_t \]
+  \begin{prop}\label{prop:inconvergence}
+    Si $\underset{T\rightarrow\infty}{\text{plim}}\frac{X'\varepsilon}{T} \neq 0$, alors~:
+    \[
+      \hat{\mathbf b} \plim \beta + Q^{-1}\underset{T\rightarrow\infty}{\text{plim}}\frac{X'\varepsilon}{T} \neq \beta
+    \]
+  \end{prop}
 
-\textbf{Problème:} Le prix $P_t$ est \textbf{endogène} (déterminé simultanément avec $Q_t$)
+  \bigskip
+
+  \begin{itemize}
+
+  \item[$\Rightarrow$] L'estimateur des MCO n'est \textbf{pas convergent}. Il ne
+    converge pas vers $\beta$, mais vers une autre valeur.\newline
+
+  \item[\dbend] Ce n'est pas un problème d'échantillon trop petit~: augmenter $T$
+    n'arrange rien, cela resserre seulement la distribution autour de la
+    mauvaise valeur.\newline
+
+  \item Tout le reste s'effondre avec la convergence~: $s^2$, les tests de
+    Student, de Fisher, les intervalles de confiance.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Exemple (suite): Prix d'équilibre}
-\textbf{Résolution du système:}
 
-À l'équilibre, $Q_t^D = Q_t^S$:
-\[ \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t = \beta_0 + \beta_1 P_t + \beta_2 W_t + v_t \]
+\begin{notes}
 
-Le prix d'équilibre est:
-\[ P_t = \frac{(\beta_0 - \alpha_0) + \beta_2 W_t - \alpha_2 R_t + (v_t - u_t)}{\alpha_1 - \beta_1} \]
+  \begin{itemize}
 
-\textbf{Observation cruciale:}
-\[ \mathbb{E}[P_t \cdot u_t] = \mathbb{E}\left[\frac{v_t - u_t}{\alpha_1 - \beta_1} \cdot u_t\right] = \frac{-\sigma_u^2}{\alpha_1 - \beta_1} \neq 0 \]
+  \item \textbf{Preuve de la proposition~\ref{prop:inconvergence}.} En
+    substituant le modèle de la nature dans l'expression de l'estimateur~:
+    \[
+      \hat{\mathbf b} = \beta + \left( \frac{X'X}{T} \right)^{-1}\frac{X'\varepsilon}{T}
+    \]
+    Le théorème de Slutsky (annexe A du \chapref{1}{I}) et l'hypothèse $\nicefrac{X'X}{T}\plim Q$, avec $Q$ inversible,
+    donnent le résultat.\qed\newline
 
-$\Rightarrow$ Le prix est corrélé avec l'erreur de demande!
+  \item[\dbend] Le facteur $Q^{-1}$ n'est pas décoratif~: il n'y a aucune raison
+    pour que $Q^{-1}\nicefrac{X'\varepsilon}{T}$ ait le signe de
+    $\nicefrac{X'\varepsilon}{T}$ dès que $K>1$. Le sens du biais asymptotique
+    n'est en général lisible que dans le cas d'un régresseur unique.\newline
 
-$\Rightarrow$ MCO sur l'équation de demande est \textbf{inconsistant}
-\end{frame}
-
-\begin{frame}{Exemple (suite): Estimation par VI}
-\textbf{Objectif:} Estimer l'équation de demande
-\[ Q_t = \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t \]
-
-\textbf{Instruments pour $P_t$:}
-\[ Z_t = (1, R_t, W_t)' \]
-
-\textbf{Justification:}
-\begin{itemize}
-    \item $W_t$ (coût des inputs) affecte l'offre mais pas directement la demande
-    \item $W_t$ est corrélé avec $P_t$ (via l'équation d'offre)
-    \item $W_t$ n'est pas corrélé avec $u_t$ (erreur de demande)
-    \item $R_t$ (revenu) peut être utilisé comme instrument pour lui-même
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Exemple (suite): Vérification des conditions}
-\textbf{Conditions du théorème IV:}
-
-\begin{enumerate}
-    \item \textbf{Pertinence:} $Q_{ZX} = \text{plim} \frac{1}{T}Z'X$ finie et non-singulière
+  \item Les trois exemples du début de ce chapitre relèvent tous de cette
+    proposition~:
     \begin{itemize}
-        \item $X = (1, P_t, R_t)$, $Z = (1, R_t, W_t)$
-        \item $W_t$ est corrélé avec $P_t$ via l'équation d'offre
-        \item Si $\text{Var}(W_t) > 0$ et $\beta_2 \neq 0$, alors $Q_{ZX}$ est non-singulière
+    \item \textbf{variable omise}~: $\underset{T\rightarrow\infty}{\text{plim}}\,\hat{\mathbf b}_1 = \beta_1 + \Delta\beta_2$,
+      où $\Delta$ est la limite du coefficient de la régression de $X_2$
+      sur $X_1$~;
+    \item \textbf{erreur de mesure}~: nous verrons que la pente est tirée vers
+      zéro dans le rapport $\nicefrac{\sigma_x^2}{(\sigma_x^2+\sigma_u^2)}$~;
+    \item \textbf{simultanéité}~: la droite estimée est un mélange des courbes
+      d'offre et de demande.
     \end{itemize}
 
-    \item \textbf{Exogénéité:} $\frac{Z'u}{\sqrt{T}} \xrightarrow{d} N(0, \Psi)$
-    \begin{itemize}
-        \item Supposons que $(R_t, W_t)$ sont stationnaires avec moments finis
-        \item Supposons que $u_t$ est iid $N(0, \sigma_u^2)$ et indépendant de $(R_s, W_s)$ pour tout $t,s$
-        \item Alors par un TCL pour processus stochastiques:
-        \[ \frac{1}{\sqrt{T}}\sum_{t=1}^{T}Z_t u_t \xrightarrow{d} N(0, \sigma_u^2 Q_{ZZ}) \]
-        où $Q_{ZZ} = \text{plim} \frac{1}{T}\sum_{t=1}^{T} Z_t Z_t'$
-    \end{itemize}
-\end{enumerate}
+  \end{itemize}
 
-$\Rightarrow$ L'estimateur IV $\tilde{\alpha} = (Z'X)^{-1}Z'Q$ est \textbf{consistant}
+\end{notes}
+
+
+\section{Variables instrumentales}
+
+\begin{frame}
+  \frametitle{Variables instrumentales}
+  \framesubtitle{Le problème}
+
+  \textbf{Contexte~:}
+  \[ \mathbf y = X\beta + \varepsilon \]
+
+  \textbf{Problème~:}
+  \[ \underset{T\rightarrow\infty}{\text{plim}} \frac{X'\varepsilon}{T} \neq 0 \]
+
+  $\Rightarrow$ L'estimateur des MCO
+  $\hat{\mathbf b} = (X'X)^{-1}X'\mathbf y$ n'est \textbf{pas convergent}.
+
+  \bigskip
+
+  \textbf{Solution~:} Trouver des \textbf{instruments} $Z$ qui remplacent $X$
+  dans la construction de l'estimateur.
+
+  \bigskip
+
+  \dnote{L'idée est simple~: puisque $X$ est contaminé, on ne s'en sert plus
+    pour projeter. On demande à $Z$ d'être assez proche de $X$ pour l'identifier
+    (\emph{pertinence}) et assez loin de $\varepsilon$ pour ne pas être
+    contaminé (\emph{exogénéité}).}
+
 \end{frame}
 
-\begin{frame}{Exemple (suite): Pourquoi ces conditions sur $Z$?}
-\textbf{Question:} Pourquoi avons-nous besoin d'hypothèses sur $(R_t, W_t)$ pour appliquer le TCL?
 
-\vspace{0.3cm}
-\textbf{Réponse:} Le TCL s'applique à la somme $\frac{1}{\sqrt{T}}\sum_{t=1}^{T}Z_t u_t$
+\begin{frame}
+  \frametitle{Théorème principal}
 
-\begin{itemize}
-    \item Même si $u_t$ est iid, le produit $Z_t u_t$ est \textbf{stochastique}\newline
-
-    \item Pour que le TCL s'applique, il faut que:\newline
+  \begin{theorem}\label{thm:vi}
+    Supposons qu'il existe une matrice $Z$ de dimension $T\times K$ telle que~:
     \begin{enumerate}
-        \item $\mathbb{E}[Z_t u_t] = 0$ (exogénéité des instruments)\newline
-        \item $\text{Var}(Z_t u_t) < \infty$ (nécessite moments finis de $Z_t$)\newline
-        \item La LGN s'applique à $\frac{1}{T}\sum Z_t Z_t' u_t^2$ (stationnarité)
+    \item $Q_{ZX} = \underset{T\rightarrow\infty}{\text{plim}} \frac{Z'X}{T}$
+      est finie et non singulière \hfill (\emph{pertinence})
+    \item $\frac{Z'\varepsilon}{\sqrt{T}} \dlim \normal{0}{\Psi}$ \hfill (\emph{exogénéité})
+    \end{enumerate}
+    Alors l'estimateur
+    \[ \tilde{\mathbf b} = (Z'X)^{-1}Z'\mathbf y \]
+    est convergent, et~:
+    \[ \sqrt{T}\left(\tilde{\mathbf b} - \beta\right) \dlim \normal{0}{Q_{ZX}^{-1}\Psi\left(Q_{ZX}'\right)^{-1}} \]
+  \end{theorem}
+
+  \bigskip
+
+  \dnote{$Z$ a ici \emph{exactement} $K$ colonnes~: c'est le cas dit
+    \textbf{juste identifié}, le seul où $Z'X$ est carrée et inversible. Le cas
+    à plus d'instruments que de paramètres fait l'objet de la section suivante.}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve de la convergence.} En substituant le modèle de la
+    nature~:
+    \[
+      \tilde{\mathbf b} = (Z'X)^{-1}Z'\left(X\beta + \varepsilon\right) = \beta + (Z'X)^{-1}Z'\varepsilon
+    \]
+    d'où~:
+    \[
+      \tilde{\mathbf b} \plim \beta + Q_{ZX}^{-1}\underset{T\rightarrow\infty}{\text{plim}} \frac{Z'\varepsilon}{T}
+    \]
+    La seconde hypothèse impose que $\nicefrac{Z'\varepsilon}{\sqrt T}$ converge
+    en loi vers une variable aléatoire propre. Or~:
+    \[
+      \frac{Z'\varepsilon}{T} = \frac{1}{\sqrt T}\times\frac{Z'\varepsilon}{\sqrt T}
+    \]
+    est le produit d'une suite déterministe qui tend vers zéro et d'une suite qui
+    converge en loi. Le théorème de Slutsky
+    (version mixte, annexe A du \chapref{1}{I}) donne
+    $\nicefrac{Z'\varepsilon}{T}\plim 0$, et donc
+    $\tilde{\mathbf b}\plim\beta$.\qed\newline
+
+  \item \textbf{Preuve de la distribution asymptotique.} On a~:
+    \[
+      \sqrt{T}\left(\tilde{\mathbf b} - \beta\right) = \left(\frac{Z'X}{T}\right)^{-1} \frac{Z'\varepsilon}{\sqrt{T}}
+    \]
+    Puisque $\nicefrac{Z'X}{T}\plim Q_{ZX}$ et
+    $\nicefrac{Z'\varepsilon}{\sqrt T}\dlim\normal{0}{\Psi}$, le théorème de
+    Slutsky permet de remplacer la matrice aléatoire par sa limite sans changer
+    la loi asymptotique. Une combinaison linéaire d'un vecteur gaussien étant
+    gaussienne, on obtient la variance annoncée,
+    $Q_{ZX}^{-1}\Psi\left(Q_{ZX}'\right)^{-1}$.\qed\newline
+
+  \item Noter que la seconde hypothèse est \emph{beaucoup} plus forte que la
+    simple orthogonalité $\underset{T\rightarrow\infty}{\text{plim}}\nicefrac{Z'\varepsilon}{T}=0$.
+    Nous y revenons plus loin.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Définitions et remarques}
+
+  \begin{defn}{}
+    L'estimateur $\tilde{\mathbf b} = (Z'X)^{-1}Z'\mathbf y$ est appelé
+    \textbf{estimateur par variables instrumentales} (VI) de $\beta$. La
+    matrice $Z$ est l'ensemble des \textbf{instruments} pour $X$.
+  \end{defn}
+
+  \medskip
+
+  \begin{rem}{}
+    Le cas typique est celui où~:
+    \[ \frac{Z'\varepsilon}{\sqrt{T}} \dlim \normal{0}{\epsvar Q_{ZZ}} \]
+    où $Q_{ZZ} = \underset{T\rightarrow\infty}{\text{plim}} \frac{Z'Z}{T}$. La
+    variance asymptotique se réduit alors à
+    $\epsvar Q_{ZX}^{-1}Q_{ZZ}\left(Q_{ZX}'\right)^{-1}$.
+  \end{rem}
+
+  \medskip
+
+  \begin{itemize}
+  \item Les colonnes de $X$ qui ne sont pas suspectes (la constante, les
+    régresseurs exogènes) sont leurs propres instruments.
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Inférence en pratique}
+
+  \begin{itemize}
+
+  \item La variance asymptotique s'estime en remplaçant chaque moment par son
+    équivalent empirique~:
+    \[
+      \hat{\mathbb V}\left[ \tilde{\mathbf b} \right] = \hat\sigma^2 \left( Z'X \right)^{-1}Z'Z\left( X'Z \right)^{-1}
+    \]
+    avec
+    \[
+      \hat\sigma^2 = \frac{1}{T}\left( \mathbf y - X\tilde{\mathbf b} \right)'\left( \mathbf y - X\tilde{\mathbf b} \right)
+    \]
+
+  \item Les tests de Student et de Fisher du \chapref{1}{I} se transposent, mais
+    dans leur version \textbf{asymptotique}~: la statistique de Student est
+    comparée à une normale, celle de Fisher (multipliée par $m$) à un $\chi^2(m)$.\newline
+
+  \end{itemize}
+
+  \dnote{Les résidus se calculent avec $X$, la matrice \emph{observée}, et non
+    avec une quelconque version instrumentée. C'est l'erreur classique de qui
+    programme la méthode à la main en enchaînant deux régressions par les MCO~:
+    l'estimation de $\beta$ est correcte, mais les écarts-type sont faux.}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Exemple~: offre et demande}
+  \framesubtitle{1/4}
+
+  \textbf{Modèle de marché~:}
+
+  Demande (consommateurs)~:
+  \[ Q_t^D = \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t \]
+  où $R_t$ est le revenu des consommateurs, $\alpha_1 < 0$.
+
+  \medskip
+
+  Offre (producteurs)~:
+  \[ Q_t^S = \gamma_0 + \gamma_1 P_t + \gamma_2 W_t + v_t \]
+  où $W_t$ est le coût des inputs, $\gamma_1 > 0$.
+
+  \medskip
+
+  Équilibre~:
+  \[ Q_t^D = Q_t^S = Q_t \]
+
+  \medskip
+
+  \textbf{Problème~:} Le prix $P_t$ est \textbf{endogène} (déterminé
+  simultanément avec $Q_t$).
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Exemple~: offre et demande}
+  \framesubtitle{2/4 --- le prix d'équilibre}
+
+  À l'équilibre, $Q_t^D = Q_t^S$~:
+  \[ \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t = \gamma_0 + \gamma_1 P_t + \gamma_2 W_t + v_t \]
+
+  \medskip
+
+  Le prix d'équilibre est~:
+  \[ P_t = \frac{(\gamma_0 - \alpha_0) + \gamma_2 W_t - \alpha_2 R_t + (v_t - u_t)}{\alpha_1 - \gamma_1} \]
+
+  \medskip
+
+  \textbf{Observation cruciale~:}
+  \[ \mathbb{E}[P_t u_t] = \mathbb{E}\left[\frac{v_t - u_t}{\alpha_1 - \gamma_1} u_t\right] = \frac{-\sigma_u^2}{\alpha_1 - \gamma_1} \neq 0 \]
+  en supposant $R_t$, $W_t$ et $v_t$ non corrélés à $u_t$.
+
+  \medskip
+
+  $\Rightarrow$ Le prix est corrélé avec l'erreur de demande~!
+
+  $\Rightarrow$ Les MCO sur l'équation de demande ne sont \textbf{pas convergents}.
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Exemple~: offre et demande}
+  \framesubtitle{3/4 --- estimation par VI}
+
+  \textbf{Objectif~:} estimer l'équation de demande
+  \[ Q_t = \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_t \]
+
+  \textbf{Instruments pour $P_t$~:}
+  \[ Z_t' = \begin{pmatrix} 1 & R_t & W_t \end{pmatrix} \]
+
+  \medskip
+
+  \textbf{Justification~:}
+  \begin{itemize}
+  \item $W_t$ (coût des inputs) affecte l'offre mais pas directement la demande~;
+  \item $W_t$ est corrélé avec $P_t$ (via l'équation d'offre)~;
+  \item $W_t$ n'est pas corrélé avec $u_t$ (erreur de demande)~;
+  \item $R_t$ (revenu) figure dans l'équation à estimer et n'est pas suspect~:
+    il est son propre instrument.
+  \end{itemize}
+
+  \medskip
+
+  $\Rightarrow$ L'estimateur des VI
+  $\tilde{\mathbf a} = (Z'X)^{-1}Z'\mathbf q$ est \textbf{convergent}, où
+  $\mathbf q$ est le vecteur des quantités observées.
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Exemple~: offre et demande}
+  \framesubtitle{4/4 --- vérification des conditions}
+
+  \begin{enumerate}
+
+  \item \textbf{Pertinence~:} $Q_{ZX}$ finie et non singulière, avec
+    $X_t' = \begin{pmatrix} 1 & P_t & R_t \end{pmatrix}$.
+    \begin{itemize}
+    \item $W_t$ est corrélé avec $P_t$ via l'équation d'offre.
+    \item Si $\mathbb V[W_t] > 0$ et $\gamma_2 \neq 0$, alors $Q_{ZX}$ est non
+      singulière.
+    \end{itemize}
+
+    \medskip
+
+  \item \textbf{Exogénéité~:} $\frac{Z'u}{\sqrt{T}} \dlim \normal{0}{\Psi}$.
+    \begin{itemize}
+    \item Supposons $(R_t, W_t)$ stationnaires avec moments d'ordre deux finis.
+    \item Supposons $u_t$ iid $\normal{0}{\sigma_u^2}$ et indépendant
+      de $(R_s, W_s)$ pour tous $t,s$.
+    \item Alors, par un théorème central limite pour processus stochastiques~:
+      \[ \frac{1}{\sqrt{T}}\sum_{t=1}^{T}Z_t u_t \dlim \normal{0}{\sigma_u^2 Q_{ZZ}} \]
+    \end{itemize}
+
+  \end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Exemple~: offre et demande}
+  \framesubtitle{Ce que les MCO estiment}
+
+  \begin{figure}
+    \centering
+    \scalebox{.42}{\input{../pgf/chapitre-3/simultaneite-offre-demande.tex}}
+    \caption{Un marché simulé sur $T=300$ périodes, avec $\alpha_1=-1$ pour la
+      demande et $\gamma_1=1$ pour l'offre. Les MCO de $Q_t$ sur $(1,P_t,R_t)$
+      renvoient une pente de $-0{,}11$~: la droite estimée n'est ni la demande ni
+      l'offre, mais un mélange des deux, et elle suggère une demande presque
+      insensible au prix. Les VI, avec $Z_t=(1,R_t,W_t)$, restituent $-1{,}11$.
+      Codes \coderef{simultaneite-offre-demande.py}.}
+  \end{figure}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Pourquoi ces conditions sur $Z$~?}
+
+  \textbf{Question~:} pourquoi avons-nous besoin d'hypothèses sur $(R_t, W_t)$
+  pour appliquer le théorème central limite~?
+
+  \medskip
+
+  \textbf{Réponse~:} le théorème s'applique à la somme
+  $\frac{1}{\sqrt{T}}\sum_{t=1}^{T}Z_t u_t$, et non à $u_t$ seul.
+
+  \begin{itemize}
+
+  \item Même si $u_t$ est iid, le produit $Z_t u_t$ est \textbf{stochastique} des
+    deux côtés.\newline
+
+  \item Il faut donc que~:
+    \begin{enumerate}
+    \item $\mathbb{E}[Z_t u_t] = 0$ (exogénéité des instruments)~;
+    \item $\mathbb V[Z_t u_t] < \infty$ (ce qui exige des moments finis
+      pour $Z_t$)~;
+    \item la dépendance temporelle de $Z_tu_t$ s'estompe assez vite
+      (stationnarité et mélange).
     \end{enumerate}
 
-\end{itemize}
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Exemple (suite): Ce qui peut mal tourner}
-\textbf{Ce qui peut mal tourner sans conditions sur $Z$:}
 
-\begin{enumerate}
-    \item \textbf{Variance infinie:} Si $Z_t$ a des queues trop épaisses
+\begin{frame}
+  \frametitle{Ce qui peut mal tourner}
+
+  \begin{enumerate}
+
+  \item \textbf{Variance infinie~:} si $Z_t$ a des queues trop épaisses.
     \begin{itemize}
-        \item $\text{Var}(Z_t u_t)$ peut ne pas exister
-        \item Le TCL ne s'applique pas
+    \item $\mathbb V[Z_t u_t]$ peut ne pas exister.
+    \item Le théorème central limite ne s'applique pas.
     \end{itemize}
 
-    \item \textbf{Dépendance temporelle:} Si $Z_t$ est très persistant
+    \medskip
+
+  \item \textbf{Dépendance temporelle~:} si $Z_t$ est très persistant.
     \begin{itemize}
-        \item Les $Z_t u_t$ ne sont pas "suffisamment indépendants"
-        \item La normalisation par $\sqrt{T}$ peut être incorrecte
+    \item Les $Z_t u_t$ ne sont pas \guillemotleft suffisamment indépendants \guillemotright{}.
+    \item La normalisation par $\sqrt{T}$ peut être incorrecte.
     \end{itemize}
 
-    \item \textbf{Non-stationnarité:} Si $\text{Var}(Z_t)$ croît avec $t$
+    \medskip
+
+  \item \textbf{Non-stationnarité~:} si $\mathbb V[Z_t]$ croît avec $t$.
     \begin{itemize}
-        \item $Q_{ZZ} = \text{plim} \frac{1}{T}\sum Z_t Z_t'$ peut ne pas exister
-        \item La distribution asymptotique est mal définie
-    \end{itemize}
-\end{enumerate}
-
-\vspace{0.3cm}
-\textbf{Conclusion:} Les conditions sur $Z$ garantissent que la somme $\sum Z_t u_t$ se comporte "régulièrement"
-\end{frame}
-
-\begin{frame}{Mise en garde importante}
-\textbf{Erreur courante dans la littérature:}
-
-\begin{itemize}
-    \item On affirme parfois que si $Q_{ZX}$ est finie et non-singulière et si:
-    \[ \text{plim} \frac{1}{T}Z'\varepsilon = 0 \]
-    alors $\tilde{\beta}$ est consistant et $\sqrt{T}(\tilde{\beta} - \beta) \xrightarrow{d} N(0, \sigma^2 Q_{ZZ}^{-1}Q_{ZX}(Q_{ZX}')^{-1})$
-\end{itemize}
-
-\vspace{0.3cm}
-\textbf{FAUX!}
-
-\begin{itemize}
-    \item La consistance est vraie
-    \item Mais l'énoncé sur la distribution asymptotique est \textbf{faux}
-    \item Raison: $\text{plim} \frac{1}{T}Z'\varepsilon = 0$ n'implique pas que $\frac{Z'\varepsilon}{\sqrt{T}} \xrightarrow{d} N(0, \sigma^2 Q_{ZZ})$
-\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Difficulté de vérification}
-\textbf{Problème pratique:}
-
-Il est clairement plus facile de vérifier:
-\[ \text{plim} \frac{1}{T}Z'\varepsilon = 0 \]
-
-que de vérifier:
-\[ \frac{Z'\varepsilon}{\sqrt{T}} \text{ a une distribution asymptotique bien définie} \]
-
-\vspace{0.3cm}
-\textbf{Question naturelle:} Existe-t-il des conditions suffisantes facilement vérifiables?
-
-\textbf{Réponse:} Si $Z$ est non-stochastique et $Q_{ZZ} = \text{plim} \frac{1}{T}Z'Z$ est finie, c'est suffisant.
-
-\textbf{Mais:} Si $Z$ est stochastique, c'est compliqué. Les conditions suffisantes qui existent sont trop exigeantes pour être vraiment utiles.
-\end{frame}
-
-\begin{frame}{Conditions fortes (mais insuffisantes)}
-\textbf{Tentative de condition:} Les observations $Z_t$ sont iid et indépendantes de toutes les observations sur $\varepsilon$
-
-\vspace{0.3cm}
-\textbf{Mais même cela ne suffit pas!}
-
-\textbf{Contre-exemple:} Reprenons l'exemple de la Section 3.1 où:
-\[ Z_t = \frac{1}{X_t} \]
-avec $X_t$ iid $N(0, \sigma_X^2)$ et indépendant de $\varepsilon$.
-
-\begin{itemize}
-    \item Les $Z_t$ sont aussi iid et indépendants de $\varepsilon$
-    \item \textbf{Mais:} $Z_t\varepsilon_t$ a une distribution de Cauchy (dont la moyenne n'existe pas)
-    \item Donc $\frac{1}{T}\sum_{t=1}^{T} Z_t\varepsilon_t$ aussi
-    \item On n'a même pas $\text{plim} \frac{1}{T}Z'\varepsilon = 0$
-    \item Encore moins une distribution asymptotique bien définie pour $\frac{Z'\varepsilon}{\sqrt{T}}$
-\end{itemize}
-\end{frame}
-
-% ============================================
-% Section 3.4: Errors in Variables
-% ============================================
-
-\section{3.4 Erreurs de Mesure}
-
-\begin{frame}{3.4 Erreurs de Mesure: Le modèle}
-\textbf{Modèle de régression linéaire simple:}
-\[ y_t = \alpha + \beta x_t + \varepsilon_t \]
-
-\textbf{Problème:} $y$ et $x$ sont observés avec erreur
-
-\textbf{Variables observées:}
-\begin{align*}
-y_t^* &= y_t + v_t = \alpha + \beta x_t + (\varepsilon_t + v_t) \\
-x_t^* &= x_t + u_t
-\end{align*}
-
-\textbf{Forme alternative:}
-\[ y_t^* = \alpha + \beta x_t^* + (\varepsilon_t + v_t - \beta u_t) \]
-
-\textbf{Observation:} La perturbation composée dépend de $x_t^*$ via $u_t$!
-\end{frame}
-
-\begin{frame}{Théorème d'inconsistance}
-\begin{thm}
-Considérons le modèle ci-dessus, où $\varepsilon_t$, $v_t$, $u_t$ et $x_t$ sont tous indépendants entre eux, et sont de plus iid comme $N(0,\sigma_\varepsilon^2)$, $N(0,\sigma_v^2)$, $N(0,\sigma_u^2)$ et $N(\mu,\sigma_x^2)$ respectivement.
-
-Alors l'estimateur MCO $\hat{\beta}$ de $\beta$ est \textbf{inconsistant} tant que $\sigma_u^2 \neq 0$, et:
-\[ \text{plim} \, \hat{\beta} = \beta \frac{\sigma_x^2}{\sigma_x^2 + \sigma_u^2} \]
-\end{thm}
-
-\textbf{Biais:} $\text{plim} \, \hat{\beta} < \beta$ (en valeur absolue)
-
-C'est un \textbf{biais d'atténuation} vers zéro.
-\end{frame}
-
-\begin{frame}{Preuve du théorème}
-\textbf{Preuve:}
-
-L'estimateur MCO de $\beta$ est:
-\[ \hat{\beta} = \frac{\sum_t(x_t^* - \bar{x}^*)(y_t^* - \bar{y}^*)}{\sum_t(x_t^* - \bar{x}^*)^2} = \frac{(1/T)\sum_t(x_t^* - \bar{x}^*)(\varepsilon_t + v_t - \beta u_t)}{(1/T)\sum_t(x_t^* - \bar{x}^*)^2} \]
-
-Puisque $x_t^* = x_t + u_t$, sous les hypothèses:
-\begin{align*}
-\text{plim} \frac{1}{T}\sum_t(x_t^* - \bar{x}^*)(\varepsilon_t + v_t - \beta u_t) &= -\beta\sigma_u^2 \\
-\text{plim} \frac{1}{T}\sum_t(x_t^* - \bar{x}^*)^2 &= \sigma_x^2 + \sigma_u^2
-\end{align*}
-
-D'où:
-\[ \text{plim} \, \hat{\beta} = \beta \frac{-\sigma_u^2}{\sigma_x^2 + \sigma_u^2} + \beta = \beta \frac{\sigma_x^2}{\sigma_x^2 + \sigma_u^2} \]
-\hfill $\square$
-\end{frame}
-
-\begin{frame}{La mesure de $y$ ne pose pas de problème}
-\begin{rem}{}
-C'est l'\textbf{erreur de mesure sur $x$} qui cause le problème.
-
-L'erreur $v_t$ sur $y$ est indistinguable de la perturbation habituelle $\varepsilon_t$.
-
-Pour le reste de cette section, on incorporera donc $\varepsilon_t$ dans $v_t$.
-\end{rem}
-
-\vspace{0.5cm}
-\textbf{Simplification:}
-
-On considère désormais:
-\begin{align*}
-y_t^* &= y_t + v_t = \alpha + \beta x_t + v_t \\
-x_t^* &= x_t + u_t
-\end{align*}
-\end{frame}
-
-
-\begin{frame}{Lien avec les variables instrumentales}
-\textbf{Question:} Peut-on utiliser un estimateur IV pour corriger l'erreur de mesure?
-
-\vspace{0.3cm}
-\textbf{Réponse:} Oui! L'erreur de mesure est un cas particulier d'endogénéité.
-
-\vspace{0.3cm}
-\textbf{Rappel du problème:}
-\begin{align*}
-y_t &= \alpha + \beta x_t + v_t \\
-x_t^* &= x_t + u_t \\
-\Rightarrow y_t &= \alpha + \beta x_t^* + \underbrace{(v_t - \beta u_t)}_{\text{erreur composée}}
-\end{align*}
-
-Corrélation: $\text{Cov}(x_t^*, v_t - \beta u_t) = -\beta\sigma_u^2 \neq 0$
-
-\vspace{0.3cm}
-$\Rightarrow$ Problème d'endogénéité classique, où $x_t^*$ est corrélé avec l'erreur!
-\end{frame}
-
-\begin{frame}{Variables instrumentales pour erreurs de mesure}
-\textbf{Solution IV:} Trouver un instrument $Z_t$ tel que:
-
-\begin{enumerate}
-    \item \textbf{Pertinence:} $Z_t$ corrélé avec $x_t$ (ou $x_t^*$)
-    \[ \text{Cov}(Z_t, x_t) \neq 0 \]
-
-    \item \textbf{Exogénéité:} $Z_t$ non corrélé avec les erreurs $u_t$ et $v_t$
-    \[ \text{Cov}(Z_t, u_t) = 0 \quad \text{et} \quad \text{Cov}(Z_t, v_t) = 0 \]
-\end{enumerate}
-
-\vspace{0.3cm}
-\textbf{Exemples d'instruments possibles:}
-
-\begin{itemize}
-    \item \textbf{Mesures multiples:} Si on a deux mesures indépendantes de $x_t$
-    \begin{itemize}
-        \item $x_t^{(1)} = x_t + u_t^{(1)}$ et $x_t^{(2)} = x_t + u_t^{(2)}$
-        \item On peut utiliser $x_t^{(2)}$ comme instrument pour $x_t^{(1)}$
-        \item Si $u_t^{(1)} \perp u_t^{(2)}$, alors $\text{Cov}(x_t^{(2)}, u_t^{(1)}) = 0$
+    \item $Q_{ZZ}$ peut ne pas exister.
+    \item La distribution asymptotique est mal définie.
     \end{itemize}
 
-    \item \textbf{Variables liées:} Une variable $Z_t$ qui affecte $x_t$ mais pas directement $y_t$
-\end{itemize}
+  \end{enumerate}
+
+  \medskip
+
+  \textbf{Conclusion~:} les conditions sur $Z$ garantissent que la somme
+  $\sum_t Z_t u_t$ se comporte \guillemotleft régulièrement \guillemotright{}.
+
 \end{frame}
 
-\begin{frame}{Exemple: Mesures multiples}
-\textbf{Exemple concret:} Mesure du revenu avec erreur
 
-\begin{itemize}
-    \item Modèle: $\text{Consommation}_t = \alpha + \beta \text{Revenu}_t + v_t$
+\begin{frame}
+  \frametitle{Mise en garde}
 
-    \item Problème: Le revenu est mesuré avec erreur
-    \begin{itemize}
-        \item Déclaration fiscale: $\text{Revenu}_t^{(1)} = \text{Revenu}_t + u_t^{(1)}$
-        \item Enquête auprès des ménages: $\text{Revenu}_t^{(2)} = \text{Revenu}_t + u_t^{(2)}$
-    \end{itemize}
+  \textbf{Erreur courante dans la littérature.} On affirme parfois que
+  si $Q_{ZX}$ est finie et non singulière et si
+  \[ \underset{T\rightarrow\infty}{\text{plim}} \frac{Z'\varepsilon}{T} = 0 \]
+  alors $\tilde{\mathbf b}$ est convergent et
+  \[ \sqrt{T}\left(\tilde{\mathbf b} - \beta\right) \dlim \normal{0}{\epsvar Q_{ZX}^{-1}Q_{ZZ}\left(Q_{ZX}'\right)^{-1}} \]
 
-    \item Si $u_t^{(1)}$ et $u_t^{(2)}$ sont des erreurs de mesure indépendantes:
-    \begin{itemize}
-        \item Utiliser $\text{Revenu}_t^{(2)}$ comme instrument pour $\text{Revenu}_t^{(1)}$
-        \item Ou vice-versa
-    \end{itemize}
-\end{itemize}
+  \bigskip
 
-\vspace{0.3cm}
-\textbf{Estimateur IV:}
-\[ \tilde{\beta} = \frac{\sum_t (x_t^{(2)} - \bar{x}^{(2)})(y_t - \bar{y})}{\sum_t (x_t^{(2)} - \bar{x}^{(2)})(x_t^{(1)} - \bar{x}^{(1)})} \]
+  \textbf{C'est faux~!}
 
-Cet estimateur est \textbf{consistant} pour $\beta$!
+  \begin{itemize}
+  \item La convergence, elle, est bien vraie.
+  \item Mais l'énoncé sur la distribution asymptotique ne l'est pas.
+  \item Raison~: $\underset{T\rightarrow\infty}{\text{plim}} \nicefrac{Z'\varepsilon}{T} = 0$
+    n'implique pas
+    $\nicefrac{Z'\varepsilon}{\sqrt{T}} \dlim \normal{0}{\epsvar Q_{ZZ}}$.
+  \end{itemize}
+
 \end{frame}
 
+
+\begin{frame}
+  \frametitle{Difficulté de vérification}
+
+  Il est clairement plus facile de vérifier
+  \[ \underset{T\rightarrow\infty}{\text{plim}} \frac{Z'\varepsilon}{T} = 0 \]
+  que de vérifier
+  \[ \frac{Z'\varepsilon}{\sqrt{T}} \text{ a une distribution asymptotique bien définie} \]
+
+  \medskip
+
+  \textbf{Question naturelle~:} existe-t-il des conditions suffisantes facilement
+  vérifiables~?
+
+  \medskip
+
+  \textbf{Réponse~:} si $Z$ est non stochastique, si $Q_{ZZ}$ est finie et si
+  les $\varepsilon_t$ sont iid de variance finie, c'est suffisant.
+
+  \medskip
+
+  \textbf{Mais~:} si $Z$ est stochastique, c'est compliqué. Les conditions
+  suffisantes qui existent sont trop exigeantes pour être vraiment utiles.
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Conditions fortes, mais insuffisantes}
+
+  \textbf{Tentative de condition~:} les observations $Z_t$ sont iid et
+  indépendantes de toutes les observations sur $\varepsilon$.
+
+  \bigskip
+
+  \textbf{Même cela ne suffit pas~!}
+
+  \bigskip
+
+  \textbf{Contre-exemple.} C'est exactement la proposition~\ref{prop:cauchy}~:
+  avec $Z_t = \nicefrac{1}{X_t}$ et $X_t$ iid $\normal{0}{\sigma_X^2}$
+  indépendant de $\varepsilon$,
+
+  \begin{itemize}
+  \item les $Z_t$ sont bien iid et indépendants de $\varepsilon$~;
+  \item \textbf{mais} $Z_t\varepsilon_t$ suit une loi de Cauchy, sans espérance~;
+  \item donc $\nicefrac{1}{T}\sum_t Z_t\varepsilon_t$ aussi~;
+  \item on n'a même pas
+    $\underset{T\rightarrow\infty}{\text{plim}}\nicefrac{Z'\varepsilon}{T} = 0$~;
+  \item encore moins une distribution asymptotique bien définie
+    pour $\nicefrac{Z'\varepsilon}{\sqrt{T}}$.
+  \end{itemize}
+
+\end{frame}
+
+
+\section{Suridentification et doubles moindres carrés}
+
+\begin{frame}
+  \frametitle{Plus d'instruments que de paramètres}
+
+  \begin{itemize}
+
+  \item Jusqu'ici $Z$ avait $K$ colonnes, autant que $X$~: cas \textbf{juste
+      identifié}, $Z'X$ est carrée.\newline
+
+  \item Que faire si l'on dispose de $L>K$ instruments~? La matrice $Z'X$
+    est $L\times K$~: elle n'est plus inversible.\newline
+
+  \item Cas \textbf{suridentifié}. Deux mauvaises idées~:
+    \begin{itemize}
+    \item jeter $L-K$ instruments (on perd de l'information)~;
+    \item les utiliser un par un (on obtient $\binom{L}{K}$ estimateurs
+      différents, tous convergents, et aucune raison de choisir).
+    \end{itemize}
+
+  \item[$\Rightarrow$] La bonne idée~: former $K$ combinaisons linéaires
+    des $L$ instruments, en choisissant celles qui ressemblent le plus à $X$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{L'estimateur des doubles moindres carrés}
+
+  \begin{defn}{}
+    Soit $P_Z = Z\left( Z'Z \right)^{-1}Z'$ la matrice de projection orthogonale
+    sur l'espace engendré par les colonnes de $Z$. L'estimateur des
+    \textbf{doubles moindres carrés} (DMC) est~:
+    \[
+      \tilde{\mathbf b}_{\text{DMC}} = \left( X'P_ZX \right)^{-1}X'P_Z\mathbf y
+    \]
+  \end{defn}
+
+  \medskip
+
+  \begin{itemize}
+
+  \item C'est l'estimateur des VI construit avec les $K$ instruments
+    $\hat X = P_ZX$~: on retrouve
+    $\tilde{\mathbf b}_{\text{DMC}} = (\hat X'X)^{-1}\hat X'\mathbf y$.\newline
+
+  \item Si $L=K$, $P_Z$ se simplifie et l'on retombe sur
+    $\tilde{\mathbf b} = (Z'X)^{-1}Z'\mathbf y$.\newline
+
+  \item Loi asymptotique~:
+    \[
+      \sqrt{T}\left( \tilde{\mathbf b}_{\text{DMC}} - \beta \right) \dlim \normal{0}{\epsvar\left( Q_{XZ}Q_{ZZ}^{-1}Q_{ZX} \right)^{-1}}
+    \]
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Lecture en deux étapes}
+
+  \textbf{Première étape.} Régresser chaque colonne de $X$ sur \emph{tous} les
+  instruments $Z$, et retenir les valeurs ajustées~:
+  \[
+    \hat X = Z\hat\Pi = P_ZX, \qquad \hat\Pi = \left( Z'Z \right)^{-1}Z'X
+  \]
+  $\hat X$ est la partie de $X$ expliquée par $Z$~: la partie \textbf{propre},
+  non contaminée par $\varepsilon$.
+
+  \bigskip
+
+  \textbf{Seconde étape.} Régresser $\mathbf y$ sur $\hat X$ par les MCO~:
+  \[
+    \tilde{\mathbf b}_{\text{DMC}} = \left( \hat X'\hat X \right)^{-1}\hat X'\mathbf y
+  \]
+  (l'égalité avec la définition précédente vient de l'idempotence de $P_Z$).
+
+  \bigskip
+
+  \dnote{D'où le nom. Mais faire réellement les deux régressions à la main donne
+    de \emph{mauvais} écarts-type~: le logiciel de la seconde étape calcule ses
+    résidus à partir de $\hat X$, alors qu'il faut les calculer à partir
+    de $X$. Utiliser la commande dédiée du logiciel.}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Tester la suridentification}
+
+  \begin{itemize}
+
+  \item Avec $L>K$ instruments, on impose $L$ conditions d'orthogonalité pour
+    estimer $K$ paramètres~: il reste $L-K$ conditions \textbf{testables}.\newline
+
+  \item \textbf{Test de Sargan.} Soit
+    $\hat u = \mathbf y - X\tilde{\mathbf b}_{\text{DMC}}$. On régresse $\hat u$
+    sur $Z$ et l'on forme~:
+    \[
+      S = T R^2 \dlim \chi^2\left( L-K \right)
+    \]
+    sous l'hypothèse nulle que \emph{tous} les instruments sont valides.\newline
+
+  \item[\dbend] Le rejet indique qu'au moins un instrument est invalide, sans
+    dire lequel. Et le non-rejet ne valide rien~: si tous les instruments sont
+    mauvais de la même façon, le test ne voit rien. Il ne dispense jamais de
+    l'argument économique.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\section{Instruments faibles}
+
+\begin{frame}
+  \frametitle{Quand la pertinence tient à un fil}
+
+  \begin{itemize}
+
+  \item La condition $Q_{ZX}$ non singulière est une condition
+    \textbf{asymptotique} et \textbf{binaire}~: elle est vérifiée ou non.\newline
+
+  \item En pratique la question est graduelle~: $Q_{ZX}$ peut être inversible
+    tout en étant \emph{presque} singulière. L'instrument est alors dit
+    \textbf{faible}.\newline
+
+  \item Conséquences~:
+    \begin{itemize}
+    \item la distribution asymptotique devient une très mauvaise approximation~;
+    \item l'estimateur devient très dispersé, avec des queues épaisses~;
+    \item sa loi se déplace vers celle des MCO~: le remède ne soigne plus.
+    \end{itemize}
+
+  \item[\dbend] Dans le cas juste identifié, $\tilde{\mathbf b}$ n'a pas
+    d'espérance~! On retrouve la pathologie de la proposition~\ref{prop:cauchy}.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Instruments faibles}
+  \framesubtitle{Ce que devient l'estimateur}
+
+  \begin{figure}
+    \centering
+    \scalebox{.42}{\input{../pgf/chapitre-3/instruments-faibles.tex}}
+    \caption{$y=\beta x+\varepsilon$ avec $\beta=1$, $x$ endogène et un
+      instrument $z$ de force $\pi$ décroissante~; $20000$ échantillons
+      de $T=200$. À $\pi=0{,}5$ ($F$ médian de première étape $67$) l'estimateur
+      est bien centré et aucune estimation ne s'écarte de plus de $1$
+      de $\beta$~; à $\pi=0{,}15$ ($F\simeq 4{,}5$) c'est le cas de $13\%$ d'entre
+      elles, et à $\pi=0{,}05$ ($F\simeq 0{,}7$) de $42\%$, la médiane dérivant
+      vers la limite des MCO. Codes \coderef{instruments-faibles.py}.}
+  \end{figure}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Diagnostic et prudence}
+
+  \begin{itemize}
+
+  \item \textbf{Diagnostic usuel~:} la statistique de Fisher de la
+    \textbf{première étape}, qui teste la nullité conjointe des coefficients des
+    instruments exclus dans la régression de $X$ sur $Z$.\newline
+
+  \item Règle empirique classique~: se méfier si $F<10$. Les travaux récents
+    suggèrent des seuils bien plus élevés.\newline
+
+  \item[\dbend] Un $F$ élevé n'est pas un permis~: il ne dit rien de
+    l'\emph{exogénéité} des instruments, seulement de leur pertinence.\newline
+
+  \item Un instrument à la fois faible et légèrement invalide est pire que les
+    MCO~: le biais est amplifié par $\nicefrac{1}{\pi}$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le prix des variables instrumentales}
+
+  \begin{itemize}
+
+  \item Sous les conditions idéales, les MCO sont BLUE~: les VI, elles, sont
+    \textbf{moins précises}, toujours.\newline
+
+  \item Convergence contre efficacité~: on échange une estimation précise mais
+    fausse contre une estimation juste mais floue.\newline
+
+  \item Les propriétés à distance finie des VI sont médiocres, même avec de bons
+    instruments.\newline
+
+  \end{itemize}
+
+  \dnote{D'où l'importance de la section suivante~: si les MCO sont valides, il
+    ne faut pas instrumenter. Encore faut-il pouvoir en décider.}
+
+\end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Le prix des variables instrumentales}
+  \framesubtitle{Précis et faux, ou juste et flou}
+
+  \begin{figure}
+    \centering
+    \scalebox{.42}{\input{../pgf/chapitre-3/vi-vs-mco.tex}}
+    \caption{$y=\beta x+\varepsilon$ avec $\beta=1$ et $\mathrm{corr}(x,\varepsilon)=0{,}4$~;
+      $20000$ échantillons de $T=200$, instrument de force $\pi=0{,}6$. Les MCO
+      sont concentrés (écart-type $0{,}07$) autour de $1{,}32$~: la vraie valeur
+      est très loin dans la queue. Les VI sont centrées sur $\beta$
+      ($0{,}99$) mais deux fois plus dispersées (écart-type $0{,}12$). Codes
+      \coderef{vi-vs-mco.py}.}
+  \end{figure}
+
+\end{frame}
+
+
+\section{Erreurs de mesure}
+
+\begin{frame}
+  \frametitle{Erreurs de mesure}
+  \framesubtitle{Le modèle}
+
+  \textbf{Modèle de régression linéaire simple~:}
+  \[ y_t = \alpha + \beta x_t + \varepsilon_t \]
+
+  \textbf{Problème~:} $y$ et $x$ sont observés avec erreur.
+
+  \medskip
+
+  \textbf{Variables observées~:}
+  \begin{align*}
+    y_t^* &= y_t + v_t = \alpha + \beta x_t + \left(\varepsilon_t + v_t\right) \\
+    x_t^* &= x_t + u_t
+  \end{align*}
+
+  \medskip
+
+  \textbf{Forme alternative~:}
+  \[ y_t^* = \alpha + \beta x_t^* + \left(\varepsilon_t + v_t - \beta u_t\right) \]
+
+  \medskip
+
+  \textbf{Observation~:} la perturbation composée dépend de $x_t^*$ via $u_t$~!
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Théorème d'atténuation}
+
+  \begin{theorem}\label{thm:attenuation}
+    Considérons le modèle ci-dessus, où $\varepsilon_t$, $v_t$, $u_t$ et $x_t$
+    sont tous indépendants entre eux, et sont de plus iid comme
+    $\normal{0}{\epsvar}$, $\normal{0}{\sigma_v^2}$, $\normal{0}{\sigma_u^2}$ et
+    $\normal{\mu}{\sigma_x^2}$ respectivement.
+
+    Alors l'estimateur des MCO $\hat{\mathbf b}$ de $\beta$ n'est \textbf{pas
+      convergent} tant que $\sigma_u^2 \neq 0$, et~:
+    \[ \hat{\mathbf b} \plim \beta \frac{\sigma_x^2}{\sigma_x^2 + \sigma_u^2} \]
+  \end{theorem}
+
+  \bigskip
+
+  \begin{itemize}
+  \item Puisque $\nicefrac{\sigma_x^2}{(\sigma_x^2+\sigma_u^2)} \in\, ]0,1[$~:
+    \[
+      \left\lvert \underset{T\rightarrow\infty}{\text{plim}}\, \hat{\mathbf b}\right\rvert < \left\lvert \beta \right\rvert
+    \]
+    C'est un \textbf{biais d'atténuation} vers zéro.
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve du théorème~\ref{thm:attenuation}.} L'estimateur des MCO
+    de $\beta$ dans la régression de $\mathbf y^*$ sur $\mathbf x^*$ s'écrit~:
+    \[
+      \hat{\mathbf b} = \frac{\sum_t\left(x_t^* - \bar{x}^*\right)\left(y_t^* - \bar{y}^*\right)}{\sum_t\left(x_t^* - \bar{x}^*\right)^2}
+      = \beta + \frac{\nicefrac{1}{T}\sum_t\left(x_t^* - \bar{x}^*\right)\left(\varepsilon_t + v_t - \beta u_t\right)}{\nicefrac{1}{T}\sum_t\left(x_t^* - \bar{x}^*\right)^2}
+    \]
+    en substituant $y_t^* = \alpha + \beta x_t^* + (\varepsilon_t+v_t-\beta u_t)$
+    au numérateur. Puisque $x_t^* = x_t + u_t$, et sous les hypothèses
+    d'indépendance~:
+    \[
+      \begin{split}
+        \underset{T\rightarrow\infty}{\text{plim}} \frac{1}{T}\sum_t\left(x_t^* - \bar{x}^*\right)\left(\varepsilon_t + v_t - \beta u_t\right) &= -\beta\sigma_u^2 \\
+        \underset{T\rightarrow\infty}{\text{plim}} \frac{1}{T}\sum_t\left(x_t^* - \bar{x}^*\right)^2 &= \sigma_x^2 + \sigma_u^2
+      \end{split}
+    \]
+    la première ligne parce que $u_t$ n'est corrélé qu'au terme $-\beta u_t$.
+    D'où~:
+    \[
+      \hat{\mathbf b} \plim \beta - \frac{\beta\sigma_u^2}{\sigma_x^2 + \sigma_u^2} = \beta \frac{\sigma_x^2}{\sigma_x^2 + \sigma_u^2}
+    \]
+    \qed\newline
+
+  \item La normalité n'intervient nulle part~: seuls les moments d'ordre deux
+    comptent.\newline
+
+  \item[\dbend] Le résultat ne se transpose pas tel quel à la régression
+    multiple. Si un seul régresseur parmi plusieurs est mal mesuré, tous les
+    coefficients sont affectés, et le sens du biais n'est plus lisible~: c'est
+    le facteur $Q^{-1}$ de la proposition~\ref{prop:inconvergence}.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}[c]
+  \frametitle{Erreurs de mesure}
+  \framesubtitle{L'atténuation, vue sur les données}
+
+  \begin{figure}
+    \centering
+    \scalebox{.42}{\input{../pgf/chapitre-3/attenuation-erreur-mesure.tex}}
+    \caption{$y=1+x+v$ avec $\sigma_x^2=1$, $\sigma_v^2=0{,}25$~; $20000$
+      échantillons de $T=200$. Quand la variance de l'erreur de mesure passe
+      de $0$ à $0{,}5$ puis $2$, la pente estimée se concentre autour
+      de $1$, $0{,}67$ puis $0{,}33$~: exactement les valeurs
+      $\beta\nicefrac{\sigma_x^2}{(\sigma_x^2+\sigma_u^2)}$ du
+      théorème~\ref{thm:attenuation} (traits pointillés). Codes
+      \coderef{attenuation-erreur-mesure.py}.}
+  \end{figure}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{La mesure de $y$ ne pose pas de problème}
+
+  \begin{rem}{}
+    C'est l'\textbf{erreur de mesure sur $x$} qui cause le problème.
+
+    L'erreur $v_t$ sur $y$ est indistinguable de la perturbation
+    habituelle $\varepsilon_t$~: elle gonfle la variance des erreurs, donc les
+    écarts-type, mais ne biaise rien.
+
+    Pour le reste de cette section, on incorporera donc $\varepsilon_t$
+    dans $v_t$.
+  \end{rem}
+
+  \bigskip
+
+  \textbf{Simplification.} On considère désormais~:
+  \begin{align*}
+    y_t^* &= \alpha + \beta x_t + v_t \\
+    x_t^* &= x_t + u_t
+  \end{align*}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Lien avec les variables instrumentales}
+
+  \textbf{Question~:} peut-on utiliser un estimateur des VI pour corriger
+  l'erreur de mesure~?
+
+  \medskip
+
+  \textbf{Réponse~:} oui~! L'erreur de mesure est un cas particulier
+  d'endogénéité.
+
+  \medskip
+
+  \textbf{Rappel du problème~:}
+  \begin{align*}
+    y_t^* &= \alpha + \beta x_t + v_t \\
+    x_t^* &= x_t + u_t \\
+    \Rightarrow y_t^* &= \alpha + \beta x_t^* + \underbrace{\left(v_t - \beta u_t\right)}_{\text{erreur composée}}
+  \end{align*}
+
+  \medskip
+
+  Covariance~: $\mathrm{Cov}\left(x_t^*, v_t - \beta u_t\right) = -\beta\sigma_u^2 \neq 0$
+
+  \medskip
+
+  $\Rightarrow$ Problème d'endogénéité classique, où $x_t^*$ est corrélé avec
+  l'erreur~!
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Variables instrumentales pour erreurs de mesure}
+
+  \textbf{Solution.} Trouver un instrument $Z_t$ tel que~:
+
+  \begin{enumerate}
+  \item \textbf{Pertinence~:} $Z_t$ corrélé avec $x_t$ (ou $x_t^*$)
+    \[ \mathrm{Cov}\left(Z_t, x_t\right) \neq 0 \]
+  \item \textbf{Exogénéité~:} $Z_t$ non corrélé avec les erreurs $u_t$ et $v_t$
+    \[ \mathrm{Cov}\left(Z_t, u_t\right) = 0 \quad \text{et} \quad \mathrm{Cov}\left(Z_t, v_t\right) = 0 \]
+  \end{enumerate}
+
+  \medskip
+
+  \textbf{Exemples d'instruments possibles~:}
+
+  \begin{itemize}
+
+  \item \textbf{Mesures multiples~:} si on a deux mesures indépendantes de $x_t$
+    \begin{itemize}
+    \item $x_t^{(1)} = x_t + u_t^{(1)}$ et $x_t^{(2)} = x_t + u_t^{(2)}$
+    \item On peut utiliser $x_t^{(2)}$ comme instrument pour $x_t^{(1)}$
+    \item Si $u_t^{(1)} \perp u_t^{(2)}$, alors
+      $\mathrm{Cov}\left(x_t^{(2)}, u_t^{(1)}\right) = 0$
+    \end{itemize}
+
+  \item \textbf{Variables liées~:} une variable $Z_t$ qui affecte $x_t$ mais pas
+    directement $y_t$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Exemple~: mesures multiples}
+
+  \textbf{Exemple concret~:} mesure du revenu avec erreur.
+
+  \begin{itemize}
+
+  \item Modèle~: $\text{Consommation}_t = \alpha + \beta \text{Revenu}_t + v_t$
+
+  \item Problème~: le revenu est mesuré avec erreur.
+    \begin{itemize}
+    \item Déclaration fiscale~: $\text{Revenu}_t^{(1)} = \text{Revenu}_t + u_t^{(1)}$
+    \item Enquête auprès des ménages~: $\text{Revenu}_t^{(2)} = \text{Revenu}_t + u_t^{(2)}$
+    \end{itemize}
+
+  \item Si $u_t^{(1)}$ et $u_t^{(2)}$ sont des erreurs de mesure indépendantes,
+    on utilise $\text{Revenu}_t^{(2)}$ comme instrument
+    pour $\text{Revenu}_t^{(1)}$ (ou l'inverse).
+
+  \end{itemize}
+
+  \medskip
+
+  \textbf{Estimateur des VI~:}
+  \[ \tilde{\mathbf b} = \frac{\sum_t \left(x_t^{(2)} - \bar{x}^{(2)}\right)\left(y_t - \bar{y}\right)}{\sum_t \left(x_t^{(2)} - \bar{x}^{(2)}\right)\left(x_t^{(1)} - \bar{x}^{(1)}\right)} \]
+
+  Cet estimateur est \textbf{convergent} pour $\beta$~!
+
+\end{frame}
+
+
+\section{Tester l'exogénéité}
+
+\begin{frame}
+  \frametitle{Faut-il vraiment instrumenter~?}
+
+  \begin{itemize}
+
+  \item Si $X$ est exogène~: MCO et VI sont tous deux convergents, mais les MCO
+    sont plus précis $\Rightarrow$ instrumenter est un gaspillage.\newline
+
+  \item Si $X$ est endogène~: seules les VI sont convergentes $\Rightarrow$ les
+    MCO sont à jeter.\newline
+
+  \item[$\Rightarrow$] Sous $\mathcal H_0$ (exogénéité) les deux estimateurs
+    convergent vers la même valeur~; sous $\mathcal H_1$ ils divergent. C'est
+    l'idée de \textbf{Hausman}~: comparer $\hat{\mathbf b}$ et
+    $\tilde{\mathbf b}$.
+
+  \end{itemize}
+
+  \medskip
+
+  \begin{theorem}\label{thm:hausman}
+    Sous $\mathcal H_0$~: $\underset{T\rightarrow\infty}{\text{plim}}\nicefrac{X'\varepsilon}{T} = 0$,
+    \[
+      H = \left(\tilde{\mathbf b}-\hat{\mathbf b}\right)'\left[ \hat{\mathbb V}\left[\tilde{\mathbf b}\right]-\hat{\mathbb V}\left[\hat{\mathbf b}\right] \right]^{-}\left(\tilde{\mathbf b}-\hat{\mathbf b}\right) \dlim \chi^2\left( K_1 \right)
+    \]
+    où $\left[\,\cdot\,\right]^{-}$ est un inverse généralisé et où $K_1$, le
+    nombre de régresseurs suspects, est le rang de la différence des variances.
+  \end{theorem}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{La version régression (Durbin-Wu)}
+
+  Plus simple à mettre en \oe uvre, et strictement équivalente~:
+
+  \begin{enumerate}
+
+  \item Régresser le régresseur suspect sur tous les instruments et tous les
+    régresseurs exogènes~; conserver les résidus $\hat{\mathbf v}$.\newline
+
+  \item Régresser $\mathbf y$ sur $X$ \textbf{et} $\hat{\mathbf v}$.\newline
+
+  \item Tester la nullité du coefficient de $\hat{\mathbf v}$ par un test de
+    Student (ou de Fisher si plusieurs régresseurs sont suspects).
+
+  \end{enumerate}
+
+  \medskip
+
+  \dnote{L'intuition est directe~: $\hat{\mathbf v}$ est la part du régresseur
+    suspect que les instruments n'expliquent pas, c'est-à-dire précisément la
+    part soupçonnée d'être corrélée à $\varepsilon$. Si son coefficient est nul,
+    il n'y a pas d'endogénéité.}
+
+  \medskip
+
+  \begin{itemize}
+  \item[\dbend] Le test suppose les instruments valides. Il ne teste pas
+    l'exogénéité \emph{dans l'absolu}, mais celle de $X$ \emph{relativement}
+    à $Z$. Un rejet peut signaler l'endogénéité de $X$ \dots\ ou l'invalidité
+    de $Z$.
+  \end{itemize}
+
+\end{frame}
+
+
+\section{Conclusion}
+
+\begin{frame}
+  \frametitle{Ce qu'il faut retenir}
+
+  \begin{itemize}
+
+  \item Des régresseurs aléatoires ne sont pas un problème en soi. Ce qui
+    compte, c'est leur lien avec les erreurs~:
+    \begin{itemize}
+    \item \textbf{indépendance}~: tous les résultats du \chapref{1}{I} tiennent,
+      conditionnellement à $X$~;
+    \item \textbf{orthogonalité contemporaine seulement}~: biais à distance
+      finie, mais convergence (AR(1))~;
+    \item \textbf{corrélation}~: les MCO ne convergent plus vers $\beta$.
+    \end{itemize}
+
+  \item Erreur de mesure, double causalité et variable omise conduisent toutes
+    au troisième cas.\newline
+
+  \item Les VI et les DMC rétablissent la convergence, à condition de disposer
+    d'instruments \textbf{pertinents} et \textbf{exogènes}.\newline
+
+  \item[\dbend] Deux conditions, deux tests partiels~: Sargan pour l'exogénéité
+    (si $L>K$), le $F$ de première étape pour la pertinence. Aucun ne remplace
+    l'argument économique qui justifie l'instrument.
+
+  \end{itemize}
+
+\end{frame}
 
 
 \begin{notes}

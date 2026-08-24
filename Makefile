@@ -27,7 +27,10 @@ PGF1   = pgf/chapitre-1
 CODES2 = routines/chapitre-2
 PGF2   = pgf/chapitre-2
 
-.PHONY: all figures figures-1 figures-2 venv cours td examens clean clean-all
+CODES3 = routines/chapitre-3
+PGF3   = pgf/chapitre-3
+
+.PHONY: all figures figures-1 figures-2 figures-3 venv cours td examens clean clean-all
 
 all: figures cours td examens
 
@@ -51,7 +54,7 @@ $(VENV): requirements.txt
 # une cible groupée (« &: »), afin que make ne les lance qu'une seule fois.
 # ----------------------------------------------------------------------------
 
-figures: figures-1 figures-2
+figures: figures-1 figures-2 figures-3
 
 figures-1: $(PGF1)/anscombe.tex \
          $(PGF1)/sample-nonstochastic-x.tex \
@@ -130,6 +133,36 @@ $(PGF2)/normalite-asymptotique-bhat.tex: $(CODES2)/normalite-asymptotique-bhat.p
 
 $(PGF2)/tcl.tex: $(CODES2)/tcl.py $(CODES2)/chemins.py | $(VENV)
 	@echo "Théorème central limite..."
+	@$(PY) $<
+
+# ----------------------------------------------------------------------------
+# Figures du chapitre 3
+# ----------------------------------------------------------------------------
+
+figures-3: $(PGF3)/attenuation-erreur-mesure.tex \
+           $(PGF3)/simultaneite-offre-demande.tex \
+           $(PGF3)/vi-vs-mco.tex \
+           $(PGF3)/instruments-faibles.tex \
+           $(PGF3)/mco-convergent-ar1.tex
+
+$(PGF3)/attenuation-erreur-mesure.tex: $(CODES3)/attenuation-erreur-mesure.py $(CODES3)/chemins.py | $(VENV)
+	@echo "Biais d'atténuation dû à l'erreur de mesure..."
+	@$(PY) $<
+
+$(PGF3)/simultaneite-offre-demande.tex: $(CODES3)/simultaneite-offre-demande.py $(CODES3)/chemins.py | $(VENV)
+	@echo "Ce que les MCO estiment sur un marché à l'équilibre..."
+	@$(PY) $<
+
+$(PGF3)/vi-vs-mco.tex: $(CODES3)/vi-vs-mco.py $(CODES3)/chemins.py | $(VENV)
+	@echo "Variables instrumentales contre MCO : le prix de la convergence..."
+	@$(PY) $<
+
+$(PGF3)/instruments-faibles.tex: $(CODES3)/instruments-faibles.py $(CODES3)/chemins.py | $(VENV)
+	@echo "Ce que devient l'estimateur des VI quand l'instrument est faible..."
+	@$(PY) $<
+
+$(PGF3)/mco-convergent-ar1.tex: $(CODES3)/mco-convergent-ar1.py $(CODES3)/chemins.py | $(VENV)
+	@echo "MCO biaisés mais convergents dans l'AR(1)..."
 	@$(PY) $<
 
 # ----------------------------------------------------------------------------

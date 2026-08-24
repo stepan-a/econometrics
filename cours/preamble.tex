@@ -53,6 +53,10 @@
 \tikzexternalize[prefix=figures/]
 \newlength\figureheight
 \newlength\figurewidth
+% Les sorties « pgf » de matplotlib enrobent les étiquettes mathématiques dans
+% \mathdefault (échelles logarithmiques, notation scientifique). Le préambule
+% recommandé par matplotlib se réduit ici à cette définition.
+\providecommand\mathdefault[1]{#1}
 \usepackage{cancel}
 \usepackage{tikz-qtree}
 \usepackage{booktabs}
@@ -115,6 +119,7 @@
 \newcommand{\slidetitle}[1]{\fancyhead[L]{\textsc{#1}}}
 
 \newcommand{\plim}{\xrightarrow[T\rightarrow\infty]{\text{proba}}}
+\newcommand{\dlim}{\xrightarrow[T\rightarrow\infty]{\text{loi}}}
 \newcommand{\epsvar}{\sigma_{\varepsilon}^2}
 
 \newcommand{\R}{{\mathbb R}}

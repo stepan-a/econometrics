@@ -2764,6 +2764,119 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
 
 \end{notes}
 
+\begin{frame}
+  \frametitle{Convergence en loi}
+
+  \begin{defn}{}
+    Soit $\{X_n\}$ une suite de variables aléatoires de fonctions de
+    répartition $\{F_n\}$. On dit que $X_n$ converge en loi vers $X$, de
+    fonction de répartition $F$, si~:
+    \[
+      \underset{n\rightarrow\infty}{\lim} F_n(x) = F(x)
+    \]
+    en tout point $x$ où $F$ est continue. On note~:
+    \[
+      X_n \xlongrightarrow[n\rightarrow\infty]{\text{loi}} X
+    \]
+  \end{defn}
+
+  \bigskip
+
+  \begin{theorem}[Slutsky]\label{thm:Slutsky:mixte}
+    Si $X_n \xlongrightarrow[n\rightarrow\infty]{\text{loi}} X$ et
+    $Y_n \xlongrightarrow[n\rightarrow\infty]{\text{proba}} c$, où $c$ est une
+    constante, alors~:
+    \[
+      Y_nX_n \xlongrightarrow[n\rightarrow\infty]{\text{loi}} cX
+      \quad\text{et}\quad
+      X_n+Y_n \xlongrightarrow[n\rightarrow\infty]{\text{loi}} X+c
+    \]
+  \end{theorem}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item La convergence en probabilité implique la convergence en loi, la
+    réciproque est fausse (sauf si la limite est une constante). C'est la
+    convergence en loi qui nous intéresse pour construire des tests~: elle
+    fournit une loi approchée pour la statistique, alors que la convergence en
+    probabilité ne donne que le point vers lequel elle se tasse.\newline
+
+  \item Le théorème~\ref{thm:Slutsky:mixte} est l'outil qui permet de remplacer,
+    dans une statistique, une matrice de moments empiriques par sa limite en
+    probabilité sans changer la loi asymptotique. Nous l'utiliserons
+    systématiquement~: c'est lui qui autorise à écrire
+    $\sqrt{T}\left(\hat{\mathbf b}-\beta\right) = \left(\nicefrac{X'X}{T}\right)^{-1}\nicefrac{X'\varepsilon}{\sqrt T}$
+    puis à traiter $\left(\nicefrac{X'X}{T}\right)^{-1}$ comme s'il valait
+    $Q^{-1}$.\newline
+
+  \item \textbf{Attention}, contrairement au théorème~\ref{thm:Slutsky}, la
+    limite de $Y_n$ doit ici être une constante. Le produit de deux suites qui
+    convergent en loi ne converge pas en loi vers le produit des limites.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Théorème central limite}
+
+  \begin{theorem}[Lindeberg-Lévy]\label{thm:tcl}
+    Soit $\{X_n\}$ une suite de variables aléatoires indépendantes et
+    identiquement distribuées, d'espérance $\mu$ et de variance $\sigma^2$
+    finie. Alors~:
+    \[
+      \sqrt{n}\left( \bar X_n - \mu \right) \xlongrightarrow[n\rightarrow\infty]{\text{loi}} \mathcal N\left( 0,\sigma^2 \right)
+    \]
+    où $\bar X_n = \frac{1}{n}\sum_{i=1}^n X_i$.
+  \end{theorem}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item Version multivariée~: si les $\bm X_i$ sont iid dans $\mathbb R^p$
+    d'espérance $\bm\mu$ et de variance $\Sigma$ finie, alors
+    $\sqrt{n}\left( \bar{\bm X}_n - \bm\mu \right) \xlongrightarrow[n\rightarrow\infty]{\text{loi}} \mathcal N\left( 0,\Sigma \right)$.\newline
+
+  \item[\dbend] L'existence du moment d'ordre deux n'est pas une formalité~: il
+    existe des variables aléatoires parfaitement raisonnables qui n'en ont pas.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item La loi des grands nombres nous dit vers quoi $\bar X_n$ converge, le
+    théorème~\ref{thm:tcl} nous dit à quelle vitesse et sous quelle forme~: en
+    $\nicefrac{1}{\sqrt n}$, et avec une loi normale, \emph{quelle que soit} la
+    loi des $X_i$. C'est ce qui rend l'inférence asymptotique possible sans rien
+    supposer sur la loi des erreurs.\newline
+
+  \item Les hypothèses peuvent être considérablement affaiblies (les $X_i$
+    peuvent être hétéroscédastiques, ou dépendants, pourvu que la dépendance
+    s'estompe assez vite). Mais elles ne peuvent pas être supprimées. Si la
+    variance n'existe pas, il n'y a pas de théorème central limite~: la moyenne
+    empirique de variables de Cauchy iid suit une loi de Cauchy, quelle que soit
+    la taille de l'échantillon, et ne converge vers rien.\newline
+
+  \item Nous rencontrerons cette pathologie au \chapref{3}{III}, à propos des
+    variables instrumentales.
+
+  \end{itemize}
+
+\end{notes}
+
+
 \subsection{Distributions utiles}
 
 \begin{frame}

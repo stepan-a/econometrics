@@ -11,11 +11,13 @@ chapitre-1.pdf: chapitre-1.tex preamble.tex \
 	@rubber --src-specials --unsafe --pdf chapitre-1
 	@rubber --clean chapitre-1
 
-chapitre-2.pdf: chapitre-2.tex preamble.tex
+chapitre-2.pdf: chapitre-2.tex preamble.tex \
+                $(wildcard ../pgf/chapitre-2/*.tex) $(wildcard ../tikz/chapitre-2/*.tex)
 	@rubber --src-specials --unsafe --pdf chapitre-2
 	@rubber --clean chapitre-2
 
-chapitre-3.pdf: chapitre-3.tex preamble.tex
+chapitre-3.pdf: chapitre-3.tex preamble.tex \
+                $(wildcard ../pgf/chapitre-3/*.tex) $(wildcard ../tikz/chapitre-3/*.tex)
 	@rubber --src-specials --unsafe --pdf chapitre-3
 	@rubber --clean chapitre-3
 
