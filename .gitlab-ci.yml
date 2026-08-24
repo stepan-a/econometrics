@@ -27,7 +27,6 @@ cours:
     - scp td/td-correction-1.pdf /puck/www/le-mans.adjemian.eu/econometrics
     - scp td/td-correction-2.pdf /puck/www/le-mans.adjemian.eu/econometrics
     - scp td/td-correction-3.pdf /puck/www/le-mans.adjemian.eu/econometrics
-    - scp cours/codes/chapitre-1.org /puck/www/le-mans.adjemian.eu/econometrics/codes
     - scp -r cours/codes/chapitre-1 /puck/www/le-mans.adjemian.eu/econometrics/codes
     - scp -r cours/images /puck/www/le-mans.adjemian.eu/econometrics
     - scp -r cours/data /puck/www/le-mans.adjemian.eu/econometrics
