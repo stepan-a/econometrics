@@ -24,9 +24,6 @@ cours:
     - scp examens/correction-2025.pdf /puck/www/le-mans.adjemian.eu/econometrics
     - scp examens/correction-rattrapage-2026.pdf /puck/www/le-mans.adjemian.eu/econometrics
     - scp td/fiche-exercices.pdf /puck/www/le-mans.adjemian.eu/econometrics
-    - scp td/td-correction-1.pdf /puck/www/le-mans.adjemian.eu/econometrics
-    - scp td/td-correction-2.pdf /puck/www/le-mans.adjemian.eu/econometrics
-    - scp td/td-correction-3.pdf /puck/www/le-mans.adjemian.eu/econometrics
     - scp -r routines/chapitre-1 /puck/www/le-mans.adjemian.eu/econometrics/codes
     - scp -r routines/chapitre-2 /puck/www/le-mans.adjemian.eu/econometrics/codes
     - scp -r routines/chapitre-3 /puck/www/le-mans.adjemian.eu/econometrics/codes
