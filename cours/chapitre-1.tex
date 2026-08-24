@@ -586,7 +586,7 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
   \framesubtitle{Sommes de carrés}
 
   \begin{defn}{}
-    On note $\hat y_t = x_t \hat{\mathbf b}$ le prédicteur de $y_t$, $\bar y = T^{-1}\sum_{t=1}^T y_t$ la moyenne arithmétique, et on définit~:
+    On note $\hat y_t = \mathbf x_t \hat{\mathbf b}$ le prédicteur de $y_t$, $\bar y = T^{-1}\sum_{t=1}^T y_t$ la moyenne arithmétique, et on définit~:
     \[
       \begin{split}
         SSE &= \hat\epsilon'\hat\epsilon = \sum_{t=1}^T(y_t-\hat y_t)^2\\
@@ -595,8 +595,6 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
       \end{split}
     \]
   \end{defn}
-
-  \medskip
 
   \begin{prop}\label{prop:SST_SSR_SSE}
     Si les variables explicatives contiennent une constante alors~:
@@ -1042,6 +1040,7 @@ Puisque $X$ est déterministe~:
   \]
   pour que l'estimateur $\tilde{\mathbf b}$ soit non biaisé, il faut et il suffit que la matrice $DX$ soit nulle. Calculons la variance de cet estimateur et montrons qu'elle est plus grande que la variance de l'estimateur des MCO, dans le sens où la matrice $\mathbb V\left[\tilde{\mathbf b}\right] - \mathbb V\left[\hat{\mathbf b}\right]$ est semi-définie positive. Si $\tilde{\mathbf b}$ est sans biais, on a~:
   \[
+    \adjustbox{max width=\linewidth}{$\displaystyle
     \begin{split}
       \mathbb V\left[\tilde{\mathbf b}\right] &= \mathbb E\left[\left( \tilde{\mathbf b}-\beta \right)\left( \tilde{\mathbf b}-\beta \right)'\right] \\
                                               &= \mathbb E\left[\left( \left( (X'X)^{-1}X'+D \right)\left( X\beta + \varepsilon \right) -\beta \right)\left( \left( (X'X)^{-1}X'+D \right)\left( X\beta + \varepsilon \right)-\beta \right)'\right]\\
@@ -1050,7 +1049,7 @@ Puisque $X$ est déterministe~:
                                               &= \sigma_{\varepsilon}^2\left((X'X)^{-1}X'  + D\right)\left((X'X)^{-1}X'  + D\right)'\\
                                               &= \sigma_{\varepsilon}^2\left( (X'X)^{-1}  + DD'\right)\\
                                               &= \mathbb V\left[\hat{\mathbf b}\right] + \sigma_{\varepsilon}^2 DD'
-    \end{split}
+    \end{split}$}
   \]
 Comme $DD'$ est une matrice semi-définie positive, la variance de $\tilde{\mathbf b}$ ne peut être plus petite que celle de $\hat{\mathbf b}$ (les deux variances coïncident si et seulement si $D=0$, c'est-à-dire si $\tilde{\mathbf b}=\hat{\mathbf b}$). L'estimateur des MCO est donc bien le meilleur, au sens de la réduction de la variance, estimateur linéaire sans biais de $\beta$.\qed
 \end{notes}

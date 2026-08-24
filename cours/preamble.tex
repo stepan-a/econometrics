@@ -20,6 +20,10 @@
 
 %% ---------------------------------------------------------------- Paquets
 
+% Latin Modern : extension T1 propre de Computer Modern. Sans elle, le codage T1
+% fait basculer sur cm-super, dont les glyphes auto-vectorisés rendent plus gras
+% (visible surtout dans le pied de page).
+\usepackage{lmodern}
 \usepackage[T1]{fontenc}
 \usepackage{fourier-orns}
 \usepackage{ccicons}
