@@ -21,7 +21,8 @@ chapitre-3.pdf: chapitre-3.tex preamble.tex \
 	@rubber --src-specials --unsafe --pdf chapitre-3
 	@rubber --clean chapitre-3
 
-chapitre-4.pdf: chapitre-4.tex preamble.tex
+chapitre-4.pdf: chapitre-4.tex preamble.tex \
+                $(wildcard ../pgf/chapitre-4/*.tex) $(wildcard ../tikz/chapitre-4/*.tex)
 	@rubber --src-specials --unsafe --pdf chapitre-4
 	@rubber --clean chapitre-4
 

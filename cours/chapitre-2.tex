@@ -1303,38 +1303,20 @@ en considérant les données transformées.\qed
 \begin{notes}
 
   \textbf{Une mise en garde de notation.} Le \chapref{4}{IV} reprend plusieurs des
-  résultats de cette section, mais avec des conventions différentes. Il faut y prendre
-  garde en passant d'un chapitre à l'autre.
-
-  \bigskip
-
-  \begin{center}
-    \small
-    \renewcommand{\arraystretch}{1.35}
-    \setlength{\tabcolsep}{5pt}
-    \begin{tabular}{lll}
-      \toprule
-                              & Chapitre II                       & Chapitre IV\\
-      \midrule
-      Variance des erreurs    & $\mathbb V[\varepsilon]=\sigma_{\varepsilon}^2\Omega$
-                              & $\mathrm{Var}(\varepsilon)=\Omega$\\
-      Estimateur des MCO      & $\hat{\mathbf b}$                 & $\hat\beta$\\
-      Estimateur des MCG      & $\tilde{\mathbf b}$               & $\hat\beta_{MCG}$\\
-      Estimateur des MCQG     & $\breve{\mathbf b}$               & $\hat\beta_{FGLS}$\\
-      Indices                 & $t=1,\dots,T$                     & $i=1,\dots,n$\\
-      \bottomrule
-    \end{tabular}
-  \end{center}
+  résultats de cette section dans le cas de l'hétéroscédasticité. Les estimateurs y
+  portent les mêmes noms qu'ici — $\hat{\mathbf b}$ pour les MCO, $\tilde{\mathbf b}$
+  pour les MCG, $\breve{\mathbf b}$ pour les MCQG — et l'échantillon y est indexé de
+  la même façon. Une seule convention diffère, et il faut y prendre garde.
 
   \bigskip
 
   \begin{itemize}
 
-  \item[\dbend] La différence la plus traître porte sur $\Omega$. Ici la variance des
-    erreurs est \underline{factorisée}, $\sigma_{\varepsilon}^2\Omega$, de sorte
-    qu'$\Omega$ est sans dimension et vaut $I_T$ dans le cas sphérique. Au chapitre IV
-    les variances sont \underline{dans} $\Omega$, qui vaut alors
-    $\mathrm{diag}(\sigma_1^2,\dots,\sigma_n^2)$. Les formules ont la même allure, mais
+  \item[\dbend] La différence porte sur $\Omega$. Ici la variance des erreurs est
+    \underline{factorisée}, $\mathbb V[\varepsilon]=\sigma_{\varepsilon}^2\Omega$, de
+    sorte qu'$\Omega$ est sans dimension et vaut $I_T$ dans le cas sphérique. Au
+    chapitre IV les variances sont \underline{dans} $\Omega$, qui vaut alors
+    $\mathrm{diag}(\sigma_1^2,\dots,\sigma_T^2)$. Les formules ont la même allure, mais
     les deux $\Omega$ ne désignent pas le même objet~: la variance sandwich s'écrit
     $\sigma_{\varepsilon}^2(X'X)^{-1}X'\Omega X(X'X)^{-1}$ ici, et sans le facteur
     $\sigma_{\varepsilon}^2$ là-bas.\newline

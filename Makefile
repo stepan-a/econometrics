@@ -30,7 +30,12 @@ PGF2   = pgf/chapitre-2
 CODES3 = routines/chapitre-3
 PGF3   = pgf/chapitre-3
 
-.PHONY: all figures figures-1 figures-2 figures-3 venv cours td examens clean clean-all
+# Le chapitre 4 prolonge le fil rouge de l'équation de salaire : ses figures
+# lisent les données du chapitre 1, qu'on ne duplique pas.
+CODES4 = routines/chapitre-4
+PGF4   = pgf/chapitre-4
+
+.PHONY: all figures figures-1 figures-2 figures-3 figures-4 venv cours td examens clean clean-all
 
 all: figures cours td examens
 
@@ -54,7 +59,7 @@ $(VENV): requirements.txt
 # une cible groupée (« &: »), afin que make ne les lance qu'une seule fois.
 # ----------------------------------------------------------------------------
 
-figures: figures-1 figures-2 figures-3
+figures: figures-1 figures-2 figures-3 figures-4
 
 figures-1: $(PGF1)/anscombe.tex \
          $(PGF1)/sample-nonstochastic-x.tex \
@@ -163,6 +168,37 @@ $(PGF3)/instruments-faibles.tex: $(CODES3)/instruments-faibles.py $(CODES3)/chem
 
 $(PGF3)/mco-convergent-ar1.tex: $(CODES3)/mco-convergent-ar1.py $(CODES3)/chemins.py | $(VENV)
 	@echo "MCO biaisés mais convergents dans l'AR(1)..."
+	@$(PY) $<
+
+# ----------------------------------------------------------------------------
+# Figures du chapitre 4
+# ----------------------------------------------------------------------------
+
+figures-4: $(PGF4)/taille-tests-student.tex \
+           $(PGF4)/puissance-tests.tex \
+           $(PGF4)/hc-petit-echantillon.tex \
+           $(PGF4)/mcp-vs-mco.tex \
+           $(PGF4)/sortie-mincer-robuste.tex
+
+$(PGF4)/taille-tests-student.tex: $(CODES4)/taille-tests-student.py $(CODES4)/chemins.py | $(VENV)
+	@echo "Ce que l'hétéroscédasticité fait au test de Student..."
+	@$(PY) $<
+
+$(PGF4)/puissance-tests.tex: $(CODES4)/puissance-tests.py $(CODES4)/chemins.py | $(VENV)
+	@echo "Puissance et taille des tests d'hétéroscédasticité..."
+	@$(PY) $<
+
+$(PGF4)/hc-petit-echantillon.tex: $(CODES4)/hc-petit-echantillon.py $(CODES4)/chemins.py | $(VENV)
+	@echo "HC0 à HC3 quand l'échantillon est petit et le levier fort..."
+	@$(PY) $<
+
+$(PGF4)/mcp-vs-mco.tex: $(CODES4)/mcp-vs-mco.py $(CODES4)/chemins.py | $(VENV)
+	@echo "Moindres carrés pondérés, avec de bons puis de mauvais poids..."
+	@$(PY) $<
+
+$(PGF4)/sortie-mincer-robuste.tex $(PGF4)/sortie-mincer-tests.tex &: \
+		$(CODES4)/sortie-heteroscedasticite-mincer.py $(DATA1)/wage1.csv $(CODES4)/chemins.py | $(VENV)
+	@echo "Équation de salaire : écarts-types robustes et tests..."
 	@$(PY) $<
 
 # ----------------------------------------------------------------------------

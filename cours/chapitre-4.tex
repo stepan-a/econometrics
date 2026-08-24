@@ -10,1144 +10,1325 @@
 \title{Économétrie\\\small{Hétéroscédasticité}}
 \author[S. Adjemian]{Stéphane Adjemian}
 \institute{\texttt{stephane.adjemian@univ-lemans.fr}}
-\date{Novembre 2025}
+\date{Octobre 2026}
 
 \begin{frame}
   \titlepage{}
 \end{frame}
 
-\begin{frame}{Le modèle linéaire classique}
-Considérons le modèle de régression linéaire :
-\[
-Y_i = X_i'\beta + \varepsilon_i, \quad i = 1, \ldots, n
-\]
-
-\vspace{0.5cm}
-
-\textbf{Hypothèses classiques :}
-\begin{itemize}
-\item $\mathbb{E}[\varepsilon_i | X_i] = 0$ (exogénéité)
-\item $\text{Var}(\varepsilon_i | X_i) = \sigma^2$ (homoscédasticité)
-\item $\text{Cov}(\varepsilon_i, \varepsilon_j | X_i, X_j) = 0$ pour $i \neq j$ (absence d'autocorrélation)
-\end{itemize}
+\begin{frame}
+  \frametitle{Plan}
+  \tableofcontents
 \end{frame}
 
-\begin{frame}{Qu'est-ce que l'hétéroscédasticité ?}
-\textbf{Définition :} L'hétéroscédasticité se produit lorsque la variance des erreurs n'est pas constante :
-\[
-\text{Var}(\varepsilon_i | X_i) = \sigma_i^2 \neq \sigma^2
-\]
 
-\vspace{0.5cm}
+\section{L'hétéroscédasticité et ce qu'elle coûte}
 
-\textbf{Conséquences :}
-\begin{itemize}
-\item Les estimateurs MCO restent \textbf{sans biais} et \textbf{convergents}
-\item Mais ils ne sont plus \textbf{efficients} (BLUE)
-\item Les écarts-types usuels sont \textbf{biaisés}
-\item Les tests de Student et de Fisher sont \textbf{invalides}
-\end{itemize}
+\begin{frame}
+  \frametitle{Le modèle, et l'hypothèse qui saute}
+
+  \begin{itemize}
+
+  \item Nous reprenons le modèle linéaire du \chapref{1}{I}, écrit sur un
+    échantillon de taille $T$~:
+    \[
+      \mathbf y = X\beta + \varepsilon
+    \]
+    avec $K$ régresseurs, dont la constante.\newline
+
+  \item Les conditions idéales demandaient $\mathbb V[\varepsilon] =
+    \epsvar I_T$~: erreurs de même dispersion, non corrélées.\newline
+
+  \item Nous relâchons ici la première moitié de cette hypothèse, en conservant
+    la seconde~:
+    \[
+      \mathbb V[\varepsilon] = \Omega = \mathrm{diag}\left(\sigma_1^2, \ldots,
+        \sigma_T^2\right)
+    \]
+
+  \item Les erreurs restent non corrélées, mais leur dispersion varie d'une
+    observation à l'autre~: c'est l'\textbf{hétéroscédasticité}.\newline
+
+  \end{itemize}
+
+  \dnote{La matrice $\Omega$ n'a pas ici le même sens qu'au \chapref{2}{II}. Là-bas
+    la variance était \emph{factorisée}, $\mathbb V[\varepsilon]=\epsvar\Omega$,
+    de sorte qu'$\Omega$ était sans dimension et valait $I_T$ dans le cas
+    sphérique. Ici les variances sont \emph{dans} $\Omega$. Les formules ont la
+    même allure, au facteur $\epsvar$ près.}
+
 \end{frame}
 
-\begin{frame}{Illustration graphique}
-\begin{center}
-\textbf{Homoscédasticité vs Hétéroscédasticité}
-\end{center}
 
-\vspace{0.3cm}
+\begin{frame}
+  \frametitle{D'où vient l'hétéroscédasticité}
 
-\begin{columns}
-\column{0.5\textwidth}
-\centering
-\textbf{Homoscédasticité}
-\vspace{0.2cm}
+  \begin{itemize}
 
-Variance constante $\sigma^2$
+  \item \textsc{Exemple} Dans une équation de salaire estimée sur des individus,
+    la dispersion des salaires croît avec le niveau d'éducation~: les diplômés
+    se répartissent sur un éventail de rémunérations bien plus large que les
+    non-diplômés.\newline
 
-Nuage de points avec dispersion uniforme autour de la droite de régression
+  \item \textsc{Exemple} Une consommation régressée sur un revenu~: les ménages
+    aisés arbitrent, les ménages contraints n'arbitrent pas. La variance de
+    l'erreur croît avec le revenu.\newline
 
-\column{0.5\textwidth}
-\centering
-\textbf{Hétéroscédasticité}
-\vspace{0.2cm}
+  \item \textsc{Exemple} Des \textbf{données groupées}. Si $y_g$ est une moyenne
+    calculée sur $n_g$ individus, alors $\mathbb V[\varepsilon_g] =
+    \nicefrac{\epsvar}{n_g}$~: l'hétéroscédasticité est ici \emph{connue}, et
+    même mesurée.\newline
 
-Variance $\sigma_i^2$ variable
+  \item[$\Rightarrow$] En coupe transversale, l'hétéroscédasticité est la règle
+    plutôt que l'exception.\newline
 
-Dispersion croissante (ou décroissante) le long de la droite
-\end{columns}
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Préliminaires pour les démonstrations}
-\textbf{Hypothèses générales :}
-\begin{enumerate}
-\item $\mathbb{E}[\varepsilon_i | X_i] = 0$
-\item Sous $H_0$ : $\text{Var}(\varepsilon_i | X_i) = \sigma^2$
-\item Les observations sont i.i.d.
-\item $\mathbb{E}[X_i X_i']$ existe et est définie positive
-\end{enumerate}
 
-\vspace{0.3cm}
+\begin{frame}
+  \frametitle{Ce que l'hétéroscédasticité change}
 
-\textbf{Estimateur MCO :}
-\[
-\hat{\beta} = \left(\sum_{i=1}^n X_i X_i'\right)^{-1} \sum_{i=1}^n X_i Y_i
-\]
+  \begin{prop}\label{prop:mco:heteroscedasticite}
+    Sous hétéroscédasticité, l'estimateur des MCO $\hat{\mathbf b}$ reste sans
+    biais, et convergent si $\lim_{T\rightarrow\infty}\nicefrac{X'\Omega X}{T}$
+    est finie. Mais il n'est plus BLUE, et sa variance vaut
+    \[
+      \mathbb V\left[\hat{\mathbf b}\right] = (X'X)^{-1}X'\Omega X(X'X)^{-1}
+      \neq \epsvar (X'X)^{-1}
+    \]
+  \end{prop}
 
-\vspace{0.3cm}
+  \bigskip
 
-\textbf{Résidus MCO :}
-\[
-\hat{\varepsilon}_i = Y_i - X_i'\hat{\beta} = \varepsilon_i - X_i'(\hat{\beta} - \beta)
-\]
+  \begin{itemize}
+
+  \item C'est la proposition du \chapref{2}{II} sur les erreurs non sphériques,
+    spécialisée au cas où $\Omega$ est diagonale.\newline
+
+  \item[\dbend] Le danger n'est donc pas dans l'estimateur $\hat{\mathbf b}$,
+    qui reste juste~: il est dans la formule d'écart-type que les logiciels
+    impriment à côté, $s^2(X'X)^{-1}$, qui n'estime plus rien de pertinent.\newline
+
+  \item[$\Rightarrow$] Les tests de Student et de Fisher du \chapref{1}{I} ne
+    sont plus valides, même asymptotiquement.
+
+  \end{itemize}
+
 \end{frame}
 
-% Section 2
-\section{Test de Breusch-Pagan}
 
-\begin{frame}{Test de Breusch-Pagan : Principe}
-\textbf{Idée :} Tester si la variance des résidus est liée aux variables explicatives.
+\begin{notes}
 
-\vspace{0.5cm}
+  \begin{itemize}
 
-\textbf{Hypothèses :}
-\begin{itemize}
-\item $H_0$ : $\sigma_i^2 = \sigma^2$ (homoscédasticité)
-\item $H_1$ : $\sigma_i^2 = h(Z_i'\alpha)$ où $Z_i$ contient les régresseurs
-\end{itemize}
+  \item \textbf{Preuve de la proposition~\ref{prop:mco:heteroscedasticite}.}
+    L'absence de biais ne fait intervenir que $\mathbb E[\varepsilon\mid X]=0$~:
+    $\hat{\mathbf b}=\beta+(X'X)^{-1}X'\varepsilon$ donne
+    $\mathbb E[\hat{\mathbf b}]=\beta$, quelle que soit $\Omega$. Pour la
+    variance,
+    \[
+      \mathbb V\left[\hat{\mathbf b}\right] =
+      \mathbb E\left[(X'X)^{-1}X'\varepsilon\varepsilon'X(X'X)^{-1}\right] =
+      (X'X)^{-1}X'\Omega X(X'X)^{-1}
+    \]
+    Si $\Omega=\epsvar I_T$, le terme central se réduit à $\epsvar X'X$ et l'on
+    retrouve $\epsvar(X'X)^{-1}$. Sinon les deux expressions diffèrent, et rien
+    ne garantit que la seconde majore ou minore la première~: le biais de la
+    formule usuelle peut aller dans les deux sens. La perte du caractère BLUE
+    est le théorème de Gauss-Markov lu à l'envers~: sa démonstration utilise
+    l'homoscédasticité, et l'estimateur des MCG du \chapref{2}{II} fait
+    strictement mieux dès qu'$\Omega\neq\epsvar I_T$.\qed\newline
 
-\vspace{0.5cm}
+  \item \textbf{Remarque.} La question de savoir \emph{dans quel sens} la
+    formule usuelle se trompe est décisive en pratique, et la réponse est
+    simple~: tout dépend de la corrélation entre $\sigma_t^2$ et les régresseurs.
+    Si la variance des erreurs est élevée là où les régresseurs s'écartent le
+    plus de leur moyenne, la formule usuelle sous-estime la dispersion de
+    $\hat{\mathbf b}$ et l'on rejette trop souvent. Si l'hétéroscédasticité est
+    sans rapport avec les régresseurs, la formule usuelle reste approximativement
+    correcte, alors même qu'un test rejetterait l'homoscédasticité. Nous
+    verrons les deux cas~: le premier dans la simulation qui suit, le second sur
+    l'équation de salaire, à la fin du chapitre.
 
-\textbf{Forme spécifique :}
-\[
-\sigma_i^2 = \alpha_0 + \alpha_1 Z_{i1} + \cdots + \alpha_p Z_{ip}
-\]
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}[c]
+  \frametitle{Ce que l'hétéroscédasticité coûte}
+  \framesubtitle{Un test à 5\,\% qui en rejette 27}
+
+  \begin{figure}
+    \centering
+    \scalebox{.42}{\input{../pgf/chapitre-4/taille-tests-student.tex}}
+    \caption{Modèle $y_t = b_0 + b_1x_t + \varepsilon_t$ sous $H_0: b_1=0$, avec
+      $\mathbb V[\varepsilon_t] = e^{\gamma x_t}$ et $\gamma=1{,}5$~; $40000$
+      échantillons par taille. Le test de Student au seuil nominal de $5\,\%$
+      rejette $19\,\%$ du temps à $T=20$ et $27\,\%$ à $T=2000$ avec l'écart-type
+      usuel~: l'erreur ne s'atténue pas, elle s'aggrave. Le sandwich HC0 revient
+      à $6{,}4\,\%$ dès $T=100$, et sa correction HC3 tient le seuil dès $T=20$.
+      Codes \coderef{taille-tests-student.py}.}
+  \end{figure}
+
 \end{frame}
 
-\begin{frame}{Test de Breusch-Pagan : Procédure}
-\textbf{Étapes :}
-\begin{enumerate}
-\item Estimer le modèle par MCO et obtenir les résidus $\hat{\varepsilon}_i$
-\item Calculer les résidus au carré $\hat{\varepsilon}_i^2$
-\item Régresser $\hat{\varepsilon}_i^2$ sur $Z_i$ (généralement $Z_i = X_i$) :
-\[
-\hat{\varepsilon}_i^2 = \alpha_0 + \alpha_1 Z_{i1} + \cdots + \alpha_p Z_{ip} + u_i
-\]
-\item Récupérer le $R^2$ de cette régression auxiliaire
-\item Calculer la statistique de test :
-\[
-LM = n \cdot R^2 \xrightarrow{H_0} \chi^2_p
-\]
-\end{enumerate}
+
+\begin{notes}
+
+  \textbf{Comment lire ce transparent.} On simule sous l'hypothèse nulle~: la
+  pente est réellement nulle. Un test correctement dimensionné doit donc la
+  rejeter à tort dans exactement $5\,\%$ des échantillons. C'est ce que fait la
+  courbe HC3, et ce que finit par faire la courbe HC0.
+
+  \bigskip
+
+  La courbe de l'écart-type usuel, elle, ne converge pas vers $5\,\%$~: elle
+  converge vers $27\,\%$. C'est le point important, et il mérite qu'on s'y
+  arrête. Un défaut de petit échantillon s'estompe quand $T$ augmente~; ici il
+  n'y a pas de défaut de petit échantillon, il y a un estimateur de variance qui
+  converge vers la mauvaise quantité. Augmenter la taille de l'échantillon ne
+  répare rien, et resserre même l'intervalle de confiance autour d'une largeur
+  fausse.
+
+  \bigskip
+
+  On notera au passage que HC0 sur-rejette nettement en petit échantillon
+  ($12{,}4\,\%$ à $T=20$), ce qui justifiera les corrections HC1 à HC3
+  étudiées plus loin.
+
+\end{notes}
+
+
+\section{Le test de Breusch-Pagan}
+
+\begin{frame}
+  \frametitle{Test de Breusch-Pagan}
+  \framesubtitle{1/3 --- le principe}
+
+  \begin{itemize}
+
+  \item On se donne un modèle de variance~: la dispersion des erreurs dépend
+    d'un vecteur $z_t$ de $p$ variables observées, plus une constante,
+    \[
+      \sigma_t^2 = h\left(\alpha_0 + z_t'\alpha\right)
+    \]
+    où $h$ est une fonction inconnue, strictement positive.\newline
+
+  \item Les hypothèses du test portent sur $\alpha$, et non sur $h$~:
+    \[
+      H_0~: \alpha = 0 \qquad\text{contre}\qquad H_1~: \alpha \neq 0
+    \]
+
+  \item Sous $H_0$, la variance vaut $h(\alpha_0)$ pour toutes les
+    observations~: c'est l'homoscédasticité.\newline
+
+  \item[$\Rightarrow$] Remarquable~: la statistique de test ne dépendra pas
+    de $h$. On teste une forme d'hétéroscédasticité sans avoir à préciser
+    laquelle.\newline
+
+  \item En pratique on prend pour $z_t$ les régresseurs du modèle, privés de la
+    constante.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Test de Breusch-Pagan : Décision}
-\textbf{Règle de décision :}
-\begin{itemize}
-\item On rejette $H_0$ si $LM > \chi^2_{p,\alpha}$ (valeur critique)
-\item Ou si la p-valeur $< \alpha$ (seuil de significativité)
-\end{itemize}
 
-\vspace{0.5cm}
+\begin{frame}
+  \frametitle{Test de Breusch-Pagan}
+  \framesubtitle{2/3 --- la statistique de 1979}
 
-\textbf{Avantages :}
-\begin{itemize}
-\item Simple à mettre en œuvre
-\item Test basé sur le multiplicateur de Lagrange
-\end{itemize}
+  \begin{prop}\label{prop:bp:original}
+    Soit $\hat\varepsilon_t$ les résidus des MCO et
+    $\hat\sigma^2 = \nicefrac{1}{T}\sum_t \hat\varepsilon_t^2$. On régresse
+    $\nicefrac{\hat\varepsilon_t^2}{\hat\sigma^2}$ sur $(1, z_t)$ et l'on note
+    $SCE$ la somme des carrés expliquée de cette régression auxiliaire. Alors,
+    sous $H_0$ \textbf{et sous la normalité des erreurs},
+    \[
+      LM = \frac{SCE}{2} \dlim \chi^2_p
+    \]
+  \end{prop}
 
-\vspace{0.5cm}
+  \bigskip
 
-\textbf{Limites :}
-\begin{itemize}
-\item Suppose une forme spécifique pour $\sigma_i^2$
-\item Sensible aux hypothèses de normalité
-\end{itemize}
+  \begin{itemize}
+
+  \item Le facteur $\nicefrac{1}{2}$ n'est pas décoratif~: sous la normalité,
+    $\mathbb V\left[\nicefrac{\varepsilon_t^2}{\sigma^2}\right] = 2$, et c'est
+    par cette variance qu'il faut normaliser.\newline
+
+  \item[\dbend] Toute la normalité du modèle est concentrée dans ce $2$. Si les
+    erreurs ont des queues plus épaisses que la normale, la vraie variance de
+    $\nicefrac{\varepsilon_t^2}{\sigma^2}$ excède $2$, la statistique est
+    divisée par un nombre trop petit, et le test rejette trop souvent.
+
+  \end{itemize}
+
 \end{frame}
 
-\subsection{Démonstration du test de Breusch-Pagan}
 
-\begin{frame}{Démonstration Breusch-Pagan (1/4)}
-\textbf{Modèle de variance :}
-\[
-\sigma_i^2 = Z_i'\alpha
-\]
-où $Z_i$ contient les variables explicatives (souvent $Z_i = X_i$).
+\begin{notes}
 
-\vspace{0.3cm}
+  \begin{itemize}
 
-\textbf{Hypothèses :}
-\begin{itemize}
-\item $H_0 : \alpha_1 = \cdots = \alpha_p = 0$ (seul $\alpha_0 = \sigma^2$)
-\item $H_1$ : au moins un $\alpha_j \neq 0$ pour $j \geq 1$
-\end{itemize}
+  \item \textbf{Preuve de la proposition~\ref{prop:bp:original}.} Le test est un
+    multiplicateur de Lagrange, construit sur la vraisemblance gaussienne. En
+    posant $g_t = \nicefrac{\varepsilon_t^2}{\sigma^2} - 1$, le score associé
+    à $\alpha$, évalué sous $H_0$, est proportionnel à $\sum_t z_t g_t$, et
+    l'information correspondante à $\mathbb V[g_t]\sum_t z_tz_t'$. Sous la
+    normalité $\varepsilon_t\sim\normal{0}{\sigma^2}$, la variable
+    $\nicefrac{\varepsilon_t^2}{\sigma^2}$ suit un $\chi^2_1$, dont la variance
+    vaut $2$~: d'où $\mathbb V[g_t]=2$. La statistique LM est donc
+    \[
+      LM = \frac{1}{2}\left(\sum_t z_tg_t\right)'
+      \left(\sum_t \bar z_t\bar z_t'\right)^{-1}\left(\sum_t z_tg_t\right)
+    \]
+    où $\bar z_t$ désigne $z_t$ centré, c'est-à-dire exactement la moitié de la
+    somme des carrés expliquée de la régression de $g_t$ — ou, ce qui revient au
+    même à la constante près, de $\nicefrac{\hat\varepsilon_t^2}{\hat\sigma^2}$
+    — sur $(1,z_t)$. Le remplacement de $\varepsilon_t$ par $\hat\varepsilon_t$
+    et de $\sigma^2$ par $\hat\sigma^2$ est sans effet sur la loi limite, les
+    deux estimateurs étant convergents. La forme quadratique d'un vecteur
+    asymptotiquement $\normal{0}{V}$ par l'inverse de $V$ suit un $\chi^2$ dont
+    le nombre de degrés de liberté est la dimension de $\alpha$, soit $p$.\qed\newline
 
-\vspace{0.3cm}
+  \item \textbf{Remarque.} La fonction $h$ a disparu en chemin, et ce n'est pas
+    un hasard~: sous $H_0$ seule compte la dérivée de $h$ en $\alpha_0$, qui
+    apparaît au numérateur et au dénominateur de la statistique et s'y simplifie.
+    Le test a donc la même puissance locale contre $\sigma_t^2 = \alpha_0 +
+    z_t'\alpha$ et contre $\sigma_t^2 = \exp(\alpha_0 + z_t'\alpha)$. C'est ce
+    qui fait sa commodité, et ce qui limite son ambition~: il ne teste que les
+    écarts à l'homoscédasticité qui se lisent dans $z_t$.
 
-\textbf{Régression auxiliaire :}
-\[
-\hat{\varepsilon}_i^2 = Z_i'\hat{\alpha} + u_i
-\]
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Test de Breusch-Pagan}
+  \framesubtitle{3/3 --- la version studentisée de Koenker}
+
+  \begin{itemize}
+
+  \item \cite{Koenker1981} propose de ne pas parier sur la normalité, et
+    d'estimer $\mathbb V[\varepsilon_t^2]$ sur les données plutôt que de la
+    poser égale à $2\sigma^4$.\newline
+
+  \item On régresse alors $\hat\varepsilon_t^2$ — et non plus
+    $\nicefrac{\hat\varepsilon_t^2}{\hat\sigma^2}$ — sur $(1, z_t)$, et l'on
+    retient le $R^2$ de cette régression~:
+    \[
+      LM_K = T R^2 \dlim \chi^2_p
+    \]
+
+  \item C'est la même idée que le passage de l'écart-type usuel au sandwich~:
+    on remplace une variance postulée par une variance estimée.\newline
+
+  \item[$\Rightarrow$] Le test devient valide sans hypothèse sur la forme de la
+    distribution des erreurs. C'est cette version que retiennent aujourd'hui les
+    logiciels.\newline
+
+  \end{itemize}
+
+  \dnote{Les deux statistiques ne sont pas égales, et ne diffèrent pas d'un
+    simple facteur~: elles ne normalisent pas par la même quantité. Sur
+    l'équation de salaire, à la fin de ce chapitre, la première vaut $25{,}48$
+    et la seconde $19{,}84$. Écrire $LM = TR^2 = \nicefrac{SCE}{\hat\sigma^4}$
+    serait faux trois fois.}
+
 \end{frame}
 
-\begin{frame}{Démonstration Breusch-Pagan (2/4)}
-\textbf{Étape 1 : Résidus MCO}
 
-Les résidus MCO vérifient :
-\[
-\hat{\varepsilon}_i = \varepsilon_i - X_i'(\hat{\beta} - \beta)
-\]
+\section{Le test de White}
 
-Sous $H_0$ et par le TCL :
-\[
-\sqrt{n}(\hat{\beta} - \beta) \xrightarrow{d} \mathcal{N}(0, \sigma^2 Q^{-1})
-\]
-où $Q = \mathbb{E}[X_i X_i']$.
+\begin{frame}
+  \frametitle{Test de White}
+  \framesubtitle{1/2 --- le principe}
 
-\vspace{0.3cm}
+  \begin{itemize}
 
-Donc :
-\[
-\hat{\varepsilon}_i^2 = \varepsilon_i^2 - 2\varepsilon_i X_i'(\hat{\beta} - \beta) + O_p(n^{-1})
-\]
+  \item \cite{White1980} renonce à choisir les variables $z_t$~: il les
+    fabrique.\newline
+
+  \item Si $\sigma_t^2 = h(x_t)$ pour une fonction $h$ quelconque, un
+    développement de Taylor au second ordre autour d'un point $\bar x$ donne
+    \[
+      h(x_t) \simeq h(\bar x) + \nabla h(\bar x)'(x_t-\bar x)
+      + \frac{1}{2}(x_t-\bar x)'H(\bar x)(x_t-\bar x)
+    \]
+
+  \item[$\Rightarrow$] Une variance dépendant des régresseurs d'une façon
+    \emph{quelconque} est approchée par une combinaison linéaire des
+    régresseurs, de leurs carrés et de leurs produits croisés.\newline
+
+  \item On prend donc pour $z_t$ exactement ces variables-là, et l'on applique
+    la statistique studentisée $TR^2$.\newline
+
+  \item[$\Rightarrow$] Le test ne suppose rien sur $h$~: il suppose seulement
+    que l'hétéroscédasticité, s'il y en a, passe par les régresseurs.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Démonstration Breusch-Pagan (3/4)}
-\textbf{Étape 2 : Régression auxiliaire}
 
-La somme des carrés expliquée de la régression de $\hat{\varepsilon}_i^2$ sur $Z_i$ est :
-\[
-SCE = \hat{\alpha}' \sum_{i=1}^n Z_i Z_i' \hat{\alpha}
-\]
+\begin{frame}
+  \frametitle{Test de White}
+  \framesubtitle{2/2 --- degrés de liberté}
 
-où $\hat{\alpha}$ est l'estimateur MCO de la régression auxiliaire.
+  \begin{itemize}
 
-\vspace{0.3cm}
+  \item Notons $J = K-1$ le nombre de régresseurs \textbf{hors constante}. La
+    régression auxiliaire comporte alors les $J$ régresseurs, leurs $J$ carrés
+    et leurs $\nicefrac{J(J-1)}{2}$ produits croisés, soit
+    \[
+      q = 2J + \frac{J(J-1)}{2} = J + \frac{J(J+1)}{2}
+    \]
+    variables, et $W = TR^2 \dlim \chi^2_q$.\newline
 
-Sous $H_0$ : $\mathbb{E}[\hat{\varepsilon}_i^2] = \sigma^2$ et :
-\[
-\hat{\alpha} \approx \left(\sum_{i=1}^n Z_i Z_i'\right)^{-1} \sum_{i=1}^n Z_i (\varepsilon_i^2 - \sigma^2)
-\]
+  \item Le nombre de degrés de liberté croît comme le carré du nombre de
+    régresseurs~: à $J=3$ il vaut $9$, à $J=10$ il vaut $65$. La puissance en
+    souffre.\newline
+
+  \end{itemize}
+
+  \dnote{Ce décompte suppose les $q$ variables auxiliaires linéairement
+    indépendantes, ce qui est faux plus souvent qu'on ne le croit. Le carré
+    d'une indicatrice est l'indicatrice elle-même. Et si le modèle contient déjà
+    un terme quadratique — une équation de salaire avec $exper$ et $exper^2$ —,
+    le carré du premier est colinéaire au second. Il faut alors retenir le rang
+    effectif de la régression auxiliaire~: sur l'équation de salaire de la
+    fin de ce chapitre, $q$ vaut $8$ et non $9$.}
+
 \end{frame}
 
-\begin{frame}{Démonstration Breusch-Pagan (4/4)}
-\textbf{Étape 3 : Distribution asymptotique}
 
-Par le TCL, sous $H_0$ :
-\[
-\frac{1}{\sqrt{n}} \sum_{i=1}^n Z_i (\varepsilon_i^2 - \sigma^2) \xrightarrow{d} \mathcal{N}(0, \Omega)
-\]
-où $\Omega = \text{Var}(Z_i (\varepsilon_i^2 - \sigma^2))$.
+\section{Le test de Goldfeld-Quandt}
 
-\vspace{0.3cm}
+\begin{frame}
+  \frametitle{Test de Goldfeld-Quandt}
+  \framesubtitle{1/2 --- la procédure}
 
-La statistique $nR^2$ de la régression auxiliaire vérifie :
-\[
-LM = n \cdot R^2 = \frac{SCE}{\hat{\sigma}^4} \xrightarrow{d} \chi^2_p
-\]
+  \begin{itemize}
 
-où $p$ est le nombre de régresseurs dans $Z_i$ (hors constante).
+  \item \cite{GoldfeldQuandt1965} abandonne la régression auxiliaire et compare
+    directement deux variances estimées.\newline
 
-\vspace{0.3cm}
+  \item On ordonne les observations selon la variable $z$ soupçonnée de porter
+    l'hétéroscédasticité, puis~:
+    \begin{enumerate}
+    \item on écarte les $c$ observations centrales (en pratique $c\simeq
+      \nicefrac{T}{4}$)~;
+    \item on estime le modèle séparément sur les $m$ premières et sur les $m$
+      dernières, obtenant $SCR_1$ et $SCR_2$~;
+    \item on forme le rapport des variances estimées.
+    \end{enumerate}
 
-\textbf{Conclusion :} Sous $H_0$, $LM \sim \chi^2_p$ asymptotiquement.
+  \item Écarter le centre creuse l'écart entre les deux groupes, donc augmente
+    la puissance, au prix des observations perdues.\newline
+
+  \end{itemize}
+
+  \dnote{Le test suppose la variance \textbf{monotone} en $z$. Ce n'est pas
+    l'absence d'hypothèse fonctionnelle, c'est une hypothèse fonctionnelle
+    différente, et forte~: une variance en U, minimale au centre de la
+    distribution de $z$, donne $SCR_1\simeq SCR_2$ et passe complètement
+    inaperçue.}
+
 \end{frame}
 
-% Section 3
-\section{Test de White}
 
-\begin{frame}{Test de White : Principe}
-\textbf{Idée :} Version plus générale du test de Breusch-Pagan, sans spécifier de forme fonctionnelle.
+\begin{frame}
+  \frametitle{Test de Goldfeld-Quandt}
+  \framesubtitle{2/2 --- une loi exacte, à un prix}
 
-\vspace{0.5cm}
+  \begin{prop}\label{prop:gq}
+    Si les erreurs sont normales et si les groupes sont ordonnés de sorte
+    que $\sigma_1^2 \leq \sigma_2^2$ sous $H_1$, alors sous
+    $H_0~: \sigma_1^2 = \sigma_2^2$,
+    \[
+      F = \frac{\nicefrac{SCR_2}{(m-K)}}{\nicefrac{SCR_1}{(m-K)}}
+      \sim \mathcal F(m-K,\, m-K)
+    \]
+    et l'on rejette $H_0$ pour les grandes valeurs de $F$.
+  \end{prop}
 
-\textbf{Hypothèses :}
-\begin{itemize}
-\item $H_0$ : Homoscédasticité
-\item $H_1$ : Toute forme d'hétéroscédasticité
-\end{itemize}
+  \bigskip
 
-\vspace{0.5cm}
+  \begin{itemize}
 
-\textbf{Caractéristique :} Utilise tous les régresseurs, leurs carrés et leurs produits croisés.
+  \item L'hypothèse alternative est \textbf{unilatérale}~: $H_1~: \sigma_2^2 >
+    \sigma_1^2$. Ayant ordonné l'échantillon, on sait de quel côté regarder, et
+    il serait absurde de dépenser la moitié du seuil dans l'autre queue.\newline
+
+  \item[\dbend] C'est le seul test exact du chapitre — et le seul qui exige la
+    normalité, non pas comme commodité asymptotique mais comme hypothèse de
+    fond. Sans elle, $\nicefrac{SCR_j}{\sigma^2}$ ne suit pas un $\chi^2$ et le
+    rapport ne suit pas un Fisher, quelle que soit la taille de l'échantillon.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Test de White : Procédure}
-\textbf{Étapes :}
-\begin{enumerate}
-\item Estimer le modèle par MCO : $Y = X\beta + \varepsilon$
-\item Calculer les résidus $\hat{\varepsilon}_i$ et leurs carrés $\hat{\varepsilon}_i^2$
-\item Régresser $\hat{\varepsilon}_i^2$ sur :
-\begin{itemize}
-\item Tous les régresseurs $X_{ij}$
-\item Leurs carrés $X_{ij}^2$
-\item Leurs produits croisés $X_{ij} X_{ik}$ pour $j \neq k$
-\end{itemize}
-\item Obtenir le $R^2$ de cette régression auxiliaire
-\item Calculer :
-\[
-W = n \cdot R^2 \xrightarrow{H_0} \chi^2_q
-\]
-où $q$ est le nombre de régresseurs dans la régression auxiliaire (moins 1)
-\end{enumerate}
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Preuve de la proposition~\ref{prop:gq}.} Sur chaque
+    sous-échantillon, l'estimation est celle du \chapref{1}{I} dans les
+    conditions idéales~: si $\varepsilon\sim\normal{0}{\sigma_j^2I_m}$, alors
+    $\nicefrac{SCR_j}{\sigma_j^2}\sim\chi^2_{m-K}$. Les deux sous-échantillons
+    étant disjoints et les erreurs non corrélées, $SCR_1$ et $SCR_2$ sont
+    indépendants. Le rapport de deux $\chi^2$ indépendants, chacun divisé par
+    son nombre de degrés de liberté, suit une loi de Fisher~; sous $H_0$ les
+    $\sigma_j^2$ se simplifient, ce qui donne la loi annoncée.\qed\newline
+
+  \item \textbf{Remarque.} La preuve montre exactement où la normalité
+    intervient, et pourquoi aucune taille d'échantillon ne la remplace~: c'est
+    elle qui rend $SCR_j$ khi-deux. Le transparent suivant en donne le coût
+    chiffré. On notera aussi que le test de Goldfeld-Quandt suppose que
+    l'\emph{unique} défaut du modèle est la variance~: il compare deux
+    sous-échantillons en supposant que $\beta$ y est le même. Un changement de
+    régime portant sur les coefficients serait lu comme de
+    l'hétéroscédasticité.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\section{Comparer les tests}
+
+\begin{frame}[c]
+  \frametitle{Comparer les tests}
+  \framesubtitle{Ce qu'ils détectent, et ce qu'ils supposent}
+
+  \begin{figure}
+    \centering
+    \scalebox{.44}{\input{../pgf/chapitre-4/puissance-tests.tex}}
+    \caption{À gauche, puissance contre $\mathbb V[\varepsilon_t]=e^{\gamma x_t}$
+      avec erreurs normales, $T=100$~: à $\gamma=0{,}3$, Goldfeld-Quandt rejette
+      $55\,\%$ du temps, Breusch-Pagan studentisé $48\,\%$ et White $36\,\%$. À
+      droite, sous $H_0$ avec des erreurs de Student à cinq degrés de liberté~:
+      la statistique de 1979 rejette $13\,\%$ du temps à $T=50$ et $24\,\%$ à
+      $T=1000$, Goldfeld-Quandt $11\,\%$ puis $16\,\%$, tandis que les versions
+      studentisées tiennent leur seuil de $5\,\%$. $20000$ échantillons par
+      point. Codes \coderef{puissance-tests.py}.}
+  \end{figure}
+
 \end{frame}
 
-\begin{frame}{Test de White : Décision et remarques}
-\textbf{Règle de décision :}
-\begin{itemize}
-\item Rejeter $H_0$ si $W > \chi^2_{q,\alpha}$ ou si p-valeur $< \alpha$
-\end{itemize}
 
-\vspace{0.5cm}
+\begin{notes}
 
-\textbf{Avantages :}
-\begin{itemize}
-\item Ne suppose aucune forme spécifique pour l'hétéroscédasticité
-\item Test très général et robuste
-\end{itemize}
+  \textbf{Deux enseignements, et ils vont en sens contraire.}
 
-\vspace{0.5cm}
+  \bigskip
 
-\textbf{Limites :}
-\begin{itemize}
-\item Peut inclure beaucoup de régresseurs (problème si $n$ petit)
-\item Perte de degrés de liberté
-\item Possibilité de multicolinéarité dans la régression auxiliaire
-\end{itemize}
+  Le panneau de gauche dément l'idée reçue selon laquelle le test de White
+  dominerait les autres. Contre cette alternative il est le \emph{moins}
+  puissant des trois, et Goldfeld-Quandt le plus puissant. Rien là de
+  surprenant~: l'alternative simulée est monotone en $x$, c'est-à-dire
+  précisément le cas pour lequel Goldfeld-Quandt est conçu, tandis que White
+  dépense des degrés de liberté à surveiller des directions où il ne se passe
+  rien. La généralité se paie en puissance. Le classement s'inverserait contre
+  une variance en U, que Goldfeld-Quandt ne verrait pas du tout.
+
+  \bigskip
+
+  Le panneau de droite dit l'inverse et corrige l'impression précédente~: la
+  puissance ne se compare qu'entre tests qui tiennent leur seuil. Or sous des
+  erreurs à queues épaisses, ni la statistique de 1979 ni Goldfeld-Quandt ne le
+  tiennent, et leur sur-rejet \emph{croît} avec $T$. Une part de la puissance
+  apparente de Goldfeld-Quandt dans le panneau de gauche n'est donc que la
+  propension à rejeter, qui se paierait en fausses détections dès que les
+  erreurs s'écartent de la normale.
+
+  \bigskip
+
+  En pratique~: partir de Breusch-Pagan studentisé, qui est simple et robuste~;
+  passer à White si l'on n'a pas d'idée sur la variable porteuse~; réserver
+  Goldfeld-Quandt aux cas où l'on soupçonne une variance monotone en une
+  variable identifiée \emph{et} où la normalité est plausible.
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Tableau comparatif}
+
+  \begin{center}
+    \small
+    \renewcommand{\arraystretch}{1.35}
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{lccc}
+      \toprule
+                        & Breusch-Pagan     & White             & Goldfeld-Quandt\\
+                        & (Koenker)         &                   & \\
+      \midrule
+      Hétéroscédasticité testée
+                        & lisible dans $z$  & lisible dans $x$  & monotone en $z$\\
+      Forme de $h$      & quelconque        & quelconque        & quelconque\\
+      Normalité requise & non               & non               & \textbf{oui}\\
+      Loi sous $H_0$    & $\chi^2_p$ asympt.& $\chi^2_q$ asympt.& $\mathcal F$ exacte\\
+      Degrés de liberté & $p$               & $J+\nicefrac{J(J+1)}{2}$ & $(m-K,\,m-K)$\\
+      Observations      & toutes            & toutes            & $T-c$\\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item[\dbend] Aucun de ces tests n'est «~sans hypothèse fonctionnelle~». Ils
+    diffèrent par la façon dont ils fabriquent les variables auxiliaires, pas
+    par leur absence d'a priori.
+
+  \end{itemize}
+
 \end{frame}
 
-\subsection{Démonstration du test de White}
 
-\begin{frame}{Démonstration Test de White (1/3)}
-\textbf{Principe du test :}
+\section{Les écarts-types robustes}
 
-Le test de White est une extension du test de Breusch-Pagan sans hypothèse spécifique sur la forme de l'hétéroscédasticité.
+\begin{frame}
+  \frametitle{Ne rien changer, sauf les écarts-types}
 
-\vspace{0.3cm}
+  \begin{itemize}
 
-\textbf{Régression auxiliaire :}
-\[
-\hat{\varepsilon}_i^2 = \gamma_0 + \sum_{j=1}^k \gamma_j X_{ij} + \sum_{j=1}^k \gamma_{jj} X_{ij}^2 + \sum_{j<\ell} \gamma_{j\ell} X_{ij} X_{i\ell} + u_i
-\]
+  \item Le diagnostic du début du chapitre est que $\hat{\mathbf b}$ va bien et
+    que sa variance estimée va mal.\newline
 
-Le vecteur $\gamma$ contient tous les coefficients à tester.
+  \item[$\Rightarrow$] Gardons $\hat{\mathbf b}$, et corrigeons la seule chose
+    qui soit fausse.\newline
 
-\vspace{0.3cm}
+  \item La vraie variance est la forme «~sandwich~» de la
+    proposition~\ref{prop:mco:heteroscedasticite}~:
+    \[
+      \mathbb V\left[\hat{\mathbf b}\right] = \underbrace{(X'X)^{-1}}_{\text{pain}}
+      \underbrace{X'\Omega X}_{\text{garniture}} \underbrace{(X'X)^{-1}}_{\text{pain}}
+    \]
+    soit, observation par observation,
+    \[
+      \mathbb V\left[\hat{\mathbf b}\right] =
+      \left(\sum_t x_tx_t'\right)^{-1}
+      \left(\sum_t \sigma_t^2x_tx_t'\right)
+      \left(\sum_t x_tx_t'\right)^{-1}
+    \]
 
-\textbf{Hypothèses :}
-\begin{itemize}
-\item $H_0$ : $\gamma_j = 0$ pour tout $j \geq 1$
-\item $H_1$ : au moins un $\gamma_j \neq 0$
-\end{itemize}
+  \item Le pain est observé. Toute la difficulté est dans la garniture, qui
+    dépend des $T$ variances inconnues $\sigma_1^2,\ldots,\sigma_T^2$.\newline
+
+  \item[\dbend] On ne peut pas estimer $T$ variances avec $T$ observations. Mais
+    on n'en a pas besoin~: seule la \textbf{somme} $\sum_t\sigma_t^2x_tx_t'$
+    doit être estimée, et c'est une matrice $K\times K$.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Démonstration Test de White (2/3)}
-\textbf{Étape 1 : Développement de Taylor}
 
-Sous une forme générale d'hétéroscédasticité :
-\[
-\sigma_i^2 = h(X_i)
-\]
+\begin{frame}
+  \frametitle{L'estimateur sandwich}
+  \framesubtitle{Eicker, Huber, White}
 
-On peut approximer $h$ par un développement de Taylor du second ordre :
-\[
-h(X_i) \approx h(0) + \nabla h(0)' X_i + \frac{1}{2} X_i' H(0) X_i
-\]
+  \begin{defn}{HC0}
+    L'estimateur de~\cite{White1980} remplace chaque $\sigma_t^2$ inconnue par
+    le carré du résidu correspondant~:
+    \[
+      \widehat{\mathbb V}_{HC0}\left[\hat{\mathbf b}\right] =
+      \left(\sum_t x_tx_t'\right)^{-1}
+      \left(\sum_t \hat\varepsilon_t^2\, x_tx_t'\right)
+      \left(\sum_t x_tx_t'\right)^{-1}
+    \]
+  \end{defn}
 
-où $H(0)$ est la matrice hessienne en 0.
+  \bigskip
 
-\vspace{0.3cm}
+  \begin{prop}\label{prop:hc0}
+    Si $\nicefrac{X'X}{T}\plim Q$ définie positive et
+    $\nicefrac{1}{T}\sum_t\sigma_t^2x_tx_t'\plim S$, alors
+    \[
+      T\,\widehat{\mathbb V}_{HC0}\left[\hat{\mathbf b}\right] \plim Q^{-1}SQ^{-1}
+    \]
+  \end{prop}
 
-Cela justifie l'inclusion des termes quadratiques et croisés dans la régression auxiliaire.
+  \bigskip
+
+  \begin{itemize}
+
+  \item[\dbend] L'énoncé porte sur $T\widehat{\mathbb V}_{HC0}$, et non sur
+    $\widehat{\mathbb V}_{HC0}$. Écrire
+    «~$\widehat{\mathbb V}_{HC0}\plim\mathbb V$~» serait vide de sens~: les deux
+    membres tendent vers zéro.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Démonstration Test de White (3/3)}
-\textbf{Étape 2 : Distribution asymptotique}
 
-Soit $W_i$ le vecteur contenant $(1, X_{i1}, \ldots, X_{ik}, X_{i1}^2, \ldots, X_{ij}X_{i\ell}, \ldots)$.
+\begin{notes}
 
-Sous $H_0$, la statistique de test est :
-\[
-W = n \cdot R^2
-\]
+  \begin{itemize}
 
-où $R^2$ provient de la régression de $\hat{\varepsilon}_i^2$ sur $W_i$.
+  \item \textbf{Preuve de la proposition~\ref{prop:hc0}.} Le pain ne pose pas de
+    difficulté~: $\nicefrac{X'X}{T}\plim Q$ par hypothèse. Pour la garniture,
+    partons de $\hat\varepsilon_t = \varepsilon_t - x_t'(\hat{\mathbf b}-\beta)$,
+    d'où
+    \[
+      \hat\varepsilon_t^2 = \varepsilon_t^2
+      - 2\varepsilon_t x_t'(\hat{\mathbf b}-\beta)
+      + \left[x_t'(\hat{\mathbf b}-\beta)\right]^2
+    \]
+    Les deux derniers termes, sommés et divisés par $T$, sont majorés en norme
+    par un multiple de $\|\hat{\mathbf b}-\beta\|$ et de
+    $\|\hat{\mathbf b}-\beta\|^2$ respectivement, pourvu que
+    $\nicefrac{1}{T}\sum_t\|x_t\|^3$ et $\nicefrac{1}{T}\sum_t\|x_t\|^4$ restent
+    bornés. Comme $\hat{\mathbf b}\plim\beta$, ils tendent vers zéro en
+    probabilité. Il reste
+    \[
+      \frac{1}{T}\sum_t \varepsilon_t^2x_tx_t' \plim S
+    \]
+    qui est une loi des grands nombres appliquée à la suite
+    $\varepsilon_t^2x_tx_t'$, d'espérance $\sigma_t^2x_tx_t'$. On conclut par le
+    théorème de Slutsky, la fonction $(A,B)\mapsto A^{-1}BA^{-1}$ étant continue
+    en $Q$ définie positive.\qed\newline
 
-\vspace{0.3cm}
+  \item \textbf{Remarque.} Le point qui surprend est que
+    $\hat\varepsilon_t^2$ n'estime nullement $\sigma_t^2$~: c'est un tirage
+    unique, et il ne converge vers rien. Ce n'est pas grave, parce que ce n'est
+    pas ce qu'on lui demande. La quantité à estimer est une moyenne pondérée de
+    $T$ variances, et c'est la moyenne qui converge, pas ses termes. La même
+    idée reviendra en séries temporelles avec les estimateurs de
+    Newey-West.\newline
 
-Par un raisonnement similaire au test de Breusch-Pagan :
-\[
-W = n \cdot R^2 \xrightarrow{d} \chi^2_q
-\]
+  \item \textbf{Remarque.} La paternité est triple~: \cite{Eicker1967} l'établit
+    dans un cadre de régression, \cite{Huber1967} dans celui du maximum de
+    vraisemblance mal spécifié, \cite{White1980} l'introduit en économétrie et
+    lui donne sa diffusion. On parle indifféremment d'écarts-types d'Eicker-Huber-White,
+    de White, ou simplement de robustes.
 
-où $q$ est le nombre de régresseurs dans $W_i$ (hors constante).
+  \end{itemize}
 
-\vspace{0.3cm}
+\end{notes}
 
-\textbf{Remarque :} $q = k + \frac{k(k+1)}{2}$ si on inclut tous les termes.
+
+\begin{frame}
+  \frametitle{Pourquoi HC0 ne suffit pas}
+
+  \begin{itemize}
+
+  \item Les résidus sont \emph{trop petits}~: les MCO minimisent leur somme des
+    carrés. Précisément, avec $H = X(X'X)^{-1}X'$ la matrice chapeau,
+    \[
+      \hat\varepsilon = (I_T - H)\varepsilon
+      \qquad\text{d'où}\qquad
+      \mathbb E\left[\hat\varepsilon_t^2\right] = (1-h_{tt})\,\epsvar
+    \]
+    ce dernier calcul étant fait sous homoscédasticité.
+
+  \item Le levier $h_{tt}$ vérifie $0\leq h_{tt}\leq 1$ et
+    $\sum_t h_{tt} = K$~: il mesure le poids de l'observation $t$ dans sa propre
+    valeur ajustée.\newline
+
+  \item[$\Rightarrow$] Une observation à fort levier tire la droite à elle,
+    laisse un résidu anormalement petit, et fait sous-estimer la variance
+    exactement là où elle compte le plus.\newline
+
+  \item Les corrections proposées consistent à regonfler $\hat\varepsilon_t^2$~:
+
+    \begin{center}
+      \renewcommand{\arraystretch}{1.5}
+      \begin{tabular}{lcl}
+        \toprule
+        HC0 & $\hat\varepsilon_t^2$ & \cite{White1980}\\
+        HC1 & $\dfrac{T}{T-K}\,\hat\varepsilon_t^2$ & degrés de liberté\\
+        HC2 & $\dfrac{\hat\varepsilon_t^2}{1-h_{tt}}$ & \cite{MacKinnonWhite1985}\\
+        HC3 & $\dfrac{\hat\varepsilon_t^2}{(1-h_{tt})^2}$ & \cite{DavidsonMacKinnon1993}\\
+        \bottomrule
+      \end{tabular}
+    \end{center}
+
+  \end{itemize}
+
 \end{frame}
 
-% Section 4
-\section{Test de Goldfeld-Quandt}
 
-\begin{frame}{Test de Goldfeld-Quandt : Principe}
-\textbf{Idée :} Comparer les variances des résidus dans deux sous-échantillons.
+\begin{notes}
 
-\vspace{0.5cm}
+  \begin{itemize}
 
-\textbf{Contexte :} Utile quand on suspecte que la variance dépend d'une variable spécifique.
+  \item \textbf{La logique des trois corrections.} HC1 applique à tout
+    l'échantillon la correction de degrés de liberté que l'on connaît déjà pour
+    $s^2$~: elle multiplie par $\nicefrac{T}{(T-K)}$ sans regarder les
+    observations. C'est la moins ambitieuse, et la seule qui ne dépende pas des
+    leviers.\newline
 
-\vspace{0.5cm}
+  \item HC2 corrige exactement le biais calculé ci-dessus~: puisque
+    $\mathbb E[\hat\varepsilon_t^2] = (1-h_{tt})\sigma_t^2$ sous
+    homoscédasticité, diviser par $1-h_{tt}$ rend l'estimateur sans biais dans
+    ce cas. C'est la correction «~juste~», au sens le plus littéral.\newline
 
-\textbf{Hypothèses :}
-\begin{itemize}
-\item $H_0$ : $\sigma_1^2 = \sigma_2^2$ (variances égales)
-\item $H_1$ : $\sigma_1^2 \neq \sigma_2^2$ (variances différentes)
-\end{itemize}
+  \item HC3 divise par $(1-h_{tt})^2$, donc surcorrige délibérément. La
+    justification est différente~: c'est une approximation du \emph{jackknife},
+    qui estime la variance en retirant chaque observation à tour de rôle. On
+    accepte un léger biais à la hausse en échange d'un test conservateur, ce qui
+    est le bon arbitrage quand on redoute le sur-rejet.\newline
+
+  \item Les quatre estimateurs coïncident asymptotiquement~: les $h_{tt}$
+    tendent vers zéro et $\nicefrac{T}{(T-K)}$ vers un. La question du choix est
+    donc entièrement une question de petit échantillon, et c'est ce que mesure
+    le transparent suivant.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}[c]
+  \frametitle{Choisir entre HC0 et HC3}
+  \framesubtitle{Ce que chacun estime vraiment}
+
+  \begin{figure}
+    \centering
+    \scalebox{.42}{\input{../pgf/chapitre-4/hc-petit-echantillon.tex}}
+    \caption{Plan fixe à fort levier ($x$ aux quantiles d'une log-normale),
+      $\mathbb V[\varepsilon_t]\propto x_t$, $40000$ échantillons par taille. Le
+      plan étant fixe, l'écart-type vrai de $\hat b_1$ est connu exactement, et
+      l'on rapporte à cet écart-type la moyenne des écarts-types estimés. À
+      $T=20$ (levier maximal $0{,}62$), HC0 n'annonce que $54\,\%$ de la
+      dispersion réelle et HC1 $57\,\%$~; HC2 atteint $74\,\%$ et HC3 $108\,\%$.
+      À $T=500$ (levier maximal $0{,}20$) l'écart se referme, mais HC0 reste
+      $11\,\%$ trop bas. Codes \coderef{hc-petit-echantillon.py}.}
+  \end{figure}
+
 \end{frame}
 
-\begin{frame}{Test de Goldfeld-Quandt : Procédure}
-\textbf{Étapes :}
-\begin{enumerate}
-\item Ordonner les observations selon la variable suspectée de causer l'hétéroscédasticité
-\item Diviser l'échantillon en 3 parties :
-\begin{itemize}
-\item Premier tiers : $n_1$ observations
-\item Observations centrales : à exclure (environ $c$ observations)
-\item Dernier tiers : $n_2$ observations
-\end{itemize}
-\item Estimer le modèle séparément sur les deux sous-échantillons
-\item Calculer les sommes des carrés des résidus $SCR_1$ et $SCR_2$
-\item Calculer la statistique de test :
-\[
-F = \frac{SCR_2/(n_2-k)}{SCR_1/(n_1-k)} \xrightarrow{H_0} F_{n_2-k, n_1-k}
-\]
-où $k$ est le nombre de paramètres
-\end{enumerate}
+
+\begin{frame}
+  \frametitle{Que retenir}
+
+  \begin{itemize}
+
+  \item Toutes les variantes sont convergentes~: le choix ne porte que sur le
+    petit échantillon, et il porte sur la \emph{taille} du test, pas sur
+    l'estimateur.\newline
+
+  \item \textbf{HC1} est le réglage par défaut de la plupart des logiciels. Il
+    est acceptable quand les leviers sont modérés, mais on voit ci-dessus qu'il
+    ne corrige presque rien quand ils ne le sont pas.\newline
+
+  \item \textbf{HC3} est recommandé par~\cite{LongErvin2000} en deçà de $T=250$,
+    et l'expérience ci-dessus va dans le même sens~: c'est le seul qui reste
+    proche de la vérité à $T=20$.\newline
+
+  \item[$\Rightarrow$] En pratique~: HC3 par défaut en petit échantillon, HC1
+    au-delà, et \textbf{jamais HC0 seul} quand quelques observations dominent le
+    plan d'expérience.\newline
+
+  \end{itemize}
+
+  \dnote{Regarder les leviers avant de choisir. Si
+    $\max_t h_{tt}$ dépasse nettement $\nicefrac{2K}{T}$, quelques observations
+    portent l'estimation~: c'est le moment de prendre HC3, et aussi de se
+    demander ce que sont ces observations.}
+
 \end{frame}
 
-\begin{frame}{Test de Goldfeld-Quandt : Décision}
-\textbf{Règle de décision :}
-\begin{itemize}
-\item On rejette $H_0$ si $F > F_{n_2-k, n_1-k, \alpha}$
-\item Ou si la p-valeur $< \alpha$
-\end{itemize}
 
-\vspace{0.5cm}
+\section{Les moindres carrés pondérés}
 
-\textbf{Avantages :}
-\begin{itemize}
-\item Simple à comprendre et à mettre en œuvre
-\item Ne nécessite pas d'hypothèse de normalité stricte
-\item Utile pour des formes monotones d'hétéroscédasticité
-\end{itemize}
+\begin{frame}
+  \frametitle{Corriger l'estimateur plutôt que son écart-type}
 
-\vspace{0.5cm}
+  \begin{itemize}
 
-\textbf{Limites :}
-\begin{itemize}
-\item Nécessite de choisir une variable d'ordonnancement
-\item Perte d'observations (celles du milieu)
-\item Moins puissant que d'autres tests dans certains cas
-\end{itemize}
+  \item Les écarts-types robustes rendent l'inférence valide, mais laissent
+    $\hat{\mathbf b}$ inefficace. On peut vouloir mieux.\newline
+
+  \item L'estimateur des MCG du \chapref{2}{II} s'écrit
+    $\tilde{\mathbf b} = (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}\mathbf y$. Comme
+    $\Omega$ est ici \textbf{diagonale}, son inverse l'est aussi et
+    \[
+      \tilde{\mathbf b} = \left(\sum_t \frac{x_tx_t'}{\sigma_t^2}\right)^{-1}
+      \sum_t \frac{x_ty_t}{\sigma_t^2}
+    \]
+
+  \item[$\Rightarrow$] Les MCG se réduisent aux \textbf{moindres carrés
+      pondérés} (MCP)~: on applique les MCO ordinaires aux données divisées par
+    $\sigma_t$.\newline
+
+  \item Chaque observation reçoit un poids inversement proportionnel à sa
+    variance. Les observations bruitées comptent moins~: c'est l'intuition
+    entière de la méthode.\newline
+
+  \item[\dbend] Mais $\Omega$ est inconnue. Il faut donc l'estimer, et l'on
+    retombe sur les MCQG du \chapref{2}{II}.
+
+  \end{itemize}
+
 \end{frame}
 
-\subsection{Démonstration du test de Goldfeld-Quandt}
 
-\begin{frame}{Démonstration Test de Goldfeld-Quandt (1/2)}
-\textbf{Principe :}
+\begin{frame}
+  \frametitle{MCQG en pratique}
+  \framesubtitle{L'hétéroscédasticité multiplicative}
 
-On divise l'échantillon en deux groupes selon une variable $Z_i$ :
-\begin{itemize}
-\item Groupe 1 : $n_1$ observations avec $Z_i$ faible
-\item Groupe 2 : $n_2$ observations avec $Z_i$ élevé
-\end{itemize}
+  \begin{itemize}
 
-\vspace{0.3cm}
+  \item Le \chapref{2}{II} demandait qu'$\Omega$ dépende d'un petit nombre de
+    paramètres. Une spécification commode l'assure~:
+    \[
+      \sigma_t^2 = \sigma^2\exp\left(z_t'\gamma\right)
+    \]
+    positive quel que soit $\gamma$, et linéaire en logarithme.\newline
 
-On estime le modèle séparément sur chaque groupe et on obtient :
-\begin{itemize}
-\item $SCR_1 = \sum_{i \in \text{Groupe 1}} \hat{\varepsilon}_i^2$
-\item $SCR_2 = \sum_{i \in \text{Groupe 2}} \hat{\varepsilon}_i^2$
-\end{itemize}
+  \item[$\Rightarrow$] La procédure de~\cite{Harvey1976}~:
+    \begin{enumerate}
+    \item estimer $\beta$ par MCO et former les résidus $\hat\varepsilon_t$~;
+    \item régresser $\log\hat\varepsilon_t^2$ sur $(1, z_t)$, ce qui donne
+      $\hat\gamma$~;
+    \item former $\hat\sigma_t^2 = \exp(\hat\delta_0 + z_t'\hat\gamma)$~;
+    \item appliquer les MCP avec les poids $\nicefrac{1}{\hat\sigma_t^2}$.
+    \end{enumerate}
 
-\vspace{0.3cm}
+  \item La constante $\hat\delta_0$ n'est pas la constante de la régression de
+    l'étape 2~: comme $\mathbb E[\log\varepsilon_t^2] = \log\sigma_t^2 -
+    1{,}2704$, il faut ajouter $1{,}2704$ pour retrouver le niveau.\newline
 
-\textbf{Hypothèses :}
-\begin{itemize}
-\item $H_0$ : $\sigma_1^2 = \sigma_2^2$
-\item $H_1$ : $\sigma_1^2 \neq \sigma_2^2$
-\end{itemize}
+  \end{itemize}
+
+  \dnote{Cette correction de $1{,}2704$ — l'espérance du logarithme d'un
+    $\chi^2_1$, au signe près — est \textbf{sans effet sur} $\breve{\mathbf b}$~:
+    les MCP ne dépendent que des poids \emph{relatifs}, et une constante
+    additive dans le logarithme est un facteur multiplicatif commun. Elle
+    importe pour estimer $\sigma_t^2$ lui-même, pas pour estimer $\beta$.}
+
 \end{frame}
 
-\begin{frame}{Démonstration Test de Goldfeld-Quandt (2/2)}
-\textbf{Distribution sous $H_0$ :}
 
-Sous l'hypothèse de normalité des erreurs et sous $H_0$ :
-\[
-\frac{SCR_j}{\sigma^2} \sim \chi^2_{n_j - k}
-\]
+\begin{frame}[c]
+  \frametitle{Ce que la pondération rapporte}
+  \framesubtitle{Et ce qu'elle coûte quand les poids sont faux}
 
-pour $j = 1, 2$, où $k$ est le nombre de paramètres.
+  \begin{figure}
+    \centering
+    \scalebox{.42}{\input{../pgf/chapitre-4/mcp-vs-mco.tex}}
+    \caption{Même dispositif que plus haut,
+      $\mathbb V[\varepsilon_t]=e^{\gamma x_t}$ avec $\gamma=1{,}5$, $T=100$ et
+      $40000$ échantillons. Les trois estimateurs sont centrés sur $\beta_1=0{,}5$~:
+      se tromper de modèle de variance ne biaise pas. Mais les MCP correctement
+      spécifiés ramènent l'écart-type de $0{,}310$ à $0{,}088$, quand les MCP
+      fondés sur une variable sans rapport restent à $0{,}311$, soit exactement
+      les MCO\@. Codes \coderef{mcp-vs-mco.py}.}
+  \end{figure}
 
-\vspace{0.3cm}
-
-Par conséquent, le rapport :
-\[
-F = \frac{SCR_2/(n_2-k)}{SCR_1/(n_1-k)} = \frac{\hat{\sigma}_2^2}{\hat{\sigma}_1^2} \sim F_{n_2-k, n_1-k}
-\]
-
-sous $H_0$.
-
-\vspace{0.3cm}
-
-\textbf{Remarque :} Ce test nécessite l'hypothèse de normalité, contrairement aux tests LM.
 \end{frame}
 
-% Section 5
-\section{Estimation par maximum de vraisemblance}
 
-\begin{frame}{Maximum de vraisemblance sous hétéroscédasticité}
-\textbf{Modèle avec hétéroscédasticité :}
-\[
-Y_i = X_i'\beta + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0, \sigma_i^2)
-\]
+\begin{notes}
 
-où $\sigma_i^2 = \sigma_i^2(Z_i, \alpha)$ dépend de paramètres $\alpha$ à estimer.
+  \textbf{Un troisième enseignement, que la figure ne montre pas mais que le
+    script imprime.} Les écarts-types \emph{usuels} des trois estimateurs valent
+  respectivement $0{,}171$, $0{,}080$ et $0{,}168$, à comparer aux dispersions
+  effectives $0{,}310$, $0{,}088$ et $0{,}311$.
 
-\vspace{0.3cm}
+  \bigskip
 
-\textbf{Log-vraisemblance :}
-\[
-\ell(\beta, \alpha) = -\frac{n}{2}\log(2\pi) - \frac{1}{2}\sum_{i=1}^n \log(\sigma_i^2(Z_i, \alpha)) - \frac{1}{2}\sum_{i=1}^n \frac{(Y_i - X_i'\beta)^2}{\sigma_i^2(Z_i, \alpha)}
-\]
+  Autrement dit~: les MCO annoncent $0{,}171$ quand la vraie dispersion est
+  $0{,}310$, ce qui est la traduction en écart-type du taux de rejet de $27\,\%$
+  rencontré au début du chapitre. Les MCP correctement spécifiés annoncent
+  $0{,}080$ pour $0{,}088$, ce qui est presque juste. Et les MCP mal spécifiés
+  annoncent $0{,}168$ pour $0{,}311$~: la pondération n'a rien réparé du tout.
 
-\vspace{0.3cm}
+  \bigskip
 
-\textbf{Objectif :} Maximiser $\ell(\beta, \alpha)$ par rapport à $\beta$ et $\alpha$ conjointement.
+  \dnote{Pondérer avec de mauvais poids ne biaise pas l'estimateur, mais ne
+    corrige pas davantage ses écarts-types~: le modèle pondéré reste
+    hétéroscédastique, simplement autrement. Il faut donc des écarts-types
+    robustes \emph{y compris après pondération}, à moins d'être certain du
+    modèle de variance.}
+
+  \bigskip
+
+  C'est l'argument qui explique pourquoi la pratique contemporaine s'est
+  largement déplacée vers «~MCO plus écarts-types robustes~»~: cette
+  combinaison ne demande à être juste que sur la moyenne conditionnelle, là où
+  les MCQG demandent d'être juste aussi sur la variance conditionnelle, sous
+  peine de perdre le bénéfice recherché.
+
+\end{notes}
+
+
+\section{Maximum de vraisemblance}
+
+\begin{frame}
+  \frametitle{La vraisemblance du modèle hétéroscédastique}
+
+  \begin{itemize}
+
+  \item Supposons les erreurs normales,
+    $\varepsilon_t \sim \normal{0}{\sigma_t^2(\gamma)}$, indépendantes, la
+    variance étant paramétrée par un vecteur $\gamma$ de petite dimension.\newline
+
+  \item La log-vraisemblance de $\theta = (\beta', \gamma')'$ s'écrit
+    \[
+      \ell(\beta,\gamma) = -\frac{T}{2}\log 2\pi
+      - \frac{1}{2}\sum_{t=1}^T \log\sigma_t^2(\gamma)
+      - \frac{1}{2}\sum_{t=1}^T \frac{\left(y_t - x_t'\beta\right)^2}{\sigma_t^2(\gamma)}
+    \]
+
+  \item La condition du premier ordre en $\beta$ ne fait intervenir que le
+    dernier terme~:
+    \[
+      \frac{\partial \ell}{\partial \beta} =
+      \sum_{t=1}^T \frac{x_t\left(y_t - x_t'\beta\right)}{\sigma_t^2(\gamma)} = 0
+    \]
+
+  \item[$\Rightarrow$] C'est exactement l'équation normale des MCP\@. Nous
+    noterons $\check{\mathbf b}$ l'estimateur du maximum de vraisemblance
+    de $\beta$, pour le distinguer de $\hat{\mathbf b}$ (MCO),
+    $\tilde{\mathbf b}$ (MCG) et $\breve{\mathbf b}$ (MCQG).
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Conditions de premier ordre}
-\textbf{Dérivée par rapport à $\beta$ :}
-\[
-\frac{\partial \ell}{\partial \beta} = \sum_{i=1}^n \frac{X_i(Y_i - X_i'\beta)}{\sigma_i^2(Z_i, \alpha)} = 0
-\]
 
-Cela donne :
-\[
-\hat{\beta}_{MV} = \left(\sum_{i=1}^n \frac{X_i X_i'}{\sigma_i^2(Z_i, \hat{\alpha})}\right)^{-1} \sum_{i=1}^n \frac{X_i Y_i}{\sigma_i^2(Z_i, \hat{\alpha})}
-\]
+\begin{frame}
+  \frametitle{Maximum de vraisemblance et MCG}
 
-\vspace{0.3cm}
+  \begin{prop}\label{prop:mv:mcg}
+    Si $\Omega$ est connue, l'estimateur du maximum de vraisemblance de $\beta$
+    coïncide exactement, à toute taille d'échantillon, avec l'estimateur des
+    MCG~:
+    \[
+      \check{\mathbf b} = \tilde{\mathbf b}
+      = \left(X'\Omega^{-1}X\right)^{-1}X'\Omega^{-1}\mathbf y
+    \]
+  \end{prop}
 
-\textbf{Dérivée par rapport à $\alpha$ :}
-\[
-\frac{\partial \ell}{\partial \alpha} = -\frac{1}{2}\sum_{i=1}^n \frac{1}{\sigma_i^2}\frac{\partial \sigma_i^2}{\partial \alpha} + \frac{1}{2}\sum_{i=1}^n \frac{(Y_i - X_i'\beta)^2}{(\sigma_i^2)^2}\frac{\partial \sigma_i^2}{\partial \alpha} = 0
-\]
+  \bigskip
 
-Les deux conditions doivent être satisfaites simultanément.
+  \begin{itemize}
+
+  \item C'est le résultat annoncé au \chapref{2}{II}, ici établi dans le cas de
+    l'hétéroscédasticité.\newline
+
+  \item Il n'y a donc aucune concurrence entre les deux méthodes quand $\Omega$
+    est connue~: ce sont deux chemins vers le même estimateur.\newline
+
+  \item[\dbend] La question intéressante n'est pas «~MV ou MCG~?~», mais «~que
+    devient cette coïncidence quand $\Omega$ doit être estimée~?~». C'est
+    l'objet du transparent suivant.\newline
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Lien avec les MCG}
-\textbf{Rappel : MCG (Moindres Carrés Généralisés)}
 
-Si $\Omega = \text{diag}(\sigma_1^2, \ldots, \sigma_n^2)$ est \textbf{connu}, l'estimateur MCG est :
-\[
-\hat{\beta}_{MCG} = (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}Y = \left(\sum_{i=1}^n \frac{X_i X_i'}{\sigma_i^2}\right)^{-1} \sum_{i=1}^n \frac{X_i Y_i}{\sigma_i^2}
-\]
+\begin{notes}
 
-\vspace{0.3cm}
+  \begin{itemize}
 
-\textbf{Question :} $\hat{\beta}_{MV} = \hat{\beta}_{MCG}$ ?
+  \item \textbf{Preuve de la proposition~\ref{prop:mv:mcg}.} Si $\Omega$ est
+    connue, le terme $-\nicefrac{1}{2}\sum_t\log\sigma_t^2$ est une constante et
+    maximiser $\ell$ revient à minimiser
+    $\sum_t\nicefrac{(y_t-x_t'\beta)^2}{\sigma_t^2} =
+    (\mathbf y - X\beta)'\Omega^{-1}(\mathbf y - X\beta)$,
+    c'est-à-dire le critère des MCG\@. La condition du premier ordre s'écrit
+    $X'\Omega^{-1}(\mathbf y - X\beta) = 0$, dont la solution unique est
+    $\tilde{\mathbf b}$~; le hessien, $-X'\Omega^{-1}X$, est défini négatif dès
+    que $X$ est de plein rang et $\Omega$ définie positive, de sorte qu'il
+    s'agit bien d'un maximum global.\qed\newline
 
-\vspace{0.3cm}
+  \item \textbf{Remarque.} L'identité est \emph{exacte}, non asymptotique, et
+    elle éclaire le statut des deux méthodes. Maximiser une vraisemblance
+    gaussienne, c'est minimiser une somme de carrés pondérés par l'inverse des
+    variances~: la normalité ne sert pas à définir l'estimateur, elle sert à
+    justifier qu'il est optimal dans une classe plus large que celle des
+    estimateurs linéaires. Les MCG, eux, sont BLUE par Gauss-Markov, sans
+    aucune hypothèse de distribution — mais seulement parmi les estimateurs
+    linéaires sans biais.
 
-\textbf{Réponse :} \textbf{NON en général !}
-\begin{itemize}
-\item MCG suppose $\Omega$ \textbf{connu} (ou estimé indépendamment)
-\item MV estime $\beta$ et $\alpha$ (donc $\sigma_i^2$) \textbf{conjointement}
-\item Les deux approches coïncident seulement si $\alpha$ est connu a priori
-\end{itemize}
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Pourquoi estimer $\Omega$ ne coûte rien}
+  \framesubtitle{La bloc-diagonalité de l'information}
+
+  \begin{prop}\label{prop:information:bloc}
+    Sous normalité, la matrice d'information de $\theta=(\beta',\gamma')'$ est
+    \textbf{bloc-diagonale}~:
+    \[
+      \mathcal I(\theta) =
+      \begin{pmatrix}
+        \sum_t \dfrac{x_tx_t'}{\sigma_t^2} & 0\\[2ex]
+        0 & \dfrac{1}{2}\sum_t
+        \dfrac{\partial \log\sigma_t^2}{\partial\gamma}
+        \dfrac{\partial \log\sigma_t^2}{\partial\gamma'}
+      \end{pmatrix}
+    \]
+  \end{prop}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item[$\Rightarrow$] La précision avec laquelle on peut estimer $\beta$ ne
+    dépend pas de ce que l'on sait de $\gamma$. Connaître $\Omega$ ou l'estimer
+    ne change rien à la variance asymptotique de $\beta$.\newline
+
+  \item[$\Rightarrow$] Les MCQG du \chapref{2}{II}, qui estiment $\gamma$
+    d'abord et $\beta$ ensuite, atteignent donc la même précision asymptotique
+    que l'estimation conjointe. C'est ce que promettait le \chapref{2}{II} en
+    posant ses conditions de convergence.
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Lien avec les MCQG (MCG Faisables)}
-\textbf{Rappel : MCQG/FGLS (Feasible GLS)}
 
-Procédure en deux étapes :
-\begin{enumerate}
-\item Estimer $\hat{\alpha}$ par une méthode préliminaire (ex: régression de $\hat{\varepsilon}_i^2$ sur $Z_i$)
-\item Calculer $\hat{\sigma}_i^2(Z_i, \hat{\alpha})$ et appliquer MCG :
-\[
-\hat{\beta}_{FGLS} = \left(\sum_{i=1}^n \frac{X_i X_i'}{\hat{\sigma}_i^2}\right)^{-1} \sum_{i=1}^n \frac{X_i Y_i}{\hat{\sigma}_i^2}
-\]
-\end{enumerate}
+\begin{notes}
 
-\vspace{0.3cm}
+  \begin{itemize}
 
-\textbf{Question :} $\hat{\beta}_{MV} = \hat{\beta}_{FGLS}$ ?
+  \item \textbf{Preuve de la proposition~\ref{prop:information:bloc}.} Seul le
+    bloc croisé demande un calcul. En dérivant
+    $\nicefrac{\partial\ell}{\partial\beta} =
+    \sum_t\nicefrac{x_t\varepsilon_t}{\sigma_t^2}$ par rapport à $\gamma$, il
+    vient
+    \[
+      \frac{\partial^2\ell}{\partial\beta\,\partial\gamma'} =
+      -\sum_t \frac{x_t\varepsilon_t}{\sigma_t^2}
+      \frac{\partial \log\sigma_t^2}{\partial\gamma'}
+    \]
+    Cette expression est \textbf{linéaire} en $\varepsilon_t$. Son espérance est
+    donc nulle, puisque $\mathbb E[\varepsilon_t\mid x_t,z_t]=0$, et le bloc
+    croisé de l'information s'annule. Les deux blocs diagonaux s'obtiennent par
+    le calcul direct des dérivées secondes, en utilisant
+    $\mathbb E[\varepsilon_t^2]=\sigma_t^2$ et
+    $\mathbb E[\varepsilon_t^4]=3\sigma_t^4$ sous normalité.\qed\newline
 
-\vspace{0.3cm}
+  \item \textbf{Remarque.} Tout tient à ce que la dérivée croisée soit linéaire
+    en $\varepsilon_t$, donc d'espérance nulle. C'est une propriété de la
+    normale, où moyenne et variance sont des paramètres «~orthogonaux~»~; elle
+    tombe si la distribution des erreurs est asymétrique, auquel cas
+    l'estimation de $\gamma$ contamine bel et bien celle de $\beta$.\newline
 
-\textbf{Réponse :} \textbf{NON en général !}
-\begin{itemize}
-\item FGLS : estimation séquentielle ($\alpha$ puis $\beta$)
-\item MV : estimation conjointe et optimale
-\item Asymptotiquement, sous certaines conditions, les deux sont équivalents
-\end{itemize}
+  \item \textbf{Remarque.} La conséquence pratique est considérable et mérite
+    d'être énoncée séparément~: sous les conditions du \chapref{2}{II}, si
+    $\hat\gamma$ est convergent à la vitesse $\sqrt T$ et si le modèle de
+    variance est correctement spécifié, alors
+    \[
+      \sqrt T\left(\breve{\mathbf b} - \beta\right)
+      \quad\text{et}\quad
+      \sqrt T\left(\check{\mathbf b} - \beta\right)
+    \]
+    ont la même loi limite, à savoir
+    $\normal{0}{\left(\text{plim}\,\nicefrac{X'\Omega^{-1}X}{T}\right)^{-1}}$.
+    On notera la normalisation par $T$ à l'intérieur de la limite~: une
+    variance asymptotique ne peut pas dépendre de la taille de l'échantillon, et
+    écrire $\normal{0}{(X'\Omega^{-1}X)^{-1}}$ n'aurait pas de sens. Les deux
+    estimateurs sont donc interchangeables asymptotiquement, et l'on préfère en
+    pratique les MCQG, qui ne demandent que deux régressions au lieu d'une
+    optimisation numérique.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{frame}
+  \frametitle{Récapitulatif}
+
+  \begin{center}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.4}
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{lccc}
+      \toprule
+                       & MCG $\tilde{\mathbf b}$
+                       & MCQG $\breve{\mathbf b}$
+                       & MV $\check{\mathbf b}$\\
+      \midrule
+      $\Omega$         & connue           & estimée avant   & estimée avec $\beta$\\
+      Normalité        & non requise      & non requise     & \textbf{requise}\\
+      Optimalité       & BLUE             & $\simeq$ MCG    & Cramér-Rao\\
+      Portée           & linéaires sans biais & asymptotique & estimateurs réguliers\\
+      Mise en \oe uvre & une régression   & deux régressions & optimisation\\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item[\dbend] «~Optimal~» ne veut pas dire la même chose dans les trois
+    colonnes. Les MCG sont les meilleurs \emph{parmi les estimateurs linéaires
+      sans biais}, sans hypothèse de distribution. Le MV atteint une borne
+    valable dans une classe bien plus large, mais au prix de la
+    normalité.\newline
+
+  \item Si $\Omega$ est connue, les trois colonnes se confondent
+    (proposition~\ref{prop:mv:mcg}). Si elle ne l'est pas, les deux dernières se
+    confondent asymptotiquement (proposition~\ref{prop:information:bloc}).
+
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}{Comparaison des trois approches}
-\begin{table}
-\centering
-\small
-\begin{tabular}{lccc}
-\toprule
-\textbf{Critère} & \textbf{MCG} & \textbf{FGLS} & \textbf{MV} \\
-\midrule
-$\Omega$ connu ? & Oui & Non & Non \\
-Estimation & Une étape & Deux étapes & Conjointe \\
-Efficience & Optimale & Asympt. opt. & Optimale \\
-Complexité & Faible & Moyenne & Élevée \\
-Normalité & Non requise & Non requise & Requise \\
-\bottomrule
-\end{tabular}
-\end{table}
 
-\vspace{0.3cm}
+\section{Retour sur l'équation de salaire}
 
-\textbf{Remarques :}
-\begin{itemize}
-\item Si $\Omega$ est connu : MCG est le meilleur (BLUE)
-\item Si $\Omega$ est inconnu : MV est asymptotiquement efficace sous normalité
-\item FGLS est une approximation pratique du MV
-\item Sous normalité et avec $n \to \infty$ : $\hat{\beta}_{MV} \approx \hat{\beta}_{FGLS}$
-\end{itemize}
+\begin{frame}[c]
+  \frametitle{L'équation de salaire}
+  \framesubtitle{1/2 --- détecter}
+
+  \begin{figure}
+    \centering
+    \scalebox{.72}{\input{../pgf/chapitre-4/sortie-mincer-tests.tex}}
+    \caption{Équation de Mincer du \chapref{1}{I}, $\log wage_t$ régressé sur
+      $educ_t$, $exper_t$ et $\nicefrac{exper_t^2}{100}$, sur $T=526$
+      observations. Les trois tests rejettent l'homoscédasticité. Les degrés de
+      liberté de White valent $8$ et non $9$~: le carré d'$exper$ étant déjà un
+      régresseur, une colonne de la régression auxiliaire est redondante.
+      Codes \coderef{sortie-heteroscedasticite-mincer.py}.}
+  \end{figure}
+
 \end{frame}
 
-\begin{frame}{Conditions d'équivalence MV et MCG}
-\textbf{Question :} Quand a-t-on $\hat{\beta}_{MV} = \hat{\beta}_{MCG}$ ?
 
-\vspace{0.3cm}
+\begin{frame}[c]
+  \frametitle{L'équation de salaire}
+  \framesubtitle{2/2 --- corriger}
 
-\textbf{Réponse :} L'équivalence exacte requiert :
+  \begin{figure}
+    \centering
+    \scalebox{.80}{\input{../pgf/chapitre-4/sortie-mincer-robuste.tex}}
+    \caption{Les mêmes estimations, avec les trois écarts-types. Le rendement
+      d'une année d'études est estimé à $9{,}0\,\%$, avec un écart-type de
+      $0{,}0075$ selon la formule usuelle et de $0{,}0079$ selon HC3~: la
+      correction ne change presque rien, et le Student passe de $12{,}1$ à
+      $11{,}5$. Codes \coderef{sortie-heteroscedasticite-mincer.py}.}
+  \end{figure}
 
-\begin{enumerate}
-\item \textbf{Connaissance parfaite de $\Omega$ :}
-\[
-\sigma_i^2 = \sigma_i^2(\alpha) \text{ avec } \alpha \text{ connu}
-\]
-
-\item \textbf{Indépendance des paramètres :}
-
-Les paramètres de variance $\alpha$ ne dépendent pas de $\beta$
-
-\vspace{0.2cm}
-
-\item \textbf{Normalité des erreurs :}
-\[
-\varepsilon_i | X_i \sim \mathcal{N}(0, \sigma_i^2)
-\]
-\end{enumerate}
-
-\vspace{0.3cm}
-
-\textbf{Remarque :} Si $\Omega$ est parfaitement connu, alors :
-\[
-\hat{\beta}_{MV} = \hat{\beta}_{MCG} = (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}Y
-\]
 \end{frame}
 
-\begin{frame}{Conditions d'équivalence asymptotique MV et MCQG}
-\textbf{Question :} Quand a-t-on $\hat{\beta}_{MV} \approx \hat{\beta}_{FGLS}$ asymptotiquement ?
 
-\vspace{0.3cm}
+\begin{notes}
 
-\textbf{Conditions pour l'équivalence asymptotique :}
+  \textbf{Un résultat qui déçoit, et qu'il faut savoir lire.} Les trois tests
+  rejettent l'homoscédasticité de façon très nette. Et pourtant les écarts-types
+  robustes diffèrent des écarts-types usuels de $2$ à $6\,\%$ seulement, dans un
+  sens ou dans l'autre. Aucune conclusion du \chapref{1}{I} n'est renversée.
 
-\begin{enumerate}
-\item \textbf{Convergence de l'estimateur préliminaire :}
-\[
-\sqrt{n}(\hat{\alpha} - \alpha) = O_p(1)
-\]
-L'estimateur $\hat{\alpha}$ doit être $\sqrt{n}$-convergent
+  \bigskip
 
-\vspace{0.2cm}
+  Ce n'est pas une contradiction, c'est la remarque faite au début du chapitre.
+  Un test d'hétéroscédasticité répond à la question «~la variance est-elle
+  constante~?~». La question qui nous intéresse est tout autre~: «~la formule
+  usuelle se trompe-t-elle beaucoup~?~». La seconde ne se déduit pas de la
+  première. Ce qui gouverne l'ampleur de l'erreur, c'est la corrélation entre
+  $\sigma_t^2$ et les $x_tx_t'$ — c'est-à-dire la façon dont la variance des
+  erreurs se distribue par rapport à la géométrie du plan d'expérience.
 
-\item \textbf{Spécification correcte du modèle de variance :}
+  \bigskip
 
-La forme fonctionnelle $\sigma_i^2(Z_i, \alpha)$ doit être correctement spécifiée
+  Ici deux choses jouent en faveur de la formule usuelle. Le plan est très
+  équilibré~: le levier maximal vaut $0{,}051$, soit à peine plus de six fois
+  $\nicefrac{K}{T} = 0{,}0076$, alors que la simulation du transparent sur HC0
+  travaillait avec des leviers de $0{,}62$. Et l'échantillon est grand,
+  $T=526$. Dans la simulation du début du chapitre, à l'inverse,
+  l'hétéroscédasticité était exponentielle dans le régresseur même, donc
+  alignée sur ce qui détermine la précision de la pente, et l'erreur atteignait
+  $27$ points de taux de rejet.
 
-\vspace{0.2cm}
+  \bigskip
 
-\item \textbf{Conditions de régularité :}
-\begin{itemize}
-\item $\mathbb{E}[X_i X_i']$ existe et est définie positive
-\item $\mathbb{E}[\varepsilon_i^4] < \infty$ (moments d'ordre 4 finis)
-\item Conditions de continuité sur $\sigma_i^2(\cdot)$
-\end{itemize}
-\end{enumerate}
-\end{frame}
+  \dnote{Il ne faut pas en conclure que les écarts-types robustes sont inutiles~:
+    il faut en conclure qu'on ne peut pas savoir à l'avance s'ils changeront
+    quelque chose. Les calculer coûte une option de ligne de commande, et c'est
+    le seul moyen de le savoir. Ne pas les calculer, c'est parier.}
 
-\begin{frame}{Résultat d'équivalence asymptotique}
-\textbf{Théorème :} Sous les conditions précédentes, on a :
-\[
-\sqrt{n}(\hat{\beta}_{MV} - \beta) - \sqrt{n}(\hat{\beta}_{FGLS} - \beta) \xrightarrow{p} 0
-\]
+\end{notes}
 
-\vspace{0.3cm}
 
-\textbf{Conséquences :}
-
-\begin{enumerate}
-\item Les deux estimateurs ont la même distribution asymptotique :
-\[
-\sqrt{n}(\hat{\beta}_{MV} - \beta) \xrightarrow{d} \mathcal{N}(0, (X'\Omega^{-1}X)^{-1})
-\]
-\[
-\sqrt{n}(\hat{\beta}_{FGLS} - \beta) \xrightarrow{d} \mathcal{N}(0, (X'\Omega^{-1}X)^{-1})
-\]
-
-\vspace{0.2cm}
-
-\item Les deux estimateurs sont asymptotiquement efficaces
-
-\vspace{0.2cm}
-
-\item En pratique, MCQG est souvent préféré pour sa simplicité computationnelle
-\end{enumerate}
-
-\vspace{0.3cm}
-
-\textbf{Attention :} En échantillon fini, MV peut être plus efficace que MCQG si la normalité est vérifiée.
-\end{frame}
-
-\begin{frame}{Cas particulier : Variance linéaire}
-\textbf{Modèle de variance linéaire :}
-\[
-\sigma_i^2 = Z_i'\alpha
-\]
-
-\vspace{0.3cm}
-
-\textbf{Estimation MCQG :}
-\begin{enumerate}
-\item Estimer $\beta$ par MCO : $\hat{\beta}_{MCO}$
-\item Régresser $\hat{\varepsilon}_i^2$ sur $Z_i$ : $\hat{\alpha} = (Z'Z)^{-1}Z'\hat{\varepsilon}^2$
-\item Calculer $\hat{\sigma}_i^2 = Z_i'\hat{\alpha}$
-\item Appliquer MCG : $\hat{\beta}_{FGLS} = (X'\hat{\Omega}^{-1}X)^{-1}X'\hat{\Omega}^{-1}Y$
-\end{enumerate}
-
-\vspace{0.3cm}
-
-\textbf{Résultat :} Si $n \to \infty$ et sous normalité :
-\[
-\hat{\beta}_{MV} \approx \hat{\beta}_{FGLS}
-\]
-
-avec une différence d'ordre $O_p(n^{-1})$.
-
-\vspace{0.3cm}
-
-\textbf{Intuition :} L'erreur d'estimation de $\alpha$ devient négligeable asymptotiquement.
-\end{frame}
-
-\begin{frame}{Exemple : Hétéroscédasticité multiplicative}
-\textbf{Spécification courante :}
-\[
-\sigma_i^2 = \sigma^2 \exp(Z_i'\gamma)
-\]
-
-\vspace{0.3cm}
-
-\textbf{Approche MV :}
-
-La log-vraisemblance devient :
-\[
-\ell(\beta, \sigma^2, \gamma) = -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\sigma^2) - \frac{1}{2}\sum_{i=1}^n Z_i'\gamma - \frac{1}{2\sigma^2}\sum_{i=1}^n \frac{(Y_i - X_i'\beta)^2}{\exp(Z_i'\gamma)}
-\]
-
-On maximise conjointement en $(\beta, \sigma^2, \gamma)$.
-
-\vspace{0.3cm}
-
-\textbf{Approche FGLS :}
-\begin{enumerate}
-\item Estimer par MCO et obtenir $\hat{\varepsilon}_i$
-\item Régresser $\log(\hat{\varepsilon}_i^2)$ sur $Z_i$ pour obtenir $\hat{\gamma}$
-\item Calculer $\hat{\sigma}_i^2 = \exp(\hat{\delta}_0 + Z_i'\hat{\gamma})$
-\item Appliquer MCG avec ces poids
-\end{enumerate}
-\end{frame}
-
-\begin{frame}{Efficience asymptotique}
-\textbf{Résultat théorique :}
-
-Sous normalité et conditions de régularité, l'estimateur du MV atteint la borne de Cramér-Rao :
-\[
-\text{Var}(\hat{\theta}_{MV}) = \mathcal{I}(\theta)^{-1}
-\]
-
-où $\theta = (\beta', \alpha')'$ et $\mathcal{I}(\theta)$ est la matrice d'information de Fisher.
-
-\vspace{0.3cm}
-
-\textbf{Pour FGLS :}
-\begin{itemize}
-\item Si $\hat{\alpha}$ est $\sqrt{n}$-convergent, alors $\hat{\beta}_{FGLS}$ est asymptotiquement équivalent à $\hat{\beta}_{MV}$
-\item $\sqrt{n}(\hat{\beta}_{FGLS} - \beta) \xrightarrow{d} \mathcal{N}(0, (X'\Omega^{-1}X)^{-1})$
-\item Même distribution asymptotique que MCG avec $\Omega$ connu
-\end{itemize}
-
-\vspace{0.3cm}
-
-\textbf{En pratique :} FGLS est souvent préféré pour sa simplicité, malgré une légère perte d'efficience en échantillon fini.
-\end{frame}
-
-% Section 6
-\section{Estimateurs robustes de la variance}
-
-\begin{frame}{Motivation}
-\textbf{Problème :} Sous hétéroscédasticité, la variance usuelle des MCO est biaisée :
-\[
-\text{Var}_{\text{usuelle}}(\hat{\beta}) = \sigma^2(X'X)^{-1}
-\]
-
-Cette formule suppose $\text{Var}(\varepsilon_i | X_i) = \sigma^2$ (homoscédasticité).
-
-\vspace{0.3cm}
-
-\textbf{Solution :} Utiliser des estimateurs de variance \textbf{robustes} qui restent valides sous hétéroscédasticité.
-
-\vspace{0.3cm}
-
-\textbf{Avantage :}
-\begin{itemize}
-\item Garder l'estimateur MCO (simple à calculer)
-\item Corriger uniquement les écarts-types
-\item Tests et intervalles de confiance valides
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Vraie variance des MCO sous hétéroscédasticité}
-\textbf{Expression générale :}
-
-Sous hétéroscédasticité, la vraie variance de $\hat{\beta}$ est :
-\[
-\text{Var}(\hat{\beta}) = (X'X)^{-1} X'\Omega X (X'X)^{-1}
-\]
-
-où $\Omega = \text{diag}(\sigma_1^2, \ldots, \sigma_n^2)$.
-
-\vspace{0.3cm}
-
-En notation par observation :
-\[
-\text{Var}(\hat{\beta}) = \left(\sum_{i=1}^n X_i X_i'\right)^{-1} \left(\sum_{i=1}^n \sigma_i^2 X_i X_i'\right) \left(\sum_{i=1}^n X_i X_i'\right)^{-1}
-\]
-
-\vspace{0.3cm}
-
-C'est la formule "sandwich" : $(X'X)^{-1}$ entoure le terme central.
-\end{frame}
-
-\begin{frame}{Estimateur de White (HC0)}
-\textbf{Idée :} Estimer $\sigma_i^2$ par $\hat{\varepsilon}_i^2$.
-
-\vspace{0.3cm}
-
-\textbf{Estimateur de White (1980) :}
-\[
-\widehat{\text{Var}}_{HC0}(\hat{\beta}) = (X'X)^{-1} \left(\sum_{i=1}^n \hat{\varepsilon}_i^2 X_i X_i'\right) (X'X)^{-1}
-\]
-
-ou en notation matricielle :
-\[
-\widehat{\text{Var}}_{HC0}(\hat{\beta}) = (X'X)^{-1} X'\hat{\Omega}X (X'X)^{-1}
-\]
-
-où $\hat{\Omega} = \text{diag}(\hat{\varepsilon}_1^2, \ldots, \hat{\varepsilon}_n^2)$.
-
-\vspace{0.3cm}
-
-\textbf{Propriétés :}
-\begin{itemize}
-\item Convergent : $\widehat{\text{Var}}_{HC0}(\hat{\beta}) \xrightarrow{p} \text{Var}(\hat{\beta})$
-\item Valide sous hétéroscédasticité arbitraire
-\item Peut être biaisé à la baisse en petit échantillon
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Variantes : HC1, HC2, HC3}
-Pour améliorer les propriétés en petit échantillon, plusieurs corrections ont été proposées :
-
-\vspace{0.3cm}
-
-\textbf{HC1 (correction des degrés de liberté) :}
-\[
-\widehat{\text{Var}}_{HC1}(\hat{\beta}) = \frac{n}{n-k}(X'X)^{-1} \left(\sum_{i=1}^n \hat{\varepsilon}_i^2 X_i X_i'\right) (X'X)^{-1}
-\]
-
-\textbf{HC2 (MacKinnon \& White, 1985) :}
-\[
-\widehat{\text{Var}}_{HC2}(\hat{\beta}) = (X'X)^{-1} \left(\sum_{i=1}^n \frac{\hat{\varepsilon}_i^2}{1-h_{ii}} X_i X_i'\right) (X'X)^{-1}
-\]
-
-où $h_{ii}$ est l'élément diagonal de la matrice chapeau $H = X(X'X)^{-1}X'$.
-
-\textbf{HC3 (Davidson \& MacKinnon, 1993) :}
-\[
-\widehat{\text{Var}}_{HC3}(\hat{\beta}) = (X'X)^{-1} \left(\sum_{i=1}^n \frac{\hat{\varepsilon}_i^2}{(1-h_{ii})^2} X_i X_i'\right) (X'X)^{-1}
-\]
-\end{frame}
-
-\begin{frame}{Comparaison des estimateurs robustes}
-\begin{table}
-\centering
-\small
-\begin{tabular}{lcc}
-\toprule
-\textbf{Estimateur} & \textbf{Biais petit échantillon} & \textbf{Usage} \\
-\midrule
-HC0 (White) & Plus élevé & Grands échantillons \\
-HC1 & Moyen & Usage général \\
-HC2 & Faible & Recommandé \\
-HC3 & Très faible & Petits échantillons \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\vspace{0.5cm}
-
-\textbf{Recommandations :}
-\begin{itemize}
-\item \textbf{HC1} : le plus utilisé en pratique (bon compromis)
-\item \textbf{HC3} : recommandé pour $n < 250$ (Long \& Ervin, 2000)
-\item \textbf{HC0} : acceptable si $n$ est grand ($n > 500$)
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Illustration : Matrice chapeau}
-\textbf{Rappel :} La matrice chapeau est définie par :
-\[
-H = X(X'X)^{-1}X'
-\]
-
-\textbf{Propriétés :}
-\begin{itemize}
-\item $\hat{Y} = HY$ (valeurs ajustées)
-\item $\hat{\varepsilon} = (I - H)\varepsilon$ (résidus)
-\item $0 \leq h_{ii} \leq 1$ pour tout $i$
-\item $\sum_{i=1}^n h_{ii} = k$ (nombre de paramètres)
-\end{itemize}
-
-\vspace{0.3cm}
-
-\textbf{Interprétation de $h_{ii}$ :}
-\begin{itemize}
-\item Mesure le "levier" de l'observation $i$
-\item $h_{ii}$ élevé $\Rightarrow$ observation influente
-\item HC2 et HC3 donnent plus de poids aux observations à fort levier
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Démonstration : Convergence de l'estimateur de White}
-\textbf{Objectif :} Montrer que $\widehat{\text{Var}}_{HC0}(\hat{\beta}) \xrightarrow{p} \text{Var}(\hat{\beta})$.
-
-\vspace{0.3cm}
-
-\textbf{Étape 1 :} La vraie variance est
-\[
-\text{Var}(\hat{\beta}) = \left(\sum_{i=1}^n X_i X_i'\right)^{-1} \left(\sum_{i=1}^n \sigma_i^2 X_i X_i'\right) \left(\sum_{i=1}^n X_i X_i'\right)^{-1}
-\]
-
-\textbf{Étape 2 :} L'estimateur de White utilise $\hat{\varepsilon}_i^2$ à la place de $\sigma_i^2$ :
-\[
-\widehat{\text{Var}}_{HC0}(\hat{\beta}) = \left(\sum_{i=1}^n X_i X_i'\right)^{-1} \left(\sum_{i=1}^n \hat{\varepsilon}_i^2 X_i X_i'\right) \left(\sum_{i=1}^n X_i X_i'\right)^{-1}
-\]
-\end{frame}
-
-\begin{frame}{Démonstration : Convergence de l'estimateur de White (suite)}
-\textbf{Étape 3 :} Il suffit de montrer que
-\[
-\frac{1}{n}\sum_{i=1}^n \hat{\varepsilon}_i^2 X_i X_i' \xrightarrow{p} \frac{1}{n}\sum_{i=1}^n \sigma_i^2 X_i X_i'
-\]
-
-\textbf{Étape 4 :} On a $\hat{\varepsilon}_i = \varepsilon_i - X_i'(\hat{\beta} - \beta)$, donc :
-\[
-\hat{\varepsilon}_i^2 = \varepsilon_i^2 - 2\varepsilon_i X_i'(\hat{\beta} - \beta) + (\hat{\beta} - \beta)'X_i X_i'(\hat{\beta} - \beta)
-\]
-
-Par la loi des grands nombres et le fait que $\hat{\beta} \xrightarrow{p} \beta$ :
-\[
-\frac{1}{n}\sum_{i=1}^n (\hat{\varepsilon}_i^2 - \varepsilon_i^2) X_i X_i' \xrightarrow{p} 0
-\]
-
-\vspace{0.2cm}
-
-Et $\frac{1}{n}\sum_{i=1}^n \varepsilon_i^2 X_i X_i' \xrightarrow{p} \mathbb{E}[\sigma_i^2 X_i X_i']$.
-
-\vspace{0.2cm}
-
-\textbf{Conclusion :} L'estimateur de White est convergent.
-\end{frame}
-
-% Section 7
-\section{Comparaison des tests}
-
-\begin{frame}{Tableau comparatif}
-\begin{table}
-\centering
-\small
-\begin{tabular}{lccc}
-\toprule
-\textbf{Critère} & \textbf{Breusch-Pagan} & \textbf{White} & \textbf{Goldfeld-Quandt} \\
-\midrule
-Forme fonctionnelle & Linéaire & Générale & Aucune \\
-Puissance & Moyenne & Élevée & Variable \\
-Simplicité & Élevée & Moyenne & Élevée \\
-Normalité requise & Oui & Non & Oui \\
-Taille échantillon & Moyenne & Grande & Moyenne \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\vspace{0.5cm}
-
-\textbf{Recommandation :} Le test de White est généralement le plus utilisé en pratique pour sa généralité.
-\end{frame}
-
-\begin{frame}{Que faire en cas d'hétéroscédasticité ?}
-Si l'hétéroscédasticité est détectée, plusieurs solutions :
-
-\vspace{0.5cm}
-
-\textbf{1. Écarts-types robustes (White/Huber)}
-\begin{itemize}
-\item Corriger les écarts-types sans changer les estimateurs
-\item Solution la plus courante en pratique
-\end{itemize}
-
-\vspace{0.3cm}
-
-\textbf{2. Moindres Carrés Généralisés (MCG)}
-\begin{itemize}
-\item Si la forme de l'hétéroscédasticité est connue
-\item Estimateurs plus efficaces
-\end{itemize}
-
-\vspace{0.3cm}
-
-\textbf{3. Transformation des variables}
-\begin{itemize}
-\item Logarithme, racine carrée, etc.
-\item Peut stabiliser la variance
-\end{itemize}
-\end{frame}
-
-% Section 8
-\section{Exemple pratique}
-
-\begin{frame}[fragile]{Exemple sous Python}
-\small
-\begin{verbatim}
-import pandas as pd
-import statsmodels.api as sm
-from statsmodels.stats.diagnostic import het_breuschpagan
-from statsmodels.stats.diagnostic import het_white
-
-# Charger les données
-data = pd.read_csv("donnees.csv")
-
-# Estimer le modèle
-X = sm.add_constant(data[['X1', 'X2', 'X3']])
-model = sm.OLS(data['Y'], X).fit()
-
-# Test de Breusch-Pagan
-bp_test = het_breuschpagan(model.resid, X)
-print(f"BP = {bp_test[0]:.2f}, p-value = {bp_test[1]:.4f}")
-
-# Test de White
-white_test = het_white(model.resid, X)
-print(f"White = {white_test[0]:.2f}, p-value = {white_test[1]:.4f}")
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]{Exemple Python : Estimateurs robustes}
-\small
-\begin{verbatim}
-# Écarts-types robustes (différentes variantes)
-model_hc0 = model.get_robustcov_results(cov_type='HC0')
-model_hc1 = model.get_robustcov_results(cov_type='HC1')
-model_hc2 = model.get_robustcov_results(cov_type='HC2')
-model_hc3 = model.get_robustcov_results(cov_type='HC3')
-
-print("Écarts-types standard:", model.bse)
-print("Écarts-types HC1:", model_hc1.bse)
-
-# MCG faisables (FGLS)
-# Spécifier un modèle pour la variance
-import numpy as np
-log_resid_sq = np.log(model.resid**2 + 1e-8)
-variance_model = sm.OLS(log_resid_sq, X).fit()
-weights = 1 / np.exp(variance_model.fittedvalues)
-
-# Estimation par MCG
-model_gls = sm.WLS(data['Y'], X, weights=weights).fit()
-print(model_gls.summary())
-\end{verbatim}
-\end{frame}
-
-\begin{frame}{Interprétation des résultats}
-\textbf{Exemple de sortie :}
-
-\vspace{0.3cm}
-
-\texttt{BP = 12.45, p-value = 0.0060}
-
-\texttt{White = 15.32, p-value = 0.0180}
-
-\vspace{0.5cm}
-
-\textbf{Interprétation :}
-\begin{itemize}
-\item Les statistiques BP et White suivent des lois $\chi^2$
-\item p-valeurs < 0.05 pour les deux tests
-\item On rejette $H_0$ au seuil de 5\%
-\item Conclusion : présence d'hétéroscédasticité
-\item Action : utiliser des écarts-types robustes
-\end{itemize}
-\end{frame}
-
-% Section 9
 \section{Conclusion}
 
-\begin{frame}{Points clés à retenir}
-\begin{enumerate}
-\item L'hétéroscédasticité affecte l'efficience des estimateurs MCO et invalide les tests usuels
+\begin{frame}
+  \frametitle{Ce qu'il faut retenir}
 
-\vspace{0.3cm}
+  \begin{itemize}
 
-\item Trois tests principaux pour détecter l'hétéroscédasticité :
-\begin{itemize}
-\item \textbf{Breusch-Pagan :} forme linéaire spécifique
-\item \textbf{White :} forme générale, le plus utilisé
-\item \textbf{Goldfeld-Quandt :} comparaison de sous-échantillons
-\end{itemize}
+  \item L'hétéroscédasticité ne biaise pas $\hat{\mathbf b}$. Elle lui fait
+    perdre l'efficacité, et surtout elle invalide la formule usuelle
+    $s^2(X'X)^{-1}$ — donc tous les tests qui en dépendent, et cela ne
+    s'améliore pas quand $T$ grandit.\newline
 
-\vspace{0.3cm}
+  \item \textbf{Détecter.} Breusch-Pagan studentisé si l'on soupçonne une
+    variable, White si l'on n'en soupçonne aucune, Goldfeld-Quandt si l'on
+    attend une variance monotone et si la normalité est plausible. La version
+    de $1979$ et Goldfeld-Quandt reposent sur la normalité, et le paient
+    cher.\newline
 
-\item Deux approches principales pour traiter l'hétéroscédasticité :
-\begin{itemize}
-\item \textbf{Estimateurs robustes} (HC0, HC1, HC2, HC3) : corriger les écarts-types
-\item \textbf{MCG/FGLS} : ré-estimer le modèle avec pondération optimale
-\end{itemize}
+  \item \textbf{Corriger l'inférence.} Le sandwich d'Eicker-Huber-White, avec
+    HC3 en petit échantillon ou en présence de leviers élevés, HC1 au-delà.
+    C'est la réponse par défaut.\newline
 
-\vspace{0.3cm}
+  \item \textbf{Corriger l'estimateur.} Les MCP, cas particulier des MCG du
+    \chapref{2}{II} quand $\Omega$ est diagonale, avec les MCQG lorsqu'il faut
+    estimer les poids. Le gain d'efficacité est réel — il valait un facteur
+    trois et demi dans notre simulation — mais il suppose le modèle de variance
+    correct, faute de quoi il n'y a aucun gain.\newline
 
-\item En pratique : utiliser HC1 ou HC3 pour les écarts-types robustes
-\end{enumerate}
+  \item[$\Rightarrow$] Un test qui rejette ne dit pas que l'inférence usuelle
+    est très fausse~; il dit qu'on n'en sait rien tant qu'on n'a pas regardé.
+
+  \end{itemize}
+
 \end{frame}
 
 
+\begin{notes}
+
+  \textbf{Ce que ce chapitre laisse de côté.} Nous avons conservé la seconde
+  moitié de l'hypothèse sphérique, l'absence de corrélation entre erreurs. Le
+  \chapref{2}{II} traite le cas autocorrélé, et les deux problèmes se combinent
+  en pratique~: l'estimateur de Newey-West étend le sandwich de ce chapitre aux
+  erreurs à la fois hétéroscédastiques et autocorrélées, selon exactement la
+  même logique — remplacer une matrice postulée par une moyenne empirique qui
+  converge.
+
+  \bigskip
+
+  Nous avons également laissé de côté les erreurs \emph{groupées}, où les
+  observations d'un même groupe partagent un choc commun. C'est aujourd'hui la
+  forme la plus courante en microéconométrie appliquée, et elle appelle des
+  écarts-types dits «~en grappes~», construits sur le même principe~: la
+  garniture du sandwich y devient une somme sur les groupes plutôt que sur les
+  observations. On en trouvera un traitement complet dans~\cite{Greene2017}.
+
+  \bigskip
+
+  Enfin, tout ce chapitre suppose la moyenne conditionnelle correctement
+  spécifiée. Une hétéroscédasticité détectée est parfois le symptôme d'autre
+  chose~: une forme fonctionnelle inadéquate, une variable omise, une échelle
+  mal choisie. Avant de corriger la variance, il vaut la peine de se demander
+  si c'est bien la variance qui est en cause — le \chapref{2}{II} donne les
+  outils de ce diagnostic.
+
+\end{notes}
 
 
 \begin{notes}
@@ -1166,6 +1347,11 @@ print(model_gls.summary())
 
   \nocite{Schmidt1976}
 
+  % Les titres d'articles enchaînent des composés que TeX ne coupe pas : le trait
+  % d'union explicite d'« Heteroskedasticity-Consistent » désactive la césure du
+  % mot entier. On relâche la justification ici plutôt que de bricoler les champs
+  % de la bibliographie, qui doivent rester des données.
+  \sloppy
   \printbibliography
 
 \end{notes}
