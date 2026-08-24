@@ -2,144 +2,8 @@
 
 \documentclass[10pt]{beamer}
 
-\usepackage[T1]{fontenc}
-\usepackage{etex}
-\usepackage{fourier-orns}
-\usepackage{ccicons}
-\usepackage{amssymb}
-\usepackage{amstext}
-\usepackage{amsbsy}
-\usepackage{amsopn}
-\usepackage{amscd}
-\usepackage{amsxtra}
-\usepackage{amsthm}
-\usepackage{float}
-\usepackage{color, colortbl}
-\usepackage{mathrsfs}
-\usepackage{bm}
-\usepackage[nice]{nicefrac}
-\usepackage{setspace}
-\usepackage{ragged2e}
-\usepackage{listings}
-\usepackage{algorithms/algorithm}
-\usepackage{algorithms/algorithmic}
-\usepackage{tikz,pgfplots,pgfplotstable}
-\pgfplotsset{compat=1.18}%newest}
-\usetikzlibrary{patterns, arrows, decorations.pathreplacing, decorations.markings, calc}
-\pgfplotsset{plot coordinates/math parser=false}
-\usetikzlibrary{external}
-\tikzexternalize[prefix=figures/]
-\newlength\figureheight
-\newlength\figurewidth
-\usepackage{cancel}
-\usepackage{tikz-qtree}
-\usepackage{dcolumn}
-\usepackage{adjustbox}
-\usepackage{environ}
-\usepackage[cal=boondox]{mathalfa}
-\usepackage{manfnt}
-\usepackage{booktabs}
-\usepackage{hyperref}
-\hypersetup{
-  colorlinks=true,
-  linkcolor=blue,
-  filecolor=black,
-  urlcolor=blue,
-}
-\usepackage{venndiagram}
-\usepackage{subcaption}
-\usepackage{centernot}
-
-\usepackage[backend=biber,style=bwl-FU,natbib=true,doi=false,isbn=false,url=false,eprint=false]{biblatex}%bwl-FU
-\addbibresource{econometrics.bib}
-
-\makeatletter
-\@ifclassloaded{beamer}{
-\usefonttheme[onlymath]{serif}
-\uselanguage{French}
-\languagepath{French}
-% Git hash
-\usepackage{xstring}
-\usepackage{catchfile}
-\immediate\write18{git rev-parse HEAD > git.hash}
-\CatchFileDef{\HEAD}{git.hash}{\endlinechar=-1}
-\newcommand{\gitrevision}{\StrLeft{\HEAD}{7}}
-}{}
-\makeatother
-
-\newcommand{\trace}{\mathrm{tr}}
-\newcommand{\vect}{\mathrm{vec}}
-\newcommand{\tracarg}[1]{\mathrm{tr}\left\{#1\right\}}
-\newcommand{\vectarg}[1]{\mathrm{vec}\left(#1\right)}
-\newcommand{\vecth}[1]{\mathrm{vech}\left(#1\right)}
-\newcommand{\iid}[2]{\mathrm{iid}\left(#1,#2\right)}
-\newcommand{\normal}[2]{\mathcal N\left(#1,#2\right)}
-\newcommand{\sample}{\mathcal Y_T}
-\newcommand{\samplet}[1]{\mathcal Y_{#1}}
-\newcommand{\slidetitle}[1]{\fancyhead[L]{\textsc{#1}}}
-
-\newcommand{\R}{{\mathbb R}}
-\newcommand{\C}{{\mathbb C}}
-\newcommand{\N}{{\mathbb N}}
-\newcommand{\Z}{{\mathbb Z}}
-\newcommand{\binomial}[2]{\begin{pmatrix} #1 \\ #2 \end{pmatrix}}
-\newcommand{\bigO}[1]{\mathcal O \left(#1\right)}
-\newcommand{\red}{\color{red}}
-\newcommand{\blue}{\color{blue}}
-\newcommand{\plim}{\overset{\text{proba}}{\underset{T\rightarrow\infty}{\longrightarrow}}}
-\newcommand{\epsvar}{\sigma_{\varepsilon}^2}
-
-
-\newcommand\gauss[2]{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))} % Gaussian probability density function.
-
-\renewcommand{\qedsymbol}{C.Q.F.D.}
-
-\newcolumntype{d}{D{.}{.}{-1}}
-\definecolor{gray}{gray}{0.9}
-\newcolumntype{g}{>{\columncolor{gray}}c}
-
-
-\makeatletter
-\@ifclassloaded{beamer}{\setbeamertemplate{theorems}[numbered]{}}{}
-\makeatother
-
-\theoremstyle{plain}
-
-\makeatletter
-\@ifclassloaded{beamer}{
-\setbeamertemplate{footline}{
-  {\hfill\vspace*{1pt}\href{http://creativecommons.org/licenses/by-sa/3.0/legalcode}{\ccbysa}\hspace{.1cm}
-    \href{https://github.com/stepan-a/econometrics/blob/\HEAD/cours/chapitre-3.tex}{\gitrevision}\enspace--\enspace\today\enspace
-  }}
-
-\makeatother
-
-
-\setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{blocks}[rounded][shadow=true]
-\setbeamertemplate{caption}[numbered]
-
-\NewEnviron{notes}{\justifying\footnotesize\begin{spacing}{1.0}\BODY\vfill\pagebreak\end{spacing}}
-
-\newenvironment{exercise}[1]
-{\bgroup \small\begin{block}{Ex. #1}}
-  {\end{block}\egroup}
-
-\newenvironment{defn}[1]
-{\bgroup \small\begin{block}{Définition. #1}}
-  {\end{block}\egroup}
-
-\newenvironment{exemple}[1]
-{\bgroup \small\begin{block}{Exemple. #1}}
-  {\end{block}\egroup}
-}{}
-
-\newtheorem{prop}{Proposition}
-\newtheorem{cor}{Corollaire}
-
-%\usepgfplotslibrary{external}
-%\tikzexternalize
-
+\newcommand{\coursfile}{chapitre-4}
+\input{preamble.tex}
 
 \begin{document}
 
@@ -1298,7 +1162,7 @@ print(model_gls.summary())
 
   \bigskip
 
-  \nocite{Green2017}
+  \nocite{Greene2017}
 
   \nocite{Schmidt1976}
 

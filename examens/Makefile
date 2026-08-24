@@ -1,3 +1,5 @@
+include ../common.mk
+
 TEXFILES := $(wildcard *.tex)
 PDFS     := $(TEXFILES:.tex=.pdf)
 
@@ -9,9 +11,15 @@ all: $(PDFS)
 	rm -f *.synctex.gz
 
 clean:
-	latexmk -c
+	@rm -f $(LATEX_JUNK)
+	@rm -rf $(LATEX_JUNK_DIRS)
 
-distclean:
-	latexmk -C
+# Ne supprime que les PDF issus d'un .tex de ce répertoire : les documents sans
+# source (scans, sujets d'archive) sont préservés.
+clean-all: clean
+	@rm -f $(PDFS)
 
-.PHONY: clean distclean
+# Alias historique.
+distclean: clean-all
+
+.PHONY: all clean clean-all distclean

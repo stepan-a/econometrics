@@ -2,154 +2,26 @@
 
 \documentclass[10pt]{beamer}
 
-\usepackage[T1]{fontenc}
-\usepackage{etex}
-\usepackage{fourier-orns}
-\usepackage{ccicons}
-\usepackage{amssymb}
-\usepackage{amstext}
-\usepackage{amsbsy}
-\usepackage{amsopn}
-\usepackage{amscd}
-\usepackage{amsxtra}
-\usepackage{amsthm}
-\usepackage{extarrows}
-\usepackage{float}
-\usepackage{color, colortbl}
-\usepackage{mathrsfs}
-\usepackage{bm}
-\usepackage[nice]{nicefrac}
-\usepackage{setspace}
-\usepackage{ragged2e}
-\usepackage{listings}
-\usepackage{algorithms/algorithm}
-\usepackage{algorithms/algorithmic}
-\usepackage{tikz,pgfplots,pgfplotstable}
-\pgfplotsset{compat=1.18}%newest}
-\usetikzlibrary{patterns, arrows, decorations.pathreplacing, decorations.markings, calc}
-\pgfplotsset{plot coordinates/math parser=false}
-\usetikzlibrary{external}
-\tikzexternalize[prefix=figures/]
-\newlength\figureheight
-\newlength\figurewidth
-\usepackage{cancel}
-\usepackage{tikz-qtree}
-\usepackage{dcolumn}
-\usepackage{adjustbox}
-\usepackage{environ}
-\usepackage[cal=boondox]{mathalfa}
-\usepackage{manfnt}
-\usepackage{hyperref}
-\hypersetup{
-  colorlinks=true,
-  linkcolor=blue,
-  filecolor=black,
-  urlcolor=black,
-}
-\usepackage{venndiagram}
-\usepackage{subcaption}
-\usepackage{centernot}
-
-\usepackage[backend=biber,style=bwl-FU,natbib=true,doi=false,isbn=false,url=false,eprint=false]{biblatex}%bwl-FU
-\addbibresource{econometrics.bib}
-
-\makeatletter
-\@ifclassloaded{beamer}{
-\usefonttheme[onlymath]{serif}
-\uselanguage{French}
-\languagepath{French}
-% Git hash
-\usepackage{xstring}
-\usepackage{catchfile}
-\immediate\write18{git rev-parse HEAD > git.hash}
-\CatchFileDef{\HEAD}{git.hash}{\endlinechar=-1}
-\newcommand{\gitrevision}{\StrLeft{\HEAD}{7}}
-}{}
-\makeatother
-
-\newcommand{\trace}{\mathrm{tr}}
-\newcommand{\vect}{\mathrm{vec}}
-\newcommand{\tracarg}[1]{\mathrm{tr}\left\{#1\right\}}
-\newcommand{\vectarg}[1]{\mathrm{vec}\left(#1\right)}
-\newcommand{\vecth}[1]{\mathrm{vech}\left(#1\right)}
-\newcommand{\iid}[2]{\mathrm{iid}\left(#1,#2\right)}
-\newcommand{\normal}[2]{\mathcal N\left(#1,#2\right)}
-\newcommand{\sample}{\mathcal Y_T}
-\newcommand{\samplet}[1]{\mathcal Y_{#1}}
-\newcommand{\slidetitle}[1]{\fancyhead[L]{\textsc{#1}}}
-
-\newcommand{\R}{{\mathbb R}}
-\newcommand{\C}{{\mathbb C}}
-\newcommand{\N}{{\mathbb N}}
-\newcommand{\Z}{{\mathbb Z}}
-\newcommand{\binomial}[2]{\begin{pmatrix} #1 \\ #2 \end{pmatrix}}
-\newcommand{\bigO}[1]{\mathcal O \left(#1\right)}
-\newcommand{\red}{\color{red}}
-\newcommand{\blue}{\color{blue}}
-
-\newcommand\gauss[2]{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))} % Gaussian probability density function.
-
-\renewcommand{\qedsymbol}{C.Q.F.D.}
-
-\newcolumntype{d}{D{.}{.}{-1}}
-\definecolor{gray}{gray}{0.9}
-\newcolumntype{g}{>{\columncolor{gray}}c}
-
-
-\makeatletter
-\@ifclassloaded{beamer}{\setbeamertemplate{theorems}[numbered]{}}{}
-\makeatother
-
-\theoremstyle{plain}
-
-\makeatletter
-\@ifclassloaded{beamer}{
-\setbeamertemplate{footline}{
-  {\hfill\vspace*{1pt}\href{http://creativecommons.org/licenses/by-sa/3.0/legalcode}{\ccbysa}\hspace{.1cm}
-    \href{https://github.com/stepan-a/econometrics/blob/\HEAD/cours/chapitre-1.tex}{\gitrevision}\enspace--\enspace\today\enspace
-  }}
-
-\makeatother
-
-
-\setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{blocks}[rounded][shadow=true]
-\setbeamertemplate{caption}[numbered]
-
-\NewEnviron{notes}{\justifying\footnotesize\begin{spacing}{1.0}\BODY\vfill\pagebreak\end{spacing}}
-
-\newenvironment{exercise}[1]
-{\bgroup \small\begin{block}{Ex. #1}}
-  {\end{block}\egroup}
-
-\newenvironment{defn}[1]
-{\bgroup \small\begin{block}{Définition. #1}}
-  {\end{block}\egroup}
-
-\newenvironment{exemple}[1]
-{\bgroup \small\begin{block}{Exemple. #1}}
-  {\end{block}\egroup}
-}{}
-
-\newtheorem{prop}{Proposition}
-\newtheorem{cor}{Corollaire}
-
-%\usepgfplotslibrary{external}
-%\tikzexternalize
-
+\newcommand{\coursfile}{chapitre-1}
+\input{preamble.tex}
 
 \begin{document}
 
 \title{Économétrie\\\small{Les MCO quand tout va bien}}
 \author[S. Adjemian]{Stéphane Adjemian}
 \institute{\texttt{stephane.adjemian@univ-lemans.fr}}
-\date{Septembre 2024}
+\date{Septembre 2025}
 
 \begin{frame}
   \titlepage{}
 \end{frame}
 
-\section{DGP et modèle empirique}
+\begin{frame}
+  \frametitle{Plan}
+  \tableofcontents
+\end{frame}
+
+\section{Le modèle de la nature et le modèle de l'économètre}
 
 \begin{frame}
   \frametitle{Le modèle de la nature}
@@ -189,7 +61,7 @@
 
   \item Les variables exogènes sont déterministes $\Leftrightarrow$
     Lorsque l'économètre s'adresse à la nature afin d'obtenir un
-    nouvel échantillon, elle lui renvoit toujours les mêmes valeurs
+    nouvel échantillon, elle lui renvoie toujours les mêmes valeurs
     pour les variables exogènes.\newline
 
   \item Dans le cas de variables exogènes non
@@ -213,21 +85,21 @@
 
   \begin{figure}
     \centering
-    \begin{subfigure}{0.4\textwidth}
+    \begin{subfigure}{0.48\textwidth}
       \scalebox{.3}{
     \input{images/chapitre-1/sample-nonstochastic-x.tex}}
     \caption{$x$ déterministe.}
     \label{fig:01:a}
   \end{subfigure}
   \hfill
-  \begin{subfigure}{0.4\textwidth}
+  \begin{subfigure}{0.48\textwidth}
     \scalebox{.3}{
     \input{images/chapitre-1/sample-stochastic-x.tex}}
     \caption{$x$ stochastique.}
     \label{fig:01:b}
   \end{subfigure}
+  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ une variable aléatoire gaussienne centrée réduite avec $\mathbb E[\varepsilon_t\varepsilon_s]=0$ si $s\neq t$. Chaque figure représente 100 échantillons de 10 observations. Les codes pour reproduire ces graphiques sont disponibles \coderef{deterministic-versus-stochastic-samples.py}.}
   \label{fig:01}
-  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ une variable alléatoire gaussienne centrée réduite avec $\mathbb E[\varepsilon_t\varepsilon_s]=0$ si $s\neq t$. Chaque figure représente 100 échantillons de 10 observations. Les codes pour reproduire ces graphiques sont disponibles \href{https://mnemosyne.ithaca.fr/stephane/econometrics/-/blob/\HEAD/cours/codes/chapitre-1/deterministic-versus-stochastic-samples.py}{ici}.}
 \end{figure}
 \end{frame}
 
@@ -249,7 +121,7 @@
         x_{1,1} & x_{2,1} & \dots & x_{K,1} \\
         x_{1,2} & x_{2,2} & \dots & x_{K,2} \\
         \vdots  & \vdots  &       & \vdots  \\
-        x_{1,T} & x_{2,2} & \dots & x_{K,T} \\
+        x_{1,T} & x_{2,T} & \dots & x_{K,T} \\
       \end{pmatrix}
     \]
     une matrice $T\times K$.\newline
@@ -285,6 +157,48 @@
 \end{frame}
 
 
+\begin{notes}
+
+  \begin{itemize}
+
+  \item L'hypothèse $\mathcal H_1$ est commode mais irréaliste~: dès que le modèle est
+    dynamique (une variable retardée parmi les régresseurs), elle n'a tout simplement
+    pas de sens. Nous la lèverons au chapitre 3.\newline
+
+  \item L'hypothèse $\mathcal H_2$ demande deux choses distinctes. D'abord que $X$ soit
+    de plein rang, faute de quoi $X'X$ n'est pas inversible et $\hat{\mathbf b}$ n'est
+    pas défini. Ensuite que $\nicefrac{X'X}{T}$ converge vers une matrice définie
+    positive~: c'est ce second point qui assure que l'information sur $\beta$
+    s'accumule au même rythme que les observations.\newline
+
+  \item Cette seconde exigence est plus forte qu'il n'y paraît. Considérons un modèle à
+    tendance déterministe~:
+    \[
+      y_t = \alpha_0 + \alpha_1 t + \varepsilon_t
+    \]
+    La matrice des régresseurs est $X = \begin{pmatrix} \iota & t\end{pmatrix}$ et on a~:
+    \[
+      X'X =
+      \begin{pmatrix}
+        T                 & \frac{T(T+1)}{2}\\[2pt]
+        \frac{T(T+1)}{2}  & \frac{T(T+1)(2T+1)}{6}
+      \end{pmatrix}
+    \]
+    Les éléments de $\nicefrac{X'X}{T}$ divergent (le terme en bas à droite croît
+    comme $T^2$)~: la limite $Q$ n'existe pas. L'hypothèse $\mathcal H_2$ est
+    violée.\newline
+
+  \item Et pourtant l'estimateur des MCO reste sans biais et converge vers $\alpha$~! La
+    tendance apporte même de l'information \guillemotleft plus vite \guillemotright{}
+    que $T$, si bien que $\hat\alpha_1$ converge plus rapidement que le taux usuel
+    en $\nicefrac{1}{\sqrt T}$. $\mathcal H_2$ est donc une condition suffisante
+    commode, pas une condition nécessaire.
+
+  \end{itemize}
+
+\end{notes}
+
+
 \begin{frame}
   \frametitle{Le modèle de l'économètre}
   \framesubtitle{Pas de mauvaise spécification}
@@ -312,6 +226,103 @@
 
 \end{frame}
 
+
+\begin{frame}
+  \frametitle{Le modèle de l'économètre}
+  \framesubtitle{Un exemple qui nous suivra tout au long du chapitre}
+
+  \begin{exemple}{Équation de salaire}
+    On cherche à mesurer le rendement de l'éducation. Pour l'individu $i$~:
+    \[
+      \underbrace{\log w_i}_{y_i} = \beta_1 + \beta_2 \underbrace{educ_i}_{x_{2,i}}
+      + \beta_3 \underbrace{exper_i}_{x_{3,i}} + \beta_4 \underbrace{exper_i^2}_{x_{4,i}}
+      + \varepsilon_i
+    \]
+    où $w_i$ est le salaire horaire, $educ_i$ le nombre d'années d'études
+    et $exper_i$ le nombre d'années d'expérience professionnelle.
+  \end{exemple}
+
+  \bigskip
+
+  \begin{itemize}
+
+  \item Ici $K=4$ et $T$ est le nombre d'individus de l'échantillon.\newline
+
+  \item Le modèle est \underline{linéaire en $\beta$}, ce qui suffit~: $exper^2$ est une
+    variable explicative comme une autre.\newline
+
+  \item $\varepsilon_i$ contient tout ce qui influence le salaire sans figurer dans le
+    modèle~: le talent, la qualité de l'école, la chance. \textbf{Retenons-le~: c'est de
+    là que viendront tous les ennuis des chapitres 2 et 3.}
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Le modèle de l'économètre}
+  \framesubtitle{Que mesure un coefficient~?}
+
+  \begin{itemize}
+
+  \item Le coefficient $\beta_k$ est l'effet marginal de $x_k$ sur l'espérance de $y$,
+    \underline{les autres variables explicatives étant maintenues constantes}~:
+    \[
+      \beta_k = \frac{\partial \mathbb E\left[ y \mid \mathbf x \right]}{\partial x_k}
+    \]
+    \medskip
+
+  \item La lecture dépend de la forme retenue~:
+    \begin{itemize}
+    \item $y$ et $x$ en niveau~: $\beta_k$ est une variation de $y$ par unité de $x$.
+    \item $y$ en log, $x$ en niveau~: $100\,\beta_k$ est une variation en \emph{pourcentage}
+      de $y$ par unité de $x$.
+    \item $y$ et $x$ en log~: $\beta_k$ est une \emph{élasticité}.
+    \end{itemize}
+    \medskip
+
+  \item Attention aux termes non linéaires. Dans l'équation de salaire, l'effet d'une
+    année d'expérience supplémentaire n'est pas $\beta_3$ mais~:
+    \[
+      \frac{\partial \mathbb E\left[ \log w \mid \mathbf x \right]}{\partial exper}
+      = \beta_3 + 2\beta_4\, exper
+    \]
+    Si $\beta_4<0$, le profil est concave~: l'expérience rapporte de moins en moins.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item La clause \guillemotleft toutes choses égales par ailleurs \guillemotright{} est
+    le c\oe ur de l'interprétation d'une régression multiple, et c'est aussi ce que les
+    étudiants oublient le plus souvent. $\beta_2$ ne compare pas le salaire moyen des
+    diplômés à celui des non-diplômés~: il compare deux individus qui ont \emph{la même}
+    expérience et ne diffèrent que par une année d'études.\newline
+
+  \item Justification de la lecture en pourcentage~: si $\log w = \beta_1 + \beta_2 educ
+    + \dots$, alors $\nicefrac{\partial w}{w} = \beta_2\, \partial educ$. Une année
+    d'études supplémentaire multiplie le salaire par $e^{\beta_2}\simeq 1+\beta_2$ pour
+    des valeurs de $\beta_2$ petites. L'approximation se dégrade au-delà de $0{,}2$~:
+    l'effet exact est $e^{\beta_2}-1$.\newline
+
+  \item \textbf{Rien de tout cela n'est causal.} L'interprétation \guillemotleft toutes
+    choses égales par ailleurs \guillemotright{} porte sur le modèle empirique, pas sur
+    le monde. Elle n'est valide que si $\mathcal H_1$ à $\mathcal H_3$ tiennent, en
+    particulier si les variables omises (le talent) ne sont pas corrélées aux variables
+    incluses (l'éducation). C'est précisément l'objet du chapitre 2.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\section{L'estimateur des Moindres Carrés Ordinaires}
 
 \begin{frame}
   \frametitle{Estimateur des Moindres Carrés Ordinaires}
@@ -370,7 +381,7 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
 
 \begin{frame}
   \frametitle{Estimateur des Moindres Carrés Ordinaires}
-  \framesubtitle{Remarques sur le théorème \ref{thm:ols}}
+  \framesubtitle{Remarques sur le théorème~\ref{thm:ols}}
 
   \begin{itemize}
 
@@ -390,6 +401,53 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
   \end{itemize}
 
 \end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Les courbes de niveau de l'objectif}
+
+  \begin{center}
+    \scalebox{.86}{\input{images/chapitre-1/objectif-mco.tex}}
+  \end{center}
+
+  \medskip
+
+  {\small La forme des courbes de niveau de $\mathcal S$ est celle de $X'X$. Plus
+    elles sont aplaties, plus il faut se déplacer loin de $\hat{\mathbf b}$ pour
+    dégrader l'ajustement~: l'objectif discrimine mal, et l'estimateur sera imprécis.}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item La décomposition $\mathcal S(\mathbf b) = \mathcal S(\hat{\mathbf b}) +
+    \left(\mathbf b - \hat{\mathbf b}\right)' X'X \left(\mathbf b - \hat{\mathbf b}\right)$
+    dit que les courbes de niveau de l'objectif sont des ellipses centrées
+    sur $\hat{\mathbf b}$, dont la forme est entièrement déterminée par $X'X$.\newline
+
+  \item Les axes de ces ellipses sont les vecteurs propres de $X'X$ et leur longueur
+    varie comme l'inverse de la racine des valeurs propres. Si toutes les valeurs
+    propres sont du même ordre, les courbes de niveau sont presque circulaires. Si
+    l'une d'elles est proche de zéro, elles s'allongent en cigare.\newline
+
+  \item C'est déjà, sous forme géométrique, le résultat
+    $\mathbb V[\hat{\mathbf b}] = \sigma_{\varepsilon}^2 (X'X)^{-1}$ que nous
+    établirons plus loin~: dans la direction où l'objectif est plat, une petite
+    perturbation de $\mathbf y$ déplace beaucoup le minimum. La variance de
+    l'estimateur est grande précisément dans cette direction.\newline
+
+  \item Retenons la lecture en termes de signal et de bruit~: $X'X$ mesure la
+    variabilité des variables explicatives (le signal), $\sigma_{\varepsilon}^2$ celle
+    des perturbations (le bruit). L'estimation est d'autant plus précise que le signal
+    est fort relativement au bruit.
+
+  \end{itemize}
+
+\end{notes}
 
 
 % EXEMPLE
@@ -425,7 +483,7 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
 \begin{notes}
   \begin{itemize}
 
-  \item \textbf{Preuve de la proposition \ref{prop:orthogonal_residuals}.} En partant de la CNO pour $\hat{\mathbf b}$~:
+  \item \textbf{Preuve de la proposition~\ref{prop:orthogonal_residuals}.} En partant de la CNO pour $\hat{\mathbf b}$~:
   \[
     -2X'\mathbf y + 2 X'X \hat{\mathbf b} = 0
   \]
@@ -435,7 +493,7 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
     \]
     soit par définition des résidus estimés~:  $X'\hat\epsilon = 0$ \qed\newline
 
-    \item \textbf{Preuve du corollaire \ref{cor:zero_mean_residuals}.} Supposons, sans perte de généralité, que les éléments de la première colonne de $X$ soit tous égaux à 1. Le premier élément du vecteur $K\times 1$ $X'\hat\epsilon$ est alors~:
+    \item \textbf{Preuve du corollaire~\ref{cor:zero_mean_residuals}.} Supposons, sans perte de généralité, que les éléments de la première colonne de $X$ soit tous égaux à 1. Le premier élément du vecteur $K\times 1$ $X'\hat\epsilon$ est alors~:
     \[
       \begin{pmatrix}
         1 & 1 & \ldots & 1
@@ -449,11 +507,78 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
     \]
     qui doit être égal à zéro.\qed\newline
 
-  \item Le corollaire \ref{cor:zero_mean_residuals} implique en particulier que les
+  \item Le corollaire~\ref{cor:zero_mean_residuals} implique en particulier que les
       résidus sont nécessairement de moyenne nulle dès lors que le modèle contient
       une constante.
 
   \end{itemize}
+\end{notes}
+
+
+\begin{frame}[c]
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Interprétation géométrique}
+
+  \begin{center}
+    \scalebox{.82}{\input{images/chapitre-1/projection-orthogonale.tex}}
+  \end{center}
+
+  \medskip
+
+  {\small Les MCO projettent orthogonalement $\mathbf y$ sur le sous-espace
+    $\mathcal V(X)$ engendré par les $K$ colonnes de $X$.}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item Cette figure est la clé de lecture de tout ce qui suit. Le vecteur $\mathbf y$
+    vit dans $\mathbb R^T$. Les combinaisons linéaires $X\mathbf b$ des colonnes
+    de $X$ décrivent un sous-espace $\mathcal V(X)$ de dimension $K$ (le plan sur la
+    figure, puisqu'on y a représenté $K=2$ régresseurs). Minimiser
+    $(\mathbf y-X\mathbf b)'(\mathbf y-X\mathbf b)$, c'est chercher le point de ce
+    sous-espace le plus proche de $\mathbf y$ au sens de la distance euclidienne~:
+    c'est le projeté orthogonal de $\mathbf y$ sur $\mathcal V(X)$.\newline
+
+  \item On lit directement sur la figure quatre résultats déjà démontrés
+    algébriquement~:
+    \begin{itemize}
+    \item $\hat\epsilon$ est orthogonal au plan, donc à chacune de ses directions
+      génératrices~: $X'\hat\epsilon = 0$, c'est la proposition
+      \ref{prop:orthogonal_residuals}.\newline
+    \item Le triangle $(O, \hat{\mathbf y}, \mathbf y)$ est rectangle en
+      $\hat{\mathbf y}$. Le théorème de Pythagore donne
+      $\mathbf y'\mathbf y = \hat{\mathbf y}'\hat{\mathbf y} + \hat\epsilon'\hat\epsilon$,
+      c'est-à-dire le lemme utilisé pour établir la proposition
+      \ref{prop:SST_SSR_SSE}.\newline
+    \item Si le modèle contient une constante, le vecteur $\iota=(1,\dots,1)'$
+      appartient à $\mathcal V(X)$. En raisonnant sur les vecteurs centrés
+      $\mathbf y - \bar y\iota$ et $\hat{\mathbf y}-\bar y\iota$, le même théorème de
+      Pythagore donne $SST = SSR + SSE$.\newline
+    \item Enfin $\cos\theta = \nicefrac{\|\hat{\mathbf y}\|}{\|\mathbf y\|}$, si bien
+      qu'après centrage $\cos^2\theta = \nicefrac{SSR}{SST} = R^2$. Le coefficient de
+      détermination est le carré du cosinus de l'angle entre la variable expliquée et
+      sa prédiction~: c'est exactement le point (3) de la proposition
+      \ref{prop:r2}.
+    \end{itemize}
+    \medskip
+
+  \item Cette lecture éclaire aussi l'hypothèse $\mathcal H_2$. Si les colonnes
+    de $X$ étaient linéairement dépendantes, elles n'engendreraient pas un sous-espace
+    de dimension $K$~: la projection $\hat{\mathbf y}$ resterait unique, mais les
+    coordonnées $\hat{\mathbf b}$ qui la décrivent ne le seraient plus.\newline
+
+  \item Elle éclaire enfin la géométrie de la précision~: plus les colonnes de $X$
+    sont \guillemotleft proches \guillemotright{} les unes des autres (angle faible
+    entre $\mathbf x_1$ et $\mathbf x_2$), plus les coordonnées de $\hat{\mathbf y}$
+    dans cette base sont sensibles à un petit déplacement de $\mathbf y$. C'est la
+    multicolinéarité, étudiée au chapitre 2.
+
+  \end{itemize}
+
 \end{notes}
 
 \begin{frame}
@@ -471,7 +596,7 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
     \]
   \end{defn}
 
-  \bigskip
+  \medskip
 
   \begin{prop}\label{prop:SST_SSR_SSE}
     Si les variables explicatives contiennent une constante alors~:
@@ -501,7 +626,7 @@ car $X'X$ est de plein rang par $\mathcal H_2$.}\qed
     \]
 où on passe à la troisième égalité en notant qu'un scalaire est égal à sa transposée, puis à la quatrième en utilisant la CNO pour $\hat{\mathbf b}$ qui nous dit que $X'\mathbf y = X'X \hat{\mathbf b}$.\qed\newline
 
-\item \textbf{Preuve de la proposition \ref{prop:SST_SSR_SSE}.} On sait, voir le lemme donné au dessus, que~:
+\item \textbf{Preuve de la proposition~\ref{prop:SST_SSR_SSE}.} On sait, voir le lemme donné au dessus, que~:
   \[
     \mathbf y'\mathbf y = \hat{\mathbf y}' \hat{\mathbf y} + \hat\epsilon'\hat\epsilon
   \]
@@ -574,13 +699,13 @@ Ainsi, nous avons finalement~:
 
 \begin{notes}
   \begin{itemize}
-  \item \textbf{Preuve de la proposition \ref{prop:r2}.} \textbf{(1)} En utilisant la proposition \ref{prop:SST_SSR_SSE} on a~:
+  \item \textbf{Preuve de la proposition~\ref{prop:r2}.} \textbf{(1)} En utilisant la proposition~\ref{prop:SST_SSR_SSE} on a~:
     \[
       \frac{SSR}{SST} = \frac{SST-SSE}{SST} = 1 - \frac{SSE}{SST}
     \]
     \textbf{(2)} Comme $SSR$ et $SST$ sont des sommes de carrés, le $R^2$ ne peut-être négatif. Comme, pour la même raison, $\frac{SSE}{SST}\geq 0$ le $R^2$ ne peut être supérieur à 1. \textbf{(3)} La corrélation entre $y$ et $\hat y$ est définie par~:
     \[
-      \mathtt{corr}(y,\hat y) = \frac{\mathtt{cov(y,\hat y)}}{\sqrt{\mathbb V[y]\mathbb V[\hat y]}}
+      \mathtt{corr}(y,\hat y) = \frac{\mathtt{cov}(y,\hat y)}{\sqrt{\mathbb V[y]\mathbb V[\hat y]}}
     \]
     La variance de la variable expliquée est~:
     \[
@@ -597,7 +722,7 @@ Ainsi, nous avons finalement~:
     En développant sous la somme~:
     \[
       \begin{split}
-        \mathtt{cov}(y,\hat y) &= \frac{1}{T}\sum_{t=1}^T y_t\hat y_t - \bar y y_t - \bar y \hat y_t + \bar y^2\\
+        \mathtt{cov}(y,\hat y) &= \frac{1}{T}\sum_{t=1}^T \left(y_t\hat y_t - \bar y y_t - \bar y \hat y_t + \bar y^2\right)\\
                                &= \frac{1}{T}\sum_{t=1}^T y_t\hat y_t - \bar y^2
       \end{split}
     \]
@@ -629,9 +754,41 @@ Ainsi, nous avons finalement~:
 
   \item Les prédictions \textit{in-sample} ($\hat{\mathbf y}$) sont d'autant meilleures (proches de $\mathbf y$) que le $R^2$ est proche de 1.\newline
 
+  \item Le $R^2$ ne peut pas diminuer quand on ajoute un régresseur, même sans lien
+    avec $y$ $\Rightarrow$ on lui préfère souvent le $R^2$ ajusté~:
+    \[
+      \bar R^2 = 1 - \frac{\nicefrac{SSE}{(T-K)}}{\nicefrac{SST}{(T-1)}}
+               = 1 - \left( 1-R^2 \right)\frac{T-1}{T-K}
+    \]
+
   \end{itemize}
 
 \end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item Pourquoi le $R^2$ ne peut-il pas diminuer~? Ajouter une colonne à $X$ agrandit
+    le sous-espace $\mathcal V(X)$ sur lequel on projette. Le minimum d'une somme de
+    carrés sur un ensemble plus grand ne peut pas être plus élevé~: $SSE$ décroît, donc
+    le $R^2$ croît. À la limite, avec $K=T$ régresseurs, on obtient $R^2=1$ et des
+    résidus tous nuls, sans avoir rien appris.\newline
+
+  \item Le $R^2$ ajusté corrige les sommes de carrés par leurs degrés de liberté.
+    Ajouter un régresseur fait baisser $SSE$ mais aussi $T-K$~: le $\bar R^2$ n'augmente
+    que si le gain d'ajustement dépasse le coût en degré de liberté. On montre qu'il
+    augmente si et seulement si la statistique de Student du coefficient ajouté est
+    supérieure à 1 en valeur absolue -- un critère nettement plus laxiste que le seuil
+    de significativité usuel.\newline
+
+  \item Contrairement au $R^2$, le $\bar R^2$ \textbf{peut être négatif}. Ce n'est plus
+    une part de variance expliquée, seulement un critère de sélection.
+
+  \end{itemize}
+
+\end{notes}
 
 
 \begin{frame}
@@ -667,10 +824,23 @@ Ainsi, nous avons finalement~:
 
   \begin{figure}
     \centering
-    \scalebox{.5}{
+    \scalebox{.44}{
       \input{images/chapitre-1/anscombe.tex}}
-    \label{fig:02}
     \caption{Les quatre échantillons d'\cite{Anscombe1973}}
+    \label{fig:02}
+  \end{figure}
+
+\end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Ce que le $R^2$ ne dit pas}
+
+  \begin{figure}
+    \centering
+    \scalebox{.46}{\input{images/chapitre-1/r2-trompeur.tex}}
+    \caption{$y_t = 1 + 0{,}5\,x_t + \varepsilon_t$ dans les deux cas ($T=400$)~; seule la variance des perturbations change. \textbf{Un $R^2$ faible ne signifie pas que $x$ est sans effet sur $y$}~: la pente est ici tout aussi significative à gauche qu'à droite. Codes \coderef{r2-trompeur.py}.}
   \end{figure}
 
 \end{frame}
@@ -685,7 +855,7 @@ Ainsi, nous avons finalement~:
 
   \item L'estimateur $\hat{\mathbf b}$ est une fonction de $X$ (supposé déterministe) et $\mathbf y$ (aléatoire).\newline
 
-  \item[$\Rightarrow$] L'estimateur $\hat{\mathbf b}$ est une variable aléaoire.\newline
+  \item[$\Rightarrow$] L'estimateur $\hat{\mathbf b}$ est une variable aléatoire.\newline
 
   \item[$\Rightarrow$] L'estimateur $\hat{\mathbf b}$ est toujours différent de $\beta$ (sauf si $T\rightarrow\infty$).\newline
 
@@ -704,7 +874,7 @@ Ainsi, nous avons finalement~:
 
 \begin{notes}
 
-  \textbf{Preuve de la proposition \ref{prop:biais-variance}}. Pour étudier les propriétés de l'estimateur des MCO, il faut substituer le processus générateur des données dans l'expression de l'estimateur. On a~:
+  \textbf{Preuve de la proposition~\ref{prop:biais-variance}}. Pour étudier les propriétés de l'estimateur des MCO, il faut substituer le processus générateur des données dans l'expression de l'estimateur. On a~:
   \[
     \begin{split}
       \hat{\mathbf b} &= (X'X)^{-1}X'\mathbf y\\
@@ -724,7 +894,7 @@ Ainsi, nous avons finalement~:
   \[
     \mathbb V\left[ \hat{\mathbf b} \right] = \mathbb E\left[\left( \hat{\mathbf b}- \bm\beta \right)\left( \hat{\mathbf b}- \bm\beta \right)'\right]
   \]
-  une matrice $K\times K$. En substituant l'espression de l'estimateur en fonction de $\varepsilon$, on obtient~:
+  une matrice $K\times K$. En substituant l'expression de l'estimateur en fonction de $\varepsilon$, on obtient~:
 \[
     \begin{split}
       \mathbb V\left[ \hat{\mathbf b} \right] &= \mathbb E\left[ \left( (X'X)^{-1}X'\varepsilon \right)\left( (X'X)^{-1}X'\varepsilon \right)' \right]\\
@@ -753,7 +923,7 @@ Puisque $X$ est déterministe~:
   \begin{itemize}
   \item L'estimateur des MCO est d'autant moins précis (sa variance est d'autant plus grande) que la variance des erreurs $\varepsilon$ est importante.\newline
 
-  \item L'esimateur des MCO est d'autant moins précis que la variabilité des variables explicatives, la matrice $X'X$ \guillemotleft petite\guillemotright, est faible.\newline
+  \item L'estimateur des MCO est d'autant moins précis que la variabilité des variables explicatives, la matrice $X'X$ \guillemotleft petite\guillemotright, est faible.\newline
 
   \item[$\Rightarrow$] Il est plus facile d'identifier l'effet d'une variable explicative sur $y$ si le signal (la variance de la variable explicative) est important relativement au bruit ($\sigma_{\varepsilon}^2$).
   \end{itemize}
@@ -767,22 +937,35 @@ Puisque $X$ est déterministe~:
 
   \begin{figure}
     \centering
-    \begin{subfigure}{0.4\textwidth}
+    \begin{subfigure}{0.48\textwidth}
       \scalebox{.3}{
     \input{images/chapitre-1/slope-estimate-sample-nonstochastic-x.tex}}
     \caption{$x$ déterministe.}
-    \label{fig:01:a}
+    \label{fig:slope:a}
   \end{subfigure}
   \hfill
-  \begin{subfigure}{0.4\textwidth}
+  \begin{subfigure}{0.48\textwidth}
     \scalebox{.3}{
     \input{images/chapitre-1/slope-estimate-sample-stochastic-x.tex}}
     \caption{$x$ stochastique.}
-    \label{fig:01:b}
+    \label{fig:slope:b}
   \end{subfigure}
-  \label{fig:01}
-  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène (déterministe ou stochastique) prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ un bruit blanc gaussien. On simule 100000  échantillons de 10 observations, pour chaque échantillon on estime le modèle empirique $y_t = b_0 + b_1 x_t + \epsilon_t$. Chaque figure représente la distribution (avec un histogramme) de l'esimateur $\hat b_1$. Comme attendu,  $\hat b_1$ est centré sur 1, la vrai valeur de la pente.  Les codes pour reproduire ces graphiques sont disponibles \href{https://mnemosyne.ithaca.fr/stephane/econometrics/-/blob/\HEAD/cours/codes/chapitre-1/estimator-with-deterministic-versus-stochastic-samples.py}{ici}.}
+  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène (déterministe ou stochastique) prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ un bruit blanc gaussien. On simule 100000  échantillons de 10 observations, pour chaque échantillon on estime le modèle empirique $y_t = b_0 + b_1 x_t + \epsilon_t$. Chaque figure représente la distribution (avec un histogramme) de l'estimateur $\hat b_1$. Comme attendu,  $\hat b_1$ est centré sur 1, la vraie valeur de la pente.  Les codes pour reproduire ces graphiques sont disponibles \coderef{estimator-with-deterministic-versus-stochastic-samples.py}.}
+  \label{fig:slope}
 \end{figure}
+\end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Signal contre bruit}
+
+  \begin{figure}
+    \centering
+    \scalebox{.46}{\input{images/chapitre-1/signal-bruit.tex}}
+    \caption{$y_t = 1 + 0{,}5\,x_t + \varepsilon_t$, $\varepsilon$ d'écart-type $2$~; droites estimées sur $60$ échantillons de $25$ observations. Seule change la dispersion de $x$. Le faisceau se resserre à droite~: c'est $\mathbb V[\hat{\mathbf b}] = \sigma_{\varepsilon}^2 (X'X)^{-1}$ vu sur les données. Les codes pour reproduire ce graphique sont disponibles \coderef{signal-bruit.py}.}
+  \end{figure}
+
 \end{frame}
 
 
@@ -801,16 +984,63 @@ Puisque $X$ est déterministe~:
 \end{frame}
 
 
+\begin{frame}[c]
+  \frametitle{Estimateur des Moindres Carrés Ordinaires}
+  \framesubtitle{Gauss-Markov, vu sur les données}
+
+  \begin{figure}
+    \centering
+    \scalebox{.46}{\input{images/chapitre-1/gauss-markov.tex}}
+    \caption{$y_t = 1 + x_t + \varepsilon_t$, $50000$ échantillons de $20$ observations. L'estimateur \guillemotleft en deux points \guillemotright{} est linéaire et sans biais, mais nettement plus dispersé que les MCO~: c'est le théorème~\ref{thm:Gauss-Markov}. Les codes pour reproduire ce graphique sont disponibles \coderef{gauss-markov.py}.}
+  \end{figure}
+
+\end{frame}
+
+
 \begin{notes}
 
-  \textbf{Preuve de la proposition \ref{thm:Gauss-Markov}}. Nous avons déjà montré que $\hat{\mathbf b}$ est un estimateur sans biais de $\beta$. Soit un estimateur linéaire en $\mathbf y$~: $\tilde{\mathbf b} = C \mathbf y$ avec, sans perte de généralité, $C = (X'X)^{-1}X'' + D$. L'absence de biais pose des contraintes sur la matrice $D$~:
+  \begin{itemize}
+
+  \item L'estimateur \guillemotleft en deux points \guillemotright{} partage
+    l'échantillon selon la médiane de $x$, puis estime la pente par~:
+    \[
+      \tilde b_1 = \frac{\bar y_{\text{haut}} - \bar y_{\text{bas}}}
+                        {\bar x_{\text{haut}} - \bar x_{\text{bas}}}
+    \]
+    C'est bien un estimateur \underline{linéaire} en $\mathbf y$ (les poids ne dépendent
+    que de $x$, déterministe) et \underline{sans biais}. Il entre donc exactement dans
+    la classe couverte par le théorème~\ref{thm:Gauss-Markov}.\newline
+
+  \item Il est pourtant nettement moins précis, parce qu'il jette de l'information~:
+    il ne retient de chaque moitié d'échantillon que sa moyenne, alors que les MCO
+    exploitent la position de chaque observation.\newline
+
+  \item Le théorème de Gauss-Markov dit qu'aucun estimateur de cette classe ne peut
+    faire mieux que les MCO. Il ne dit \textbf{pas} qu'aucun estimateur ne peut faire
+    mieux~: en acceptant un peu de biais, on peut réduire l'erreur quadratique moyenne
+    (c'est ce que nous avons vu pour l'estimateur de $\sigma_{\varepsilon}^2$).\newline
+
+  \item Remarquons enfin ce dont Gauss-Markov n'a pas besoin~: la normalité des
+    perturbations. Seules $\mathcal H_1$ et $\mathcal H_2$ ainsi que
+    $\mathbb E[\varepsilon]=0$ et $\mathbb V[\varepsilon]=\sigma_{\varepsilon}^2 I_T$
+    sont utilisées. La normalité ne servira que pour les distributions exactes et les
+    tests.
+
+  \end{itemize}
+
+\end{notes}
+
+
+\begin{notes}
+
+  \textbf{Preuve du théorème~\ref{thm:Gauss-Markov}}. Nous avons déjà montré que $\hat{\mathbf b}$ est un estimateur sans biais de $\beta$. Soit un estimateur linéaire en $\mathbf y$~: $\tilde{\mathbf b} = C \mathbf y$ avec, sans perte de généralité, $C = (X'X)^{-1}X' + D$. L'absence de biais pose des contraintes sur la matrice $D$~:
   \[
     \begin{split}
       \mathbb E\left[\tilde{\mathbf b}\right] &= \mathbb E\left[\left( (X'X)^{-1}X'+D \right)\left( X\beta + \varepsilon \right)\right]\\
       &= \beta + DX\beta
     \end{split}
   \]
-  pour que l'estimateur $\tilde{\mathbf b}$ soit non biaisé, il faut et il suffit que la matrice $DX$ soit nulle. Calculons la variance de cet estimateur et montrons qu'elle est plus grande que la variance de l'estimateur des MCO, dans le sens où la matrice $\mathbb V\left[\tilde{\mathbf b}\right] - \mathbb V\left[\hat{\mathbf b}\right]$ est définie positive. Si $\tilde{\mathbf b}$ est sans biais, on a~:
+  pour que l'estimateur $\tilde{\mathbf b}$ soit non biaisé, il faut et il suffit que la matrice $DX$ soit nulle. Calculons la variance de cet estimateur et montrons qu'elle est plus grande que la variance de l'estimateur des MCO, dans le sens où la matrice $\mathbb V\left[\tilde{\mathbf b}\right] - \mathbb V\left[\hat{\mathbf b}\right]$ est semi-définie positive. Si $\tilde{\mathbf b}$ est sans biais, on a~:
   \[
     \begin{split}
       \mathbb V\left[\tilde{\mathbf b}\right] &= \mathbb E\left[\left( \tilde{\mathbf b}-\beta \right)\left( \tilde{\mathbf b}-\beta \right)'\right] \\
@@ -822,7 +1052,7 @@ Puisque $X$ est déterministe~:
                                               &= \mathbb V\left[\hat{\mathbf b}\right] + \sigma_{\varepsilon}^2 DD'
     \end{split}
   \]
-Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}$ est plus grande que celle de $\hat{\mathbf b}$. L'estimateur des MCO est donc bien le meilleur, au sens de la réduction de la variance, estimateur linéaire sans biais de $\beta$.\qed
+Comme $DD'$ est une matrice semi-définie positive, la variance de $\tilde{\mathbf b}$ ne peut être plus petite que celle de $\hat{\mathbf b}$ (les deux variances coïncident si et seulement si $D=0$, c'est-à-dire si $\tilde{\mathbf b}=\hat{\mathbf b}$). L'estimateur des MCO est donc bien le meilleur, au sens de la réduction de la variance, estimateur linéaire sans biais de $\beta$.\qed
 \end{notes}
 
 
@@ -842,7 +1072,7 @@ Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}
 
   \begin{itemize}
 
-  \item Ce résultat nous dit que la probabilité d'observer une différence arbitrairement petite entre l' estimateur des MCO et $\beta$ tend vers zéro quand la taille de l'échantillon tend vers l'infini.\newline
+  \item Ce résultat nous dit que, pour un seuil $\eta>0$ aussi petit que l'on veut, la probabilité d'observer un écart supérieur à $\eta$ entre l'estimateur des MCO et $\beta$ tend vers zéro quand la taille de l'échantillon tend vers l'infini.\newline
 
   \item La distribution de l'estimateur $\hat{\mathbf b}$ se concentre autour de $\beta$ quand la taille de l'échantillon tend vers l'infini.
 
@@ -858,16 +1088,16 @@ Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}
 
   \begin{figure}
     \centering
-      \scalebox{.425}{
+      \scalebox{.40}{
     \input{images/chapitre-1/ols-convergence.tex}}
-  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène déterministe prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ un bruit blanc gaussien. On simule 100000  échantillons de 10, 100 ou 1000 observations, pour chaque échantillon on estime le modèle empirique $y_t = b_0 + b_1 x_t + \epsilon_t$. Chaque figure représente la distribution de l'esimateur $\hat b_1$. Les codes pour reproduire ces graphiques sont disponibles \href{https://mnemosyne.ithaca.fr/stephane/econometrics/-/blob/\HEAD/cours/codes/chapitre-1/ols-convergence.py}{ici}.}
+  \caption{Le modèle de la nature est $y_t = x_t + \varepsilon_t$ avec $x_t$ une variable exogène déterministe prenant des valeurs dans l'intervalle $[0,10]$ et $\varepsilon_t$ un bruit blanc gaussien. On simule 100000  échantillons de 10, 100 ou 1000 observations, pour chaque échantillon on estime le modèle empirique $y_t = b_0 + b_1 x_t + \epsilon_t$. Chaque figure représente la distribution de l'estimateur $\hat b_1$. Les codes pour reproduire ces graphiques sont disponibles \coderef{ols-convergence.py}.}
 \end{figure}
 \end{frame}
 
 
 \begin{notes}
 
-  \textbf{Preuve de la proposition \ref{prop:mco:convergence}.} Nous savons déjà que l'estimateur est sans biais, pour toute dimension de l'échantillon. Pour établir la convergence en probabilité de l'estimateur vers $\beta$, il suffit de montrer que sa variance tend vers 0 quand $T$ tend vers l'infini. Par $\mathcal H_2$, nous savons que~:
+  \textbf{Preuve de la proposition~\ref{prop:mco:convergence}.} Nous savons déjà que l'estimateur est sans biais, pour toute dimension de l'échantillon. Pour établir la convergence en probabilité de l'estimateur vers $\beta$, il suffit de montrer que sa variance tend vers 0 quand $T$ tend vers l'infini. Par $\mathcal H_2$, nous savons que~:
 \[
       \lim_{T\rightarrow\infty} \frac{X'X}{T} = Q
     \]
@@ -910,7 +1140,10 @@ Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}
 
   \item La matrice $M$ est symétrique et idempotente~:
     \[
-      M' = I - \left( X(X'X)^{-1}X' \right) = I - X(X'X)^{-1}X = M
+      \begin{split}
+        M' &= \left( I - X(X'X)^{-1}X' \right)' = I - \left( X(X'X)^{-1}X' \right)'\\
+           &= I - X\left((X'X)^{-1}\right)'X' = I - X(X'X)^{-1}X' = M
+      \end{split}
     \]
     \[
       M'M = I-2X(X'X)^{-1}X'+\underbrace{X(X'X)^{-1}X'X(X'X)^{-1}X'}_{X(X'X)^{-1}X'}= M
@@ -969,7 +1202,7 @@ Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}
 
   \item Même si la matrice de variance covariance de $\varepsilon$ est diagonale, les résidus estimés sont corrélés (car la matrice $M$ n'est pas diagonale).\newline
 
-  \item La normalité de $\varepsilon$ implique la normalité de $\hat\epsilon$, \underline{\textbf{mais}} la distribution de $\hat\epsilon$ est dégénére (sa variance n'est pas de plein rang)... Nous ne sommes pas surpris puisque nous avons déjà montré que la somme des résidus estimés doit être nulle (déterministe).\newline
+  \item La normalité de $\varepsilon$ implique la normalité de $\hat\epsilon$, \underline{\textbf{mais}} la distribution de $\hat\epsilon$ est dégénérée (sa variance n'est pas de plein rang)... Nous ne sommes pas surpris puisque nous avons déjà montré que la somme des résidus estimés doit être nulle (déterministe).\newline
 
   \item On peut aussi exprimer la somme des carrés des résidus estimés comme une fonction de $\varepsilon$~:
     \[
@@ -1011,7 +1244,7 @@ Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}
 \begin{notes}
   \begin{itemize}
 
-  \item \textbf{Preuve de la proposition \ref{prop:sse:expectation}.} On a~:
+  \item \textbf{Preuve de la proposition~\ref{prop:sse:expectation}.} On a~:
     \[
       \begin{split}
         \mathbb E[SSE] &= \mathbb E [\varepsilon' M \varepsilon]\\
@@ -1026,12 +1259,12 @@ Comme $DD'$ est une matrice définie positive, la variance de $\tilde{\mathbf b}
 
 \medskip
 
-En passant, notons que $\frac{SSE}{T}$, qui nous le verrons plus loin est l'estimateur du maximum de vraisemblance, est un estimateur biaisé à distance finie. Asymptotiquement, il n'y a cependant pas de différence entre l'estimateur du maximum de vraisemblance est $s^2$.\newline
+En passant, notons que $\frac{SSE}{T}$, qui nous le verrons plus loin est l'estimateur du maximum de vraisemblance, est un estimateur biaisé à distance finie. Asymptotiquement, il n'y a cependant pas de différence entre l'estimateur du maximum de vraisemblance et $s^2$.\newline
 
 \medskip
-\item \textbf{Lemme.} On a~: $\underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon'X}{T}$.\newline\newline
+\item \textbf{Lemme.} On a~: $\underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon'X}{T} = 0$.\newline\newline
 
-  \textbf{Preuve.} Puisque $X$ est déterministe, on a directement:~ $\mathbb E \left[ \frac{\varepsilon'X}{T} \right] = 0$. Tout assi facilement on montre que la variance est~:
+  \textbf{Preuve.} Puisque $X$ est déterministe, on a directement:~ $\mathbb E \left[ \frac{\varepsilon'X}{T} \right] = 0$. Tout aussi facilement on montre que la variance est~:
   \[
     \mathbb V \left[ \frac{\varepsilon'X}{T} \right] = \frac{\sigma_{\varepsilon}^2}{T}\frac{X'X}{T}\underset{T\to\infty}{\longrightarrow} 0 \times Q=0
   \]
@@ -1039,13 +1272,13 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
 \pagebreak
 
-\item \textbf{Preuve de la proposition \ref{prop:s2}.} Nous devons montrer que $s^2$ converge en probabilité vers $\sigma_{\varepsilon}^2$. On a~:
+\item \textbf{Preuve de la proposition~\ref{prop:s2}.} Nous devons montrer que $s^2$ converge en probabilité vers $\sigma_{\varepsilon}^2$. On a~:
   \[
     \begin{split}
       \underset{T\to\infty}{\mathrm{plim}} s^2 &= \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon' M \varepsilon}{T-K} = \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon' M \varepsilon}{T}\\
                                                &= \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon' \varepsilon}{T} - \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon' X (X'X)^{-1}X'\varepsilon}{T}\\
                                                &= \sigma_{\varepsilon}^2 - \underset{T\to\infty}{\mathrm{plim}} \frac{\varepsilon'X}{T}\left( \frac{X'X}{T} \right)^{-1}\frac{X'\varepsilon}{T}\\
-      & \sigma_{\varepsilon}^2 - 0 \times Q^{-1} \times 0 = \sigma_{\varepsilon}^2
+                                               &= \sigma_{\varepsilon}^2 - 0 \times Q^{-1} \times 0 = \sigma_{\varepsilon}^2
     \end{split}
   \]
 \qed
@@ -1058,7 +1291,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \framesubtitle {Distribution de $\hat{\mathbf b}$ et $s^2$}
 
   \begin{theorem}\label{thm:bhat:distribution}
-    L'estimateur $\hat{\mathrm b}$ est normalement distribué~:
+    L'estimateur $\hat{\mathbf b}$ est normalement distribué~:
     \[
       \hat{\mathbf b} \sim \mathcal N\left( \beta, \sigma_{\varepsilon}^2(X'X)^{-1} \right)
     \]
@@ -1084,18 +1317,18 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \begin{itemize}
 
-  \item \textbf{Preuve du théorème \ref{thm:bhat:distribution}.} Nous avons déjà obtenu l'espérance et la variance de $\hat{\mathrm b}$. Comme l'estimateur des MCO est linéaire par rapport à $\mathbf y$ et donc $\varepsilon$ (puisque le modèle de la nature est linéaire) qui suit une loi normale multivariée. L'estimateur des MCO est donc normalement distribué.\qed\newline
+  \item \textbf{Preuve du théorème~\ref{thm:bhat:distribution}.} Nous avons déjà obtenu l'espérance et la variance de $\hat{\mathbf b}$. Comme l'estimateur des MCO est linéaire par rapport à $\mathbf y$ et donc $\varepsilon$ (puisque le modèle de la nature est linéaire) qui suit une loi normale multivariée. L'estimateur des MCO est donc normalement distribué.\qed\newline
 
-  \item \textbf{Lemme.} Soit $Q$ une matrice réelle $T\times T$ symétrique et idempotente, alors~:
+  \item \textbf{Lemme.} Soit $A$ une matrice réelle $T\times T$ symétrique et idempotente, alors~:
        \[
-         \frac{\varepsilon' Q \varepsilon}{\sigma_{\varepsilon}^2} \sim \chi^2\left(\mathrm{trace}(Q)\right)
+         \frac{\varepsilon' A \varepsilon}{\sigma_{\varepsilon}^2} \sim \chi^2\left(\mathrm{trace}(A)\right)
        \]
        \medskip
 
-       \textbf{Preuve.} Puisque la matrice réelle $Q$ est symétrique,
+       \textbf{Preuve.} Puisque la matrice réelle $A$ est symétrique,
        on sait qu'il existe une matrice orthogonale $P$ telle
-       que $P'QP = \Lambda$ est une matrice diagonale. On sait que les
-       valeurs propres de $Q$ sont égales à 1 ou 0. Sans perte de
+       que $P'AP = \Lambda$ est une matrice diagonale. On sait que les
+       valeurs propres de $A$ sont égales à 1 ou 0. Sans perte de
        généralité, on suppose que les valeurs propres non nulles
        viennent en premier le long de la diagonale de $\Lambda$~:
        \[
@@ -1106,7 +1339,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
          \end{pmatrix}
        \]
        où la dimension de $I_{\star}$ est égale à la trace de la
-       matrice $Q$ (la trace d'une matrice est invariante au
+       matrice $A$ (la trace d'une matrice est invariante au
        changement de base). Définissons $\nu = P'\varepsilon$, on a
        directement $\mathbb E[\nu] = 0$
        et $\mathbb V[\nu] = \sigma_{\varepsilon}^2I_T$ puisque $P$ est
@@ -1121,25 +1354,25 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
        On a donc~:
        \[
          \begin{split}
-           \frac{\varepsilon' Q \varepsilon}{\sigma_{\varepsilon}^2} &= \frac{\nu'P'Q P \nu}{\sigma_{\varepsilon}^2}\\
+           \frac{\varepsilon' A \varepsilon}{\sigma_{\varepsilon}^2} &= \frac{\nu'P'A P \nu}{\sigma_{\varepsilon}^2}\\
                                                                      &= \frac{1}{\sigma_{\varepsilon}^2}\nu'
                                                                        \begin{pmatrix}
                                                                          I_{\star} & 0\\
                                                                          0 & 0
                                                                        \end{pmatrix} \nu \\
-                                                                     &= \frac{1}{\sigma_{\varepsilon}^2}\sum_{i=1}^{\mathrm{tr}(Q)}\nu_i^2\\
-                                                                     &= \sum_{i=1}^{\mathrm{tr}(Q)}\left( \frac{\nu_i}{\sigma_{\varepsilon}} \right)^2
+                                                                     &= \frac{1}{\sigma_{\varepsilon}^2}\sum_{i=1}^{\mathrm{tr}(A)}\nu_i^2\\
+                                                                     &= \sum_{i=1}^{\mathrm{tr}(A)}\left( \frac{\nu_i}{\sigma_{\varepsilon}} \right)^2
          \end{split}
        \]
-       Puisque $\frac{\nu_i}{\sigma_\varepsilon} \perp \frac{\nu_j}{\sigma_\varepsilon} \sim \mathcal N(0,1)$ pour tout $i\neq j$, on a $\frac{\varepsilon' Q \varepsilon}{\sigma_{\varepsilon}^2}\sim\chi^2\left( \mathrm{tr}(Q) \right)$.\newline
+       Puisque $\frac{\nu_i}{\sigma_\varepsilon} \perp \frac{\nu_j}{\sigma_\varepsilon} \sim \mathcal N(0,1)$ pour tout $i\neq j$, on a $\frac{\varepsilon' A \varepsilon}{\sigma_{\varepsilon}^2}\sim\chi^2\left( \mathrm{tr}(A) \right)$.\newline
 
-     \item \textbf{Preuve du théorème \ref{thm:s2:distribution}.} Nous avons~:
+     \item \textbf{Preuve du théorème~\ref{thm:s2:distribution}.} Nous avons~:
        \[
          \frac{(T-K)s^2}{\sigma_{\varepsilon}^2} = \frac{SSE}{\sigma_{\varepsilon}^2} = \frac{\varepsilon' M \varepsilon}{\sigma_{\varepsilon}^2}
        \]
        où la matrice $M = I - X(X'X)^{-1}X'$ est une matrice de rang $T-K$. Le lemme précédent entraîne le résultat annoncé.\qed\newline
 
-     \item \textbf{Preuve du corollaire \ref{cor:s2:distribution}.} Direct en notant que la variance d'un $\chi^2$ à $T-K$ degrés de liberté est $2(T-K).$\qed
+     \item \textbf{Preuve du corollaire~\ref{cor:s2:distribution}.} Direct en notant que la variance d'un $\chi^2$ à $T-K$ degrés de liberté est $2(T-K).$\qed
 
      \end{itemize}
 
@@ -1151,7 +1384,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \framesubtitle {Distribution de $\hat{\mathbf b}$ et $s^2$}
 
   \begin{prop}\label{prop:bhat_perp_s2}
-    Les estimateurs $\hat{\mathrm b}$ et $s^2$ sont des variables aléatoires indépendantes.
+    Les estimateurs $\hat{\mathbf b}$ et $s^2$ sont des variables aléatoires indépendantes.
   \end{prop}
 
 \end{frame}
@@ -1162,11 +1395,11 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \begin{itemize}
 
   \item \textbf{Lemme}
-    Soit $Q$ une matrice réelle $T\times T$ symétrique et idempotente de rang $q$. Soit $B$ une matrice réelle $m\times T$ telle que $BQ=0$. Soit le vecteur aléatoire gaussien $\varepsilon\sim\mathcal N(0, \sigma_{\varepsilon}^2I_T)$. Alors le vecteur aléatoire $B\varepsilon$ et la variable aléatoire $\varepsilon' Q \varepsilon$ sont indépendants.\newline
+    Soit $A$ une matrice réelle $T\times T$ symétrique et idempotente de rang $q$. Soit $B$ une matrice réelle $m\times T$ telle que $BA=0$. Soit le vecteur aléatoire gaussien $\varepsilon\sim\mathcal N(0, \sigma_{\varepsilon}^2I_T)$. Alors le vecteur aléatoire $B\varepsilon$ et la variable aléatoire $\varepsilon' A \varepsilon$ sont indépendants.\newline
 
     \textbf{Preuve.} Comme dans la preuve du lemme précédent, on définit la matrice orthogonale $P$ telle que~:
     \[
-      P'QP =
+      P'AP =
       \begin{pmatrix}
         I_q & 0\\
         0   & 0
@@ -1174,7 +1407,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
     \]
     et le vecteur gaussien $\nu = P'\varepsilon\sim\mathcal N\left(0, \sigma_{\varepsilon}^2I_T\right)$ (car $P$ est une matrice orthogonale). On partitionne le vecteur $\nu$ sous la forme $(\nu_1',\nu_2')'$ où $\nu_1$ et $\nu_2$ sont des vecteurs aléatoires $q\times 1$ et $(T-q)\times 1$ indépendants. On a directement~:
     \[
-      \varepsilon' Q \varepsilon = \nu_1'\nu_1
+      \varepsilon' A \varepsilon = \nu_1'\nu_1
     \]
     qui suit un $\chi^2(q)$. Posons $BP = C$ et partitionnons les colonnes de $C$ conformément à la partition de $\nu$:
     \[
@@ -1183,7 +1416,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
         C_1 & C_2
       \end{pmatrix}
     \]
-    où $C_1$ est une matrice $m\times q$ et $C_2$ une matrice $m\times(T-q)$. Nous devons avoir $C P' Q P = 0$ puisque $CP'QP = BPP'QP = BQP$ et $BQ = 0$ par hypothèse. Ainsi~:
+    où $C_1$ est une matrice $m\times q$ et $C_2$ une matrice $m\times(T-q)$. Nous devons avoir $C P' A P = 0$ puisque $CP'AP = BPP'AP = BAP$ et $BA = 0$ par hypothèse. Ainsi~:
     \[
       \begin{pmatrix}
         C_1 & C_2
@@ -1194,13 +1427,13 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
       \end{pmatrix}
       = 0
     \]
-    et donc $C_1=0$. Pour que la matrice $BQ$ soit nulle, il faut éliminer toutes les valeurs propres non nulles. En notant que~:
+    et donc $C_1=0$. Pour que la matrice $BA$ soit nulle, il faut éliminer toutes les valeurs propres non nulles. En notant que~:
     \[
       B\varepsilon = BPP'\varepsilon = C\nu = C_2\nu_2
     \]
-    puisque $C_1$ doit être nul, on voit que $B\varepsilon$ ne dépend que de $\nu_2$ qui est indépendant de $\nu_1$ donc de $\varepsilon' Q \varepsilon$.\qed\newline
+    puisque $C_1$ doit être nul, on voit que $B\varepsilon$ ne dépend que de $\nu_2$ qui est indépendant de $\nu_1$ donc de $\varepsilon' A \varepsilon$.\qed\newline
 
-  \item \textbf{Preuve de la proposition \ref{prop:bhat_perp_s2}.} On
+  \item \textbf{Preuve de la proposition~\ref{prop:bhat_perp_s2}.} On
     a $s^2=\frac{\varepsilon' M \varepsilon}{T-K}$
     et
     $\hat{\mathbf b}-\beta = (X'X)^{-1}X'\varepsilon$. Puisque
@@ -1212,6 +1445,8 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
 \end{notes}
 
+
+\section{Vraisemblance}
 
 \begin{frame}
   \frametitle{Vraisemblance}
@@ -1256,7 +1491,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
       (\mathbf y - X\beta)'(\mathbf y - X\beta) &= \left(\mathbf y - X\hat{\mathbf b} + X(\hat{\mathbf b}-\beta)\right)'\left(\mathbf y - X\hat{\mathbf b} + X(\hat{\mathbf b}-\beta)\right)\\
                                                 &= (\mathbf y - X\hat{\mathbf b})'(\mathbf y - X\hat{\mathbf b})
                                                      + (\hat{\mathbf b}-\beta)'X'X(\hat{\mathbf b}-\beta)\\
-                                                & \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad   + 2(\hat{\mathbf b}-\beta)X'(\mathbf y-X\hat{\mathrm b})\\
+                                                & \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad   + 2(\hat{\mathbf b}-\beta)'X'(\mathbf y-X\hat{\mathbf b})\\
                                                    &= SSE + (\hat{\mathbf b}-\beta)'X'X(\hat{\mathbf b}-\beta)
       \end{align*}
 
@@ -1317,7 +1552,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \item La variance de $\hat{\mathbf b}$ est sur la borne CDFR, il s'agit donc bien d'un estimateur efficace (sans biais et de variance minimale).\newline
 
-  \item La variance de $s^2$ est strictement supérieure à la borne CDFR. Il s'agit tout de même d'un estimateur efficace car il ne dépend que d'une statistique suffisante ($SSR$, par le théorème de Lehmann-Scheffé).
+  \item La variance de $s^2$ est strictement supérieure à la borne CDFR. Il s'agit tout de même d'un estimateur efficace car il ne dépend que d'une statistique suffisante ($SSE$, par le théorème de Lehmann-Scheffé).
 
   \end{itemize}
 
@@ -1328,7 +1563,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \begin{itemize}
 
-  \item \textbf{Preuve de la proposition \ref{prop:cdfr}.} Calculons la matrice d'information de Fisher. Les dérivées secondes de la log-vraisemblance sont~:
+  \item \textbf{Preuve de la proposition~\ref{prop:cdfr}.} Calculons la matrice d'information de Fisher. Les dérivées secondes de la log-vraisemblance sont~:
     \[
       \frac{\partial^2 l(\beta, \sigma_{\varepsilon}^2; \mathbf y)}{\partial\beta\partial\beta'} = -\frac{1}{\sigma_{\varepsilon}^2}X'X
     \]
@@ -1373,9 +1608,25 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
     \[
       \mathbb V\left[ \hat{\sigma}_{\varepsilon}^2 \right] = 2\sigma_{\varepsilon}^4\frac{T-K}{T^2} < \underbrace{\frac{2\sigma_{\varepsilon}^4}{T}}_{\textsc{CDFR}}< \frac{2\sigma_{\varepsilon}^4}{T-K}
     \]
-  \item \underline{\textbf{Mais}} l'erreur quadratique moyenne de l'estimateur du MV est plus faible que celle de $s^2$.
+  \item \underline{\textbf{Mais}} l'erreur quadratique moyenne de l'estimateur du MV est plus faible que celle de $s^2$ dès lors que $K\leq 4$ (voir les notes).
 
   \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Vraisemblance}
+  \framesubtitle{Arbitrage biais-variance}
+
+  \begin{center}
+    \scalebox{.80}{\input{images/chapitre-1/mse-s2-mv.tex}}
+  \end{center}
+
+  \medskip
+
+  {\small $T=50$. L'estimateur du maximum de vraisemblance est biaisé mais plus
+    précis. Le gain net n'existe que si $K\leq 4$~: au-delà, le biais l'emporte.}
 
 \end{frame}
 
@@ -1384,9 +1635,9 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \begin{itemize}
 
-  \item \textbf{Preuve de la proposition \ref{prop:ml}} Direct en annulant les dérivées partielles par rapport à $\beta$ et $\sigma_{\varepsilon}^2$. Pour $\hat\beta$ on peut alternativement raisonner sur la représentation alternative (en fonction de $SSE$ et $\hat{\mathbf b}$) de la fonction de vraisemblance.\qed\newline
+  \item \textbf{Preuve de la proposition~\ref{prop:ml}} Direct en annulant les dérivées partielles par rapport à $\beta$ et $\sigma_{\varepsilon}^2$. Pour $\hat\beta$ on peut alternativement raisonner sur la représentation alternative (en fonction de $SSE$ et $\hat{\mathbf b}$) de la fonction de vraisemblance.\qed\newline
 
-  \item \textbf{Calcul de la variance de $\hat{\sigma}_{\varepsilon}^2$.} Nous avons déjà montré, voir le corollaire \ref{cor:s2:distribution}, que~:
+  \item \textbf{Calcul de la variance de $\hat{\sigma}_{\varepsilon}^2$.} Nous avons déjà montré, voir le corollaire~\ref{cor:s2:distribution}, que~:
     \[
       \mathbb V\left[ \frac{SSE}{T-K} \right] = \frac{2\sigma_{\varepsilon}^4}{T-K}
     \]
@@ -1435,18 +1686,35 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
     \[
       \Leftrightarrow r(s^2, \hat{\sigma}_{\varepsilon}^2) = \frac{2}{T-K}\frac{T^2}{2(T-K)+K^2}
     \]
-    On a~:
+    En posant $n = T-K$ (le nombre de degrés de liberté), on a~:
     \[
       \begin{split}
         r(s^2, \hat{\sigma}_{\varepsilon}^2) >1 &\Leftrightarrow 2T^2 > (T-K)\left[ 2(T-K) + K^2 \right]\\
-                                                &\Leftrightarrow 2T^2 > 2T^2 + 2K^2 -4TK + K^2\\
-                                                &\Leftrightarrow K(3K-4T)<0\\
-                                                &\Leftrightarrow T>\frac{3}{4}K
+                                                &\Leftrightarrow 2(n+K)^2 > n\left( 2n + K^2 \right)\\
+                                                &\Leftrightarrow 2n^2 + 4nK + 2K^2 > 2n^2 + nK^2\\
+                                                &\Leftrightarrow 4n + 2K > nK\\
+                                                &\Leftrightarrow n(K-4) < 2K
       \end{split}
     \]
-    La dernière inégalité est nécessairement vraie, autrement $X'X$ ne serait pas de plein rang (le nombre d'observations doit être supérieur aux nombre de variables explicatives). Le ratio $r(s^2, \hat{\sigma}_{\varepsilon}^2)$ doit donc être supérieur à 1, et l'erreur quadratique moyenne de l'estimateur du MV inférieure à l'erreur quadratique moyenne de $s^2$.\newline
+    soit, en revenant à $T$~:
+    \[
+      \boxed{MSE(\hat{\sigma}_{\varepsilon}^2) < MSE(s^2) \Leftrightarrow (T-K)(K-4)<2K}
+    \]
+    Contrairement à ce que l'on pourrait croire, cette condition n'est pas toujours vérifiée. Il faut distinguer deux cas~:
+    \begin{itemize}
+    \item Si $K\leq 4$, le membre de gauche est négatif ou nul alors que le membre de droite est strictement positif~: la condition est \textbf{toujours} satisfaite, quelle que soit la taille de l'échantillon.\newline
+    \item Si $K\geq 5$, la condition s'écrit $T < K + \frac{2K}{K-4}$ et n'est satisfaite que sur de très petits échantillons (pour $K=5$ il faut $T<15$, pour $K=6$ il faut $T<12$). Dès que l'échantillon grandit, c'est $s^2$ qui l'emporte au sens de l'erreur quadratique moyenne.
+    \end{itemize}
 
-  \item \textbf{Remarque 2.} Même si en moyenne $\hat{\sigma}_{\varepsilon}^2$ est différent de $\sigma_{\varepsilon}^2$, cet estimateur est en moyenne moins éloigné de  $\sigma_{\varepsilon}^2$ que $s^2$ (qui pourtant est égal à  $\sigma_{\varepsilon}^2$ en moyenne).
+    \medskip
+
+    On peut aller plus loin. Considérons la famille d'estimateurs $\nicefrac{SSE}{c}$, indexée par $c>0$, qui contient $s^2$ ($c=T-K$) et l'estimateur du maximum de vraisemblance ($c=T$). Puisque $\nicefrac{SSE}{\sigma_{\varepsilon}^2}\sim\chi^2(n)$ avec $n=T-K$, on a $\mathbb E[SSE]=n\sigma_{\varepsilon}^2$ et $\mathbb V[SSE]=2n\sigma_{\varepsilon}^4$, d'où~:
+    \[
+      MSE\left( \frac{SSE}{c} \right) = \sigma_{\varepsilon}^4\,\frac{2n + (n-c)^2}{c^2}
+    \]
+    En annulant la dérivée par rapport à $c$, on vérifie que cette quantité est minimale en $c = n+2$. \textbf{Ni $s^2$ ni l'estimateur du maximum de vraisemblance ne minimisent l'erreur quadratique moyenne}~: c'est $\nicefrac{SSE}{(T-K+2)}$ qui le fait. On retrouve alors la condition ci-dessus~: $c=T$ bat $c=n$ lorsque $T$ est plus proche de $n+2$ que ne l'est $n$, c'est-à-dire lorsque $K\leq 4$.\newline
+
+  \item \textbf{Remarque 2.} Lorsque $K\leq 4$, même si en moyenne $\hat{\sigma}_{\varepsilon}^2$ est différent de $\sigma_{\varepsilon}^2$, cet estimateur est en moyenne moins éloigné de  $\sigma_{\varepsilon}^2$ que $s^2$ (qui pourtant est égal à  $\sigma_{\varepsilon}^2$ en moyenne). C'est une illustration de l'arbitrage biais-variance~: accepter un peu de biais peut réduire l'erreur quadratique moyenne. Mais l'arbitrage tourne dans l'autre sens dès que le modèle comporte cinq régresseurs ou plus.
 
   \end{itemize}
 
@@ -1480,7 +1748,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \begin{itemize}
 
-  \item \textbf{Preuve de la proposition \ref{prop:asymptotic_dist:bhat}.} Nous avons déjà montré, voir le théorème \ref{thm:s2:distribution}, que $\hat{\mathbf b}$ est normalement distribué pour tout $T$. Nous avons~:
+  \item \textbf{Preuve de la proposition~\ref{prop:asymptotic_dist:bhat}.} Nous avons déjà montré, voir le théorème~\ref{thm:bhat:distribution}, que $\hat{\mathbf b}$ est normalement distribué pour tout $T$. Nous avons~:
     \[
       \hat{\mathbf b} \sim \mathcal N \left( \beta, \sigma_{\varepsilon}^2(X'X)^{-1}\right)
     \]
@@ -1493,11 +1761,11 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
     \[
       \Leftrightarrow \sqrt{T}\left( \hat{\mathbf b}-\beta \right) \sim \mathcal N \left( 0, \sigma_{\varepsilon}^2\left( \frac{X'X}{T} \right)^{-1}\right)
     \]
-    On obtient le résultat asymptotique en rapellant que, selon $\mathcal H_2$, $\frac{X'X}{T}$ converge vers $Q$ lorsque $T$ tend vers l'infini.\qed\newline
+    On obtient le résultat asymptotique en rappelant que, selon $\mathcal H_2$, $\frac{X'X}{T}$ converge vers $Q$ lorsque $T$ tend vers l'infini.\qed\newline
 
-  \item \textbf{Preuve de la proposition \ref{prop:asymptotic_dist:s2}.} Une variable aléatoire du $\chi^2(n)$ est une somme de $n$ variables aléatoires indépendantes (carrés de variables aléatoires normales centrées-réduites). Le théorème de la limite centrale nous dit que la variable du $\chi^2$ doit être vers une variable aléatoire normale quand $n$ tend vers l'infini.\newline
+  \item \textbf{Preuve de la proposition~\ref{prop:asymptotic_dist:s2}.} Une variable aléatoire du $\chi^2(n)$ est une somme de $n$ variables aléatoires indépendantes (carrés de variables aléatoires normales centrées-réduites). Le théorème de la limite centrale nous dit que la variable du $\chi^2$ doit converger vers une variable aléatoire normale quand $n$ tend vers l'infini.\newline
 
-    D'après le théorème \ref{thm:s2:distribution}, on a~:
+    D'après le théorème~\ref{thm:s2:distribution}, on a~:
     \[
       \frac{(T-K)s^2}{\sigma_{\varepsilon}^2} = \sum_{i=1}^{T-K}v_i^2
     \]
@@ -1526,26 +1794,51 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 \end{notes}
 
 
+\section{Tests d'hypothèses}
+
 \begin{frame}
   \frametitle{Tests d'hypothèses}
   \framesubtitle{Restriction sur les paramètres}
 
   \begin{theorem}\label{thm:test:single_linear_restriction}
-    Soient $R$ un vecteur réel $1\times K$déterministe et $r$ un scalaire réel déterministe. Sous l'hypothèse nulle $R\beta = r$, on a~:
+    Soient $R$ un vecteur réel $1\times K$ déterministe et $r$ un scalaire réel déterministe. Sous l'hypothèse nulle $R\beta = r$, on a~:
     \[
-      \frac{R\hat{\mathrm b}-r}{\sqrt{s^2R(X'X)^{-1}R}} \sim t_{T-K}
+      \frac{R\hat{\mathbf b}-r}{\sqrt{s^2R(X'X)^{-1}R'}} \sim t_{T-K}
     \]
     où $t_{T-K}$ est une loi de Student à $T-K$ degrés de liberté.
   \end{theorem}
 
-  \bigskip
+\end{frame}
 
-  \begin{example}
-    Soit le modèle $y_t = \beta_0 + \beta_1 x_{1,t} + \beta_2 x_{2,t} + \varepsilon_t$. Pour tester l'hypothèse $\beta_1+\beta_2=1$, on pose $R = (1, 1)$ et $r=1$. Notons que pour estimer le modèle contraint nous pouvons le réécrire en substituant la contrainte~:
+
+\begin{frame}
+  \frametitle{Tests d'hypothèses}
+  \framesubtitle{Restriction sur les paramètres, un exemple}
+
+  \begin{exemple}{Rendements d'échelle}
+    Soit une fonction de production de Cobb-Douglas, écrite en logarithmes~:
     \[
-      y_t-x_{2,t} = \beta_0 + \beta_1\left( x_{1,t}-x_{2,t} \right) + \varepsilon_t
+      \underbrace{\log Q_t}_{y_t} = \beta_1 + \beta_2 \underbrace{\log K_t}_{x_{2,t}}
+      + \beta_3 \underbrace{\log L_t}_{x_{3,t}} + \varepsilon_t
     \]
-  \end{example}
+    $\beta_2$ et $\beta_3$ sont les élasticités de la production au capital et au
+    travail~; les rendements d'échelle sont constants si et seulement
+    si $\beta_2+\beta_3=1$. Pour tester cette hypothèse on pose~:
+    \[
+      R = \begin{pmatrix} 0 & 1 & 1\end{pmatrix} \quad\text{et}\quad r=1
+    \]
+  \end{exemple}
+
+  \medskip
+
+  {\small $R$ est un vecteur $1\times K$ avec $K=3$~: la constante n'est pas
+    contrainte. Pour estimer le modèle contraint, on peut aussi substituer la
+    contrainte~:
+    \[
+      \log Q_t - \log L_t = \beta_1 + \beta_2\left( \log K_t - \log L_t \right) + \varepsilon_t
+    \]
+    c'est-à-dire régresser la productivité du travail sur l'intensité
+    capitalistique.}
 
 \end{frame}
 
@@ -1555,7 +1848,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \begin{itemize}
 
-  \item \textbf{Preuve du théorème \ref{thm:test:single_linear_restriction}.} Le numérateur $R\hat{\mathbf b}-r$ est une variable aléatoire centrée sous l'hypothèse nulle~:
+  \item \textbf{Preuve du théorème~\ref{thm:test:single_linear_restriction}.} Le numérateur $R\hat{\mathbf b}-r$ est une variable aléatoire centrée sous l'hypothèse nulle~:
     \[
       \mathbb E \left[ R\hat{\mathbf b} - r \right] = R\mathbb E\left[ \hat{\mathbf b} \right] - r = R\beta-r = 0
     \]
@@ -1567,7 +1860,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
     \[
       \frac{R\hat{\mathbf b}-r}{\sqrt{\sigma_{\varepsilon}^2R(X'X)^{-1}R'}} \sim \mathcal N(0,1)
     \]
-    Mais comme nous ne connaissons pas $\sigma_{\varepsilon}^2$, on remplace cette variance par $s^2$, un estimateur sans biais. Or nous savons, par le théorème \ref{thm:s2:distribution}, que~:
+    Mais comme nous ne connaissons pas $\sigma_{\varepsilon}^2$, on remplace cette variance par $s^2$, un estimateur sans biais. Or nous savons, par le théorème~\ref{thm:s2:distribution}, que~:
     \[
       \frac{(T-K)s^2}{\sigma_{\varepsilon}^2} \sim \chi^2(T-K)
     \]
@@ -1577,11 +1870,11 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
     \]
     et donc~:
     \[
-      \frac{R\hat{\mathbf b}-r}{s^2R(X'X)^{-1}R'} =
+      \frac{R\hat{\mathbf b}-r}{\sqrt{s^2R(X'X)^{-1}R'}} =
       \frac{\frac{R\left( \hat{\mathbf b} - \beta \right)}{\sqrt{\sigma_{\varepsilon}^2R(X'X)^{-1}R'}}}
       {\sqrt{\frac{s^2R(X'X)^{-1}R'}{\sigma_{\varepsilon}^2R(X'X)^{-1}R'}}}
     \]
-    est le ratio d'une normale centrée réduite et d'un $\chi^2$ à $T-K$ degrés de liberté rapporté à $T-K$. Puisque le numérateur et le dénominateur sont des variables aléaoires indépendantes, voir la proposition \ref{prop:bhat_perp_s2}, le ratio suit une loi de student à $T-K$ degrés de liberté, voir la proposition \ref{prop:student} dans l'annexe A.\qed
+    est le ratio d'une normale centrée réduite et d'un $\chi^2$ à $T-K$ degrés de liberté rapporté à $T-K$. Puisque le numérateur et le dénominateur sont des variables aléatoires indépendantes, voir la proposition~\ref{prop:bhat_perp_s2}, le ratio suit une loi de Student à $T-K$ degrés de liberté, voir la proposition~\ref{prop:student} dans l'annexe A.\qed
 
   \end{itemize}
 
@@ -1593,9 +1886,9 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \framesubtitle{Significativité d'un paramètre}
 
   \begin{cor}\label{cor:student_statistic}
-    Soit $s_{\hat{\mathrm b}_i}^2 = s^2 \left[ (X'X)^{-1} \right]_{ii}$ la variance de l'estimateur des MCO du i-ème paramètre. La statistique~:
+    Soit $s_{\hat{\mathbf b}_i}^2 = s^2 \left[ (X'X)^{-1} \right]_{ii}$ l'estimateur de la variance de l'estimateur des MCO du i-ème paramètre. La statistique~:
     \[
-      t = \frac{\hat{\mathbf b}_i}{s_{\hat{\mathrm b}_i}}
+      t = \frac{\hat{\mathbf b}_i}{s_{\hat{\mathbf b}_i}}
     \]
     suit une loi de Student à $T-K$ degrés de liberté sous l'hypothèse nulle $\beta_i = 0$.
   \end{cor}
@@ -1612,6 +1905,57 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \end{itemize}
 
 \end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Tests d'hypothèses}
+  \framesubtitle{Comment un test décide}
+
+  \begin{center}
+    \scalebox{.78}{\input{images/chapitre-1/region-rejet-student.tex}}
+  \end{center}
+
+  \medskip
+
+  {\small On rejette $\mathcal H_0:\beta_i=0$ au seuil $\alpha$ si la statistique
+    observée tombe dans l'une des deux zones rouges. Ici $t^{\text{obs}}$ y tombe~:
+    $\beta_i$ est déclaré significatif.}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item La statistique $t$ n'est qu'un nombre~: c'est sa \textbf{loi sous l'hypothèse
+    nulle} qui permet de décider. Le corollaire~\ref{cor:student_statistic} nous dit
+    que cette loi est un Student à $T-K$ degrés de liberté.\newline
+
+  \item On choisit un seuil $\alpha$ (le risque de première espèce, presque toujours
+    $5\%$), puis les valeurs critiques $\pm t_{\nicefrac{\alpha}{2}}$ qui laissent une
+    masse $\nicefrac{\alpha}{2}$ dans chaque queue. Le test est bilatéral parce que
+    l'alternative $\beta_i\neq 0$ l'est.\newline
+
+  \item La \textbf{p-value} est la masse de probabilité au-delà de
+    $|t^{\text{obs}}|$, des deux côtés. C'est le plus petit seuil auquel on rejetterait
+    l'hypothèse nulle. Rejeter au seuil $\alpha$ revient exactement à constater que la
+    p-value est inférieure à $\alpha$.\newline
+
+  \item Attention à la dissymétrie~: on contrôle le risque de rejeter $\mathcal H_0$ à
+    tort, jamais celui de ne pas la rejeter à tort. Un coefficient non significatif
+    n'est pas un coefficient nul~: c'est un coefficient que les données ne permettent
+    pas de distinguer de zéro. Avec $T$ plus grand, la loi se resserre et la même
+    valeur estimée peut devenir significative.\newline
+
+  \item Quand $T-K$ devient grand, la loi de Student converge vers la normale centrée
+    réduite et la valeur critique tend vers $1{,}96$. Sur petit échantillon, elle est
+    sensiblement plus grande~: c'est le prix à payer pour avoir estimé
+    $\sigma_{\varepsilon}^2$ par $s^2$.
+
+  \end{itemize}
+
+\end{notes}
 
 
 \begin{frame}
@@ -1634,11 +1978,62 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \item Ces restrictions doivent être différentes, les $m$ lignes de $R$ sont linéairement indépendantes.\newline
 
-  \item Théorème \ref{thm:fisher_statistic} $\centernot{\Longleftrightarrow}$  $m\times$Théorème \ref{thm:test:single_linear_restriction}
+  \item Théorème~\ref{thm:fisher_statistic} $\centernot{\Longleftrightarrow}$  $m\times$Théorème~\ref{thm:test:single_linear_restriction}
 
   \end{itemize}
 
 \end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Tests d'hypothèses}
+  \framesubtitle{Pourquoi le test joint n'est pas $m$ tests individuels}
+
+  \begin{center}
+    \scalebox{.74}{\input{images/chapitre-1/ellipse-vs-rectangle.tex}}
+  \end{center}
+
+  \medskip
+
+  {\small Deux régresseurs fortement corrélés. Rectangle et ellipse ont le même niveau
+    de confiance, mais ce ne sont pas les mêmes régions~: les conclusions peuvent
+    diverger, dans les deux sens.}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item Sur cette figure, $\mathrm{corr}(\hat{\mathbf b}_1, \hat{\mathbf b}_2)=-0{,}9$.
+    Le rectangle est le produit des deux intervalles de confiance individuels à $95\%$~;
+    l'ellipse est la région de confiance jointe à $95\%$, définie par
+    $\left(\mathbf b - \hat{\mathbf b}\right)' \mathbb V[\hat{\mathbf b}]^{-1}
+    \left(\mathbf b - \hat{\mathbf b}\right) \leq c$. Ce sont deux régions de même
+    niveau, mais de formes différentes~: aucune n'est incluse dans l'autre.\newline
+
+  \item Le point bleu est le cas le plus fréquent en pratique. Les deux statistiques
+    de Student sont petites (l'origine est dans le rectangle)~: prises séparément, ni
+    $\beta_1$ ni $\beta_2$ n'est significatif. Pourtant l'origine est très loin de
+    l'ellipse~: le test de Fisher rejette massivement l'hypothèse jointe
+    $\beta_1=\beta_2=0$. Les données disent clairement qu'au moins l'une des deux
+    variables compte, mais elles sont incapables de dire laquelle. C'est la signature
+    de la multicolinéarité.\newline
+
+  \item Le point rouge illustre le cas inverse~: il sort du rectangle (au moins un test
+    individuel rejette) alors qu'il est dans l'ellipse (le test joint ne rejette pas).
+    Il est situé le long du grand axe, c'est-à-dire dans la direction que les données
+    identifient mal.\newline
+
+  \item Il y a une raison plus élémentaire de ne pas empiler les tests individuels~: en
+    conduisant $m$ tests au seuil de $5\%$, la probabilité de rejeter à tort au moins
+    une fois dépasse largement $5\%$. Le test de Fisher contrôle le risque de première
+    espèce \underline{globalement}, ce que $m$ tests de Student séparés ne font pas.
+
+  \end{itemize}
+
+\end{notes}
 
 
 \begin{frame}
@@ -1655,7 +2050,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \item Le dénominateur mesure la taille des perturbations $\varepsilon$.\newline
 
-  \item On rejette les $m$ contraintes si la distance aux m contraintes est trop importante par rapport à la taille des perturbations.\newline
+  \item On rejette les $m$ contraintes si la distance aux $m$ contraintes est trop importante par rapport à la taille des perturbations.\newline
 
   \item Pourquoi ne pas rajouter les contraintes $R\beta=r$ à la procédure d'estimation par les MCO ou par MV~? Cela permettrait de réduire la variance de l'estimateur (moins de paramètres à estimer).
 
@@ -1666,7 +2061,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
 \begin{notes}
 
-  \textbf{Preuve du théorème \ref{thm:fisher_statistic}.} Sous l'hypothèse nulle, $r=R\beta$, on a~:
+  \textbf{Preuve du théorème~\ref{thm:fisher_statistic}.} Sous l'hypothèse nulle, $r=R\beta$, on a~:
     \[
       r-R\hat{\mathbf b} = R\left( \beta - \hat{\mathbf b} \right) = -R(X'X)^{-1}X'\varepsilon
     \]
@@ -1679,43 +2074,46 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
     matrice (comme son inverse) est symétrique et donc identique à sa
     transposée. Si $r-R\hat{\mathbf b}$ mesure l'écart aux $m$
     restrictions, la statistique donne relativement plus de poids aux
-    restrictions qui sont mesurées de façon plus précises. Nous pouvons donc réécrire le numérateur sous la forme $\varepsilon' Q \varepsilon$ avec~:
+    restrictions qui sont mesurées de façon plus précises. Nous pouvons donc réécrire le numérateur sous la forme $\varepsilon' A \varepsilon$ avec~:
     \[
-      Q = X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'
+      A = X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'
     \]
     Clairement cette matrice est symétrique~:
     \[
       \begin{split}
-        Q' &= \left( X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X' \right)'\\
+        A' &= \left( X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X' \right)'\\
            &= \left( R(X'X)^{-1}X' \right)'\left( R(X'X)^{-1}R' \right)^{-1}\left( X(X'X)^{-1}R' \right)'\\
            &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'\\
-           &= Q
+           &= A
       \end{split}
     \]
   elle est aussi idempotente~:
     {\tiny
     \[
       \begin{split}
-        QQ &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X' X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'\\
+        AA &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X' X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'\\
            &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'\\
-           &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X' = Q
+           &= X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X' = A
       \end{split}
     \]}
-  Nous pouvons montrer que la trace de la matrice $Q$ est égale à $m$ (son rang)~:
+  Nous pouvons montrer que la trace de la matrice $A$ est égale à $m$ (son rang)~:
     \[
+      \adjustbox{max width=\linewidth}{$\displaystyle
       \begin{split}
-        \mathrm{tr} (Q) &= \mathrm{tr}\left( X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'  \right) \\
+        \mathrm{tr} (A) &= \mathrm{tr}\left( X(X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'  \right) \\
                          &= \mathrm{tr}\left( \left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}X'X(X'X)^{-1}R'   \right)\\
                          &= \mathrm{tr}\left( \left( R(X'X)^{-1}R' \right)^{-1}R(X'X)^{-1}R'  \right)\\
                          &= \mathrm{tr} \left( I_m \right) = m
-      \end{split}
+      \end{split}$}
     \]
-    Nous savons donc que le numérateur est distribué comme $\sigma_{\varepsilon}^2\left( \nicefrac{\chi^2(m)}{m} \right)$, voir la preuve du théorème \ref{thm:s2:distribution} (le lemme utilisé dans la preuve). Par ailleurs, nous savons aussi que le dénominateur peut s'écrire comme $\nicefrac{\varepsilon' M \varepsilon}{(T-K)}$ avec $M = I-X(X'X)^{-1}X'$ une matrice symétrique, idempotente et vérifiant $\mathrm{tr}(M)=T-K$. Le dénominateur est donc distribué comme $\sigma_{\varepsilon}^2\left( \nicefrac{\chi^2\left( T-K \right)}{(T-K)} \right)$.\newline
+    Nous savons donc que le numérateur est distribué comme $\sigma_{\varepsilon}^2\left( \nicefrac{\chi^2(m)}{m} \right)$, voir la preuve du théorème~\ref{thm:s2:distribution} (le lemme utilisé dans la preuve). Par ailleurs, nous savons aussi que le dénominateur peut s'écrire comme $\nicefrac{\varepsilon' M \varepsilon}{(T-K)}$ avec $M = I-X(X'X)^{-1}X'$ une matrice symétrique, idempotente et vérifiant $\mathrm{tr}(M)=T-K$. Le dénominateur est donc distribué comme $\sigma_{\varepsilon}^2\left( \nicefrac{\chi^2\left( T-K \right)}{(T-K)} \right)$.\newline
 
-    Comme le numérateur et le dénominateur sont deux variables aléatoires indépendantes, puisque le numérateur dépend de $\hat{\mathrm b}$ et le dénominateur de $s^2$ (voir la proposition \ref{prop:bhat_perp_s2}, $\hat{\mathrm b}$ et $s^2$ sont indépendants), on sait par définition de la loi de Fisher (voir l'annexe A) que la statistique donnée dans le théorème, dite de Fisher, suit une loi de Fisher $F(m, T-K)$.\qed
+    Comme le numérateur et le dénominateur sont deux variables aléatoires indépendantes, puisque le numérateur dépend de $\hat{\mathbf b}$ et le dénominateur de $s^2$ (voir la proposition~\ref{prop:bhat_perp_s2}, $\hat{\mathbf b}$ et $s^2$ sont indépendants), on sait par définition de la loi de Fisher (voir l'annexe A) que la statistique donnée dans le théorème, dite de Fisher, suit une loi de Fisher $F(m, T-K)$.\qed
 
 \end{notes}
 
+
+\section{Estimation sous contraintes linéaires}
 
 \begin{frame}
   \frametitle{MCO avec contraintes linéaires}
@@ -1778,7 +2176,7 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
     \medskip
 
-  \item Comme, par hypothèse, $X'X$ est une matrice $K\times K$ de plein rang et $R$ une matrice $m\times K$ de rang $m$, la matrice $\mathbb X$ est nécessairement invesible. On a donc~:
+  \item Comme, par hypothèse, $X'X$ est une matrice $K\times K$ de plein rang et $R$ une matrice $m\times K$ de rang $m$, la matrice $\mathbb X$ est nécessairement inversible. On a donc~:
     \[
       \begin{pmatrix}
         \tilde{\mathbf b}\\
@@ -1833,10 +2231,10 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 
   \begin{itemize}
 
-  \item \textbf{Preuve de la proposition \ref{prop:inversion}.} Il suffit de montrer que $A^{-1}A = AA^{-1}$ est une matrice identité. On montre que $A^{1}A$ est une matrice identité (le reste est laissé au lecteur). Il suffit de montrer que les blocs $\left[ A^{-1}A \right]_{11}$ et $\left[ A^{-1}A \right]_{22}$ sont des matrices identité et que les blocs $\left[ A^{-1}A \right]_{12}$ et $\left[ A^{-1}A \right]_{21}$ sont nuls. On a~:
+  \item \textbf{Preuve de la proposition~\ref{prop:inversion}.} Il suffit de montrer que $A^{-1}A = AA^{-1}$ est une matrice identité. On montre que $A^{-1}A$ est une matrice identité (le reste est laissé au lecteur). Il suffit de montrer que les blocs $\left[ A^{-1}A \right]_{11}$ et $\left[ A^{-1}A \right]_{22}$ sont des matrices identité et que les blocs $\left[ A^{-1}A \right]_{12}$ et $\left[ A^{-1}A \right]_{21}$ sont nuls. On a~:
     \[
       \begin{split}
-        \left[A^{-1}A\right]_{11} &= A_{11}^{-1}\left( I + A_{12}BA_{21}A_{11}^{-1} \right)A_{11}-A_{11}A_{12}BA_{21}\\
+        \left[A^{-1}A\right]_{11} &= A_{11}^{-1}\left( I + A_{12}BA_{21}A_{11}^{-1} \right)A_{11}-A_{11}^{-1}A_{12}BA_{21}\\
                                   &= I + A_{11}^{-1}A_{12}BA_{21}-A_{11}^{-1}A_{12}BA_{21}\\
                                   &= I\\
         \left[ A^{-1}A \right]_{22} &= BA_{21}A_{11}^{-1}A_{12}+BA_{22}\\
@@ -1883,11 +2281,24 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
 \end{frame}
 
 
+\begin{frame}[c]
+  \frametitle{MCO avec contraintes linéaires}
+  \framesubtitle{Ce que l'on gagne, ce que l'on risque}
+
+  \begin{figure}
+    \centering
+    \scalebox{.46}{\input{images/chapitre-1/mco-contraints.tex}}
+    \caption{Deux régresseurs négativement corrélés ($\mathrm{corr}=-0{,}9$), $20000$ échantillons de $40$ observations~; on impose $\beta_2+\beta_3=1$. À gauche la contrainte est vraie, à droite elle est fausse. Contraindre échange toujours de la variance contre du biais. Les codes pour reproduire ce graphique sont disponibles \coderef{mco-contraints.py}.}
+  \end{figure}
+
+\end{frame}
+
+
 \begin{notes}
 
   \begin{itemize}
 
-  \item \textbf{Preuve du théorème \ref{thm:constrained_ols}.} En
+  \item \textbf{Preuve du théorème~\ref{thm:constrained_ols}.} En
     utilisant la formule d'inversion par bloc, voir la proposition
     \ref{prop:inversion}, on obtient~:
     {\tiny\[
@@ -1911,22 +2322,22 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
     \mathbb V\left[ A - B \right] = \mathbb V\left[ A \right] + \mathbb V\left[ B \right] -2 \mathrm{cov}\left(A, B\right)
   \]
   On connaît déjà la variance de $\hat{\mathbf b}$, la variance du second terme est~:
-  {\tiny
   \[
+    \adjustbox{max width=\linewidth}{$\displaystyle
     \begin{split}
       \mathbb V&\left[ (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}\left(R\hat{\mathbf b}-r\right) \right] = \mathbb V\left[ (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R\hat{\mathbf b} \right]\\
       &= (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R\sigma_{\varepsilon}^2(X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R(X'X)^{-1}\\
       &=\sigma_{\varepsilon}^2(X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R(X'X)^{-1}
-    \end{split}
-  \]}
+    \end{split}$}
+  \]
 Enfin, on a~:
-{\tiny
 \[
+  \adjustbox{max width=\linewidth}{$\displaystyle
   \begin{split}
     \mathrm{cov}\left(\hat{\mathbf b}, (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R\hat{\mathbf b}\right) &= (X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R\mathbb V\left[ \hat{\mathbf b} \right]\\
     &= \sigma_{\varepsilon}^2(X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}R(X'X)^{-1}
-  \end{split}
-\]}
+  \end{split}$}
+\]
 L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en sommant les variances de $\hat{\mathbf b}$ et $(X'X)^{-1}R'\left(R(X'X)^{-1}R'\right)^{-1}\left(R\hat{\mathbf b}-r\right)$, puis en retranchant deux fois la covariance.\qed
 \end{itemize}
 
@@ -1960,11 +2371,11 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
 
 \begin{notes}
 
-  \textbf{Preuve du théorème \ref{thm:constrained_ml}.} La vraisemblance est donnée par~:
+  \textbf{Preuve du théorème~\ref{thm:constrained_ml}.} La vraisemblance est donnée par~:
   \[
     l\left( \beta, \sigma_{\varepsilon}^2; \mathbf y \right) = -\frac{T}{2}\log 2\pi - \frac{T}{2} \log\sigma_{\varepsilon}^2 - \frac{1}{2\sigma_{\varepsilon}^2}\left( \mathbf y - X\beta \right)'\left( \mathbf y - X\beta \right)
   \]
-  puisque les contraintes ne concernent pas la variance de $\varepsilon$, on obtient l'estimateur du MV de $\sigma_{\varepsilon}^2$ en annulant la dérivée partielle de la log vraissemblance par rapport à $\sigma_{\varepsilon}^2$~:
+  puisque les contraintes ne concernent pas la variance de $\varepsilon$, on obtient l'estimateur du MV de $\sigma_{\varepsilon}^2$ en annulant la dérivée partielle de la log-vraisemblance par rapport à $\sigma_{\varepsilon}^2$~:
   \[
     \frac{\partial l\left( \beta, \sigma_{\varepsilon}^2; \mathbf y \right)}{\partial \sigma_{\varepsilon}^2} = -\frac{T}{2\tilde\sigma_{\varepsilon}^2} + \frac{1}{2\tilde\sigma_{\varepsilon}^4}\left(\mathbf y - X\beta \right)'\left(\mathbf y - X\beta\right) = 0
   \]
@@ -1984,21 +2395,18 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
     \begin{cases}
       -2X'\mathbf y + 2X'X\hat\beta^c + R'\hat\lambda = 0\\
       R\hat\beta^c -r = 0
-
     \end{cases}
   \]
 \[
     \Leftrightarrow\begin{cases}
       -2R(X'X)^{-1}X'\mathbf y + 2R\hat\beta^c + R(X'X)^{-1}R'\hat\lambda = 0\\
       R\hat\beta^c -r = 0
-
     \end{cases}
   \]
   \[
     \Leftrightarrow\begin{cases}
       -2R\hat{\mathbf b} + 2R\hat\beta^c + R(X'X)^{-1}R'\hat\lambda = 0\\
       R\hat\beta^c -r = 0
-
     \end{cases}
   \]
   De la première équation nous déduisons $\hat{\lambda}$~:
@@ -2008,7 +2416,7 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
   \[
     \Leftrightarrow \hat{\lambda} = -2 \left( R(X'X)^{-1}R' \right)^{-1}\left( r - R\hat{\mathbf b}\right)
   \]
-  en substituant la seconde équation. Le multiplicateur de Lagrange est non nul si et seulement si l'estimateur des MCO ne satisfait les $m$ contraintes linéaires. En substituant $\hat\lambda$ dans la première équation et en résolvant pour $\hat{\beta}^c$ on obtient~:
+  en substituant la seconde équation. Le multiplicateur de Lagrange est non nul si et seulement si l'estimateur des MCO ne satisfait pas les $m$ contraintes linéaires. En substituant $\hat\lambda$ dans la première équation et en résolvant pour $\hat{\beta}^c$ on obtient~:
 \[
       \hat{\beta}^c = \hat{\mathbf b} - (X'X)^{-1}R'\left( R(X'X)^{-1}R' \right)^{-1}\left( R\hat{\mathbf b}-r \right)
     \]
@@ -2021,7 +2429,7 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
   \frametitle{Tests du ratio de vraisemblance}
 
   \begin{theorem}\label{thm:likelihood_ratio_test}
-    La statistique de Fisher définie dans le théorème \ref{thm:fisher_statistic} s'interprête comme un test
+    La statistique de Fisher définie dans le théorème~\ref{thm:fisher_statistic} s'interprète comme un test
     de ratio de vraisemblance de $R\beta=r$ contre $R\beta\neq r$.
   \end{theorem}
 
@@ -2030,9 +2438,9 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
 
 \begin{notes}
 
-  \textbf{Preuve du théorème \ref{thm:likelihood_ratio_test}.} La fonction de vraisemblance est~:
+  \textbf{Preuve du théorème~\ref{thm:likelihood_ratio_test}.} La fonction de vraisemblance est~:
   \[
-    L\left(\beta, \sigma_{\varepsilon}^2;\mathbf y\right) = (2\pi)^{-\frac{T}{2}}\left(\sigma_{\varepsilon}^2\right)^{-\frac{T}{2}}\exp\left\{ -\frac{1}{\sigma_{\varepsilon}^2}\left( \mathbf y - X\beta \right)'\left( \mathbf y - X\beta \right) \right\}
+    L\left(\beta, \sigma_{\varepsilon}^2;\mathbf y\right) = (2\pi)^{-\frac{T}{2}}\left(\sigma_{\varepsilon}^2\right)^{-\frac{T}{2}}\exp\left\{ -\frac{1}{2\sigma_{\varepsilon}^2}\left( \mathbf y - X\beta \right)'\left( \mathbf y - X\beta \right) \right\}
   \]
   Sous l'hypothèse nulle, $R\beta=r$, la valeur du maximum de vraisemblance est~:
   \[
@@ -2044,9 +2452,10 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
   \]
   La statistique du ratio de vraisemblance est donc~:
   \[
-    \frac{(2\pi)^{-\frac{T}{2}}\left[ \frac{1}{T}\left(\mathbf y - X\hat\beta \right)'\left( \mathbf y - X\hat\beta \right) \right]^{-\frac{T}{2}}\exp\left\{-\frac{T}{2}\right\}}{(2\pi)^{-\frac{T}{2}}\left[ \frac{1}{T}\left(\mathbf y - X\hat\beta^c \right)'\left( \mathbf y - X\hat\beta^c \right) \right]^{-\frac{T}{2}}\exp\left\{-\frac{T}{2}\right\}}
+    \adjustbox{max width=\linewidth}{$\displaystyle
+    \frac{(2\pi)^{-\frac{T}{2}}\left[ \frac{1}{T}\left(\mathbf y - X\hat\beta \right)'\left( \mathbf y - X\hat\beta \right) \right]^{-\frac{T}{2}}\exp\left\{-\frac{T}{2}\right\}}{(2\pi)^{-\frac{T}{2}}\left[ \frac{1}{T}\left(\mathbf y - X\hat\beta^c \right)'\left( \mathbf y - X\hat\beta^c \right) \right]^{-\frac{T}{2}}\exp\left\{-\frac{T}{2}\right\}}$}
   \]
-  Le test du ratio de vraisemblance nous aménera à rejeter l'hypothèse nulle si la statistique est grande (les contraintes sont peu vraisemblables), c'est-à-dire si le ratio~:
+  Le test du ratio de vraisemblance nous amènera à rejeter l'hypothèse nulle si la statistique est grande (les contraintes sont peu vraisemblables), c'est-à-dire si le ratio~:
   \[
     \frac{\left(\mathbf y - X\hat\beta^c \right)'\left( \mathbf y - X\hat\beta^c \right)}{\left(\mathbf y - X\hat\beta\right)'\left( \mathbf y - X\hat\beta\right)}
   \]
@@ -2061,7 +2470,7 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
       &= \left(\mathbf y - X\hat\beta\right)'\left(\mathbf y - X\hat\beta\right) + \left(\hat\beta-\hat\beta^c\right)'X'X\left(\hat\beta-\hat\beta^c\right)
     \end{split}
   \]
-  Le test du ratio de vraisemblance nous aménera donc à rejeter l'hypothèse nulle si le ratio~:
+  Le test du ratio de vraisemblance nous amènera donc à rejeter l'hypothèse nulle si le ratio~:
   \[
     \frac{\left(\hat\beta-\hat\beta^c\right)'X'X\left(\hat\beta-\hat\beta^c\right)}{\left(\mathbf y - X\hat\beta\right)'\left(\mathbf y - X\hat\beta\right)}
   \]
@@ -2073,7 +2482,7 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
   \[
     \frac{\left(r-R\hat{\beta}\right)'\left( R(X'X)^{-1}R' \right)^{-1}\left(r-R\hat{\beta}\right)}{SSE}
   \]
-  au facteur $\nicefrac{T-K}{m}$ près, on reconnaît la statistique donnée dans le théorème \ref{thm:fisher_statistic}.\qed
+  au facteur $\nicefrac{T-K}{m}$ près, on reconnaît la statistique donnée dans le théorème~\ref{thm:fisher_statistic}.\qed
 
 \end{notes}
 
@@ -2091,7 +2500,7 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
 
   \bigskip\bigskip
 
-  \textbf{Preuve du corollaire \ref{cor:equality_test}} Direct par le théorème \ref{thm:fisher_statistic} avec $R$ une matrice identité, $r=\beta^{\star}$ et $m=K$.\qed
+  \textbf{Preuve du corollaire~\ref{cor:equality_test}} Direct par le théorème~\ref{thm:fisher_statistic} avec $R$ une matrice identité, $r=\beta^{\star}$ et $m=K$.\qed
 
 \end{frame}
 
@@ -2104,7 +2513,7 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
     \[
       \mathbf y = X_1\beta_1 + X_2\beta_2 + \epsilon
     \]
-    où $X_1$ et $X_2$ sont respectivement des matrices $T\times K_1$ et $T\times K_2$, les vecteurs $\beta_1$ et $\beta_2$ sont respectivement des vecteurs $K_1\times 1$ et $K_2\times 1$. Soient $SSE_1$ la somme des carrés des résidus quand $\mathbf y$ est régressé seulment sur $X_1$ (le modèle contraint) et $SSE_{12}$ la somme des carrés des résidus quand $\mathbf y$ est régressé sur toutes les variables explicatives (le modèle non contraint). Alors, sous l'hypothèse nulle $\beta_2=0$ la statistique~:
+    où $X_1$ et $X_2$ sont respectivement des matrices $T\times K_1$ et $T\times K_2$, les vecteurs $\beta_1$ et $\beta_2$ sont respectivement des vecteurs $K_1\times 1$ et $K_2\times 1$. Soient $SSE_1$ la somme des carrés des résidus quand $\mathbf y$ est régressé seulement sur $X_1$ (le modèle contraint) et $SSE_{12}$ la somme des carrés des résidus quand $\mathbf y$ est régressé sur toutes les variables explicatives (le modèle non contraint). Alors, sous l'hypothèse nulle $\beta_2=0$ la statistique~:
     \[
 \frac{\nicefrac{\left(SSE_1-SSE_{12}\right)}{K_2}}{\nicefrac{SSE_{12}}{T-K_1-K_2}}
     \]
@@ -2116,14 +2525,14 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
 
 \begin{notes}
 
-  \textbf{Preuve de la proposition \ref{prop:test-subset-parameters}.} Nous avons~:
+  \textbf{Preuve de la proposition~\ref{prop:test-subset-parameters}.} Nous avons~:
   \[
     SSE_1 - SSE_{12} = \mathbf y' M_1\mathbf y - \mathbf y' M \mathbf y
   \]
   avec $M_1 = I_{T}-X_1(X_1'X_1)^{-1}X_1'$ et $M = I_{T}-X(X'X)^{-1}X'$ où  $X = \begin{pmatrix}X_1 & X_2\end{pmatrix}$. En développant, il vient~:
   \[
     \begin{split}
-      SSE_1 - SEE_{12} &= \left(X_1\beta_1 + X_2\beta_2 + \varepsilon\right)'M_1\left(X_1\beta_1 + X_2\beta_2 + \varepsilon\right) - \varepsilon'M\varepsilon\\
+      SSE_1 - SSE_{12} &= \left(X_1\beta_1 + X_2\beta_2 + \varepsilon\right)'M_1\left(X_1\beta_1 + X_2\beta_2 + \varepsilon\right) - \varepsilon'M\varepsilon\\
                        &= \beta_1'X_1'M_1X_1\beta_1 + \beta_1'X_1'M_1X_2\beta_2+ \beta_1'X_1'M_1\varepsilon\\
                        &\quad + \beta_2'X_2'M_1X_1\beta_1 + \beta_2'X_2'M_1X_2\beta_2+ \beta_2'X_2'M_1\varepsilon\\
                        &\quad + \varepsilon'M_1X_1\beta_1 + \varepsilon'M_1X_2\beta_2+ \varepsilon'M_1\varepsilon - \varepsilon'M\varepsilon\\
@@ -2138,11 +2547,11 @@ L'expression de la variance de $\tilde{\mathbf b}$ s'obtient directement en somm
   \[
     \left( M_1-M \right)^2 = M_1^2 - M_1M - MM_1 + M^2 = M_1 - 2M_1M + M
   \]
-  puisque les matrices $M_1$ et $M$ sont symériques et idempotentes. Pour que la matrice $M_1-M$ soit idempotente il faut et il suffit donc que $2M_1M$ soit égal à $-M$. On a~:
+  puisque les matrices $M_1$ et $M$ sont symétriques et idempotentes. Pour que la matrice $M_1-M$ soit idempotente il faut et il suffit donc que $M_1M$ soit égal à $M$. On a~:
   \[
     M_1M = M - X_1(X_1'X_1)^{-1}X_1'M
   \]
-  On sait que $X'M=0$, a fortiori $X_1'M = 0$ et donc $M_1M=M$ et $\left(M_1-M\right)^2=M_1-M$. Puisque $M_1-M$ a une trace éqale à $T-K_1-(T-K_1-K_2)=K_2$ il s'ensuit que $\nicefrac{\left(SSE_1-SSE_{12} \right)}{K_2}$ comme $\frac{\sigma_{\varepsilon}^2}{K_2}\chi^2(K_2)$. Par ailleurs nous savons déjà que $\nicefrac{SSE_{12}}{T-K_1-K_2}$ est distribué comme $\frac{\sigma_{\varepsilon}^2}{T-K_1-K_2}\chi^2(T-K_1-K_2)$. Enfin, comme le numérateur et le dénominateur de la statistique de test sont indépendants, car~:
+  On sait que $X'M=0$, a fortiori $X_1'M = 0$ et donc $M_1M=M$ et $\left(M_1-M\right)^2=M_1-M$. Puisque $M_1-M$ a une trace égale à $T-K_1-(T-K_1-K_2)=K_2$ il s'ensuit que $\nicefrac{\left(SSE_1-SSE_{12} \right)}{K_2}$ est distribué comme $\frac{\sigma_{\varepsilon}^2}{K_2}\chi^2(K_2)$. Par ailleurs nous savons déjà que $\nicefrac{SSE_{12}}{T-K_1-K_2}$ est distribué comme $\frac{\sigma_{\varepsilon}^2}{T-K_1-K_2}\chi^2(T-K_1-K_2)$. Enfin, comme le numérateur et le dénominateur de la statistique de test sont indépendants, car~:
   \[
     (M_1-M)M = M - M = 0
   \]
@@ -2160,7 +2569,7 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
 
   \item On veut tester $\beta_2=\beta_3=\dots=\beta_K=0$ contre au moins un paramètre différent de zéro.\newline
 
-  \item On utilise la statistique définie dans la proposition \ref{prop:test-subset-parameters}.\newline
+  \item On utilise la statistique définie dans la proposition~\ref{prop:test-subset-parameters}.\newline
 
   \item Ici on a $SSE_1 = SST$ et donc $SSE_1-SSE_{12} = SST - SSE = SSR$.\newline
 
@@ -2168,12 +2577,105 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
     \[
       \frac{\nicefrac{SSR}{K-1}}{\nicefrac{SSE}{T-K}} = \frac{R^2}{1-R^2}\frac{T-K}{K-1}
     \]
-    puisque $SSE = (1-R^2)SST$ et $SSR = R^2SST$. On accepte l'hypothèse nulle si le $R^2$ est assez proche de zéro.
+    puisque $SSE = (1-R^2)SST$ et $SSR = R^2SST$. On ne rejette pas l'hypothèse nulle si le $R^2$ est assez proche de zéro. Notons qu'un test n'est jamais symétrique~: ne pas rejeter $\mathcal H_0$ n'est pas la démontrer, c'est seulement constater que les données ne permettent pas de l'écarter.
 
   \end{itemize}
 
 
 \end{frame}
+
+
+\begin{frame}[c]
+  \frametitle{Tout le chapitre dans un tableau}
+  \framesubtitle{Équation de salaire, $T=526$ individus (CPS 1976)}
+
+  \begin{center}
+    \small
+    \renewcommand{\arraystretch}{1.25}
+    \setlength{\tabcolsep}{4pt}
+    \input{images/chapitre-1/sortie-mincer.tex}
+
+    \bigskip
+
+    \footnotesize
+    \input{images/chapitre-1/sortie-mincer-synthese.tex}
+  \end{center}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Tout le chapitre dans un tableau}
+  \framesubtitle{Comment lire cette sortie}
+
+  \begin{itemize}
+
+  \item Colonne 1~: $\hat{\mathbf b} = (X'X)^{-1}X'\mathbf y$, théorème~\ref{thm:ols}.\newline
+
+  \item Colonne 2~: $s_{\hat{\mathbf b}_i} = \sqrt{s^2\left[ (X'X)^{-1} \right]_{ii}}$,
+    proposition~\ref{prop:biais-variance} et corollaire~\ref{cor:s2}.\newline
+
+  \item Colonne 3~: $t = \nicefrac{\hat{\mathbf b}_i}{s_{\hat{\mathbf b}_i}}$, qui suit
+    un $t_{522}$ sous $\mathcal H_0:\beta_i=0$, corollaire~\ref{cor:student_statistic}.\newline
+
+  \item Colonne 4~: la p-value associée. \guillemotleft $0{,}000$ \guillemotright{}
+    signifie \guillemotleft inférieure à $0{,}0005$ \guillemotright, pas
+    \guillemotleft nulle \guillemotright.\newline
+
+  \item $R^2 = \nicefrac{SSR}{SST}$, proposition~\ref{prop:r2}~; $\bar R^2$ le corrige
+    des degrés de liberté.\newline
+
+  \item $F(3,522) = 74{,}67$~: le test de significativité jointe des pentes. On vérifie
+    bien $\frac{R^2}{1-R^2}\frac{T-K}{K-1} = \frac{0{,}3003}{0{,}6997}\times\frac{522}{3} = 74{,}67$.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{notes}
+
+  \begin{itemize}
+
+  \item \textbf{Lecture économique.} Le coefficient de $educ$ vaut $0{,}0904$~: une
+    année d'études supplémentaire est associée à un salaire horaire supérieur
+    d'environ $9\%$, à expérience donnée. Sa statistique de Student vaut $12{,}10$,
+    très au-delà de la valeur critique de $1{,}96$~: le rendement de l'éducation est
+    massivement significatif.\newline
+
+  \item Le profil d'expérience est concave~: l'effet marginal d'une année d'expérience
+    est $\hat\beta_3 + 2\hat\beta_4\,exper = 0{,}0410 - 2\times 0{,}000714\times exper$,
+    qui s'annule autour de $29$ ans d'expérience puis devient négatif. Le terme
+    quadratique est lui aussi très significatif ($t=-6{,}16$)~: la non-linéarité n'est
+    pas un artefact.\newline
+
+  \item La constante n'est pas significative ($t=1{,}21$). Ce n'est pas un problème~:
+    elle correspond au salaire prédit d'un individu sans aucune année d'études ni
+    d'expérience, c'est-à-dire à une extrapolation hors de l'échantillon. On ne retire
+    jamais la constante d'un modèle sous prétexte qu'elle n'est pas significative -- le
+    corollaire~\ref{cor:zero_mean_residuals} et la proposition~\ref{prop:r2} en
+    dépendent.\newline
+
+  \item Le $R^2$ de $0{,}30$ signifie que le modèle rend compte de $30\%$ de la
+    variance du log-salaire. C'est un bon $R^2$ sur données individuelles, et cela
+    n'empêche pas les coefficients d'être estimés très précisément~: souvenons-nous
+    qu'un $R^2$ faible n'implique pas l'absence d'effet significatif.\newline
+
+  \item \textbf{Et surtout~: rien de tout cela n'est causal.} Le talent, qui n'est pas
+    observé, se trouve dans $\varepsilon$ et est vraisemblablement corrélé
+    positivement à $educ$. Nous verrons au chapitre 2 que $\hat\beta_2$ est alors biaisé
+    à la hausse, et au chapitre 3 comment les variables instrumentales permettent de
+    contourner le problème. Le $9\%$ affiché ici est un chiffre de \emph{corrélation
+    conditionnelle}, pas le rendement causal d'une année d'études.\newline
+
+  \item Les données et le code sont dans le dépôt~:
+    \texttt{cours/data/\allowbreak chapitre-1/\allowbreak wage1.csv} et
+    \texttt{cours/codes/\allowbreak chapitre-1/\allowbreak mincer.py}. Il s'agit de l'échantillon \texttt{wage1}
+    diffusé avec le manuel de Wooldridge (Current Population Survey, 1976).
+
+  \end{itemize}
+
+\end{notes}
 
 
 \begin{notes}
@@ -2188,7 +2690,7 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
 
   \bigskip
 
-  \nocite{Green2017}
+  \nocite{Greene2017}
 
   \nocite{Schmidt1976}
 
@@ -2197,6 +2699,9 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
 \end{notes}
 
 
+
+\appendix
+\section{Annexe A -- Probabilités}
 
 \begin{frame}
   \begin{center}
@@ -2242,9 +2747,9 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
 
   \begin{itemize}
 
-  \item Le théorème \ref{thm:Slutsky} est aussi valable pour des vecteurs de variables aléatoires (dans $\mathbb R^p$) et une fonction $g$ de $\mathbb R^p$ dans $\mathbb R^q$ continue en $X$.\newline
+  \item Le théorème~\ref{thm:Slutsky} est aussi valable pour des vecteurs de variables aléatoires (dans $\mathbb R^p$) et une fonction $g$ de $\mathbb R^p$ dans $\mathbb R^q$ continue en $X$.\newline
 
-  \item \textbf{Exemple.} Soient deux suites de variables aléatoires $\{X_n\}$ et $\{Y_n\}$ qui convergent en probabilité vers $X$ et $Y$. Le théorème \ref{thm:Slutsky} nous dit que~:
+  \item \textbf{Exemple.} Soient deux suites de variables aléatoires $\{X_n\}$ et $\{Y_n\}$ qui convergent en probabilité vers $X$ et $Y$. Le théorème~\ref{thm:Slutsky} nous dit que~:
     \[
       X_nY_n \xlongrightarrow[n\rightarrow\infty]{\text{proba}} XY
     \]
@@ -2291,7 +2796,7 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
   \frametitle{Loi du $\chi^2$}
 
   \begin{defn}{}
-    Soit $X_1, \dots, X_k$ une suite de variable aléaoires normales centrées-réduites indépendantes. Alors $\sum_{i=1}^kX_i^2$ suit une loi du chi-deux à $k$ degrés de liberté, notée~: $\chi^2(k)$.
+    Soit $X_1, \dots, X_k$ une suite de variables aléatoires normales centrées-réduites indépendantes. Alors $\sum_{i=1}^kX_i^2$ suit une loi du chi-deux à $k$ degrés de liberté, notée~: $\chi^2(k)$.
   \end{defn}
 
   \bigskip
@@ -2326,14 +2831,14 @@ la statistique est un ratio de deux variables aléatoires du $\chi^2$ indépenda
   \frametitle{Loi de Student}
 
   \begin{defn}{}
-    Soient $Z$ une variable aléatoire normale centrée réduite et une variable aléatoire $U\perp Z$ distribuéesuivant la loi du $\chi^2$ à $k$ degrés de liberté. Alors
+    Soient $Z$ une variable aléatoire normale centrée réduite et une variable aléatoire $U\perp Z$ distribuée suivant la loi du $\chi^2$ à $k$ degrés de liberté. Alors
     \[
       X = \frac{Z}{\sqrt{\nicefrac{U}{k}}}
     \]
     suit une loi de Student à $k$ degrés de liberté, notée $t_k$.
   \end{defn}
 
-  \bigskip
+  \smallskip
 
   \begin{prop}\label{prop:student}
     La fonction de densité de probabilité de $X\sim t_k$,

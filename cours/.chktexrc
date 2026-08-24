@@ -1,0 +1,19 @@
+# Configuration chktex pour ce cours.
+#
+# Avertissements désactivés (faux positifs systématiques sur ce document) :
+#    1  « Command terminated with space » : déclenché par chaque \newcommand du
+#       préambule et par les macros mathématiques.
+#    3  parenthèse à encadrer par {} : inutile dans les formules de ce cours.
+#    8  « Wrong length of dash » : les tirets sont utilisés à dessein.
+#   11  « You should use \cdots » : \dots convient.
+#   25  « You might wish to put this between a pair of {} ».
+#   36  espacement autour des accolades, incompatible avec le style du document.
+CmdLine
+{
+    -n1
+    -n3
+    -n8
+    -n11
+    -n25
+    -n36
+}

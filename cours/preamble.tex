@@ -1,0 +1,182 @@
+% -*- mode: latex; -*-
+%
+% Préambule commun aux transparents du cours d'économétrie.
+%
+% Chaque fichier maître définit \coursfile (nom du fichier sans extension,
+% utilisé pour le lien vers la source dans le pied de page et pour retrouver
+% le répertoire des codes) puis charge ce fichier :
+%
+%     \synctex=1
+%     \documentclass[10pt]{beamer}
+%     \newcommand{\coursfile}{chapitre-1}
+%     \input{preamble.tex}
+%
+% Les paquets et macros propres à un seul chapitre restent dans le fichier
+% maître, après le \input.
+
+\ifdefined\coursfile\else
+  \errmessage{preamble.tex: le fichier maitre doit definir \string\coursfile}
+\fi
+
+%% ---------------------------------------------------------------- Paquets
+
+\usepackage[T1]{fontenc}
+\usepackage{fourier-orns}
+\usepackage{ccicons}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsbsy}
+\usepackage{amsopn}
+\usepackage{amscd}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{float}
+\usepackage{color, colortbl}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage[nice]{nicefrac}
+\usepackage{setspace}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{algorithms/algorithm}
+\usepackage{algorithms/algorithmic}
+\usepackage{tikz,pgfplots,pgfplotstable}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{patterns, arrows, decorations.pathreplacing, decorations.markings, calc}
+\pgfplotsset{plot coordinates/math parser=false}
+\usetikzlibrary{external}
+\tikzexternalize[prefix=figures/]
+\newlength\figureheight
+\newlength\figurewidth
+\usepackage{cancel}
+\usepackage{tikz-qtree}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{adjustbox}
+\usepackage{environ}
+\usepackage[cal=boondox]{mathalfa}
+\usepackage{manfnt}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=black,
+  urlcolor=black,
+}
+\usepackage{venndiagram}
+\usepackage{subcaption}
+\usepackage{centernot}
+
+\usepackage[backend=biber,style=bwl-FU,natbib=true,doi=false,isbn=false,url=false,eprint=false]{biblatex}
+\addbibresource{econometrics.bib}
+
+\usefonttheme[onlymath]{serif}
+\uselanguage{French}
+\languagepath{French}
+
+%% ------------------------------------------------------- Révision courante
+
+\usepackage{xstring}
+\usepackage{catchfile}
+\immediate\write18{git rev-parse HEAD > git.hash}
+\CatchFileDef{\HEAD}{git.hash}{\endlinechar=-1}
+\newcommand{\gitrevision}{\StrLeft{\HEAD}{7}}
+
+% Date à la française, sans charger babel (le corps du texte gère déjà lui-même
+% les espaces avant la ponctuation double, avec des ~).
+\renewcommand{\today}{\number\day\space\ifcase\month\or janvier\or février\or
+  mars\or avril\or mai\or juin\or juillet\or août\or septembre\or octobre\or
+  novembre\or décembre\fi\space\number\year}
+
+\newcommand{\repourl}{https://github.com/stepan-a/econometrics}
+
+%% ----------------------------------------------------------------- Macros
+
+\newcommand{\trace}{\mathrm{tr}}
+\newcommand{\vect}{\mathrm{vec}}
+\newcommand{\tracarg}[1]{\mathrm{tr}\left\{#1\right\}}
+\newcommand{\vectarg}[1]{\mathrm{vec}\left(#1\right)}
+\newcommand{\vecth}[1]{\mathrm{vech}\left(#1\right)}
+\newcommand{\iid}[2]{\mathrm{iid}\left(#1,#2\right)}
+\newcommand{\normal}[2]{\mathcal N\left(#1,#2\right)}
+\newcommand{\sample}{\mathcal Y_T}
+\newcommand{\samplet}[1]{\mathcal Y_{#1}}
+\newcommand{\slidetitle}[1]{\fancyhead[L]{\textsc{#1}}}
+
+\newcommand{\plim}{\xrightarrow[T\rightarrow\infty]{\text{proba}}}
+\newcommand{\epsvar}{\sigma_{\varepsilon}^2}
+
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\binomial}[2]{\begin{pmatrix} #1 \\ #2 \end{pmatrix}}
+\newcommand{\bigO}[1]{\mathcal O \left(#1\right)}
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+% Densité de probabilité gaussienne, pour pgfplots.
+\newcommand\gauss[2]{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}
+
+% Lien vers le code source d'une figure (dépôt, révision courante).
+\newcommand{\coderef}[1]{\href{\repourl/blob/\HEAD/cours/codes/\coursfile/#1}{ici}}
+
+% Encadré d'avertissement, avec le panneau « dangerous bend ».
+\newcommand{\dnote}[1]{%
+    \noindent
+    \begin{tabular}{@{}m{0.13\textwidth}@{}m{0.87\textwidth}@{}}%
+        \huge\textdbend &#1%
+    \end{tabular}%
+    \par
+}
+
+\renewcommand{\qedsymbol}{C.Q.F.D.}
+
+% Colonne alignée sur le séparateur décimal, affiché à la française.
+\newcolumntype{d}{D{.}{,}{-1}}
+\definecolor{gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{gray}}c}
+
+%% -------------------------------------------------------------- Théorèmes
+
+\setbeamertemplate{theorems}[numbered]{}
+
+\theoremstyle{plain}
+
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollaire}
+\newtheorem{thm}{Théorème}
+
+%% ---------------------------------------------------------- Mise en page
+
+\setbeamertemplate{footline}{
+  {\hfill\vspace*{1pt}\href{http://creativecommons.org/licenses/by-sa/3.0/legalcode}{\ccbysa}\hspace{.1cm}
+    \raisebox{-.1cm}{\href{\repourl}{\includegraphics[scale=.015]{../img/git.png}}}\enspace
+    \href{\repourl/blob/\HEAD/cours/\coursfile.tex}{\gitrevision}\enspace--\enspace\today\enspace--\enspace\insertframenumber/\inserttotalframenumber\enspace
+  }}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{caption}[numbered]
+\setbeamerfont{caption}{size=\footnotesize}
+
+%% ------------------------------------------------------- Environnements
+
+\NewEnviron{notes}{\justifying\footnotesize\begin{spacing}{1.0}\BODY\vfill\pagebreak\end{spacing}}
+
+\newenvironment{exercise}[1]
+{\bgroup \small\begin{block}{Ex. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{defn}[1]
+{\bgroup \small\begin{block}{Définition. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{exemple}[1]
+{\bgroup \small\begin{block}{Exemple. #1}}
+  {\end{block}\egroup}
+
+\newenvironment{rem}[1]
+{\bgroup \small\begin{block}{Remarque. #1}}
+  {\end{block}\egroup}

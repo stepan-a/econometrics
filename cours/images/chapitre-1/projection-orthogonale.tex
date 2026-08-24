@@ -1,0 +1,39 @@
+\begin{tikzpicture}[>=stealth, scale=1.0]
+
+  % Le sous-espace engendré par les colonnes de X (représenté par un plan).
+  \fill[blue!7]   (-1.7,-0.6) -- (4.7,-1.5) -- (6.6,0.9) -- (0.2,1.8) -- cycle;
+  \draw[blue!45]  (-1.7,-0.6) -- (4.7,-1.5) -- (6.6,0.9) -- (0.2,1.8) -- cycle;
+  \node[blue!55!black, anchor=west] at (4.9,-1.05) {\footnotesize $\mathcal V(X)$};
+
+  \coordinate (O)    at (0,0);
+  \coordinate (yhat) at (3.5,0.25);
+  \coordinate (y)    at (3.5,3.05);
+  \coordinate (x1)   at (2.5,-0.55);
+  \coordinate (x2)   at (1.3,1.05);
+
+  % Les colonnes de X, qui engendrent le plan.
+  \draw[->, thick, black!65] (O) -- (x1) node[below right, pos=.98] {$\mathbf x_1$};
+  \draw[->, thick, black!65] (O) -- (x2) node[above left,  pos=.98] {$\mathbf x_2$};
+
+  % La variable expliquée, sa projection et le résidu.
+  \draw[->, very thick, black]     (O)    -- (y)    node[above right] {$\mathbf y$};
+  \draw[->, very thick, blue!70!black] (O) -- (yhat) node[below right, pos=.92] {$\hat{\mathbf y}=P\mathbf y$};
+  \draw[->, very thick, red!75!black]  (yhat) -- (y) node[midway, right] {$\hat\epsilon = M\mathbf y$};
+
+  % L'angle droit : le résidu est orthogonal à TOUT le plan, donc à chaque colonne de X.
+  \draw[red!75!black] ($(yhat)+(-0.34,0.05)$) -- ($(yhat)+(-0.34,0.39)$) -- ($(yhat)+(0,0.34)$);
+
+  % L'angle entre y et sa projection.
+  \draw[black!55] (O)++(0.95,0.07) arc (4:41:0.95);
+  \node[black!70] at (1.30,0.50) {$\theta$};
+
+  \node[anchor=west, align=left] at (7.0,1.9)
+    {\footnotesize $\mathbf y = \hat{\mathbf y} + \hat\epsilon$};
+  \node[anchor=west, align=left] at (7.0,1.1)
+    {\footnotesize $X'\hat\epsilon = 0$};
+  \node[anchor=west, align=left] at (7.0,0.3)
+    {\footnotesize $\mathbf y'\mathbf y = \hat{\mathbf y}'\hat{\mathbf y} + \hat\epsilon'\hat\epsilon$};
+  \node[anchor=west, align=left] at (7.0,-0.5)
+    {\footnotesize $\cos\theta = \dfrac{\|\hat{\mathbf y}\|}{\|\mathbf y\|}$};
+
+\end{tikzpicture}
