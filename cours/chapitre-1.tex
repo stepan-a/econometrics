@@ -31,7 +31,7 @@
 
   On suppose que les données ($y$) sont générées par le modèle suivant~:
   \[
-    y_t = \beta_1x_{1,t} + \beta_2x_{2,t} + \dots + \beta_Kx_{K,t} + \varepsilon_t
+    y_t = \beta_1x_{t,1} + \beta_2x_{t,2} + \dots + \beta_Kx_{t,K} + \varepsilon_t
   \]
 
   \bigskip
@@ -44,7 +44,7 @@
 
   \item $\varepsilon_t$ est une variable aléatoire, elle rend compte de ce qui ne peut être expliqué par les variables $x_k$.\newline
 
-  \item La nature nous donne un échantillon $\{y_t,x_{1,t},\ldots,x_{K,t}\}_{t=1}^T$ ($T$ est le nombre d'observations).\newline
+  \item La nature nous donne un échantillon $\{y_t,x_{t,1},\ldots,x_{t,K}\}_{t=1}^T$ ($T$ est le nombre d'observations).\newline
 
   \item Les $K$ variables exogènes peuvent être déterministes (pour simplifier) ou aléatoires.\newline
 
@@ -118,15 +118,15 @@
     \[
       X =
       \begin{pmatrix}
-        x_{1,1} & x_{2,1} & \dots & x_{K,1} \\
-        x_{1,2} & x_{2,2} & \dots & x_{K,2} \\
+        x_{1,1} & x_{1,2} & \dots & x_{1,K} \\
+        x_{2,1} & x_{2,2} & \dots & x_{2,K} \\
         \vdots  & \vdots  &       & \vdots  \\
-        x_{1,T} & x_{2,T} & \dots & x_{K,T} \\
+        x_{T,1} & x_{T,2} & \dots & x_{T,K} \\
       \end{pmatrix}
     \]
     une matrice $T\times K$.\newline
 
-    \item On notera $\mathbf x_t = (x_{1,t},x_{2,t}, \dots, x_{K,t})$ la t-ième observation pour les exogènes (un vecteur $1\times K$).
+    \item On notera $\mathbf x_t = (x_{t,1},x_{t,2}, \dots, x_{t,K})$ la t-ième observation pour les exogènes (un vecteur $1\times K$).
 
   \end{itemize}
 
@@ -234,8 +234,8 @@
   \begin{exemple}{Équation de salaire}
     On cherche à mesurer le rendement de l'éducation. Pour l'individu $i$~:
     \[
-      \underbrace{\log w_i}_{y_i} = \beta_1 + \beta_2 \underbrace{educ_i}_{x_{2,i}}
-      + \beta_3 \underbrace{exper_i}_{x_{3,i}} + \beta_4 \underbrace{exper_i^2}_{x_{4,i}}
+      \underbrace{\log w_i}_{y_i} = \beta_1 + \beta_2 \underbrace{educ_i}_{x_{i,2}}
+      + \beta_3 \underbrace{exper_i}_{x_{i,3}} + \beta_4 \underbrace{exper_i^2}_{x_{i,4}}
       + \varepsilon_i
     \]
     où $w_i$ est le salaire horaire, $educ_i$ le nombre d'années d'études
@@ -1817,8 +1817,8 @@ $\frac{\varepsilon 'X}{T}$ converge donc bien en probabilité vers 0.\qed
   \begin{exemple}{Rendements d'échelle}
     Soit une fonction de production de Cobb-Douglas, écrite en logarithmes~:
     \[
-      \underbrace{\log Q_t}_{y_t} = \beta_1 + \beta_2 \underbrace{\log K_t}_{x_{2,t}}
-      + \beta_3 \underbrace{\log L_t}_{x_{3,t}} + \varepsilon_t
+      \underbrace{\log Q_t}_{y_t} = \beta_1 + \beta_2 \underbrace{\log K_t}_{x_{t,2}}
+      + \beta_3 \underbrace{\log L_t}_{x_{t,3}} + \varepsilon_t
     \]
     $\beta_2$ et $\beta_3$ sont les élasticités de la production au capital et au
     travail~; les rendements d'échelle sont constants si et seulement
