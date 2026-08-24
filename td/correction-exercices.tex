@@ -1,0 +1,3222 @@
+\documentclass[12pt,a4paper,notitlepage]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{mathtools}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{float}
+\usepackage[french]{babel}
+\usepackage{tikz}
+
+\usepackage{palatino}
+
+ \usepackage[active]{srcltx}
+\usepackage{scrtime}
+
+% Notations communes avec les transparents et avec la fiche d'exercices.
+\input{notations}
+
+\newcounter{qnumber}
+\setcounter{qnumber}{0}
+
+\newcounter{enumber}
+\setcounter{enumber}{0}
+
+\newcommand{\question}{\textbf{(\addtocounter{qnumber}{1}\theqnumber)}\,}
+\newcommand{\exercice}{\refstepcounter{enumber}\textbf{\textsc{Exercice} \theenumber}.\,}
+
+% Ouvre un exercice en remettant le compteur de questions à zéro. Les deux
+% compteurs sont indépendants de ceux de fiche-exercices.tex : toute insertion
+% d'un exercice dans la fiche doit être répercutée ici, faute de quoi les deux
+% documents se désynchronisent silencieusement.
+\newcommand{\nouvelexercice}{\setcounter{qnumber}{0}\bigskip\exercice}
+
+\setlength{\parindent}{0cm}
+
+% Absorbe les petits dépassements de justification (lignes trop longues) en
+% répartissant l'élasticité sur les espaces plutôt que dans la marge.
+\setlength{\emergencystretch}{3em}
+
+\begin{document}
+
+\title{\textsc{Économétrie approfondie}\\ \small{(Éléments de correction des exercices)}}
+\date{Le \today\ à \thistime}
+
+\maketitle
+
+\thispagestyle{empty}
+
+Ce document donne des éléments de correction pour les 35 exercices de la fiche.
+La numérotation des exercices et des questions suit celle de la fiche. On
+respecte la convention du cours~: le modèle de la nature est écrit avec des
+lettres grecques, celui de l'économètre avec des lettres latines, et
+l'estimateur des MCO est noté $\hat{\mathbf b}$.
+
+\bigskip
+
+\section*{Chapitre I~-- Les MCO quand tout va bien}
+
+\nouvelexercice\label{ex:rupture-fixe} Le modèle empirique ne contient qu'une constante~: la matrice
+des explicatives se réduit au vecteur $\iota=(1,\dots,1)'$.
+
+\question L'estimateur des MCO minimise
+$\mathcal S(c) = \sum_{t=1}^T (y_t-c)^2$. La condition du premier ordre s'écrit
+$-2\sum_{t=1}^T (y_t-\hat c_T) = 0$, d'où~:
+\[
+  \hat c_T = \frac{1}{T}\sum_{t=1}^T y_t = \bar y
+\]
+On retrouve bien $\hat c_T = (\iota'\iota)^{-1}\iota'\mathbf y$. La condition du
+second ordre est satisfaite ($\mathcal S''=2T>0$)~: il s'agit d'un minimum.
+
+\question En substituant le DGP et en remarquant que
+$\sum_{t=1}^T\mathbbm{1}_{\{t>\kappa\}}(t) = T-\kappa$ (il y a $T-\kappa$ dates
+postérieures à $\kappa$)~:
+\[
+  \begin{split}
+    \mathbb E\left[\hat c_T\right]
+    &= \frac{1}{T}\sum_{t=1}^T \mathbb E\left[\mu_1 + \mu_2\mathbbm{1}_{\{t>\kappa\}}(t) + \varepsilon_t\right]\\
+    &= \mu_1 + \frac{\mu_2}{T}\left(T-\kappa\right)
+  \end{split}
+\]
+L'estimateur n'estime donc \emph{ni} $\mu_1$, \emph{ni} $\mu_1+\mu_2$~: il
+estime la moyenne de la série sur la période, c'est-à-dire une moyenne pondérée
+des deux régimes, les poids étant les fréquences $\kappa/T$ et $(T-\kappa)/T$.
+Le biais par rapport à $\mu_1$ vaut $\mu_2(T-\kappa)/T$.
+
+\question La partie déterministe du DGP ne contribue pas à la variance~:
+\[
+  \mathbb V\left[\hat c_T\right]
+  = \mathbb V\left[\frac{1}{T}\sum_{t=1}^T \varepsilon_t\right]
+  = \frac{1}{T^2}\sum_{t=1}^T \mathbb V\left[\varepsilon_t\right]
+  = \frac{\epsvar}{T}
+\]
+en utilisant l'indépendance des $\varepsilon_t$. Cette variance tend vers zéro
+lorsque $T\rightarrow\infty$.
+
+\question Comme $\kappa$ est \emph{fixe}, $(T-\kappa)/T\rightarrow 1$. Par
+ailleurs $\bar\varepsilon\plimT 0$ (loi des grands nombres). Donc~:
+\[
+  \hat c_T \plimT \mu_1+\mu_2
+\]
+\textbf{Interprétation.} Asymptotiquement, la sous-période antérieure à la
+rupture devient négligeable~: elle ne compte que $\kappa$ observations sur $T$.
+Tout se passe comme si l'échantillon était entièrement engendré par le second
+régime. L'estimateur converge, mais vers le mauvais paramètre si l'on cherchait
+à estimer $\mu_1$.
+
+\nouvelexercice\label{ex:rupture-proportionnelle} Seule la date de rupture change~: elle est désormais
+proportionnelle à la taille de l'échantillon.
+
+\question Inchangé~: $\hat c_T = \bar y$.
+
+\question Il y a maintenant $T-[\kappa T]$ dates postérieures à la rupture,
+donc~:
+\[
+  \mathbb E\left[\hat c_T\right] = \mu_1 + \mu_2\,\frac{T-[\kappa T]}{T}
+\]
+
+\question Inchangée également, $\mathbb V[\hat c_T] = \epsvar/T$~: la
+modification ne porte que sur la partie déterministe du DGP, qui est de variance
+nulle.
+
+\question Comme $[\kappa T]/T \rightarrow \kappa$~:
+\[
+  \hat c_T \plimT \mu_1+(1-\kappa)\mu_2
+\]
+
+\question \textbf{Comparaison.} Dans l'exercice~\ref{ex:rupture-fixe}, la rupture intervient à une
+date \emph{fixe}~: la proportion d'observations du premier régime, $\kappa/T$,
+tend vers zéro et le premier régime disparaît asymptotiquement. Dans l'exercice
+2, la rupture intervient à une date \emph{proportionnelle}~: chaque régime
+conserve une part fixe de l'échantillon ($\kappa$ et $1-\kappa$), et la limite
+est la moyenne pondérée des deux régimes. La leçon est que le comportement
+asymptotique d'un estimateur dépend de la façon dont on fait croître
+l'échantillon, et pas seulement du DGP à $T$ donné.
+
+\nouvelexercice\label{ex:mco-matriciel}
+
+\question On empile les $N$ observations. En posant
+$\mathbf y = (y_1,\dots,y_N)'$, $\bm\epsilon = (\epsilon_1,\dots,\epsilon_N)'$,
+$\mathbf b = (b_0,b_1,\dots,b_K)'$ et~:
+\[
+  X =
+  \begin{pmatrix}
+    1 & x_{1,1} & \ldots & x_{K,1}\\
+    1 & x_{1,2} & \ldots & x_{K,2}\\
+    \vdots & \vdots & & \vdots\\
+    1 & x_{1,N} & \ldots & x_{K,N}
+  \end{pmatrix}
+\]
+$X$ est de dimension $N\times(K+1)$ (chaque ligne rassemble les explicatives
+d'une observation, chaque colonne les $N$ observations d'une variable). Le
+modèle s'écrit $\mathbf y = X\mathbf b + \bm\epsilon$.
+
+\question L'estimateur des MCO minimise la somme des carrés des résidus~:
+\[
+  \begin{split}
+    \hat{\mathbf b} &= \arg\min_{\mathbf b}\ (\mathbf y - X\mathbf b)'(\mathbf y - X\mathbf b)\\
+                    &= \arg\min_{\mathbf b}\ \mathbf y'\mathbf y - 2\mathbf b'X'\mathbf y + \mathbf b'X'X\mathbf b
+  \end{split}
+\]
+(les scalaires $\mathbf b'X'\mathbf y$ et $\mathbf y'X\mathbf b$ sont égaux, et
+$\mathbf y'\mathbf y$ ne dépend pas de $\mathbf b$). La condition du premier
+ordre s'écrit~:
+\[
+  -2X'\mathbf y + 2X'X\hat{\mathbf b} = 0
+  \quad\Longleftrightarrow\quad
+  X'X\hat{\mathbf b} = X'\mathbf y
+\]
+Ce sont les \emph{équations normales}. Si $X$ est de plein rang colonne, $X'X$
+est inversible et~:
+\[
+  \hat{\mathbf b} = \left(X'X\right)^{-1}X'\mathbf y
+\]
+La condition du second ordre est satisfaite car le hessien $2X'X$ est défini
+positif sous l'hypothèse de plein rang.
+
+\question En explicitant les produits~:
+\[
+  X'X =
+  \begin{pmatrix}
+    N & \sum_i x_{1,i} & \ldots & \sum_i x_{K,i}\\
+    \sum_i x_{1,i} & \sum_i x_{1,i}^2 & \ldots & \sum_i x_{1,i}x_{K,i}\\
+    \vdots & \vdots & & \vdots\\
+    \sum_i x_{K,i} & \sum_i x_{K,i}x_{1,i} & \ldots & \sum_i x_{K,i}^2
+  \end{pmatrix},
+  \quad
+  X'\mathbf y =
+  \begin{pmatrix}
+    \sum_i y_i\\
+    \sum_i x_{1,i}y_i\\
+    \vdots\\
+    \sum_i x_{K,i}y_i
+  \end{pmatrix}
+\]
+La matrice $X'X$ est symétrique~: c'est (à un facteur $N$ près) la matrice des
+moments d'ordre deux non centrés des explicatives.
+
+\question Pour $K=1$~:
+\[
+  X'X = \begin{pmatrix} N & \sum_i x_i\\ \sum_i x_i & \sum_i x_i^2\end{pmatrix},
+  \qquad
+  \det(X'X) = N\sum_i x_i^2 - \left(\sum_i x_i\right)^2
+\]
+\textit{Démonstration de la stricte positivité du déterminant.} On développe~:
+\[
+  \begin{split}
+    \sum_{i=1}^N\sum_{j=1}^N (x_i-x_j)^2
+    &= \sum_i\sum_j \left( x_i^2 - 2x_ix_j + x_j^2 \right)\\
+    &= N\sum_i x_i^2 - 2\left(\sum_i x_i\right)\left(\sum_j x_j\right) + N\sum_j x_j^2\\
+    &= 2N\sum_i x_i^2 - 2\left(\sum_i x_i\right)^2
+  \end{split}
+\]
+d'où~:
+\[
+  \det(X'X) = \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N (x_i-x_j)^2
+\]
+Cette quantité est une somme de carrés, donc positive~; elle est
+\emph{strictement} positive dès que $N>1$ et que les $x_i$ ne sont pas tous
+égaux. C'est exactement la condition de plein rang~: si tous les $x_i$ étaient
+égaux, la seconde colonne de $X$ serait proportionnelle à la première.
+
+\smallskip
+
+En inversant la matrice $2\times 2$~:
+\[
+  (X'X)^{-1} = \frac{1}{\det(X'X)}\begin{pmatrix}\sum_i x_i^2 & -\sum_i x_i\\ -\sum_i x_i & N\end{pmatrix}
+\]
+et donc~:
+\[
+  \hat b_1 = \frac{N\sum_i x_iy_i - \left(\sum_i x_i\right)\left(\sum_i y_i\right)}{N\sum_i x_i^2 - \left(\sum_i x_i\right)^2}
+           = \frac{\sum_i (x_i-\bar x)(y_i-\bar y)}{\sum_i (x_i-\bar x)^2},
+  \qquad
+  \hat b_0 = \bar y - \hat b_1\bar x
+\]
+en utilisant $\sum_i (x_i-\bar x)^2 = \sum_i x_i^2 - N\bar x^2$ et
+$\sum_i (x_i-\bar x)(y_i-\bar y) = \sum_i x_iy_i - N\bar x\bar y$. La pente est
+le rapport de la covariance empirique à la variance empirique de $x$.
+
+\question La première ligne des équations normales $X'\hat\epsilon = 0$
+correspond à la colonne de uns~:
+\[
+  \iota'\hat\epsilon = \sum_{i=1}^N \hat\epsilon_i = 0
+\]
+La somme des résidus est donc nulle \emph{par construction}, dès lors que le
+modèle contient une constante. C'est une propriété algébrique, vraie pour tout
+échantillon, et non une hypothèse statistique.
+
+\nouvelexercice\label{ex:tendance}
+
+\question Comme à l'exercice~\ref{ex:rupture-fixe}, $\hat c_T = \bar y$.
+
+\question En utilisant $\sum_{t=1}^T t = \frac{T(T+1)}{2}$~:
+\[
+  \mathbb E\left[\hat c_T\right]
+  = \frac{1}{T}\sum_{t=1}^T \left(\mu_0 + \mu_1 t\right)
+  = \mu_0 + \mu_1\,\frac{T+1}{2}
+\]
+L'estimateur est donc \textbf{biaisé}, le biais valant $\mu_1(T+1)/2$.
+
+\question Le biais ne disparaît pas~: il \emph{diverge} avec $T$. C'est la
+différence essentielle avec les exercices 1 et 2, où le biais restait borné par
+$\mu_2$. \textbf{Interprétation.} La variable omise est ici une tendance
+déterministe, non stationnaire~: sa moyenne sur l'échantillon croît sans borne.
+Aucune quantité d'observations ne corrige l'erreur de spécification, au
+contraire. Le cours signale d'ailleurs (chapitre~I, discussion de
+$\mathcal H_2$) que le modèle à tendance déterministe est justement le
+contre-exemple pour lequel $X'X/T$ ne converge pas vers une matrice finie~: les
+énoncés asymptotiques usuels y demandent des normalisations différentes.
+
+\nouvelexercice\label{ex:inversion-blocs}
+
+\question On cherche $\mathcal A^{-1}$ sous forme de blocs
+$\mathcal B = \begin{pmatrix} B_{11} & B_{12}\\ B_{21} & B_{22}\end{pmatrix}$
+et on identifie les blocs de $\mathcal A\mathcal B = I$~:
+\[
+  \begin{cases}
+    A_{11}B_{11} + A_{12}B_{21} = I & (a)\\
+    A_{11}B_{12} + A_{12}B_{22} = 0 & (b)\\
+    A_{21}B_{11} + A_{22}B_{21} = 0 & (c)\\
+    A_{21}B_{12} + A_{22}B_{22} = I & (d)
+  \end{cases}
+\]
+De $(b)$ on tire $B_{12} = -A_{11}^{-1}A_{12}B_{22}$. En reportant dans
+$(d)$~:
+\[
+  \left(A_{22}-A_{21}A_{11}^{-1}A_{12}\right)B_{22} = I
+  \quad\Longleftrightarrow\quad
+  B_{22} = B \equiv \left(A_{22}-A_{21}A_{11}^{-1}A_{12}\right)^{-1}
+\]
+d'où $B_{12} = -A_{11}^{-1}A_{12}B$. De $(c)$ on tire
+$B_{21} = -A_{22}^{-1}A_{21}B_{11}$, mais il est plus direct de partir de $(a)$~:
+$B_{11} = A_{11}^{-1}\left(I - A_{12}B_{21}\right)$, puis de reporter dans
+$(c)$~:
+\[
+  A_{21}A_{11}^{-1}\left(I-A_{12}B_{21}\right) + A_{22}B_{21} = 0
+  \quad\Longleftrightarrow\quad
+  \left(A_{22}-A_{21}A_{11}^{-1}A_{12}\right)B_{21} = -A_{21}A_{11}^{-1}
+\]
+soit $B_{21} = -BA_{21}A_{11}^{-1}$, et en reportant dans l'expression de
+$B_{11}$~:
+\[
+  B_{11} = A_{11}^{-1}\left(I + A_{12}BA_{21}A_{11}^{-1}\right)
+\]
+ce qui est bien le résultat annoncé. La matrice
+$A_{22}-A_{21}A_{11}^{-1}A_{12}$ est appelée \emph{complément de Schur} de
+$A_{11}$~; son inversibilité est l'hypothèse faite dans l'énoncé.
+
+\question Si $A_{12}=0$ et $A_{21}=0$, alors $B = A_{22}^{-1}$, $B_{12}=0$,
+$B_{21}=0$ et $B_{11}=A_{11}^{-1}$~:
+\[
+  \mathcal A^{-1} = \begin{pmatrix} A_{11}^{-1} & 0\\ 0 & A_{22}^{-1}\end{pmatrix}
+\]
+L'inverse d'une matrice bloc-diagonale est la matrice bloc-diagonale des
+inverses. C'est ce résultat qui, appliqué à $X'X$, donnera à l'exercice suivant
+la séparabilité des estimateurs sous orthogonalité.
+
+\nouvelexercice\label{ex:fwl} On note $\hat{\mathbf b} = (\hat{\mathbf b}_1', \hat{\mathbf b}_2')'$
+la partition correspondante de l'estimateur, et $P_1 = X_1(X_1'X_1)^{-1}X_1'$.
+
+\question Si $X_1'X_2 = 0$, la matrice $X'X$ est bloc-diagonale~:
+\[
+  X'X = \begin{pmatrix} X_1'X_1 & 0\\ 0 & X_2'X_2\end{pmatrix}
+\]
+D'après la question (2) de l'exercice précédent, son inverse est
+bloc-diagonale, et comme $X'\mathbf y = (X_1'\mathbf y,\ X_2'\mathbf y)'$~:
+\[
+  \hat{\mathbf b}_1 = (X_1'X_1)^{-1}X_1'\mathbf y,
+  \qquad
+  \hat{\mathbf b}_2 = (X_2'X_2)^{-1}X_2'\mathbf y
+\]
+\textbf{Interprétation.} Sous orthogonalité, la régression multiple se scinde en
+deux régressions séparées~: estimer $\beta_1$ ne demande pas de connaître $X_2$.
+Autrement dit, \emph{omettre} $X_2$ ne biaise pas $\hat{\mathbf b}_1$ lorsque
+$X_2$ est orthogonale à $X_1$ --- c'est le cas particulier sans biais du
+problème de la variable omise (exercice~\ref{ex:variable-omise}).
+
+\question Sans orthogonalité, la première ligne des équations normales
+$X'X\hat{\mathbf b} = X'\mathbf y$ donne~:
+\[
+  X_1'X_1\hat{\mathbf b}_1 + X_1'X_2\hat{\mathbf b}_2 = X_1'\mathbf y
+\]
+soit~:
+\[
+  \hat{\mathbf b}_1 = (X_1'X_1)^{-1}X_1'\mathbf y - (X_1'X_1)^{-1}X_1'X_2\hat{\mathbf b}_2
+                    = (X_1'X_1)^{-1}X_1'\left(\mathbf y - X_2\hat{\mathbf b}_2\right)
+\]
+On retrouve l'expression de la question précédente, \emph{corrigée} du terme
+$(X_1'X_1)^{-1}X_1'X_2\hat{\mathbf b}_2$. Ce terme s'annule si et seulement si
+$X_1'X_2 = 0$~: l'estimateur de $\beta_1$ dans la régression courte et dans la
+régression longue coïncident exactement dans ce cas.
+
+\question Par définition des résidus estimés~:
+\[
+  \hat\epsilon = \mathbf y - X\hat{\mathbf b}
+               = \mathbf y - X(X'X)^{-1}X'\mathbf y
+               = \left(I - X(X'X)^{-1}X'\right)\mathbf y
+               = M\mathbf y
+\]
+avec $M = I - X(X'X)^{-1}X'$.
+
+\question $M$ est symétrique (car $(X'X)^{-1}$ l'est), et~:
+\[
+  \begin{split}
+    MM &= \left(I-X(X'X)^{-1}X'\right)\left(I-X(X'X)^{-1}X'\right)\\
+       &= I - 2X(X'X)^{-1}X' + X\underbrace{(X'X)^{-1}X'X}_{=I}(X'X)^{-1}X'\\
+       &= I - X(X'X)^{-1}X' = M
+  \end{split}
+\]
+$M$ est donc idempotente~: c'est un projecteur. Elle projette sur l'orthogonal
+de l'espace engendré par les colonnes de $X$.
+
+\question
+\[
+  MX = \left(I-X(X'X)^{-1}X'\right)X = X - X\underbrace{(X'X)^{-1}X'X}_{=I} = X - X = 0
+\]
+Les résidus sont donc orthogonaux aux explicatives~:
+$X'\hat\epsilon = X'M\mathbf y = (MX)'\mathbf y = 0$.
+
+\question
+\[
+  \hat{\mathbf y} = X\hat{\mathbf b} = X(X'X)^{-1}X'\mathbf y = H\mathbf y
+\]
+avec $H = X(X'X)^{-1}X' = I-M$. Un calcul identique à celui de la question (4)
+donne $HH = H$~: $H$ est également idempotente. Elle projette sur l'espace
+engendré par les colonnes de $X$. On a de plus $HM = MH = 0$ et
+$\mathbf y = \hat{\mathbf y} + \hat\epsilon$~: les MCO décomposent $\mathbf y$
+en deux composantes orthogonales.
+
+\question La seconde ligne des équations normales s'écrit~:
+\[
+  X_2'X_1\hat{\mathbf b}_1 + X_2'X_2\hat{\mathbf b}_2 = X_2'\mathbf y
+\]
+En y reportant l'expression de $\hat{\mathbf b}_1$ obtenue à la question (2)~:
+\[
+  X_2'X_1(X_1'X_1)^{-1}X_1'\left(\mathbf y - X_2\hat{\mathbf b}_2\right) + X_2'X_2\hat{\mathbf b}_2 = X_2'\mathbf y
+\]
+soit, en regroupant et en reconnaissant $P_1$~:
+\[
+  X_2'\left(I-P_1\right)X_2\,\hat{\mathbf b}_2 = X_2'\left(I-P_1\right)\mathbf y
+\]
+c'est-à-dire, avec $M_1 = I-P_1$~:
+\[
+  \hat{\mathbf b}_2 = \left(X_2'M_1X_2\right)^{-1}X_2'M_1\mathbf y
+\]
+Comme $M_1$ est symétrique et idempotente, on peut écrire
+$X_2'M_1X_2 = (M_1X_2)'(M_1X_2)$ et $X_2'M_1\mathbf y = (M_1X_2)'(M_1\mathbf y)$,
+d'où, en posant $\tilde X_2 = M_1X_2$ et $\tilde{\mathbf y} = M_1\mathbf y$~:
+\[
+  \hat{\mathbf b}_2 = \left(\tilde X_2'\tilde X_2\right)^{-1}\tilde X_2'\tilde{\mathbf y}
+\]
+\textbf{Interprétation (théorème de Frisch-Waugh-Lovell).} $\hat{\mathbf b}_2$
+s'obtient en trois étapes~: (i) régresser $X_2$ sur $X_1$ et garder les résidus
+$\tilde X_2$~; (ii) régresser $\mathbf y$ sur $X_1$ et garder les résidus
+$\tilde{\mathbf y}$~; (iii) régresser $\tilde{\mathbf y}$ sur $\tilde X_2$. Le
+coefficient $\hat{\mathbf b}_2$ mesure donc l'effet de $X_2$ \emph{une fois
+retiré de $X_2$ et de $\mathbf y$ tout ce que $X_1$ explique}. C'est le sens
+précis de l'expression «~à autres variables contrôlées~». L'intérêt pratique est
+double~: on n'inverse que des matrices de taille $K_2$, et les propriétés
+statistiques de $\hat{\mathbf b}_2$ sont inchangées.
+
+\nouvelexercice\label{ex:mc-convergence} \textit{Exercice de simulation. On donne ici les résultats
+attendus et leur lecture~; les scripts correspondants figurent dans
+\texttt{exercices/E00.py} et \texttt{exercices/E01.py}.}
+
+\question Pour $N=10$, la moyenne empirique des $50\,000$ valeurs de $\hat b$
+est très proche de $\beta = \frac12$, et leur variance empirique est proche de
+$\epsvar/\sum_i (x_i-\bar x)^2$. Ces deux quantités sont des estimations
+Monte-Carlo de $\mathbb E[\hat b]$ et $\mathbb V[\hat b]$~: on simule la
+distribution d'échantillonnage de l'estimateur en répétant l'expérience que
+l'économètre, lui, ne réalise qu'une fois. La première illustre l'absence de
+biais, la seconde la formule de variance du cours.
+
+\question Lorsque $N$ passe de $10$ à $10\,000$, la moyenne reste centrée sur
+$\frac12$ --- l'absence de biais ne dépend pas de la taille de l'échantillon ---
+tandis que la variance est divisée par un facteur voisin de $10$ à chaque fois
+que $N$ est multiplié par $10$. C'est la convergence~: $\mathbb V[\hat b]$ est
+d'ordre $1/N$, donc $\hat b\plimN\beta$. La distribution se concentre autour de
+la vraie valeur.
+
+\question Avec une variable explicative stochastique, l'estimateur reste sans
+biais~: puisque $\mathbb E[\varepsilon_i\mid x] = 0$, la loi des espérances
+itérées donne
+$\mathbb E[\hat b] = \mathbb E\left[\mathbb E[\hat b\mid x]\right] = \beta$
+(c'est l'objet de l'exercice~\ref{ex:lie}). Les variances sont très légèrement
+supérieures à celles du cas déterministe pour les petits $N$, car
+$\mathbb V[\hat b] = \epsvar\,\mathbb E\left[\left(\sum_i(x_i-\bar x)^2\right)^{-1}\right]$
+et la fonction $u\mapsto 1/u$ est convexe (inégalité de Jensen). L'écart
+s'estompe quand $N$ croît.
+
+\question La variance de $\hat b$ est approximativement
+$\epsvar/(N\sigma_x^2)$. En passant de $\sigma_x^2 = 2$ à $0{,}2$, la variance
+est multipliée par $10$~; en passant à $20$, elle est divisée par $10$.
+\textbf{Interprétation.} Plus la variable explicative est dispersée, plus
+l'estimation de la pente est précise~: on dispose d'un «~bras de levier~» plus
+long pour identifier la droite. C'est le rapport signal sur bruit du chapitre~I.
+Une explicative quasi constante ne permet pas d'identifier sa pente --- c'est
+aussi, en germe, le problème de la multicolinéarité (exercice~\ref{ex:multicolinearite}).
+
+\nouvelexercice\label{ex:mc-distribution} \textit{Exercice de simulation.}
+
+\smallskip
+
+La distribution de $\hat b - \frac12$ se concentre autour de zéro à mesure que
+$N$ croît~: l'intervalle dans lequel tombent les valeurs simulées se resserre, et
+à la limite toute la masse se retrouve concentrée au point $0$. Représentée telle
+quelle, cette distribution ne renseigne donc que sur la convergence.
+
+\smallskip
+
+En revanche, la distribution de
+$\sqrt N\left(\hat b-\frac12\right)$ est \emph{stable}~: les histogrammes
+obtenus pour $N=10,\,100,\,1000,\,10\,000$ se superposent, et convergent vers
+une loi normale centrée de variance $\epsvar/\sigma_x^2$. La normalisation par
+$\sqrt N$ est exactement celle qui compense la décroissance en $1/N$ de la
+variance~: elle rend visible la forme limite de la distribution.
+
+\smallskip
+
+\textbf{Deux remarques.} \emph{(i)} Lorsque la variable explicative est
+déterministe et les erreurs gaussiennes, $\hat b$ est \emph{exactement} gaussien
+pour tout $N$ (c'est le théorème du cours sur la loi de $\hat{\mathbf b}$)~:
+l'histogramme est gaussien dès $N=10$. \emph{(ii)} Lorsque la variable
+explicative est stochastique, la loi exacte à distance finie n'est plus
+gaussienne, mais le théorème central limite rétablit la normalité
+asymptotique~: c'est ce que montre la superposition des histogrammes
+renormalisés. L'exercice~\ref{ex:tcl} reprend ce point avec des erreurs non gaussiennes.
+
+\nouvelexercice\label{ex:normale-bivariee}
+\setcounter{qnumber}{-1}
+On pose $z_i = (x_i-\mu_i)/\sigma_i$ pour $i=1,2$.
+
+\question Le paramètre $\rho$ est le coefficient de corrélation linéaire entre
+$X_1$ et $X_2$~: $\rho = \mathrm{cov}(X_1,X_2)/(\sigma_1\sigma_2)$. Il mesure
+l'intensité \emph{et} le sens de la dépendance linéaire. Dans le cas gaussien,
+et seulement dans ce cas, $\rho=0$ équivaut à l'indépendance.
+
+\question La matrice de variance-covariance et son déterminant valent~:
+\[
+  \Sigma = \begin{pmatrix}\sigma_1^2 & \rho\sigma_1\sigma_2\\ \rho\sigma_1\sigma_2 & \sigma_2^2\end{pmatrix},
+  \qquad
+  \det\Sigma = \sigma_1^2\sigma_2^2\left(1-\rho^2\right)
+\]
+\[
+  \Sigma^{-1} = \frac{1}{\sigma_1^2\sigma_2^2(1-\rho^2)}
+  \begin{pmatrix}\sigma_2^2 & -\rho\sigma_1\sigma_2\\ -\rho\sigma_1\sigma_2 & \sigma_1^2\end{pmatrix}
+\]
+La forme quadratique de l'exposant se développe en~:
+\[
+  Q = (x-\mu)'\Sigma^{-1}(x-\mu) = \frac{1}{1-\rho^2}\left( z_1^2 - 2\rho z_1z_2 + z_2^2 \right)
+\]
+d'où la densité jointe~:
+\[
+  f(x_1,x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}
+  \exp\left\{-\frac{1}{2\left(1-\rho^2\right)}\left( z_1^2 - 2\rho z_1z_2 + z_2^2 \right)\right\}
+\]
+
+\question On complète le carré en $z_1$. En écrivant
+$z_1^2-2\rho z_1z_2+z_2^2 = \left(z_1-\rho z_2\right)^2 + \left(1-\rho^2\right)z_2^2$,
+l'exposant devient~:
+\[
+  -\frac{\left(z_1-\rho z_2\right)^2}{2\left(1-\rho^2\right)} - \frac{z_2^2}{2}
+\]
+et, comme $e^{A+B}=e^Ae^B$, la densité jointe se factorise~:
+\[
+  f(x_1,x_2) =
+  \underbrace{\frac{1}{\sqrt{2\pi}\,\sigma_1\sqrt{1-\rho^2}}\exp\left\{-\frac{\left(z_1-\rho z_2\right)^2}{2\left(1-\rho^2\right)}\right\}}_{f_{X_1|X_2}(x_1|x_2)}
+  \times
+  \underbrace{\frac{1}{\sqrt{2\pi}\,\sigma_2}\exp\left\{-\frac{z_2^2}{2}\right\}}_{f_{X_2}(x_2)}
+\]
+Le second facteur est la densité d'une loi $\normal{\mu_2}{\sigma_2^2}$~: c'est
+bien la marginale de $X_2$. Le premier, qui intègre à $1$ en $x_1$, est donc la
+densité conditionnelle. En réécrivant
+$z_1-\rho z_2 = \frac{1}{\sigma_1}\left(x_1 - \mu_1 - \rho\frac{\sigma_1}{\sigma_2}(x_2-\mu_2)\right)$,
+on reconnaît une densité gaussienne. Les deux densités sont donc gaussiennes.
+
+\question De la forme obtenue à la question précédente~:
+\[
+  \mathbb E\left[X_1|X_2=x_2\right] = \mu_1 + \rho\frac{\sigma_1}{\sigma_2}\left(x_2-\mu_2\right),
+  \qquad
+  \mathbb V\left[X_1|X_2=x_2\right] = \sigma_1^2\left(1-\rho^2\right)
+\]
+\textbf{Deux observations.} L'espérance conditionnelle est \emph{linéaire} en
+$x_2$~: c'est la propriété qui fait de la régression linéaire le bon modèle dans
+le monde gaussien. La variance conditionnelle, elle, ne dépend \emph{pas} de
+$x_2$ (homoscédasticité) et est strictement inférieure à $\sigma_1^2$ dès que
+$\rho\neq0$~: conditionner, c'est-à-dire disposer de l'information $X_2=x_2$,
+réduit l'incertitude sur $X_1$, et d'autant plus que $|\rho|$ est grand.
+
+\question $X_1$ est une combinaison linéaire de deux gaussiennes
+indépendantes, donc gaussienne~:
+\[
+  X_1 = a + bX_2 + \varepsilon \sim \normal{a+b\mu_2}{b^2\sigma_2^2+\epsvar}
+\]
+
+\question Conditionnellement à $X_2=x_2$, le terme $a+bx_2$ est déterministe et
+seul $\varepsilon$ reste aléatoire~:
+\[
+  X_1|X_2=x_2 \sim \normal{a+bx_2}{\epsvar}
+  \qquad\text{soit}\qquad
+  f_{X_1|X_2}(x_1|x_2) = \frac{1}{\sqrt{2\pi}\,\sigma_{\varepsilon}}\exp\left\{-\frac{\left(x_1-a-bx_2\right)^2}{2\epsvar}\right\}
+\]
+En identifiant avec la question (3), on retrouve
+$b = \rho\sigma_1/\sigma_2$, $a = \mu_1-b\mu_2$ et
+$\epsvar = \sigma_1^2(1-\rho^2)$~: le modèle de régression linéaire simple
+\emph{est} la loi conditionnelle du couple gaussien. Les deux points de vue
+coïncident.
+
+\question \textbf{Galton et la régression vers la moyenne.} Notons $X_2$ la
+taille des parents et $X_1$ celle des enfants. Si la distribution des tailles
+est stationnaire d'une génération à l'autre, alors $\mu_1=\mu_2=\mu$ et
+$\sigma_1=\sigma_2$. La question (3) donne alors~:
+\[
+  \mathbb E\left[X_1|X_2=x_2\right] = \mu + \rho\left(x_2-\mu\right) = (1-\rho)\mu + \rho\,x_2
+\]
+L'espérance de la taille de l'enfant est une moyenne pondérée de la taille des
+parents et de la moyenne de la population, les poids étant $\rho$ et $1-\rho$.
+Comme $0<\rho<1$, l'enfant de parents très grands ($x_2>\mu$) est \emph{en
+moyenne} plus petit que ses parents, mais reste plus grand que la moyenne~; et
+symétriquement pour des parents très petits.
+
+\smallskip
+
+\textbf{Interprétation.} Il n'y a là aucune loi biologique de «~retour à la
+médiocrité~»~: le phénomène est un pur artefact statistique de la corrélation
+imparfaite. Dès que $\rho<1$, l'espérance conditionnelle est nécessairement plus
+proche de la moyenne que la valeur conditionnante. Le raisonnement est d'ailleurs
+symétrique --- les parents d'enfants très grands sont eux aussi, en moyenne,
+plus petits que leurs enfants --- ce qui interdit toute lecture causale. C'est de
+cette étude que le mot «~régression~» est resté attaché à la méthode.
+
+\nouvelexercice\label{ex:r2}
+
+\question La première équation normale donne $\sum_t\hat\epsilon_t = 0$
+(exercice~\ref{ex:mco-matriciel}), donc $\sum_t \hat y_t = \sum_t y_t$ et $\bar{\hat y} = \bar y$. En
+écrivant $y_t-\bar y = (\hat y_t-\bar y) + \hat\epsilon_t$ et en élevant au
+carré~:
+\[
+  SST = \sum_t (\hat y_t-\bar y)^2 + 2\sum_t(\hat y_t-\bar y)\hat\epsilon_t + \sum_t\hat\epsilon_t^{\,2}
+\]
+Le double produit est nul~:
+$\sum_t \hat y_t\hat\epsilon_t = (X\hat{\mathbf b})'\hat\epsilon = \hat{\mathbf b}'\underbrace{X'\hat\epsilon}_{=0} = 0$
+et $\bar y\sum_t\hat\epsilon_t = 0$. D'où $SST = SSR+SSE$. \textbf{La constante
+intervient deux fois}~: pour garantir $\sum_t\hat\epsilon_t=0$ (donc
+$\bar{\hat y}=\bar y$) et pour annuler le second terme du double produit.
+
+\question $R^2 = 1-SSE/SST = (SST-SSE)/SST = SSR/SST$. Comme $SSR\geq0$ et
+$SSE\geq0$ et que $SST = SSR+SSE$, on a $0\leq SSR\leq SST$, d'où
+$0\leq R^2\leq 1$.
+
+\question En utilisant $y_t-\bar y = (\hat y_t-\bar y)+\hat\epsilon_t$ et
+l'orthogonalité~:
+\[
+  \sum_t (y_t-\bar y)(\hat y_t-\bar y) = \sum_t (\hat y_t-\bar y)^2 = SSR
+\]
+donc~:
+\[
+  \mathrm{corr}\left(\mathbf y,\hat{\mathbf y}\right)^2
+  = \frac{\left(\sum_t (y_t-\bar y)(\hat y_t-\bar y)\right)^2}{\sum_t (y_t-\bar y)^2\sum_t(\hat y_t-\bar y)^2}
+  = \frac{SSR^2}{SST\cdot SSR} = \frac{SSR}{SST} = R^2
+\]
+Le coefficient de détermination est donc le carré de la corrélation entre la
+variable expliquée et sa prédiction.
+
+\question Notons $SSE_K$ le minimum de la somme des carrés des résidus avec $K$
+explicatives, et $SSE_{K+1}$ celui obtenu en ajoutant une variable. L'espace des
+combinaisons linéaires engendré par $K+1$ colonnes \emph{contient} celui
+engendré par les $K$ premières~: le minimum sur le plus grand ensemble ne peut
+pas être plus élevé, donc $SSE_{K+1}\leq SSE_K$. Comme $SST$ ne dépend pas du
+modèle, $R^2$ ne peut pas diminuer. \textbf{Conséquence pratique}~: le $R^2$ ne
+peut pas servir à choisir entre deux modèles emboîtés, puisqu'il désigne
+toujours le plus grand.
+
+\question Comme $K\geq1$, on a $\frac{T-1}{T-K}\geq 1$, donc
+$(1-R^2)\frac{T-1}{T-K}\geq 1-R^2$ et $\bar R^2\leq R^2$. Le $\bar R^2$ devient
+négatif dès que $R^2 < \frac{K-1}{T-1}$, c'est-à-dire lorsque le modèle explique
+moins qu'un modèle réduit à la constante, compte tenu du nombre de paramètres.
+\textbf{Ce qu'il corrige}~: ajouter une variable fait mécaniquement croître
+$R^2$ (question 4) mais aussi le facteur de pénalité $\frac{T-1}{T-K}$~; le
+$\bar R^2$ n'augmente donc que si le gain d'ajustement compense le paramètre
+consommé.
+
+\question Sans constante, la première équation normale disparaît~:
+$\sum_t\hat\epsilon_t\neq0$ en général, donc $\bar{\hat y}\neq\bar y$ et le
+double produit de la question (1) ne s'annule plus. La décomposition
+$SST = SSR+SSE$ est fausse. Il en résulte que $1-SSE/SST$ et $SSR/SST$ ne
+coïncident plus, et que le premier peut devenir \emph{négatif} (rien ne borne
+$SSE$ par $SST$). Le $R^2$ perd alors toute interprétation en «~part de variance
+expliquée~», et les $R^2$ de deux modèles dont l'un a une constante et l'autre
+non ne sont pas comparables.
+
+\question Les quatre jeux d'Anscombe partagent moyennes, variances, corrélation,
+droite de régression et $R^2$, alors que le premier est linéaire avec bruit, le
+deuxième parfaitement quadratique, le troisième linéaire avec un point aberrant,
+et le quatrième entièrement déterminé par un unique point à fort levier.
+\textbf{Conclusion}~: le $R^2$ résume la qualité de l'ajustement \emph{linéaire}
+en un seul nombre et ne dit rien de la validité de la spécification. Il ne
+dispense ni de tracer les résidus, ni d'examiner les points influents.
+
+\nouvelexercice\label{ex:s2}
+
+\question En substituant le DGP dans $\hat\epsilon = M\mathbf y$ et en utilisant
+$MX=0$ (exercice~\ref{ex:fwl})~:
+\[
+  \hat\epsilon = M\left(X\beta+\varepsilon\right) = \underbrace{MX}_{=0}\beta + M\varepsilon = M\varepsilon
+\]
+$M$ est symétrique et idempotente. Sa trace vaut~:
+\[
+  \trace(M) = \trace(I_T) - \tracarg{X(X'X)^{-1}X'} = T - \tracarg{(X'X)^{-1}X'X} = T-\trace(I_K) = T-K
+\]
+en utilisant $\trace(AB)=\trace(BA)$. Pour une matrice idempotente, trace et
+rang coïncident~: $\mathrm{rang}(M)=T-K$.
+
+\question Comme $M$ est symétrique idempotente,
+$SSE = \hat\epsilon'\hat\epsilon = \varepsilon'M'M\varepsilon = \varepsilon'M\varepsilon$.
+Donc~:
+\[
+  \mathbb E\left[SSE\right] = \tracarg{M\,\mathbb V[\varepsilon]} = \tracarg{M\,\epsvar I_T} = \epsvar\trace(M) = \epsvar(T-K)
+\]
+d'où $\mathbb E[s^2] = \mathbb E[SSE]/(T-K) = \epsvar$~: l'estimateur $s^2$ est
+sans biais. \textbf{Remarque.} La division par $T-K$ et non par $T$ s'interprète
+ainsi~: les résidus estimés vivent dans un sous-espace de dimension $T-K$, les
+$K$ équations normales ayant consommé $K$ degrés de liberté.
+
+\question $M$ étant symétrique idempotente de trace $T-K$~:
+\[
+  \frac{(T-K)s^2}{\epsvar} = \frac{\varepsilon'M\varepsilon}{\epsvar} \sim \chi^2(T-K)
+\]
+
+\question La variance d'une loi du khi-deux à $k$ degrés de liberté vaut $2k$,
+donc $\mathbb V\left[(T-K)s^2/\epsvar\right] = 2(T-K)$, soit~:
+\[
+  \mathbb V\left[s^2\right] = \frac{2\sigma_{\varepsilon}^4}{T-K}
+\]
+
+\question On a $\hat{\mathbf b}-\beta = (X'X)^{-1}X'\varepsilon = B\varepsilon$
+avec $B = (X'X)^{-1}X'$, et $SSE = \varepsilon'M\varepsilon$. Or~:
+\[
+  BM = (X'X)^{-1}X'M = (X'X)^{-1}\left(MX\right)' = 0
+\]
+puisque $M$ est symétrique et $MX=0$. Pour un vecteur gaussien, $B\varepsilon$
+et $\varepsilon'M\varepsilon$ sont donc indépendants. Comme $s^2$ est fonction
+de $SSE$ seul, $\hat{\mathbf b}$ et $s^2$ sont indépendants.
+
+\question Une loi de Student à $k$ degrés de liberté est le rapport
+$Z/\sqrt{U/k}$ où $Z\sim\normal{0}{1}$, $U\sim\chi^2(k)$ et $Z\perp U$. Or~:
+\[
+  \frac{\hat{\mathbf b}_i-\beta_i}{\sqrt{\epsvar\left[(X'X)^{-1}\right]_{ii}}}\sim\normal{0}{1},
+  \qquad
+  \frac{(T-K)s^2}{\epsvar}\sim\chi^2(T-K)
+\]
+et ces deux quantités sont indépendantes par la question (5). En formant le
+rapport, $\epsvar$ disparaît~:
+\[
+  t = \frac{\hat{\mathbf b}_i-\beta_i}{\sqrt{s^2\left[(X'X)^{-1}\right]_{ii}}} \sim t(T-K)
+\]
+C'est précisément parce que $\epsvar$ est inconnu et remplacé par $s^2$ que la
+loi n'est pas normale mais de Student.
+
+\question $s^2$ est sans biais et
+$\mathbb V[s^2] = 2\sigma_{\varepsilon}^4/(T-K)\rightarrow0$ lorsque
+$T\rightarrow\infty$ ($K$ fixe). L'erreur quadratique moyenne tend donc vers
+zéro. Or un estimateur sans biais dont la variance tend vers zéro se concentre
+nécessairement autour de sa cible~: $s^2\plimT\epsvar$. (C'est l'inégalité de
+Bienaymé-Tchebychev~: la probabilité de s'écarter de $\epsvar$ de plus de
+$\delta$ est majorée par $\mathbb V[s^2]/\delta^2$, qui tend vers zéro.)
+
+\nouvelexercice\label{ex:vraisemblance}
+
+\question Sous $\varepsilon\sim\normal{0}{\epsvar I_T}$, le vecteur $\mathbf y$
+est gaussien d'espérance $X\beta$ et de variance $\epsvar I_T$~:
+\[
+  L\left(\beta,\epsvar;\mathbf y\right)
+  = \left(2\pi\epsvar\right)^{-T/2}\exp\left\{-\frac{\left(\mathbf y-X\beta\right)'\left(\mathbf y-X\beta\right)}{2\epsvar}\right\}
+\]
+\[
+  \ell\left(\beta,\epsvar;\mathbf y\right)
+  = -\frac{T}{2}\log(2\pi) - \frac{T}{2}\log\epsvar - \frac{1}{2\epsvar}\left(\mathbf y-X\beta\right)'\left(\mathbf y-X\beta\right)
+\]
+
+\question Pour $\epsvar$ fixé, maximiser $\ell$ en $\beta$ revient à
+\emph{minimiser} $(\mathbf y-X\beta)'(\mathbf y-X\beta)$~: c'est exactement le
+programme des MCO. D'où $\hat\beta_{\textsc{mv}} = (X'X)^{-1}X'\mathbf y = \hat{\mathbf b}$.
+Puis~:
+\[
+  \frac{\partial\ell}{\partial\epsvar} = -\frac{T}{2\epsvar} + \frac{SSE}{2\sigma_{\varepsilon}^4} = 0
+  \quad\Longleftrightarrow\quad
+  \hat\sigma^2_{\varepsilon} = \frac{SSE}{T}
+\]
+\textbf{Remarque.} L'équivalence MCO/MV n'a rien d'automatique~: elle tient à la
+normalité. Les MCO ne supposent pas de loi, le MV en suppose une.
+
+\question D'après l'exercice~\ref{ex:s2}, $\mathbb E[SSE]=\epsvar(T-K)$, donc~:
+\[
+  \mathbb E\left[\hat\sigma^2_{\varepsilon}\right] = \frac{T-K}{T}\epsvar = \epsvar - \frac{K}{T}\epsvar
+\]
+L'estimateur du maximum de vraisemblance est \textbf{biaisé}, et sous-estime
+systématiquement $\epsvar$. Le biais, $-K\epsvar/T$, tend vers zéro quand
+$T\rightarrow\infty$~: l'estimateur est asymptotiquement sans biais.
+
+\question En dérivant une seconde fois et en prenant l'opposé de l'espérance~:
+\[
+  \mathcal I(\theta) =
+  \begin{pmatrix}
+    \dfrac{X'X}{\epsvar} & 0\\[2mm]
+    0 & \dfrac{T}{2\sigma_{\varepsilon}^4}
+  \end{pmatrix}
+\]
+Le bloc croisé est nul car
+$\mathbb E\left[\partial^2\ell/\partial\beta\,\partial\epsvar\right]
+= -\mathbb E\left[X'\varepsilon\right]/\sigma_{\varepsilon}^4 = 0$.
+\textbf{Interprétation.} La bloc-diagonalité signifie que les deux paramètres
+sont \emph{orthogonaux} au sens de l'information~: connaître ou ignorer
+$\epsvar$ ne change pas la précision asymptotique avec laquelle on estime
+$\beta$, et réciproquement. On retrouvera cette propriété au chapitre~IV.
+
+\question Les bornes de Cramer-Darmois-Fréchet-Rao sont les blocs diagonaux de
+$\mathcal I(\theta)^{-1}$~:
+\[
+  \epsvar (X'X)^{-1}
+  \qquad\text{et}\qquad
+  \frac{2\sigma_{\varepsilon}^4}{T}
+\]
+L'estimateur des MCO de $\beta$ a exactement pour variance $\epsvar(X'X)^{-1}$~:
+il \textbf{atteint} la borne, il est donc efficace parmi \emph{tous} les
+estimateurs sans biais (et pas seulement parmi les estimateurs linéaires, comme
+l'assure Gauss-Markov). En revanche
+$\mathbb V[s^2] = 2\sigma_{\varepsilon}^4/(T-K) > 2\sigma_{\varepsilon}^4/T$~:
+$s^2$ n'atteint pas sa borne à distance finie, mais s'en approche
+asymptotiquement.
+
+\question Posons $m = T-K$. On a $\mathbb E[SSE] = m\epsvar$ et
+$\mathbb V[SSE] = 2m\sigma_{\varepsilon}^4$ (loi du khi-deux). Pour
+$\sigma^2_{(c)} = SSE/c$~:
+\[
+  \frac{\mathrm{EQM}\left(\sigma^2_{(c)}\right)}{\sigma_{\varepsilon}^4}
+  = \underbrace{\frac{2m}{c^2}}_{\text{variance}} + \underbrace{\left(\frac{m}{c}-1\right)^2}_{\text{biais}^2}
+  = \frac{2m+m^2}{c^2} - \frac{2m}{c} + 1
+\]
+En annulant la dérivée par rapport à $c$~:
+\[
+  -\frac{2\left(2m+m^2\right)}{c^3} + \frac{2m}{c^2} = 0
+  \quad\Longleftrightarrow\quad
+  c = \frac{2m+m^2}{m} = m+2 = T-K+2
+\]
+La dérivée seconde est positive en ce point~: il s'agit bien d'un minimum.
+
+\question Ni $s^2$ ($c=T-K$) ni $\hat\sigma^2_{\varepsilon}$ ($c=T$) ne sont
+optimaux au sens de l'erreur quadratique moyenne, puisque l'optimum est
+$c = T-K+2$. En comparant les deux~:
+\[
+  \mathrm{EQM}\left(\hat\sigma^2_{\varepsilon}\right) < \mathrm{EQM}\left(s^2\right)
+  \quad\Longleftrightarrow\quad
+  (T-K)(K-4) < 2K
+\]
+condition satisfaite en particulier pour $K\leq4$, quelle que soit la taille de
+l'échantillon. \textbf{Interprétation.} L'absence de biais n'est pas un
+critère d'optimalité~: l'estimateur du maximum de vraisemblance, pourtant
+biaisé, bat souvent l'estimateur sans biais en erreur quadratique moyenne, parce
+qu'il échange un peu de biais contre une réduction de variance. C'est
+l'arbitrage biais-variance, dont on retrouvera une autre illustration à
+l'exercice~\ref{ex:contraintes}.
+
+\nouvelexercice\label{ex:tests}
+
+\question Sous les conditions idéales,
+$\hat{\mathbf b}\sim\normal{\beta}{\epsvar(X'X)^{-1}}$. Comme $R$ est
+déterministe, $R\hat{\mathbf b}$ est gaussien, et sous
+$\mathcal H_0: R\beta = r$~:
+\[
+  R\hat{\mathbf b}-r \sim \normal{0}{\epsvar R(X'X)^{-1}R'}
+\]
+
+\question Pour $m=1$, $R(X'X)^{-1}R'$ est un scalaire strictement positif et~:
+\[
+  \frac{R\hat{\mathbf b}-r}{\sqrt{\epsvar R(X'X)^{-1}R'}}\sim\normal{0}{1}
+\]
+Cette statistique n'est pas utilisable~: elle dépend de $\epsvar$, inconnu. On le
+remplace par $s^2$. Par l'exercice~\ref{ex:s2}, $(T-K)s^2/\epsvar\sim\chi^2(T-K)$
+indépendamment de $\hat{\mathbf b}$, de sorte que~:
+\[
+  t = \frac{R\hat{\mathbf b}-r}{\sqrt{s^2 R(X'X)^{-1}R'}} \sim t(T-K)
+\]
+
+\question Il suffit de prendre $R = (0,\dots,0,1,0,\dots,0)$, le $1$ étant en
+$i$-ème position, et $r=0$. Alors $R(X'X)^{-1}R' = \left[(X'X)^{-1}\right]_{ii}$
+et~:
+\[
+  t = \frac{\hat{\mathbf b}_i}{\sqrt{s^2\left[(X'X)^{-1}\right]_{ii}}} = \frac{\hat{\mathbf b}_i}{s_{\hat{\mathbf b}_i}}
+\]
+C'est la statistique de Student imprimée par les logiciels.
+
+\question Sous $\mathcal H_0$, le vecteur $R\hat{\mathbf b}-r$ est gaussien
+centré de variance $\epsvar R(X'X)^{-1}R'$, donc la forme quadratique~:
+\[
+  \frac{\left(R\hat{\mathbf b}-r\right)'\left(R(X'X)^{-1}R'\right)^{-1}\left(R\hat{\mathbf b}-r\right)}{\epsvar}\sim\chi^2(m)
+\]
+Elle est indépendante de $(T-K)s^2/\epsvar\sim\chi^2(T-K)$. Le rapport de deux
+khi-deux indépendants divisés par leurs degrés de liberté suit une loi de
+Fisher~; $\epsvar$ se simplifie~:
+\[
+  F \sim \mathcal F(m,\,T-K)
+\]
+
+\question Pour $m=1$, la forme quadratique se réduit à
+$\left(R\hat{\mathbf b}-r\right)^2/\left(R(X'X)^{-1}R'\right)$ et $m=1$ au
+dénominateur, de sorte que $F = t^2$. C'est cohérent avec le fait qu'une loi
+$\mathcal F(1,k)$ est la loi du carré d'une $t(k)$. Les deux tests sont donc
+équivalents pour une restriction unique --- à ceci près que le test de Student
+permet une alternative unilatérale, ce que le test de Fisher ne permet pas.
+
+\question On prend $R = \left(0\ \vdots\ I_{K-1}\right)$ et $r=0$, soit $m=K-1$.
+Le modèle contraint se réduit à la seule constante, dont l'estimateur est
+$\bar y$~: sa somme des carrés des résidus vaut donc $SST$. En utilisant la
+formulation du test par comparaison des sommes de carrés~:
+\[
+  F = \frac{\left(SST-SSE\right)/(K-1)}{SSE/(T-K)}
+    = \frac{SSR/(K-1)}{SSE/(T-K)}
+\]
+En divisant numérateur et dénominateur par $SST$ et en utilisant
+$R^2 = SSR/SST$ et $1-R^2 = SSE/SST$~:
+\[
+  F = \frac{R^2}{1-R^2}\,\frac{T-K}{K-1}
+\]
+
+\question \textbf{Oui}, et c'est une situation classique. Elle survient lorsque
+les explicatives sont fortement corrélées entre elles~: chaque coefficient est
+alors estimé très imprécisément (variances individuelles élevées), de sorte
+qu'aucun $t$ n'est significatif~; mais les variables expliquent conjointement
+une part importante de la variance de $\mathbf y$, et le test joint rejette
+nettement. Techniquement, le test de Fisher tient compte des \emph{covariances}
+entre estimateurs, que les tests de Student pris isolément ignorent. C'est le
+symptôme le plus caractéristique de la multicolinéarité (exercice~\ref{ex:multicolinearite}).
+
+\nouvelexercice\label{ex:contraintes} On note $P = (X'X)^{-1}$ pour alléger.
+
+\question Le lagrangien s'écrit~:
+\[
+  \mathcal L(\mathbf b,\bm\lambda) = \left(\mathbf y-X\mathbf b\right)'\left(\mathbf y-X\mathbf b\right) + \bm\lambda'\left(R\mathbf b-r\right)
+\]
+et les conditions du premier ordre~:
+\[
+  \begin{cases}
+    \dfrac{\partial\mathcal L}{\partial\mathbf b} = -2X'\left(\mathbf y-X\tilde{\mathbf b}\right) + R'\bm\lambda = 0\\[3mm]
+    \dfrac{\partial\mathcal L}{\partial\bm\lambda} = R\tilde{\mathbf b}-r = 0
+  \end{cases}
+\]
+
+\question La première condition donne
+$2X'X\tilde{\mathbf b} = 2X'\mathbf y - R'\bm\lambda$, soit~:
+\[
+  \tilde{\mathbf b} = \hat{\mathbf b} - \tfrac{1}{2}PR'\bm\lambda
+\]
+En prémultipliant par $R$ et en imposant la contrainte $R\tilde{\mathbf b}=r$~:
+\[
+  r = R\hat{\mathbf b} - \tfrac{1}{2}RPR'\bm\lambda
+  \quad\Longleftrightarrow\quad
+  \tfrac{1}{2}\bm\lambda = \left(RPR'\right)^{-1}\left(R\hat{\mathbf b}-r\right)
+\]
+En reportant~:
+\[
+  \tilde{\mathbf b} = \hat{\mathbf b} - PR'\left(RPR'\right)^{-1}\left(R\hat{\mathbf b}-r\right)
+\]
+L'estimateur contraint corrige l'estimateur libre proportionnellement à la
+violation observée de la contrainte.
+
+\question En prenant l'espérance et en utilisant
+$\mathbb E[\hat{\mathbf b}]=\beta$~:
+\[
+  \mathbb E\left[\tilde{\mathbf b}\right] = \beta - PR'\left(RPR'\right)^{-1}\left(R\beta-r\right)
+\]
+L'estimateur contraint est sans biais \textbf{si et seulement si} la contrainte
+est vraie, c'est-à-dire $R\beta=r$. Sinon le biais est proportionnel à l'erreur
+de spécification $R\beta-r$.
+
+\question Posons $A = PR'\left(RPR'\right)^{-1}R$. On a
+$\tilde{\mathbf b}-\mathbb E[\tilde{\mathbf b}] = (I-A)\left(\hat{\mathbf b}-\beta\right)$,
+donc $\mathbb V[\tilde{\mathbf b}] = \epsvar (I-A)P(I-A)'$. En développant, et
+en remarquant que $AP = PR'(RPR')^{-1}RP$ est symétrique et que
+$APA' = AP$~:
+\[
+  (I-A)P(I-A)' = P - AP - PA' + APA' = P - PR'\left(RPR'\right)^{-1}RP
+\]
+d'où~:
+\[
+  \mathbb V\left[\hat{\mathbf b}\right]-\mathbb V\left[\tilde{\mathbf b}\right]
+  = \epsvar\, PR'\left(RPR'\right)^{-1}RP
+\]
+Cette matrice est semi-définie positive~: pour tout vecteur $u$, en posant
+$w = RPu$, la forme quadratique vaut $\epsvar\,w'(RPR')^{-1}w\geq0$ puisque
+$RPR'$ est définie positive. La contrainte réduit donc toujours la variance.
+
+\question L'information apportée par la contrainte est utilisée par
+l'estimateur, ce qui réduit sa variance --- \emph{que la contrainte soit vraie
+ou fausse}, puisque le calcul de la question (4) ne fait pas intervenir
+$R\beta-r$. Si la contrainte est fausse, on introduit un biais. L'erreur
+quadratique moyenne de $\tilde{\mathbf b}$ peut néanmoins rester inférieure à
+celle de $\hat{\mathbf b}$ lorsque le biais est petit devant le gain de
+variance. C'est le même arbitrage qu'à l'exercice~\ref{ex:vraisemblance}~: une information
+approximative vaut parfois mieux que pas d'information du tout.
+
+\question Les rendements d'échelle sont constants si $\beta_2+\beta_3=1$, soit~:
+\[
+  R = \left(0\quad 1\quad 1\right), \qquad r = 1, \qquad m=1
+\]
+Sous la contrainte, $\beta_3 = 1-\beta_2$ et~:
+\[
+  \log Q_t = \beta_1 + \beta_2\log K_t + \left(1-\beta_2\right)\log L_t + \varepsilon_t
+\]
+soit, en retranchant $\log L_t$ des deux côtés~:
+\[
+  \log\frac{Q_t}{L_t} = \beta_1 + \beta_2\log\frac{K_t}{L_t} + \varepsilon_t
+\]
+La contrainte se met donc en œuvre par une simple reparamétrisation~: on régresse
+la productivité du travail sur l'intensité capitalistique. On estime alors deux
+paramètres au lieu de trois, et $\beta_3$ se déduit par $1-\hat\beta_2$.
+
+\question Comme $m=1$, on peut tester par un $t$ de Student sur $\hat\beta_2+\hat\beta_3-1$,
+ou de façon équivalente par un $F$ à $(1,T-3)$ degrés de liberté, les deux étant
+liés par $F=t^2$ (question 5 de l'exercice~\ref{ex:tests}). En pratique, on compare les
+sommes des carrés des résidus des modèles contraint et non contraint~:
+\[
+  F = \frac{\left(SSE_{\text{c}}-SSE\right)/m}{SSE/(T-K)}
+\]
+\textbf{Lien avec la vraisemblance.} Le cours établit que cette statistique de
+Fisher \emph{est} un test du rapport des vraisemblances~: sous normalité, la
+log-vraisemblance concentrée est une fonction décroissante de la somme des
+carrés des résidus, de sorte que comparer $SSE_{\text{c}}$ et $SSE$ revient à
+comparer les vraisemblances maximisées sous $\mathcal H_0$ et sous
+$\mathcal H_1$. Le test de Fisher n'est donc pas un test \emph{ad hoc}~: il
+s'inscrit dans la théorie générale du maximum de vraisemblance.
+
+\nouvelexercice\label{ex:indicatrice}
+
+\question La matrice $X$ a deux colonnes~: un vecteur de uns et le vecteur des
+$d_i$. Comme $d_i^2 = d_i$ (une indicatrice est égale à son carré) et que
+$\sum_i d_i = N_1$~:
+\[
+  X'X = \begin{pmatrix} N & N_1\\ N_1 & N_1\end{pmatrix},
+  \qquad
+  X'\mathbf y = \begin{pmatrix} \sum_i y_i\\ \sum_{i\in 1} y_i\end{pmatrix}
+  = \begin{pmatrix} N_0\bar y_0 + N_1\bar y_1\\ N_1\bar y_1\end{pmatrix}
+\]
+
+\question Le déterminant vaut $NN_1-N_1^2 = N_1N_0$, d'où~:
+\[
+  (X'X)^{-1} = \frac{1}{N_0N_1}\begin{pmatrix} N_1 & -N_1\\ -N_1 & N\end{pmatrix}
+\]
+et en effectuant le produit~:
+\[
+  \hat{\mathbf b} = (X'X)^{-1}X'\mathbf y
+  = \begin{pmatrix} \bar y_0\\ \bar y_1-\bar y_0\end{pmatrix}
+\]
+\textbf{Interprétation.} La constante estime la moyenne du groupe de référence,
+et le coefficient de l'indicatrice l'\emph{écart} entre les deux moyennes. Une
+régression sur une indicatrice n'est donc rien d'autre qu'une comparaison de
+deux moyennes --- ce qui donne une lecture très concrète des MCO.
+
+\question La prédiction vaut $\hat y_i = \hat b_1 = \bar y_0$ si $d_i=0$ et
+$\hat y_i = \hat b_1+\hat b_2 = \bar y_1$ si $d_i=1$~: elle ne prend que deux
+valeurs, les deux moyennes de groupe. Les résidus sont donc
+$\hat\epsilon_i = y_i - \bar y_{g(i)}$ et~:
+\[
+  SSE = \sum_{g\in\{0,1\}}\ \sum_{i\in g}\left(y_i-\bar y_g\right)^2
+\]
+C'est la somme des carrés \emph{intra-groupes}.
+
+\question Ici $K=2$, donc~:
+\[
+  s^2 = \frac{SSE}{N-2} = \frac{\sum_{i\in0}(y_i-\bar y_0)^2 + \sum_{i\in1}(y_i-\bar y_1)^2}{N_0+N_1-2}
+\]
+On reconnaît exactement l'estimateur de variance «~poolée~» du test de
+comparaison de deux moyennes.
+
+\question La variance de $\hat b_2$ est $s^2$ multiplié par l'élément $(2,2)$
+de $(X'X)^{-1}$, soit $N/(N_0N_1)$~:
+\[
+  s_{\hat b_2}^2 = s^2\,\frac{N}{N_0N_1} = s^2\left(\frac{1}{N_0}+\frac{1}{N_1}\right)
+\]
+puisque $N/(N_0N_1) = (N_0+N_1)/(N_0N_1) = 1/N_0+1/N_1$. La statistique de
+Student s'écrit donc~:
+\[
+  t = \frac{\hat b_2}{s_{\hat b_2}} = \frac{\bar y_1-\bar y_0}{s\sqrt{\dfrac{1}{N_0}+\dfrac{1}{N_1}}}\ \sim\ t(N-2)
+\]
+\textbf{C'est mot pour mot la statistique du test de Student de comparaison de
+deux moyennes à variances égales}, degrés de liberté compris. Le test de
+significativité d'un coefficient et le test de comparaison de moyennes sont donc
+le même test~: les MCO généralisent un outil déjà connu.
+
+\question Comme $SST = \sum_i (y_i-\bar y)^2$ et que $SSE$ est la somme
+intra-groupes, $SSR = SST-SSE$ est la somme \emph{inter-groupes}~:
+\[
+  R^2 = \frac{N_0\left(\bar y_0-\bar y\right)^2 + N_1\left(\bar y_1-\bar y\right)^2}{\sum_i\left(y_i-\bar y\right)^2}
+      = \frac{N_0N_1}{N}\,\frac{\left(\bar y_1-\bar y_0\right)^2}{\sum_i\left(y_i-\bar y\right)^2}
+\]
+(en utilisant $\bar y = (N_0\bar y_0+N_1\bar y_1)/N$). Le $R^2$ mesure ici la
+part de la variance totale imputable à l'écart entre groupes~: c'est le rapport
+de corrélation de l'analyse de la variance.
+
+\question La somme des deux indicatrices vaut $d_i+e_i = 1$ pour tout $i$~:
+elles reconstituent exactement la colonne de constante. La matrice $X$ n'est
+donc pas de plein rang, $X'X$ n'est pas inversible, et l'estimateur des MCO
+n'est pas défini~: c'est un cas de \textbf{colinéarité parfaite}, l'hypothèse
+$\mathcal H_2$ étant violée (exercice~\ref{ex:multicolinearite}, question 5). On
+l'appelle le «~piège des variables indicatrices~». Le remède est d'omettre soit
+la constante, soit l'une des deux indicatrices~: on choisit alors un groupe de
+référence, et les coefficients s'interprètent en écart à ce groupe. Avec $G$
+modalités, on met $G-1$ indicatrices.
+
+\nouvelexercice\label{ex:regression-inverse}
+
+\question En notant $S_{xy} = \sum_i (x_i-\bar x)(y_i-\bar y)$,
+$S_{xx} = \sum_i (x_i-\bar x)^2$ et $S_{yy} = \sum_i (y_i-\bar y)^2$~:
+\[
+  \hat b_{y|x} = \frac{S_{xy}}{S_{xx}},
+  \qquad
+  \hat b_{x|y} = \frac{S_{xy}}{S_{yy}}
+\]
+Les deux pentes ont le même numérateur mais des dénominateurs différents.
+
+\question Le produit vaut~:
+\[
+  \hat b_{y|x}\times\hat b_{x|y} = \frac{S_{xy}^2}{S_{xx}S_{yy}} = r_{xy}^2 = R^2
+\]
+puisque dans une régression simple le coefficient de détermination est le carré
+du coefficient de corrélation empirique (exercice~\ref{ex:r2}, question 3). Les
+deux pentes ont donc le même signe, et leur produit est compris entre $0$ et
+$1$.
+
+\question Si l'on trace les deux droites dans le plan $(x,y)$, la première a
+pour pente $\hat b_{y|x}$ et la seconde $1/\hat b_{x|y}$. Elles coïncident si et
+seulement si $\hat b_{y|x} = 1/\hat b_{x|y}$, c'est-à-dire
+$\hat b_{y|x}\hat b_{x|y} = 1$, soit $R^2=1$~: les points sont alors exactement
+alignés. Par ailleurs les deux droites passent par $(\bar x,\bar y)$, puisque
+chacune vérifie $\hat b_0 = \bar y - \hat b_1\bar x$ (respectivement l'analogue
+en échangeant les rôles)~: elles se coupent donc toujours au point moyen.
+
+\question Comme $\hat b_{y|x}\hat b_{x|y} = R^2\leq1$ et que les deux pentes
+sont positives~:
+\[
+  \hat b_{y|x} = \frac{R^2}{\hat b_{x|y}} \leq \frac{1}{\hat b_{x|y}}
+\]
+\textbf{Interprétation.} La droite des MCO de $y$ sur $x$ est toujours moins
+inclinée que celle qu'on obtiendrait en régressant $x$ sur $y$ puis en
+retournant l'axe. La raison est que les MCO minimisent les écarts \emph{dans la
+direction de la variable expliquée}~: le critère n'est pas symétrique, et
+changer de variable expliquée change le problème.
+
+\question C'est exactement le mécanisme de Galton
+(exercice~\ref{ex:normale-bivariee}). Là-bas, avec $\sigma_1=\sigma_2$, la
+pente valait $\rho<1$ dans un sens comme dans l'autre~: la taille des enfants
+«~régresse~» vers la moyenne quand on part de celle des parents, mais aussi
+l'inverse. L'apparente contradiction se dissipe dès qu'on comprend qu'il s'agit
+de deux régressions différentes, et non d'une relation réversible. Ici, le
+produit des deux pentes vaut $R^2 = \rho^2 < 1$, ce qui est la même chose.
+
+\question \textbf{Réponse.} Ni l'un ni l'autre n'est «~le bon~» par pure
+algèbre~: les deux calculs répondent à des questions différentes, et l'écart
+entre eux est d'autant plus grand que le $R^2$ est faible. Le choix ne se
+tranche pas statistiquement mais par un argument \emph{économique}~: il faut
+savoir quelle variable est déterminée par l'autre, et laquelle porte la
+perturbation. Ici, ni l'un ni l'autre ne convient d'ailleurs, puisque prix et
+quantité sont déterminés \emph{simultanément} --- c'est très exactement le
+problème de l'exercice~\ref{ex:offre-demande}, qui appelle des variables
+instrumentales et non un choix de sens de régression.
+
+\question Le sens de la régression cesse d'être arbitraire dès que l'on dispose
+d'un \emph{modèle} précisant qui cause quoi et où se loge l'aléa. Deux
+situations typiques~: \emph{(i)} une variable est déterminée en amont
+(exogène) et l'autre en aval --- il faut alors régresser l'aval sur l'amont~;
+\emph{(ii)} l'une des deux variables est mesurée avec erreur. Dans ce dernier
+cas, l'exercice~\ref{ex:erreurs-mesure} montre que la régression de $y$ sur un
+$x$ mal mesuré atténue la pente vers zéro, tandis que la régression inverse
+l'exagère~: la vraie pente est \emph{encadrée} par les deux estimations. C'est
+d'ailleurs un usage classique de ce résultat~: à défaut d'instrument, les deux
+régressions fournissent un intervalle.
+
+\nouvelexercice\label{ex:leave-one-out}
+
+\question \textit{Démonstration.} Il suffit de vérifier que le membre de droite
+est bien l'inverse. En posant $c = 1-\mathbf u'A^{-1}\mathbf u$ et en multipliant~:
+\[
+  \begin{split}
+    \left(A-\mathbf u\mathbf u'\right)\left(A^{-1}+\frac{A^{-1}\mathbf u\mathbf u'A^{-1}}{c}\right)
+    &= I + \frac{\mathbf u\mathbf u'A^{-1}}{c} - \mathbf u\mathbf u'A^{-1} - \frac{\mathbf u\left(\mathbf u'A^{-1}\mathbf u\right)\mathbf u'A^{-1}}{c}\\
+    &= I + \mathbf u\mathbf u'A^{-1}\left(\frac{1}{c} - 1 - \frac{\mathbf u'A^{-1}\mathbf u}{c}\right)
+  \end{split}
+\]
+et le terme entre parenthèses vaut
+$\frac{1-c-\mathbf u'A^{-1}\mathbf u}{c} = \frac{1-c-(1-c)}{c} = 0$. D'où le
+résultat. (C'est le cas particulier de rang un de la formule d'inversion par
+blocs~: le complément de Schur se réduit ici au scalaire $c$.)
+
+\question Retirer l'observation $t$ revient à retrancher sa contribution à la
+matrice des moments~: $X_{(t)}'X_{(t)} = X'X - \mathbf x_t\mathbf x_t'$. En
+appliquant la formule avec $A = X'X$ et $\mathbf u = \mathbf x_t$, et en
+reconnaissant $h_{tt} = \mathbf x_t'(X'X)^{-1}\mathbf x_t$~:
+\[
+  \left(X_{(t)}'X_{(t)}\right)^{-1} = (X'X)^{-1} + \frac{(X'X)^{-1}\mathbf x_t\mathbf x_t'(X'X)^{-1}}{1-h_{tt}}
+\]
+
+\question De même $X_{(t)}'\mathbf y_{(t)} = X'\mathbf y - \mathbf x_t y_t$. En
+posant $P = (X'X)^{-1}$ et en développant le produit~:
+\[
+  \begin{split}
+    \hat{\mathbf b}_{(t)}
+    &= \left(P + \frac{P\mathbf x_t\mathbf x_t'P}{1-h_{tt}}\right)\left(X'\mathbf y - \mathbf x_ty_t\right)\\
+    &= \hat{\mathbf b} - P\mathbf x_ty_t + \frac{P\mathbf x_t\mathbf x_t'\hat{\mathbf b}}{1-h_{tt}} - \frac{P\mathbf x_t h_{tt}y_t}{1-h_{tt}}
+  \end{split}
+\]
+En regroupant les trois derniers termes sur le dénominateur commun $1-h_{tt}$,
+le numérateur devient
+$P\mathbf x_t\left[-y_t(1-h_{tt}) + \mathbf x_t'\hat{\mathbf b} - h_{tt}y_t\right]
+= P\mathbf x_t\left[\mathbf x_t'\hat{\mathbf b} - y_t\right] = -P\mathbf x_t\hat\epsilon_t$,
+d'où~:
+\[
+  \hat{\mathbf b}_{(t)} = \hat{\mathbf b} - \frac{(X'X)^{-1}\mathbf x_t\,\hat\epsilon_t}{1-h_{tt}}
+\]
+\textbf{Remarque pratique.} Cette formule permet de calculer les $T$ estimations
+«~sans l'observation $t$~» sans jamais réestimer le modèle~: une seule inversion
+suffit.
+
+\question En reportant~:
+\[
+  y_t - \mathbf x_t'\hat{\mathbf b}_{(t)}
+  = y_t - \mathbf x_t'\hat{\mathbf b} + \frac{h_{tt}\hat\epsilon_t}{1-h_{tt}}
+  = \hat\epsilon_t\left(1 + \frac{h_{tt}}{1-h_{tt}}\right)
+  = \frac{\hat\epsilon_t}{1-h_{tt}}
+\]
+Comme $0\leq h_{tt}<1$, le facteur $1/(1-h_{tt})$ est supérieur à $1$~: l'erreur
+de prévision hors échantillon est \emph{toujours} plus grande que le résidu
+ordinaire. \textbf{Pourquoi}~: le résidu ordinaire est artificiellement petit
+parce que l'observation $t$ a participé à l'ajustement de la droite --- elle
+s'est en partie «~expliquée elle-même~». Le retirer révèle l'erreur réellement
+commise. C'est la version analytique de la validation croisée.
+
+\question Comme $H$ est symétrique idempotente, $H = HH$ donne pour l'élément
+diagonal $h_{tt} = \sum_s H_{ts}^2 = h_{tt}^2 + \sum_{s\neq t}H_{ts}^2$, d'où
+$h_{tt}\geq h_{tt}^2$, c'est-à-dire $0\leq h_{tt}\leq1$. Par ailleurs
+$\sum_t h_{tt} = \trace(H) = K$ (exercice~\ref{ex:hc}). Le levier moyen vaut
+donc $K/T$~: c'est la référence à laquelle on compare les leviers individuels,
+d'où la règle usuelle signalant les observations telles que $h_{tt}>2K/T$.
+
+\question Le levier $h_{tt}$ mesure à quel point l'observation $t$ est atypique
+dans l'espace des \emph{explicatives} (et non des $y$)~: il est d'autant plus
+grand que $\mathbf x_t$ est éloigné du centre de gravité du nuage. La formule de
+la question (3) montre que l'influence d'une observation sur l'estimation
+combine deux ingrédients~: son levier $h_{tt}$ et son résidu $\hat\epsilon_t$.
+Lorsque $h_{tt}\rightarrow1$, la droite passe exactement par le point,
+$\hat\epsilon_t\rightarrow0$, et retirer l'observation modifie radicalement
+l'estimation~: un seul point détermine alors une partie du résultat. C'est
+précisément la situation du quatrième jeu de données d'Anscombe
+(exercice~\ref{ex:r2}, question 7).
+
+\question Sous homoscédasticité,
+$\mathbb E[\hat\epsilon_t^{\,2}] = \epsvar(1-h_{tt})$~: les résidus ordinaires
+sous-estiment la dispersion, d'autant plus que le levier est élevé. Deux
+corrections viennent naturellement à l'esprit. Diviser par $1-h_{tt}$ corrige
+exactement ce biais en espérance~: c'est HC2. Mais on peut aussi raisonner en
+termes de \emph{prévision}~: la question (4) montre que l'erreur qu'on
+commettrait réellement sur l'observation $t$ est $\hat\epsilon_t/(1-h_{tt})$, et
+c'est son carré, $\hat\epsilon_t^{\,2}/(1-h_{tt})^2$, qu'il faut alors utiliser.
+C'est HC3, et l'on comprend ainsi son nom d'approximation du \emph{jackknife}~:
+elle repose sur les résidus de validation croisée. Elle sur-corrige légèrement
+le biais, ce qui la rend prudente en petit échantillon --- exactement la
+propriété recherchée (exercice~\ref{ex:hc}).
+
+\section*{Chapitre II~-- Violations des conditions idéales}
+
+\nouvelexercice\label{ex:erreurs-non-centrees}
+
+\question En substituant le DGP,
+$\hat{\mathbf b} = \beta + (X'X)^{-1}X'\varepsilon$, d'où~:
+\[
+  \mathbb E\left[\hat{\mathbf b}\right] = \beta + (X'X)^{-1}X'\xi
+\]
+Le biais vaut $(X'X)^{-1}X'\xi$. Il ne dépend que de la partie systématique des
+erreurs.
+
+\question En divisant par $T$ au numérateur et au dénominateur~:
+\[
+  \hat{\mathbf b} \plimT \beta + Q^{-1}\lim_{T\rightarrow\infty}\frac{X'\xi}{T}
+\]
+L'estimateur n'est donc pas convergent, sauf si $X'\xi/T\rightarrow0$.
+
+\question Ici $\hat\epsilon = M\varepsilon$ mais $\varepsilon$ n'est plus centré.
+En décomposant $\varepsilon = \xi + u$ avec $\mathbb E[u]=0$ et
+$\mathbb V[u]=\epsvar I_T$~:
+\[
+  \mathbb E\left[SSE\right] = \mathbb E\left[\varepsilon'M\varepsilon\right]
+  = \tracarg{M\,\mathbb V[\varepsilon]} + \xi'M\xi
+  = \epsvar(T-K) + \xi'M\xi
+\]
+d'où le résultat annoncé. Comme $M$ est semi-définie positive, $\xi'M\xi\geq0$~:
+$s^2$ \textbf{sur-estime} $\epsvar$. \textbf{Conséquence pour les tests.} Les
+écarts-types estimés sont trop grands, les statistiques de Student trop petites~:
+le test rejette trop rarement. On est donc trop conservateur, et la puissance
+diminue --- l'inverse du danger rencontré au chapitre~IV.
+
+\question Si $X$ contient une constante, alors $\iota$ est la première colonne
+de $X$, donc $\iota = Xe_1$ où $e_1$ est le premier vecteur de la base
+canonique. Il vient~:
+\[
+  (X'X)^{-1}X'\xi = \mu\,(X'X)^{-1}X'Xe_1 = \mu\,e_1
+\]
+Seul le \emph{premier} coefficient --- la constante --- est biaisé, et le biais
+vaut exactement $\mu$. Toutes les pentes restent estimées sans biais.
+
+\question Si $\xi = X_1\gamma$ où $X_1$ regroupe certaines colonnes de $X$, on
+peut écrire $X_1 = XS$ avec $S$ une matrice de sélection, et~:
+\[
+  (X'X)^{-1}X'\xi = (X'X)^{-1}X'XS\gamma = S\gamma
+\]
+Seuls les coefficients associés aux colonnes de $X_1$ sont décalés, de $\gamma$~;
+les autres restent sans biais. La question (4) en est le cas particulier
+$X_1=\iota$.
+
+\question Dans le cas de la question (4), $\xi = \mu\iota = \mu Xe_1$ appartient
+à l'espace engendré par les colonnes de $X$, donc $M\xi = \mu MXe_1 = 0$ et~:
+\[
+  \mathbb E\left[s^2\right] = \epsvar
+\]
+L'estimateur de la variance redevient sans biais. Le même argument vaut pour la
+question (5).
+
+\question \textbf{Conclusion.} On inclut systématiquement une constante parce
+qu'elle \emph{absorbe} toute espérance non nulle des erreurs~: le problème
+disparaît alors des pentes, qui portent l'essentiel de l'interprétation
+économique, et de $s^2$. Le prix à payer est un problème d'identification~: la
+constante estimée converge vers $\beta_1+\mu$, et il est impossible de séparer
+la véritable constante du modèle de la moyenne des erreurs. Seules les pentes
+conservent une interprétation structurelle.
+
+\nouvelexercice\label{ex:variable-omise} On note $P_1 = X_1(X_1'X_1)^{-1}X_1'$ et $M_1 = I-P_1$.
+
+\question En substituant le DGP dans l'estimateur du modèle tronqué~:
+\[
+  \begin{split}
+    \hat{\mathbf b}_1 &= (X_1'X_1)^{-1}X_1'\mathbf y\\
+                      &= (X_1'X_1)^{-1}X_1'\left(X_1\beta_1 + X_2\beta_2 + \varepsilon\right)\\
+                      &= \beta_1 + (X_1'X_1)^{-1}X_1'X_2\,\beta_2 + (X_1'X_1)^{-1}X_1'\varepsilon
+  \end{split}
+\]
+Les explicatives étant déterministes et $\mathbb E[\varepsilon]=0$, le dernier
+terme est d'espérance nulle, d'où le résultat. \textbf{Interprétation de
+$(X_1'X_1)^{-1}X_1'X_2$}~: c'est la matrice des coefficients des régressions
+auxiliaires de chaque colonne de $X_2$ sur l'ensemble des colonnes de $X_1$.
+Le biais est donc le produit de l'effet de la variable omise sur $\mathbf y$
+($\beta_2$) par le lien entre variable omise et variables incluses.
+
+\question L'estimateur est sans biais si et seulement si $\beta_2 = 0$ (la
+variable omise n'a en réalité aucun effet) \textbf{ou} $X_1'X_2 = 0$ (la variable
+omise est orthogonale aux variables incluses). On retrouve l'exercice~\ref{ex:fwl}.
+
+\question Avec $K_1=K_2=1$, en divisant numérateur et dénominateur par $T$ et en
+appliquant la loi des grands nombres~:
+\[
+  \mathrm{plim}\ \hat b_1 = \beta_1 + \beta_2\,\frac{\sigma_{xz}}{\sigma_x^2}
+\]
+Le terme $\sigma_{xz}/\sigma_x^2$ est précisément le coefficient de la
+régression de $z$ sur $x$. \textbf{Signe du biais.} Il est du signe du produit
+$\beta_2\,\sigma_{xz}$~: positif si les deux termes sont de même signe, négatif
+sinon. \textbf{Application.} Dans l'équation de salaire, le talent $z$ augmente
+le salaire ($\beta_2>0$) et est vraisemblablement corrélé positivement aux
+études ($\sigma_{xz}>0$)~: les MCO \emph{sur-estiment} le rendement de
+l'éducation, en lui attribuant une part de l'effet du talent.
+
+\question La somme des carrés des résidus du modèle tronqué vaut
+$SSE = \mathbf y'M_1\mathbf y$. Comme $M_1X_1 = 0$~:
+\[
+  M_1\mathbf y = M_1X_2\beta_2 + M_1\varepsilon
+\]
+d'où, en prenant l'espérance de la forme quadratique~:
+\[
+  \mathbb E\left[SSE\right] = \beta_2'X_2'M_1X_2\beta_2 + \epsvar\left(T-K_1\right)
+\]
+et donc $\mathbb E[s^2] = \epsvar + \frac{\beta_2'X_2'M_1X_2\beta_2}{T-K_1}$.
+Comme $M_1$ est semi-définie positive, le terme additionnel est positif~: $s^2$
+\textbf{sur-estime} la variance des erreurs. C'est logique~: la variance de la
+variable omise, non expliquée par $X_1$, est rejetée dans le résidu.
+
+\question Le DGP s'écrit maintenant
+$\mathbf y = X\beta+\varepsilon$ avec $X = (X_1\mid X_2)$ et
+$\beta = (\beta_1',\ 0')'$. L'estimateur des MCO du modèle augmenté vérifie~:
+\[
+  \mathbb E\left[\hat{\mathbf b}\right] = \beta = \begin{pmatrix}\beta_1\\ 0\end{pmatrix}
+\]
+donc $\hat{\mathbf b}_1$ est sans biais (et $\hat{\mathbf b}_2$ estime sans
+biais zéro). \textbf{Ajouter une variable inutile ne biaise rien.}
+
+\question Par le théorème de Frisch-Waugh (exercice~\ref{ex:fwl}), dans le modèle augmenté~:
+\[
+  \mathbb V\left[\hat{\mathbf b}_1\right] = \epsvar\left(X_1'M_2X_1\right)^{-1},
+  \qquad M_2 = I - X_2(X_2'X_2)^{-1}X_2'
+\]
+alors que dans le modèle correct $\mathbb V[\hat{\mathbf b}_1] = \epsvar(X_1'X_1)^{-1}$.
+Or~:
+\[
+  X_1'X_1 - X_1'M_2X_1 = X_1'X_2(X_2'X_2)^{-1}X_2'X_1 \succeq 0
+\]
+donc $X_1'M_2X_1 \preceq X_1'X_1$, et en passant aux inverses
+$\left(X_1'M_2X_1\right)^{-1} \succeq \left(X_1'X_1\right)^{-1}$.
+\textbf{Conclusion}~: la variance de $\hat{\mathbf b}_1$ est (faiblement) plus
+grande dans le modèle augmenté. L'égalité n'a lieu que si $X_1'X_2=0$.
+
+\question \textbf{L'arbitrage.} Omettre une variable pertinente crée un
+\emph{biais} qui ne disparaît pas asymptotiquement. L'inclure inutilement ne
+crée aucun biais mais \emph{gonfle la variance}, d'autant plus que la variable
+ajoutée est corrélée aux autres. En cas de doute, la logique du cours penche
+pour l'inclusion~: un estimateur imprécis mais centré reste interprétable, un
+estimateur biaisé ne l'est pas. Mais l'exercice~\ref{ex:multicolinearite} montrera que cette règle a
+elle aussi une limite.
+
+\nouvelexercice\label{ex:multicolinearite}
+
+\question Les variables étant centrées et réduites,
+$\frac1T\sum_t x_{k,t} = 0$, $\frac1T\sum_t x_{k,t}^2 = 1$ et
+$\frac1T\sum_t x_{2,t}x_{3,t} = \rho$. La constante étant orthogonale aux
+variables centrées, le bloc de $\frac1TX'X$ relatif aux deux pentes s'écrit~:
+\[
+  \frac{1}{T}X'X = \begin{pmatrix}1 & \rho\\ \rho & 1\end{pmatrix}
+\]
+
+\question En inversant cette matrice $2\times2$, dont le déterminant vaut
+$1-\rho^2$~:
+\[
+  \mathbb V\begin{pmatrix}\hat b_2\\ \hat b_3\end{pmatrix}
+  = \epsvar\left(X'X\right)^{-1}
+  = \frac{\epsvar}{T\left(1-\rho^2\right)}\begin{pmatrix}1 & -\rho\\ -\rho & 1\end{pmatrix}
+\]
+
+\question Lorsque $\rho\rightarrow1$, le facteur $1/(1-\rho^2)$ diverge~: les
+deux variances explosent. La covariance,
+$-\rho\epsvar/\left(T(1-\rho^2)\right)$, tend vers $-\infty$~: les deux
+estimateurs deviennent parfaitement négativement corrélés.
+\textbf{Interprétation.} Les données ne permettent plus de distinguer l'effet
+propre de $x_2$ de celui de $x_3$~: si l'on attribue davantage à l'un, il faut
+retrancher à l'autre. En revanche la \emph{somme} $\hat b_2+\hat b_3$ reste
+estimée précisément, sa variance valant
+$2\epsvar/\left(T(1+\rho)\right)$, qui ne diverge pas.
+
+\question La régression de $x_2$ sur $x_3$ (et la constante) a pour coefficient
+de détermination $R_2^2 = \rho^2$, donc
+$\mathrm{VIF}_2 = 1/(1-\rho^2)$. Or la question (2) donne~:
+\[
+  \mathbb V\left[\hat b_2\right] = \frac{\epsvar}{T}\times\frac{1}{1-\rho^2}
+  = \underbrace{\frac{\epsvar}{T}}_{\text{variance sans colinéarité}}\times\ \mathrm{VIF}_2
+\]
+Le facteur d'inflation de la variance porte donc bien son nom~: il mesure de
+combien la colinéarité multiplie la variance par rapport au cas orthogonal.
+
+\question Si $\rho=1$, le déterminant s'annule~: $X'X$ n'est plus inversible.
+C'est l'hypothèse $\mathcal H_2$ (plein rang de $X$) qui est violée.
+L'estimateur des MCO n'est alors pas défini~: les équations normales admettent
+une infinité de solutions, car seule la combinaison $b_2+b_3$ est identifiée.
+
+\question \textbf{Non}~: la multicolinéarité imparfaite ($|\rho|<1$) n'est
+\emph{pas} une violation des conditions idéales. L'hypothèse $\mathcal H_2$ est
+satisfaite, et toutes les propriétés du chapitre~I tiennent~: $\hat{\mathbf b}$
+est sans biais, convergent, et reste BLUE par Gauss-Markov. Le théorème garantit
+même que sa variance est la plus petite possible parmi les estimateurs linéaires
+sans biais --- elle est simplement grande dans l'absolu. Ce n'est donc pas un
+défaut du modèle ni de l'estimateur, mais un manque d'information dans les
+données.
+
+\question \textbf{Symptômes}~: $R^2$ élevé et statistique de Fisher jointe très
+significative alors qu'aucune statistique de Student n'est significative
+(exercice~\ref{ex:tests}, question 7)~; coefficients de signe ou d'ampleur invraisemblables~;
+forte instabilité des estimations lorsqu'on ajoute ou retire quelques
+observations ou une variable~; $\mathrm{VIF}$ élevés et mauvais conditionnement
+de $X'X$ (rapport des valeurs propres extrêmes). \textbf{Remèdes}~: augmenter la
+taille de l'échantillon, agréger ou remplacer des variables redondantes,
+mobiliser une information \emph{a priori} sous forme de contrainte linéaire
+(exercice~\ref{ex:contraintes}) --- ce qui réduit la variance au prix d'un biais éventuel. En
+revanche, supprimer purement et simplement une variable pertinente réintroduit
+le biais de variable omise de l'exercice~\ref{ex:variable-omise}~: on ne fait alors que déplacer le
+problème.
+
+\nouvelexercice\label{ex:mcg}
+
+\question On a toujours
+$\hat{\mathbf b} = \beta + (X'X)^{-1}X'\varepsilon$, et comme $X$ est
+déterministe et $\mathbb E[\varepsilon]=0$~:
+\[
+  \mathbb E\left[\hat{\mathbf b}\right] = \beta
+\]
+L'absence de biais ne fait intervenir que la nullité de l'espérance des erreurs,
+pas leur variance. La convergence est acquise dès que $X'X/T\rightarrow Q$
+définie positive et que $X'\Omega X/T$ admet une limite finie, de sorte que
+$\mathbb V[\hat{\mathbf b}]\rightarrow0$.
+
+\question Comme $X$ est déterministe~:
+\[
+  \mathbb V\left[\hat{\mathbf b}\right] = (X'X)^{-1}X'\,\mathbb V[\varepsilon]\,X(X'X)^{-1}
+  = \epsvar (X'X)^{-1}X'\Omega X(X'X)^{-1}
+\]
+L'appellation «~sandwich~» vient de la structure de l'expression~: le facteur
+$X'\Omega X$ (la «~garniture~») est encadré par deux fois le même facteur
+$(X'X)^{-1}$ (le «~pain~»). Si $\Omega=I_T$, la garniture vaut $X'X$ et
+l'expression se réduit à $\epsvar(X'X)^{-1}$.
+
+\question Comme au chapitre~I, $SSE = \varepsilon'M\varepsilon$, donc~:
+\[
+  \mathbb E\left[SSE\right] = \tracarg{M\,\mathbb V[\varepsilon]} = \epsvar\tracarg{M\Omega}
+\]
+Or $\tracarg{M\Omega}\neq\trace(M)=T-K$ en général~: $s^2$ est \textbf{biaisé},
+et le biais peut aller dans les deux sens selon la structure de $\Omega$.
+\textbf{Conséquence.} La quantité $s^2(X'X)^{-1}$ imprimée par les logiciels
+n'estime ni $\mathbb V[\hat{\mathbf b}]$ (qui est le sandwich de la question 2),
+ni rien d'autre de pertinent. Les écarts-types, les tests de Student et de
+Fisher sont donc invalides, y compris asymptotiquement.
+
+\question Le modèle transformé a pour erreurs $\Lambda\varepsilon$, d'espérance
+nulle et de variance~:
+\[
+  \mathbb V\left[\Lambda\varepsilon\right] = \epsvar\Lambda\Omega\Lambda'
+\]
+Or $\Omega^{-1}=\Lambda'\Lambda$ entraîne $\Omega = \Lambda^{-1}\left(\Lambda'\right)^{-1}$,
+donc $\Lambda\Omega\Lambda' = \Lambda\Lambda^{-1}\left(\Lambda'\right)^{-1}\Lambda' = I_T$.
+Les erreurs transformées sont donc sphériques, et la matrice $\Lambda X$ reste
+déterministe et de plein rang~: le modèle transformé satisfait les conditions
+idéales.
+
+\question Il suffit d'appliquer les MCO au modèle transformé~:
+\[
+  \hat{\mathbf b}_{\textsc{mcg}}
+  = \left((\Lambda X)'\Lambda X\right)^{-1}(\Lambda X)'\Lambda\mathbf y
+  = \left(X'\Omega^{-1}X\right)^{-1}X'\Omega^{-1}\mathbf y
+\]
+En substituant le DGP,
+$\hat{\mathbf b}_{\textsc{mcg}} = \beta + \left(X'\Omega^{-1}X\right)^{-1}X'\Omega^{-1}\varepsilon$,
+d'espérance $\beta$~: l'estimateur est sans biais.
+
+\question La variance se lit sur le modèle transformé~:
+\[
+  \mathbb V\left[\hat{\mathbf b}_{\textsc{mcg}}\right] = \epsvar\left(X'\Omega^{-1}X\right)^{-1}
+\]
+Le théorème de Gauss-Markov, appliqué au modèle transformé (qui satisfait les
+conditions idéales), assure que $\hat{\mathbf b}_{\textsc{mcg}}$ est BLUE parmi
+les estimateurs linéaires sans biais de $\beta$. En particulier, il est au moins
+aussi précis que les MCO~:
+\[
+  \mathbb V\left[\hat{\mathbf b}\right] - \mathbb V\left[\hat{\mathbf b}_{\textsc{mcg}}\right] \succeq 0
+\]
+\textbf{On retrouve donc le théorème de Gauss-Markov}, mais appliqué au bon
+modèle~: les MCO ne sont plus BLUE, les MCG le sont. Les MCO restent sans biais,
+mais gaspillent de l'information en traitant toutes les observations de la même
+façon alors qu'elles n'ont pas la même précision.
+
+\question Dans le modèle transformé, l'estimateur sans biais de $\epsvar$ est la
+somme des carrés des résidus transformés divisée par $T-K$~:
+\[
+  \tilde s^2 = \frac{\left(\mathbf y - X\hat{\mathbf b}_{\textsc{mcg}}\right)'\Omega^{-1}\left(\mathbf y-X\hat{\mathbf b}_{\textsc{mcg}}\right)}{T-K}
+\]
+
+\nouvelexercice\label{ex:ar1-cochrane}
+
+\question Par stationnarité, $\mathbb V[\varepsilon_t]$ est constante et vérifie
+$\mathbb V[\varepsilon_t] = \varphi^2\mathbb V[\varepsilon_t]+\sigma_{\nu}^2$, d'où~:
+\[
+  \epsvar \equiv \mathbb V\left[\varepsilon_t\right] = \frac{\sigma_{\nu}^2}{1-\varphi^2}
+\]
+En itérant $\varepsilon_t = \varphi^s\varepsilon_{t-s} + \sum_{j=0}^{s-1}\varphi^j\nu_{t-j}$
+et en remarquant que les $\nu$ postérieurs à $t-s$ sont indépendants de
+$\varepsilon_{t-s}$~:
+\[
+  \mathrm{cov}\left(\varepsilon_t,\varepsilon_{t-s}\right) = \varphi^s\,\epsvar
+\]
+En normalisant par $\epsvar$, on obtient une matrice de Toeplitz~:
+\[
+  \Omega = \begin{pmatrix}
+    1 & \varphi & \varphi^2 & \cdots & \varphi^{T-1}\\
+    \varphi & 1 & \varphi & \cdots & \varphi^{T-2}\\
+    \varphi^2 & \varphi & 1 & \cdots & \varphi^{T-3}\\
+    \vdots & & & \ddots & \vdots\\
+    \varphi^{T-1} & \cdots & & \varphi & 1
+  \end{pmatrix},
+  \qquad \Omega_{ij} = \varphi^{|i-j|}
+\]
+
+\question On vérifie que $\Lambda'\Lambda$ reproduit bien $\Omega^{-1}$. La
+matrice $\Omega^{-1}$ est tridiagonale~: ses éléments diagonaux valent
+$1+\varphi^2$ (sauf aux extrémités, où ils valent $1$) et ses éléments
+sous-diagonaux $-\varphi$, le tout divisé par $1-\varphi^2$. Le produit
+$\Lambda'\Lambda$ donne exactement cette structure~: la première ligne de
+$\Lambda$ contribue $1-\varphi^2$ en position $(1,1)$, et les lignes suivantes
+$\left(-\varphi,\ 1\right)$ engendrent les termes $\varphi^2+1$ sur la diagonale
+et $-\varphi$ hors diagonale.
+
+\question Les observations transformées sont~:
+\[
+  \tilde y_1 = \sqrt{1-\varphi^2}\,y_1,
+  \qquad
+  \tilde y_t = y_t - \varphi\,y_{t-1} \quad (t\geq 2)
+\]
+et de même pour chaque colonne de $X$. \textbf{Le traitement particulier de la
+première observation} vient de ce qu'elle n'a pas de passé~: on ne peut pas lui
+retrancher $\varphi y_0$. Le facteur $\sqrt{1-\varphi^2}$ ramène sa variance au
+niveau de celle des autres observations transformées ($\sigma_{\nu}^2$).
+Si on la néglige, on perd une observation~: c'est la différence entre la
+procédure de Cochrane-Orcutt (qui l'écarte) et celle de Prais-Winsten (qui la
+conserve). Asymptotiquement cela ne change rien, mais en petit échantillon --- et
+surtout lorsque $\varphi$ est proche de $1$, car la première observation reçoit
+alors un poids relatif important --- la perte peut être sensible.
+
+\question \textbf{Procédure des MCQG.} \emph{(i)} Estimer le modèle par les MCO
+et récupérer les résidus $\hat\epsilon_t$. \emph{(ii)} Estimer $\varphi$ par la
+régression de $\hat\epsilon_t$ sur $\hat\epsilon_{t-1}$, soit
+$\hat\varphi = \sum_{t=2}^T\hat\epsilon_t\hat\epsilon_{t-1}/\sum_{t=2}^T\hat\epsilon_{t-1}^{\,2}$.
+\emph{(iii)} Construire $\hat\Lambda$ en remplaçant $\varphi$ par $\hat\varphi$,
+transformer les données et ré-estimer par les MCO. \emph{(iv)} Éventuellement
+itérer jusqu'à convergence de $\hat\varphi$.
+
+\question L'estimateur des MCQG est \textbf{convergent} dès que~:
+\[
+  \frac{X'\hat\Omega^{-1}X}{T}\plimT Q
+  \qquad\text{et}\qquad
+  \frac{X'\hat\Omega^{-1}\varepsilon}{T}\plimT 0
+\]
+Il est \textbf{asymptotiquement équivalent} aux MCG si, de plus~:
+\[
+  \frac{X'\left(\hat\Omega^{-1}-\Omega^{-1}\right)X}{T}\plimT 0
+  \qquad\text{et}\qquad
+  \frac{X'\left(\hat\Omega^{-1}-\Omega^{-1}\right)\varepsilon}{\sqrt T}\plimT 0
+\]
+Ces conditions signifient que l'erreur d'estimation de $\Omega$ devient
+négligeable assez vite pour ne pas polluer la loi limite.
+
+\question \textbf{Non.} Ce sont des propriétés strictement asymptotiques. À
+distance finie, $\hat\Omega$ est aléatoire et corrélé aux données, de sorte que
+l'estimateur des MCQG est en général biaisé, que sa variance exacte est inconnue,
+et qu'il n'est pas BLUE. Il n'y a aucune garantie qu'il batte les MCO en petit
+échantillon, surtout si $\hat\varphi$ est mal estimé.
+
+\question Avec $\varphi>0$ et un régresseur lui-même positivement autocorrélé,
+la vraie variance $\epsvar(X'X)^{-1}X'\Omega X(X'X)^{-1}$ est \emph{supérieure} à
+$\epsvar(X'X)^{-1}$, car $X'\Omega X > X'X$~: les observations successives
+apportent moins d'information indépendante qu'il n'y paraît. L'économètre qui
+utilise $s^2(X'X)^{-1}$ \textbf{sous-estime} donc les écarts-types. Les
+statistiques de Student sont trop grandes, le test rejette trop souvent~: on
+conclut à tort à la significativité. C'est le mécanisme des régressions
+fallacieuses.
+
+\nouvelexercice\label{ex:tcl} \textit{Exercice de simulation~; on donne les résultats attendus
+et leur lecture.}
+
+\question Les trois lois se construisent en centrant et en réduisant~: pour
+l'uniforme, $\varepsilon_t = \sqrt{12}\left(u_t-\tfrac12\right)$ avec
+$u_t\sim\mathcal U_{[0,1]}$~; pour l'exponentielle de paramètre $1$,
+$\varepsilon_t = e_t-1$~; pour la Student à $5$ degrés de liberté, dont la
+variance vaut $5/3$, $\varepsilon_t = t_t/\sqrt{5/3}$.
+
+\question La moyenne empirique des $\hat b$ reste centrée sur $\beta = 2$ quelle
+que soit la loi des erreurs. C'est attendu~: l'absence de biais ne repose que
+sur $\mathbb E[\varepsilon]=0$ et le caractère déterministe de $X$, pas sur la
+normalité. \textbf{Le théorème de Gauss-Markov reste également valide}~: il ne
+suppose que des erreurs centrées, homoscédastiques et non corrélées. Les MCO
+demeurent donc BLUE. C'est la \emph{loi exacte} de l'estimateur, et elle seule,
+qui est perdue.
+
+\question Pour $T=10$, la distribution de $\hat b-\beta$ hérite de la forme de
+celle des erreurs~: nettement asymétrique avec des erreurs exponentielles,
+à queues épaisses avec des erreurs de Student. Elle n'est pas gaussienne. Les
+lois exactes de Student et de Fisher du chapitre~I, qui reposent sur
+$\mathcal H_3$, ne s'appliquent donc pas.
+
+\question Les histogrammes de $\sqrt T\left(\hat b-\beta\right)$ se rapprochent
+d'une gaussienne à mesure que $T$ croît, et lui sont pratiquement confondus dès
+$T=100$ pour l'uniforme, un peu plus tard pour l'exponentielle et la Student
+(dont les queues sont plus lourdes). C'est le théorème central limite~:
+l'estimateur est une moyenne pondérée des erreurs, et une somme convenablement
+normalisée de variables i.i.d.\ de variance finie converge en loi vers une
+gaussienne, \emph{quelle que soit} la loi des termes sommés.
+
+\question La taille effective du test s'écarte nettement de $5\,\%$ pour $T=10$
+(sur-rejet marqué avec des erreurs à queues épaisses), puis converge vers
+$5\,\%$ quand $T$ croît. \textbf{Lecture.} L'hypothèse de normalité n'est pas
+nécessaire pour que les tests soient \emph{asymptotiquement} valides~; elle l'est
+pour qu'ils soient valides \emph{exactement}, à toute taille d'échantillon.
+
+\question Avec des erreurs de Cauchy, rien ne se stabilise~: la distribution de
+$\sqrt T(\hat b-\beta)$ ne converge pas, et la variance empirique des $\hat b$
+explose avec le nombre de réplications. La raison est que la loi de Cauchy n'a
+\textbf{ni espérance ni variance}~: l'hypothèse de moment d'ordre deux fini,
+indispensable au théorème central limite de Lindeberg-Lévy, n'est pas
+satisfaite. On retrouve le phénomène signalé au chapitre~III à propos des
+instruments (exercice~\ref{ex:instruments-faibles}).
+
+\question \textbf{Conclusion.} La normalité des erreurs est nécessaire pour les
+résultats \emph{à distance finie}~: loi exacte de $\hat{\mathbf b}$, lois de
+Student et de Fisher, équivalence avec le maximum de vraisemblance, efficacité
+au sens de Cramer-Darmois-Fréchet-Rao. Elle n'est nécessaire ni pour l'absence
+de biais, ni pour la convergence, ni pour Gauss-Markov, ni pour la validité
+asymptotique des tests. Ce qui est réellement indispensable, en revanche, c'est
+l'existence d'un moment d'ordre deux fini.
+
+\nouvelexercice\label{ex:donnees-groupees}
+
+\question En moyennant le modèle individuel à l'intérieur du groupe $g$, et
+comme $\mathbf x_g$ ne varie pas dans le groupe~:
+\[
+  \bar y_g = \mathbf x_g'\beta + \bar\varepsilon_g,
+  \qquad \bar\varepsilon_g = \frac{1}{n_g}\sum_{i=1}^{n_g}\varepsilon_{ig}
+\]
+Les $\varepsilon_{ig}$ étant non corrélés et de variance $\epsvar$~:
+\[
+  \mathbb V\left[\bar\varepsilon_g\right] = \frac{1}{n_g^2}\sum_{i=1}^{n_g}\mathbb V\left[\varepsilon_{ig}\right] = \frac{\epsvar}{n_g}
+\]
+
+\question Les erreurs agrégées restent non corrélées entre groupes, donc~:
+\[
+  \Omega = \mathrm{diag}\left(\frac{1}{n_1},\dots,\frac{1}{n_G}\right)
+\]
+\textbf{Ce qui rend la situation exceptionnelle}, c'est que $\Omega$ est
+\emph{connue} --- entièrement, à partir des seuls effectifs observés, sans avoir
+à estimer quoi que ce soit. Or c'est précisément l'hypothèse que faisait le
+chapitre~II pour définir les MCG, et qu'on jugeait irréaliste~: ici elle est
+littéralement satisfaite. On peut donc appliquer les MCG, et non les MCQG~: tous
+les résultats à distance finie (absence de biais, BLUE, lois exactes sous
+normalité) sont disponibles.
+
+\question En reportant $\Omega^{-1} = \mathrm{diag}(n_1,\dots,n_G)$~:
+\[
+  \hat{\mathbf b}_{\textsc{mcg}} = \left(\sum_{g=1}^G n_g\,\mathbf x_g\mathbf x_g'\right)^{-1}\sum_{g=1}^G n_g\,\mathbf x_g\bar y_g
+\]
+Chaque groupe est pondéré par son effectif. De façon équivalente, on applique
+les MCO aux données transformées $\sqrt{n_g}\,\bar y_g$ et
+$\sqrt{n_g}\,\mathbf x_g$, dont les erreurs
+$\sqrt{n_g}\,\bar\varepsilon_g$ ont toutes pour variance $\epsvar$.
+
+\question Sur les données individuelles, les MCO donnent~:
+\[
+  \hat{\mathbf b} = \left(\sum_{g}\sum_{i}\mathbf x_g\mathbf x_g'\right)^{-1}\sum_g\sum_i \mathbf x_g y_{ig}
+\]
+Comme $\mathbf x_g$ ne dépend pas de $i$, la première somme vaut
+$\sum_g n_g\mathbf x_g\mathbf x_g'$ et la seconde
+$\sum_g \mathbf x_g\sum_i y_{ig} = \sum_g n_g\mathbf x_g\bar y_g$. Les deux
+expressions sont \textbf{identiques}~:
+\[
+  \hat{\mathbf b}_{\textsc{mcg}}\ \text{(sur moyennes)} = \hat{\mathbf b}\ \text{(sur individus)}
+\]
+\textbf{Interprétation.} Correctement pondérée, l'agrégation ne détruit aucune
+information sur $\beta$ --- ce qui est rassurant, et fournit une justification
+très concrète de la pondération~: pondérer par $n_g$, c'est simplement
+reconstituer le fait qu'un groupe de $1000$ individus contient mille fois plus
+d'information qu'un groupe d'un seul.
+
+\question L'estimateur reste \textbf{sans biais}~: l'absence de biais ne dépend
+que de $\mathbb E[\varepsilon]=0$, pas de la pondération. Ce que l'on perd,
+c'est l'\emph{efficacité}~: les MCO non pondérés traitent à égalité une moyenne
+calculée sur trois individus et une moyenne calculée sur trois mille, alors que
+la première est bien plus bruitée. Par le théorème de Gauss-Markov appliqué au
+modèle transformé (exercice~\ref{ex:mcg}), les MCG font strictement mieux dès
+que les $n_g$ ne sont pas tous égaux. Les écarts-types usuels sont de surcroît
+faux, puisque calculés sous une hypothèse d'homoscédasticité fausse.
+
+\question Avec $\mathbf x_g=1$, l'estimateur des MCG est la moyenne pondérée,
+c'est-à-dire la moyenne de l'ensemble des individus~:
+\[
+  \mathbb V\left[\hat b_{\textsc{mcg}}\right] = \frac{\epsvar}{n_1+n_2} = \frac{\epsvar}{110} \simeq 0{,}0091\,\epsvar
+\]
+Les MCO non pondérés donnent la moyenne des deux moyennes de groupe~:
+\[
+  \mathbb V\left[\hat b\right] = \frac{1}{4}\left(\frac{\epsvar}{100}+\frac{\epsvar}{10}\right) = 0{,}0275\,\epsvar
+\]
+Le rapport vaut $\mathbf{3{,}03}$~: ignorer la pondération multiplie la variance
+par trois, soit un écart-type $1{,}7$ fois plus grand. \textbf{La raison est
+frappante}~: en donnant le même poids aux deux groupes, on laisse le petit
+groupe de $10$ individus dicter la moitié du résultat.
+
+\question Sans les $n_g$, on ne peut pas construire $\Omega$ et la pondération
+est hors d'atteinte. Deux voies restent ouvertes~: estimer la structure de
+variance à partir des résidus (MCQG, avec les réserves de
+l'exercice~\ref{ex:ar1-cochrane}), ou --- plus prudent --- conserver les MCO non
+pondérés et se contenter de corriger les écarts-types par la méthode robuste de
+l'exercice~\ref{ex:hc}, qui ne demande à connaître ni les $n_g$ ni la forme de
+$\Omega$. On accepte alors une perte d'efficacité en échange d'une inférence
+valide.
+
+\nouvelexercice\label{ex:mauvais-controle}
+
+\question En substituant la première équation dans la seconde~:
+\[
+  y_i = \beta x_i + \delta\left(\gamma x_i + u_i\right) + \varepsilon_i
+      = \underbrace{\left(\beta+\delta\gamma\right)}_{\text{effet total}}x_i + \left(\delta u_i+\varepsilon_i\right)
+\]
+L'\textbf{effet total} de $x$ sur $y$ vaut $\beta+\delta\gamma$~: il additionne
+l'effet direct $\beta$ et l'effet indirect $\delta\gamma$ transitant par $m$.
+
+\question La perturbation de la forme réduite, $\delta u_i+\varepsilon_i$, est
+non corrélée à $x_i$ puisque $u$ et $\varepsilon$ le sont. La régression courte
+est donc convergente~:
+\[
+  \mathrm{plim}\ \hat b_x = \beta+\delta\gamma
+\]
+Elle estime l'\textbf{effet total}.
+
+\question Dans la régression longue, appliquons le théorème de Frisch-Waugh
+(exercice~\ref{ex:fwl})~: le résidu de la régression de $m$ sur $x$ est
+exactement $u$. Donc~:
+\[
+  \mathrm{plim}\ \hat b_m = \frac{\mathrm{cov}(u,y)}{\mathbb V[u]}
+  = \frac{\mathrm{cov}\left(u,\ \beta x+\delta(\gamma x+u)+\varepsilon\right)}{\sigma_u^2}
+  = \frac{\delta\sigma_u^2}{\sigma_u^2} = \delta
+\]
+et, par la formule de la variable omise reliant régression courte et longue
+(exercice~\ref{ex:variable-omise}),
+$\mathrm{plim}\,\hat b_x^{\text{court}} = \mathrm{plim}\,\hat b_x + \gamma\,\mathrm{plim}\,\hat b_m$,
+d'où~:
+\[
+  \mathrm{plim}\ \hat b_x = \left(\beta+\delta\gamma\right) - \gamma\delta = \beta
+\]
+La régression longue estime l'\textbf{effet direct}.
+
+\question Les deux estimateurs sont convergents, mais \emph{pour des paramètres
+différents}~: il n'y a pas ici de «~bonne~» et de «~mauvaise~» régression au
+sens statistique. Tout dépend de la question posée. Si l'on demande de combien
+le salaire augmente lorsqu'on étudie un an de plus --- \emph{toutes conséquences
+comprises} --- la réponse est l'\textbf{effet total} $\beta+\delta\gamma$, donc
+la régression \textbf{courte}. La régression longue répond à une autre question~:
+de combien le salaire augmente-t-il avec une année d'études supplémentaire,
+\emph{à profession inchangée}.
+
+\question Si $\mathrm{cov}(u,\varepsilon)=\sigma_{u\varepsilon}\neq0$, le calcul
+de la question (3) devient~:
+\[
+  \mathrm{plim}\ \hat b_m = \frac{\mathrm{cov}(u,y)}{\sigma_u^2}
+  = \frac{\delta\sigma_u^2+\sigma_{u\varepsilon}}{\sigma_u^2}
+  = \delta + \frac{\sigma_{u\varepsilon}}{\sigma_u^2}
+\]
+tandis que la régression courte reste inchangée ($x$ est toujours indépendant de
+$u$ et $\varepsilon$), donc égale à $\beta+\delta\gamma$. En reportant dans la
+même relation~:
+\[
+  \mathrm{plim}\ \hat b_x = \left(\beta+\delta\gamma\right) - \gamma\left(\delta+\frac{\sigma_{u\varepsilon}}{\sigma_u^2}\right)
+  = \beta - \gamma\,\frac{\sigma_{u\varepsilon}}{\sigma_u^2}
+\]
+\textbf{Ce résultat mérite d'être médité.} La variable $x$ est parfaitement
+exogène~: la régression courte l'estimait sans biais. C'est \emph{l'ajout du
+contrôle} $m$ --- variable elle-même endogène --- qui a introduit un biais sur le
+coefficient de $x$. Ajouter une variable n'est donc pas une opération neutre.
+
+\question Avec $x$ = années d'études, $m$ = profession et $y$ = salaire~: la
+profession est un \emph{canal} par lequel l'éducation agit sur le salaire
+(étudier permet d'accéder à des emplois mieux rémunérés). Contrôler par la
+profession revient à comparer des individus \emph{exerçant le même métier}, donc
+à neutraliser précisément ce canal. On mesure alors uniquement le supplément de
+salaire obtenu à métier donné, ce qui sous-estime gravement le rendement de
+l'éducation si l'on cherchait son effet total. Pire~: la profession dépend aussi
+de déterminants inobservés (ambition, réseau) eux-mêmes liés au salaire, ce qui
+place dans le cas de la question (5).
+
+\question \textbf{La confrontation est instructive.} L'exercice~\ref{ex:variable-omise}
+concluait qu'en cas de doute il vaut mieux inclure une variable, puisqu'omettre
+biaise tandis qu'ajouter ne fait que gonfler la variance. Cette règle n'est
+valable que pour une variable de contrôle \emph{antérieure} au traitement --- une
+cause commune de $x$ et de $y$. Elle tombe pour une variable située \emph{en
+aval}, sur le chemin causal~: on parle alors de «~mauvais contrôle~». La leçon
+est qu'aucun critère statistique --- ni le $R^2$, ni la significativité du
+coefficient de $m$, qui est ici parfaitement significatif dans les deux
+scénarios --- ne permet de trancher. Le choix des variables de contrôle relève
+d'un raisonnement \emph{causal} extérieur aux données~: il faut savoir ce qui
+détermine quoi, et dans quel ordre. Une régression bien ajustée peut répondre
+avec précision à une question qu'on ne se posait pas.
+
+\nouvelexercice\label{ex:moulton}
+
+\question Les deux composantes étant indépendantes~:
+\[
+  \mathbb V\left[\varepsilon_{ig}\right] = \sigma_v^2+\sigma_w^2 = \epsvar
+\]
+Pour deux individus distincts de la \emph{même} région, seul le choc régional
+est commun~:
+\[
+  \mathrm{cov}\left(\varepsilon_{ig},\varepsilon_{jg}\right) = \mathbb V[v_g] = \sigma_v^2
+  \qquad (i\neq j)
+\]
+et la covariance est nulle entre régions différentes. Le coefficient de
+corrélation intra-groupe vaut donc~:
+\[
+  \rho = \frac{\sigma_v^2}{\sigma_v^2+\sigma_w^2}
+\]
+
+\question $\Omega$ est \textbf{bloc-diagonale}, chaque bloc correspondant à une
+région~:
+\[
+  \Omega_g = \sigma_w^2 I_n + \sigma_v^2\,\iota_n\iota_n'
+  = \epsvar\left[(1-\rho)I_n + \rho\,\iota_n\iota_n'\right]
+\]
+Elle n'est \textbf{pas diagonale}~: les termes hors diagonale valent $\sigma_v^2$
+à l'intérieur de chaque bloc. C'est la différence décisive avec tout le
+chapitre~IV, et elle va tout changer.
+
+\question Comme $x$ ne varie qu'au niveau régional~:
+\[
+  \hat\beta - \beta = \frac{\sum_g\sum_i \left(x_g-\bar x\right)\varepsilon_{ig}}{\sum_g\sum_i\left(x_g-\bar x\right)^2}
+  = \frac{\sum_g \left(x_g-\bar x\right)\sum_i\varepsilon_{ig}}{n\sum_g\left(x_g-\bar x\right)^2}
+\]
+Or $\sum_i\varepsilon_{ig} = nv_g + \sum_i w_{ig}$ a pour variance
+$n^2\sigma_v^2 + n\sigma_w^2$, et les régions sont indépendantes. D'où~:
+\[
+  \mathbb V\left[\hat\beta\right]
+  = \frac{\left(n^2\sigma_v^2+n\sigma_w^2\right)\sum_g\left(x_g-\bar x\right)^2}{n^2\left(\sum_g\left(x_g-\bar x\right)^2\right)^2}
+  = \frac{\sigma_w^2+n\sigma_v^2}{n\sum_g\left(x_g-\bar x\right)^2}
+\]
+
+\question La formule usuelle, qui suppose $\Omega=\epsvar I_N$, donne~:
+\[
+  \frac{\epsvar}{\sum_{i,g}\left(x_g-\bar x\right)^2} = \frac{\epsvar}{n\sum_g\left(x_g-\bar x\right)^2}
+\]
+Le rapport de la vraie variance à celle-ci vaut donc~:
+\[
+  \frac{\sigma_w^2+n\sigma_v^2}{\epsvar}
+  = \frac{\left(\epsvar-\sigma_v^2\right)+n\sigma_v^2}{\epsvar}
+  = 1+(n-1)\frac{\sigma_v^2}{\epsvar}
+  = \boxed{\,1+(n-1)\rho\,}
+\]
+C'est le \emph{facteur de Moulton}. Il ne dépend que de la taille des groupes et
+de la corrélation intra-groupe.
+
+\question Avec $n=30$ et $\rho=0{,}1$~:
+\[
+  1+(n-1)\rho = 1+29\times0{,}1 = 3{,}9
+\]
+La vraie variance est donc $3{,}9$ fois la variance annoncée~: les écarts-types
+usuels sont sous-estimés d'un facteur $\sqrt{3{,}9}\simeq 2{,}0$, et les
+statistiques de Student sont \textbf{deux fois trop grandes}. Un coefficient
+affiché à $t=2{,}5$, apparemment significatif, a en réalité un $t$ voisin de
+$1{,}3$~: il ne l'est pas. \textbf{Ce qui frappe, c'est l'ampleur du problème
+pour une corrélation intra-groupe modeste}~: $\rho = 0{,}1$ paraît négligeable,
+mais il est multiplié par $n-1$. Avec des groupes de $100$ individus, le facteur
+passerait à $10{,}9$ et les écarts-types seraient sous-estimés d'un facteur
+$3{,}3$. Augmenter le nombre d'individus \emph{par région} n'aide pas~: seul le
+nombre de régions apporte de l'information sur $\beta$.
+
+\question \textbf{Non, et c'est le point important.} L'estimateur sandwich de
+l'exercice~\ref{ex:hc} estime la garniture par
+$\sum_t\hat\varepsilon_t^{\,2}\mathbf x_t\mathbf x_t'$~: cette somme ne contient
+que des termes «~diagonaux~», indexés par une seule observation. Elle est conçue
+pour corriger l'inégalité des \emph{variances}, sous l'hypothèse que $\Omega$
+est diagonale. Or ici le problème ne vient pas des variances --- qui sont toutes
+égales à $\epsvar$, le modèle est parfaitement homoscédastique ! --- mais des
+\emph{covariances} hors diagonale, que la formule ignore purement et simplement.
+Appliquer HC0 ou HC3 ne corrigerait donc rien du tout.
+
+\question Deux solutions. \emph{(i)} \textbf{Agréger}~: estimer le modèle sur
+les $G$ moyennes régionales. On revient alors à
+l'exercice~\ref{ex:donnees-groupees}, avec des erreurs
+$v_g+\bar w_g$ indépendantes entre régions~: le problème disparaît, au prix
+d'une perte apparente d'observations --- apparente seulement, puisque
+l'information utile était bien de niveau régional. \emph{(ii)} Utiliser des
+\textbf{écarts-types en grappes}, qui remplacent la garniture par
+$\sum_g \left(X_g'\hat\varepsilon_g\right)\left(X_g'\hat\varepsilon_g\right)'$~:
+on agrège les résidus \emph{à l'intérieur} de chaque grappe avant de les élever
+au carré, ce qui capture précisément les covariances intra-groupe. Cette
+correction est hors du programme du cours, mais l'exercice montre pourquoi elle
+est devenue systématique en économie appliquée. Elle exige un nombre de grappes
+suffisant~: c'est $G$, et non $N$, qui gouverne la qualité de l'approximation
+asymptotique.
+
+\section*{Chapitre III~-- Régresseurs aléatoires et variables instrumentales}
+
+\nouvelexercice\label{ex:lie}
+
+\question L'estimateur des MCO de la pente dans un modèle simple s'écrit~:
+\[
+  \hat b = \frac{\sum_{t=1}^T\left(y_t-\bar y\right)\left(x_t-\bar x\right)}{\sum_{t=1}^T\left(x_t-\bar x\right)^2}
+\]
+
+\question En substituant $y_t-\bar y = \beta\left(x_t-\bar x\right)+\left(\varepsilon_t-\bar\varepsilon\right)$~:
+\[
+  \hat b = \beta + \frac{\sum_t\left(\varepsilon_t-\bar\varepsilon\right)\left(x_t-\bar x\right)}{\sum_t\left(x_t-\bar x\right)^2}
+\]
+Contrairement au chapitre~I, le second terme est le rapport de deux variables
+aléatoires~: le dénominateur n'est plus déterministe.
+
+\question La densité conditionnelle de $V$ sachant $U$ est
+$f_{V|U}(v|u) = f_{U,V}(u,v)/f_U(u)$, et l'espérance conditionnelle est la
+fonction~:
+\[
+  \Psi(u) = \mathbb E\left[V|U=u\right] = \int v\,f_{V|U}(v|u)\,\mathrm dv
+\]
+C'est bien une fonction de $u$~; $\Psi(U)$ est donc une variable aléatoire.
+
+\question \textit{Démonstration (loi des espérances itérées).}
+\[
+  \begin{split}
+    \mathbb E\left[\Psi(U)\right]
+      &= \int \Psi(u) f_U(u)\,\mathrm du
+       = \int\left(\int v\,f_{V|U}(v|u)\,\mathrm dv\right)f_U(u)\,\mathrm du\\
+      &= \int\int v\,\underbrace{f_{V|U}(v|u)f_U(u)}_{=f_{U,V}(u,v)}\,\mathrm dv\,\mathrm du
+       = \int v\left(\int f_{U,V}(u,v)\,\mathrm du\right)\mathrm dv\\
+      &= \int v\,f_V(v)\,\mathrm dv = \mathbb E[V]
+  \end{split}
+\]
+On note $\mathbb E\left[\mathbb E[V|U]\right] = \mathbb E[V]$. C'est l'outil
+central du chapitre~: il permet de passer d'un énoncé conditionnel (où $x$ est
+traité comme fixe, donc où l'on retrouve le chapitre~I) à un énoncé marginal.
+
+\question En appliquant la loi des espérances itérées avec $U=x_s$ et
+$V=\varepsilon_t$~:
+\[
+  \mathbb E\left[\varepsilon_t\right] = \mathbb E\left[\mathbb E\left[\varepsilon_t|x_s\right]\right] = \mathbb E[0] = 0
+\]
+
+\question De même~: une fois que l'on s'est donné $x_s$, la quantité $x_s$
+est connue et se comporte donc comme une constante, que l'on peut sortir de
+l'espérance conditionnelle~:
+\[
+  \mathbb E\left[\varepsilon_t x_s\right]
+  = \mathbb E\left[\mathbb E\left[\varepsilon_t x_s|x_s\right]\right]
+  = \mathbb E\left[x_s\underbrace{\mathbb E\left[\varepsilon_t|x_s\right]}_{=0}\right] = 0
+\]
+pour tout $t,s$. Comme $\mathbb E[\varepsilon_t]=0$, cela signifie aussi que
+$\mathrm{cov}(\varepsilon_t,x_s)=0$~: erreurs et régresseurs sont non corrélés,
+à toutes les dates.
+
+\question Puisque $\mathbb E[\varepsilon_t]=0$,
+$\mathbb V[\varepsilon_t] = \mathbb E[\varepsilon_t^2]$, et~:
+\[
+  \mathbb V\left[\varepsilon_t\right]
+  = \mathbb E\left[\mathbb E\left[\varepsilon_t^2|x_s\right]\right]
+  = \mathbb E\left[\epsvar\right] = \epsvar
+\]
+la variance conditionnelle étant constante par hypothèse. La variance marginale
+ne dépend donc pas de $t$~: les erreurs sont homoscédastiques, non seulement
+conditionnellement mais aussi inconditionnellement.
+
+\question En conditionnant par rapport à l'ensemble de l'échantillon
+$x = (x_1,\dots,x_T)$, le dénominateur devient déterministe et~:
+\[
+  \mathbb E\left[\hat b\,\middle|\,x\right]
+  = \beta + \frac{\sum_t\left(x_t-\bar x\right)\mathbb E\left[\varepsilon_t-\bar\varepsilon\,\middle|\,x\right]}{\sum_t\left(x_t-\bar x\right)^2}
+  = \beta
+\]
+puis, par la loi des espérances itérées,
+$\mathbb E[\hat b] = \mathbb E\left[\mathbb E[\hat b|x]\right] = \beta$.
+\textbf{L'estimateur des MCO est donc sans biais}, bien que le régresseur soit
+aléatoire.
+
+\smallskip
+
+\textbf{Remarque importante.} Le passage à l'espérance conditionnelle par
+rapport au \emph{vecteur} $x$ tout entier suppose
+$\mathbb E[\varepsilon_t|x_1,\dots,x_T]=0$, hypothèse dite d'\emph{exogénéité
+stricte}, légèrement plus forte que la condition $\mathbb E[\varepsilon_t|x_s]=0$
+prise deux à deux dans l'énoncé. C'est bien ainsi qu'il faut lire l'exercice.
+Cette distinction n'est pas anodine~: l'exercice~\ref{ex:ar1-biais} exhibe précisément un cas où
+l'orthogonalité contemporaine est satisfaite mais l'exogénéité stricte ne l'est
+pas, et où l'estimateur est alors biaisé tout en restant convergent.
+
+\nouvelexercice\label{ex:vi-simple}
+
+\question \textbf{Non.} Le raisonnement de l'exercice précédent tombe~: comme
+$\mathrm{cov}(x,\varepsilon)\neq0$, on n'a plus
+$\mathbb E[\varepsilon_t|x]=0$, et l'espérance du second terme de
+$\hat b = \beta + \sum_t(\varepsilon_t-\bar\varepsilon)(x_t-\bar x)/\sum_t(x_t-\bar x)^2$
+n'est pas nulle. L'estimateur est biaisé.
+
+\question En divisant numérateur et dénominateur par $T$ et en appliquant la loi
+des grands nombres puis le théorème de Slutsky~:
+\[
+  \hat b \plimT \beta + \frac{\mathrm{cov}(x,\varepsilon)}{\mathbb V[x]} \neq \beta
+\]
+L'estimateur des MCO n'est \textbf{pas convergent}~: le problème ne disparaît pas
+avec la taille de l'échantillon. C'est bien plus grave qu'un simple biais.
+
+\question Les deux équations sont les contreparties empiriques des conditions de
+moments que satisfait le vrai modèle~: $\mathbb E[\varepsilon_t]=0$ (les erreurs
+sont centrées) et $\mathbb E[z_t\varepsilon_t]=0$ ($z$ n'est pas corrélé aux
+erreurs). On remplace les espérances par des moyennes empiriques et les
+paramètres inconnus par leurs estimateurs~: c'est la méthode des moments. On
+n'impose \emph{pas} $\frac1T\sum_t x_t\hat\epsilon_t = 0$, précisément parce que
+cette condition est fausse dans la population.
+
+\question La première équation donne
+$\hat a_{\textsc{vi}} = \bar y - \hat b_{\textsc{vi}}\bar x$. En reportant dans
+la seconde~:
+\[
+  \frac{1}{T}\sum_t z_t\left[\left(y_t-\bar y\right) - \hat b_{\textsc{vi}}\left(x_t-\bar x\right)\right] = 0
+\]
+Comme $\sum_t\bar z\left[(y_t-\bar y)-\hat b_{\textsc{vi}}(x_t-\bar x)\right]=0$,
+on peut centrer $z_t$~:
+\[
+  \hat b_{\textsc{vi}} = \frac{\sum_t\left(z_t-\bar z\right)\left(y_t-\bar y\right)}{\sum_t\left(z_t-\bar z\right)\left(x_t-\bar x\right)}
+\]
+L'estimateur existe dès que $\mathrm{cov}(z,x)\neq0$~: c'est la condition de
+\emph{pertinence}.
+
+\question En substituant le DGP au numérateur~:
+\[
+  \hat b_{\textsc{vi}} = \beta + \frac{\frac1T\sum_t\left(z_t-\bar z\right)\left(\varepsilon_t-\bar\varepsilon\right)}{\frac1T\sum_t\left(z_t-\bar z\right)\left(x_t-\bar x\right)}
+  \plimT \beta + \frac{\mathrm{cov}(z,\varepsilon)}{\mathrm{cov}(z,x)} = \beta
+\]
+puisque $\mathrm{cov}(z,\varepsilon)=0$ (\emph{exogénéité}) et
+$\mathrm{cov}(z,x)\neq0$ (\emph{pertinence}). L'estimateur à variable
+instrumentale est donc convergent, là où les MCO ne l'étaient pas.
+
+\question Le théorème central limite appliqué au numérateur donne~:
+\[
+  \mathbb V_{\infty}\left[\sqrt T\left(\hat b_{\textsc{vi}}-\beta\right)\right]
+  = \frac{\epsvar\,\mathbb V[z]}{\mathrm{cov}(z,x)^2}
+\]
+\textbf{Comparaison avec les MCO.} Si $x$ était exogène, la variance asymptotique
+des MCO serait $\epsvar/\mathbb V[x]$. Le rapport des deux vaut~:
+\[
+  \frac{\mathbb V_{\infty}\left[\sqrt T\left(\hat b_{\textsc{vi}}-\beta\right)\right]}{\mathbb V_{\infty}\left[\sqrt T\left(\hat b-\beta\right)\right]}
+  = \frac{\mathbb V[z]\,\mathbb V[x]}{\mathrm{cov}(z,x)^2}
+  = \frac{1}{\rho_{xz}^2} > 1
+\]
+puisque $\rho_{xz}\in\left]-1,1\right[$. \textbf{Interprétation.} L'estimateur à
+variables instrumentales est \emph{toujours} moins précis que les MCO, et
+d'autant plus que l'instrument est faiblement corrélé au régresseur. C'est le
+prix de la convergence~: on n'exploite que la part de la variation de $x$
+qu'explique $z$. On y reviendra à l'exercice~\ref{ex:instruments-faibles}.
+
+\nouvelexercice\label{ex:vi-matriciel}
+
+\question On impose les $K$ conditions de moments empiriques
+$Z'\left(\mathbf y - X\hat{\mathbf b}_{\textsc{vi}}\right) = 0$, soit
+$Z'X\hat{\mathbf b}_{\textsc{vi}} = Z'\mathbf y$. Comme $Z'X$ est carrée
+($K\times K$) et supposée inversible~:
+\[
+  \hat{\mathbf b}_{\textsc{vi}} = \left(Z'X\right)^{-1}Z'\mathbf y
+\]
+On retrouve les MCO en prenant $Z=X$.
+
+\question Les deux conditions du théorème principal sont~: \emph{(i)}
+\textbf{pertinence}, $\frac{Z'X}{T}\plimT Q_{ZX}$ finie et non singulière~;
+\emph{(ii)} \textbf{exogénéité}, $\frac{Z'\varepsilon}{T}\plimT 0$. En
+substituant le DGP~:
+\[
+  \hat{\mathbf b}_{\textsc{vi}} = \beta + \left(\frac{Z'X}{T}\right)^{-1}\frac{Z'\varepsilon}{T}
+  \plimT \beta + Q_{ZX}^{-1}\cdot 0 = \beta
+\]
+en utilisant le théorème de Slutsky (l'inversion matricielle étant continue au
+voisinage d'une matrice non singulière).
+
+\question Si de plus $\frac{Z'\varepsilon}{\sqrt T}\dlimT\normal{0}{\Psi}$,
+alors~:
+\[
+  \sqrt T\left(\hat{\mathbf b}_{\textsc{vi}}-\beta\right)\dlimT\normal{0}{Q_{ZX}^{-1}\Psi\left(Q_{ZX}'\right)^{-1}}
+\]
+Dans le cas usuel où les erreurs sont i.i.d.\ et homoscédastiques,
+$\Psi = \epsvar Q_{ZZ}$, et la variance asymptotique se simplifie. En pratique on
+l'estime par
+$\hat\sigma^2(Z'X)^{-1}Z'Z(X'Z)^{-1}$, et les tests de Student et de Fisher ne
+valent plus qu'\emph{asymptotiquement}.
+
+\question Avec $L>K$ instruments, le système $Z'(\mathbf y - X\mathbf b) = 0$
+compte $L$ équations pour $K$ inconnues~: il est sur-déterminé et n'admet en
+général aucune solution exacte. On ne peut donc plus annuler toutes les
+conditions de moments~; on cherche à les rendre \emph{aussi petites que
+possible} en minimisant une forme quadratique~:
+\[
+  \hat{\mathbf b} = \arg\min_{\mathbf b}\ \left(Z'\left(\mathbf y-X\mathbf b\right)\right)'W\left(Z'\left(\mathbf y-X\mathbf b\right)\right)
+\]
+C'est la méthode des moments généralisée. Le choix $W = (Z'Z)^{-1}$ conduit à
+l'estimateur des \textbf{doubles moindres carrés}~:
+\[
+  \hat{\mathbf b}_{\textsc{dmc}} = \left(X'P_ZX\right)^{-1}X'P_Z\mathbf y,
+  \qquad P_Z = Z(Z'Z)^{-1}Z'
+\]
+
+\nouvelexercice\label{ex:ar1-biais}
+
+\question Le régresseur $y_{t-1}$ n'est manifestement \textbf{pas
+déterministe}~: c'est une variable aléatoire, fonction des chocs passés. Il est
+\textbf{indépendant de $\varepsilon_t$}, puisque
+$y_{t-1} = \sum_{j\geq0}\rho^j\varepsilon_{t-1-j}$ ne fait intervenir que les
+innovations antérieures à $t$. En revanche il n'est \textbf{pas indépendant de
+$\varepsilon_{t-1}$}, qui figure explicitement dans son écriture. La matrice $X$
+des régresseurs et le vecteur $\varepsilon$ ne sont donc pas indépendants~: on
+n'est pas dans le «~cas 1~» du cours.
+
+\question L'orthogonalité contemporaine découle de l'indépendance~:
+$\mathbb E[y_{t-1}\varepsilon_t] = \mathbb E[y_{t-1}]\mathbb E[\varepsilon_t] = 0$.
+Pourtant~:
+\[
+  \hat\rho = \rho + \frac{\sum_t y_{t-1}\varepsilon_t}{\sum_t y_{t-1}^2}
+\]
+et $\mathbb E[\hat\rho]\neq\rho$. \textbf{Il n'y a pas de contradiction}~: le
+numérateur est bien d'espérance nulle, mais l'estimateur est un \emph{rapport},
+et l'espérance d'un rapport n'est pas le rapport des espérances. Le dénominateur
+$\sum_t y_{t-1}^2$ est aléatoire et corrélé au numérateur --- un choc
+$\varepsilon_{t}$ élevé accroît simultanément le numérateur à la date $t$ et le
+dénominateur à la date $t+1$. C'est précisément l'exogénéité stricte qui fait
+défaut, et elle seule permettrait de sortir le dénominateur de l'espérance.
+
+\question En divisant par $T$~:
+\[
+  \hat\rho = \rho + \frac{\frac1T\sum_t y_{t-1}\varepsilon_t}{\frac1T\sum_t y_{t-1}^2}
+\]
+Le processus étant stationnaire, ses moments ne dépendent pas de la date et la
+loi des grands nombres s'applique aux moyennes temporelles~:
+$\frac1T\sum_t y_{t-1}\varepsilon_t\plimT\mathbb E[y_{t-1}\varepsilon_t]=0$ et
+$\frac1T\sum_t y_{t-1}^2\plimT\mathbb E[y_{t-1}^2]=\epsvar/(1-\rho^2)>0$. Par
+Slutsky, $\hat\rho\plimT\rho$~: l'estimateur est \textbf{convergent}. La seule
+condition mobilisée est l'\emph{orthogonalité contemporaine}
+$\mathbb E[y_{t-1}\varepsilon_t]=0$, bien plus faible que l'exogénéité stricte.
+
+\question Le biais valant approximativement $-2\rho/T$, il est \emph{négatif}
+pour $\rho>0$~: l'estimateur des MCO \textbf{sous-estime} la persistance du
+processus. Le biais est d'autant plus marqué que $\rho$ est grand et que $T$ est
+petit --- ce qui est fâcheux, car c'est justement en présence de forte
+persistance qu'on souhaite mesurer $\rho$ avec précision.
+
+\question La simulation confirme l'ordre de grandeur~: pour $\rho=0{,}9$, le
+biais théorique $-2\rho/T$ vaut environ $-0{,}072$ pour $T=25$, $-0{,}036$ pour
+$T=50$, $-0{,}018$ pour $T=100$ et $-0{,}0036$ pour $T=500$. On observe bien une
+moyenne des $\hat\rho$ inférieure à $0{,}9$, l'écart étant divisé par deux
+lorsque $T$ double, et devenant négligeable pour $T=500$.
+
+\question C'est le cas \textbf{intermédiaire} entre les deux situations
+extrêmes du chapitre~: le cas~1, où $X$ et $\varepsilon$ sont indépendants et où
+toutes les propriétés du chapitre~I valent conditionnellement à $X$ (absence de
+biais comprise)~; et le cas~2, où $X$ est corrélé contemporainement à
+$\varepsilon$ et où l'estimateur n'est même plus convergent. Ici l'estimateur
+est \emph{biaisé mais convergent}~: on perd les propriétés à distance finie, on
+conserve les propriétés asymptotiques.
+
+\question Si les $\varepsilon_t$ sont eux-mêmes autocorrélés, alors
+$\varepsilon_t$ est corrélé à $\varepsilon_{t-1}$, donc à $y_{t-1}$ qui en
+dépend~: l'orthogonalité contemporaine $\mathbb E[y_{t-1}\varepsilon_t]=0$
+\textbf{tombe}. On bascule dans le cas~2 et l'estimateur des MCO devient
+\emph{inconvergent}. C'est un point important~: dans un modèle dynamique,
+l'autocorrélation des erreurs n'est plus une simple perte d'efficacité (comme au
+chapitre~II) mais une source d'inconvergence. Il faut alors instrumenter (par
+exemple par $y_{t-2}$) ou modéliser explicitement la dynamique des erreurs.
+
+\nouvelexercice\label{ex:erreurs-mesure}
+
+\question En remplaçant $x_t = x_t^{*}-u_t$ dans le DGP puis en substituant~:
+\[
+  y_t^{*} = y_t + v_t = \alpha + \beta\left(x_t^{*}-u_t\right) + \varepsilon_t + v_t
+          = \alpha + \beta x_t^{*} + w_t
+\]
+avec la perturbation composée $w_t = \varepsilon_t + v_t - \beta u_t$.
+
+\question Le régresseur observé et la perturbation composée partagent le terme
+$u_t$~:
+\[
+  \mathrm{cov}\left(x_t^{*},w_t\right)
+  = \mathrm{cov}\left(x_t+u_t,\ \varepsilon_t+v_t-\beta u_t\right)
+  = -\beta\,\sigma_u^2
+\]
+tous les autres termes étant nuls par indépendance. Le régresseur est donc
+\textbf{endogène} dès que $\beta\neq0$ et $\sigma_u^2>0$~: l'erreur de mesure sur
+la variable explicative crée mécaniquement une corrélation entre régresseur et
+perturbation.
+
+\question Comme $\mathbb V[x_t^{*}] = \sigma_x^2+\sigma_u^2$~:
+\[
+  \mathrm{plim}\ \hat b = \beta + \frac{\mathrm{cov}(x^{*},w)}{\mathbb V[x^{*}]}
+  = \beta - \frac{\beta\sigma_u^2}{\sigma_x^2+\sigma_u^2}
+  = \beta\,\frac{\sigma_x^2}{\sigma_x^2+\sigma_u^2}
+\]
+Le facteur $\sigma_x^2/(\sigma_x^2+\sigma_u^2)$ appartient à $\left]0,1\right[$~:
+la limite est donc de même signe que $\beta$ mais de \textbf{module plus
+petit}. D'où le nom d'\emph{atténuation}~: le biais pousse systématiquement
+l'estimateur \emph{vers zéro}, et l'on sous-estime l'effet en valeur absolue. Le
+cas extrême $\sigma_u^2\gg\sigma_x^2$ donne $\mathrm{plim}\,\hat b\approx0$~: un
+régresseur presque entièrement composé de bruit de mesure paraît sans effet.
+
+\question Si $\sigma_u^2 = 0$, le facteur d'atténuation vaut $1$ et
+$\mathrm{plim}\,\hat b = \beta$. \textbf{L'erreur de mesure sur la seule variable
+expliquée est inoffensive} pour la convergence~: elle se contente de grossir la
+variance de la perturbation ($\epsvar+\sigma_v^2$ au lieu de $\epsvar$), donc
+les écarts-types, sans introduire de biais. C'est une asymétrie remarquable~:
+mal mesurer $y$ coûte de la précision, mal mesurer $x$ coûte la convergence.
+
+\question Vérifions les deux conditions pour $x^{(2)}_t = x_t+u_t^{(2)}$~:
+\begin{itemize}
+\item \textbf{Pertinence}~:
+  $\mathrm{cov}\left(x^{(2)},x^{*}\right) = \mathrm{cov}\left(x+u^{(2)},x+u\right) = \sigma_x^2\neq0$.
+  Les deux mesures sont corrélées parce qu'elles mesurent la même grandeur.
+\item \textbf{Exogénéité}~:
+  $\mathrm{cov}\left(x^{(2)},w\right) = \mathrm{cov}\left(x+u^{(2)},\ \varepsilon+v-\beta u\right) = 0$,
+  car $u^{(2)}$ est indépendant de $u$, $v$ et $\varepsilon$, et $x$ est
+  indépendant des trois.
+\end{itemize}
+La seconde mesure est donc un \textbf{instrument valide}. C'est un des rares cas
+où la validité de l'instrument se justifie par construction plutôt que par un
+argument économique discutable.
+
+\question \textbf{Non.} Le résultat d'atténuation est propre à la régression
+simple. En régression multiple, l'erreur de mesure sur une seule variable
+contamine \emph{tous} les coefficients, y compris ceux des variables
+correctement mesurées, par le jeu des corrélations entre régresseurs. De plus le
+sens du biais n'est en général plus prévisible~: on ne peut même plus affirmer
+que le coefficient de la variable mal mesurée est atténué.
+
+\question La simulation montre une décroissance monotone de
+$\mathrm{plim}\,\hat b/\beta$ en fonction du rapport bruit sur signal
+$\sigma_u^2/\sigma_x^2$~: le facteur d'atténuation vaut
+$1/\left(1+\sigma_u^2/\sigma_x^2\right)$, soit $0{,}9$ pour un rapport de
+$0{,}11$, $0{,}5$ pour un rapport de $1$, et $0{,}1$ pour un rapport de $9$.
+
+\nouvelexercice\label{ex:offre-demande}
+
+\question En égalisant offre et demande~:
+\[
+  \alpha_0+\alpha_1P_t+\alpha_2R_t+u_t = \gamma_0+\gamma_1P_t+\gamma_2W_t+v_t
+\]
+soit $\left(\alpha_1-\gamma_1\right)P_t = \left(\gamma_0-\alpha_0\right)+\gamma_2W_t-\alpha_2R_t+\left(v_t-u_t\right)$
+et donc~:
+\[
+  P_t = \frac{\left(\gamma_0-\alpha_0\right)+\gamma_2W_t-\alpha_2R_t+\left(v_t-u_t\right)}{\alpha_1-\gamma_1}
+\]
+Le prix d'équilibre dépend des \emph{deux} chocs~: c'est la forme réduite.
+
+\question Le prix contient $u_t$, donc~:
+\[
+  \mathbb E\left[P_tu_t\right] = \frac{-\sigma_u^2}{\alpha_1-\gamma_1}\neq0
+\]
+Comme $\alpha_1<0<\gamma_1$, on a $\alpha_1-\gamma_1<0$ et cette covariance est
+\emph{positive}. Estimer l'équation de demande par les MCO donne donc un
+estimateur \textbf{inconvergent} de $\alpha_1$, biaisé vers le haut~: la pente
+de la demande paraît moins négative qu'elle ne l'est. \textbf{Intuition}~: un
+choc positif de demande fait monter le prix \emph{et} la quantité, ce qui
+brouille la relation décroissante que l'on cherche à mesurer. C'est le problème
+de \emph{simultanéité}, ou de double causalité.
+
+\question Pour l'\textbf{équation de demande}, il faut un instrument qui déplace
+l'offre sans figurer dans la demande~: c'est $W_t$ (la météo). Pertinence~: $W_t$
+apparaît dans la forme réduite de $P_t$ avec le coefficient
+$\gamma_2/(\alpha_1-\gamma_1)\neq0$. Exogénéité~: $W_t$ n'est pas corrélé à
+$u_t$, le choc de demande. Symétriquement, pour l'\textbf{équation d'offre},
+l'instrument est $R_t$ (le revenu), qui déplace la demande sans figurer dans
+l'offre. Dans les deux cas, la variable exogène propre à l'équation estimée est
+son propre instrument~: pour la demande, $Z_t' = \left(1,\ R_t,\ W_t\right)$.
+\textbf{C'est le déplacement d'une courbe qui permet d'identifier l'autre.}
+
+\question Avec $L$ instruments et $K$ régresseurs~:
+\[
+  \hat{\mathbf b}_{\textsc{dmc}} = \left(X'P_ZX\right)^{-1}X'P_Z\mathbf y
+\]
+Comme $P_Z$ est un projecteur, $X'P_ZX = \hat X'\hat X$ et
+$X'P_Z\mathbf y = \hat X'\mathbf y$ avec $\hat X = P_ZX = Z\hat\Pi$ et
+$\hat\Pi = (Z'Z)^{-1}Z'X$. D'où la \textbf{lecture en deux étapes}~:
+\emph{(i)} régresser chaque colonne de $X$ sur $Z$ et retenir les valeurs
+ajustées $\hat X$ --- c'est la part de $X$ expliquée par les instruments, donc
+purgée de la corrélation avec $\varepsilon$~; \emph{(ii)} régresser $\mathbf y$
+sur $\hat X$.
+
+\question Si $L=K$, la matrice $Z'X$ est carrée et inversible, et~:
+\[
+  \begin{split}
+    \left(X'P_ZX\right)^{-1}X'P_Z\mathbf y
+      &= \left(X'Z(Z'Z)^{-1}Z'X\right)^{-1}X'Z(Z'Z)^{-1}Z'\mathbf y\\
+      &= \left(Z'X\right)^{-1}\left(Z'Z\right)\left(X'Z\right)^{-1}X'Z(Z'Z)^{-1}Z'\mathbf y\\
+      &= \left(Z'X\right)^{-1}Z'\mathbf y = \hat{\mathbf b}_{\textsc{vi}}
+  \end{split}
+\]
+Les doubles moindres carrés généralisent donc bien l'estimateur à variables
+instrumentales~: ils coïncident en juste identification.
+
+\question \textbf{Test de Sargan.} On calcule les résidus des doubles moindres
+carrés $\hat u = \mathbf y - X\hat{\mathbf b}_{\textsc{dmc}}$, on les régresse
+sur l'ensemble des instruments $Z$, et on forme~:
+\[
+  S = T R^2 \dlimT \chi^2(L-K)
+\]
+Un $R^2$ élevé signale que les instruments expliquent encore les résidus, donc
+qu'ils ne sont pas orthogonaux à la perturbation. \textbf{Ce que l'on teste
+exactement}~: seulement les $L-K$ restrictions \emph{sur-identifiantes},
+c'est-à-dire la \emph{cohérence mutuelle} des instruments. Les $K$ conditions
+nécessaires à l'identification ne sont pas testables~: si tous les instruments
+étaient invalides «~de la même façon~», le test ne détecterait rien. D'où les
+$L-K$ degrés de liberté, et l'impossibilité de tester quoi que ce soit en juste
+identification.
+
+\question \textbf{Non.} Le test est un test global~: un rejet indique qu'au
+moins une restriction sur-identifiante est violée, sans désigner le coupable. Il
+est d'ailleurs possible qu'un instrument valide soit «~accusé~» parce qu'il est
+comparé à des instruments invalides. Réciproquement, un non-rejet n'est pas une
+preuve de validité~: il peut refléter un manque de puissance, ou le cas
+mentionné ci-dessus où tous les instruments partagent le même défaut. Le test de
+Sargan est un garde-fou, pas une certification.
+
+\nouvelexercice\label{ex:instruments-faibles}
+
+\question En reprenant la question (5) de l'exercice~\ref{ex:vi-simple} et en notant que
+$\mathrm{cov}(z,x) = \pi\sigma_z^2$~:
+\[
+  \mathrm{plim}\ \hat b_{\textsc{vi}} = \beta + \frac{\mathrm{cov}(z,\varepsilon)}{\pi\,\sigma_z^2}
+\]
+Si l'instrument est \emph{exactement} exogène, $\mathrm{cov}(z,\varepsilon)=0$ et
+la limite vaut $\beta$ quel que soit $\pi\neq0$. Mais si l'exogénéité n'est
+qu'approximativement satisfaite, le terme de biais est divisé par $\pi$~: il
+\textbf{explose lorsque $\pi\rightarrow0$}. Un instrument faible amplifie
+démesurément la moindre violation de l'exogénéité --- au point que
+l'estimateur à variables instrumentales peut être plus biaisé que les MCO.
+
+\question La variance asymptotique vaut $\epsvar\mathbb V[z]/\mathrm{cov}(z,x)^2 = \epsvar/(\pi^2\sigma_z^2)$,
+qui diverge en $1/\pi^2$ lorsque $\pi\rightarrow0$. De façon équivalente, le
+rapport $1/\rho_{xz}^2$ de l'exercice~\ref{ex:vi-simple} tend vers l'infini. L'estimateur
+devient donc à la fois très imprécis et très sensible.
+
+\question Le résultat rappelé dans l'énoncé montre que
+$\mathbb E[Z_t\varepsilon_t]=0$ \textbf{n'implique pas} que la moyenne empirique
+$\frac1T\sum_t Z_t\varepsilon_t$ converge vers quoi que ce soit~: dans cet
+exemple, le produit $Z_t\varepsilon_t$ suit une loi de Cauchy, qui n'a pas
+d'espérance, et la loi des grands nombres ne s'applique pas.
+\textbf{Leçon.} La non-corrélation est un énoncé sur un moment de population~;
+la convergence exige en outre que ce moment \emph{existe} et que la loi des
+grands nombres soit applicable. Les conditions du théorème des variables
+instrumentales sont donc formulées en termes de convergence
+($Z'\varepsilon/T\plimT0$), et non de simple non-corrélation --- ce n'est pas une
+coquetterie de rédaction.
+
+\question \textbf{Non.} En juste identification, l'estimateur à variables
+instrumentales est un rapport de deux formes quadratiques corrélées, et ne
+possède \emph{aucun moment} --- pas même une espérance. Parler de son «~biais~»
+n'a donc littéralement pas de sens à distance finie. C'est une différence
+essentielle avec les MCO, et cela explique que les simulations sur instruments
+faibles produisent des distributions à queues très épaisses, parfois bimodales.
+
+\question On utilise la statistique de \textbf{Fisher de la première étape},
+testant la nullité conjointe des coefficients des instruments dans la régression
+de $x$ sur $Z$. La règle empirique usuelle est de considérer les instruments
+comme faibles si $F<10$. \textbf{Limites}~: ce seuil provient d'un calcul
+particulier (borner le biais relatif des doubles moindres carrés à $10\,\%$ dans
+un cadre homoscédastique) et n'a aucune validité générale~; il se dégrade
+lorsque les instruments sont nombreux ou les erreurs hétéroscédastiques~; enfin,
+sélectionner le modèle sur la base de $F$ puis conduire l'inférence comme si de
+rien n'était introduit un biais de pré-test.
+
+\question \textbf{Test de Hausman.} L'idée est de comparer deux estimateurs~:
+$\hat{\mathbf b}$ (MCO), efficace mais convergent seulement sous exogénéité, et
+$\hat{\mathbf b}_{\textsc{vi}}$, convergent dans les deux cas mais moins précis.
+Sous $\mathcal H_0$ (exogénéité) les deux convergent vers $\beta$ et leur écart
+tend vers zéro~; sous $\mathcal H_1$ ils divergent. D'où~:
+\[
+  H = \left(\hat{\mathbf b}_{\textsc{vi}}-\hat{\mathbf b}\right)'
+      \left[\hat{\mathbb V}\left[\hat{\mathbf b}_{\textsc{vi}}\right]-\hat{\mathbb V}\left[\hat{\mathbf b}\right]\right]^{-}
+      \left(\hat{\mathbf b}_{\textsc{vi}}-\hat{\mathbf b}\right)
+  \dlimT \chi^2(K_1)
+\]
+où $K_1$ est le nombre de régresseurs dont on teste l'exogénéité.
+\textbf{Pourquoi un inverse généralisé}~: sous $\mathcal H_0$, $\hat{\mathbf b}$
+est efficace, ce qui garantit que la différence des variances est semi-définie
+positive, mais elle est \emph{singulière} --- son rang vaut $K_1$ et non $K$,
+car les composantes correspondant aux régresseurs exogènes sont estimées
+identiquement par les deux méthodes. L'inverse ordinaire n'existe donc pas.
+
+\question \textbf{Variante de Durbin-Wu.} On régresse $x$ sur l'ensemble des
+instruments et l'on récupère les résidus $\hat{\mathbf v}$ de cette première
+étape~; on ajoute $\hat{\mathbf v}$ comme régresseur supplémentaire dans
+l'équation d'intérêt~:
+\[
+  y_t = a + b\,x_t + c\,\hat v_t + \text{erreur}
+\]
+et l'on teste $\mathcal H_0: c=0$ par un simple $t$ de Student. En effet, $c$ ne
+peut être non nul que si la part de $x$ non expliquée par les instruments est
+corrélée à la perturbation, c'est-à-dire si $x$ est endogène.
+\textbf{Avantages pratiques}~: le test se ramène à une statistique de Student
+standard, il évite le calcul d'un inverse généralisé, il ne souffre pas du
+problème d'une différence de variances estimée non semi-définie positive en
+petit échantillon (qui rend parfois $H$ négatif), et il se robustifie
+immédiatement à l'hétéroscédasticité en utilisant un écart-type robuste.
+
+\nouvelexercice\label{ex:wald}
+
+\question D'après l'exercice~\ref{ex:vi-simple}~:
+\[
+  \hat b_{\textsc{vi}} = \frac{\sum_i\left(z_i-\bar z\right)\left(y_i-\bar y\right)}{\sum_i\left(z_i-\bar z\right)\left(x_i-\bar x\right)}
+\]
+
+\question Notons $N_1 = Np$ le nombre d'observations telles que $z_i=1$ et
+$N_0 = N(1-p)$ les autres, de sorte que $\bar z = p$. En séparant la somme selon
+les deux groupes, et comme $z_i-\bar z$ vaut $1-p$ sur le premier et $-p$ sur le
+second~:
+\[
+  \begin{split}
+    \sum_i\left(z_i-\bar z\right)\left(y_i-\bar y\right)
+      &= (1-p)\sum_{i:z_i=1}\left(y_i-\bar y\right) - p\sum_{i:z_i=0}\left(y_i-\bar y\right)\\
+      &= (1-p)N_1\left(\bar y_1-\bar y\right) - pN_0\left(\bar y_0-\bar y\right)
+  \end{split}
+\]
+Or $\bar y = p\bar y_1+(1-p)\bar y_0$, donc
+$\bar y_1-\bar y = (1-p)(\bar y_1-\bar y_0)$ et
+$\bar y_0-\bar y = -p(\bar y_1-\bar y_0)$. En reportant~:
+\[
+  \sum_i\left(z_i-\bar z\right)\left(y_i-\bar y\right)
+  = \left[(1-p)^2Np + p^2N(1-p)\right]\left(\bar y_1-\bar y_0\right)
+  = N\,p(1-p)\left(\bar y_1-\bar y_0\right)
+\]
+puisque $(1-p)^2p+p^2(1-p) = p(1-p)$. Le même calcul avec $x$ donne
+$N\,p(1-p)\left(\bar x_1-\bar x_0\right)$.
+
+\question Le facteur commun $Np(1-p)$ se simplifie dans le rapport~:
+\[
+  \hat b_{\textsc{vi}} = \frac{\bar y_1-\bar y_0}{\bar x_1-\bar x_0}
+\]
+C'est l'\textbf{estimateur de Wald}.
+
+\question L'estimateur est le rapport de deux différences de moyennes~: au
+numérateur, l'écart de $y$ entre les deux groupes définis par l'instrument~; au
+dénominateur, l'écart de $x$ entre ces mêmes groupes. \textbf{Interprétation.}
+L'instrument déplace $x$ d'une quantité $\bar x_1-\bar x_0$, ce qui déplace $y$
+d'une quantité $\bar y_1-\bar y_0$~: le rapport mesure «~combien de $y$ par unité
+de $x$~», en n'utilisant que la variation de $x$ imputable à $z$. La
+\emph{condition de pertinence} $\mathrm{cov}(z,x)\neq0$ devient simplement
+$\bar x_1\neq\bar x_0$~: l'instrument doit effectivement déplacer $x$. On voit
+aussi immédiatement pourquoi la division est dangereuse si ce dénominateur est
+petit.
+
+\question Ici $x_i\in\{0,1\}$, donc $\bar x_1$ est le taux de participation
+parmi les personnes tirées au sort et $\bar x_0$ celui parmi les autres.
+\begin{itemize}
+\item \textbf{Numérateur}~: $\bar y_1-\bar y_0$ compare le résultat moyen des
+  personnes \emph{à qui l'on a proposé} la formation à celui des autres.
+  Comme $z$ est tiré au sort, les deux groupes sont comparables~: cette
+  différence est l'effet de l'\emph{intention de traiter}. C'est ce que l'on
+  mesurerait en régressant $y$ sur $z$.
+\item \textbf{Dénominateur}~: $\bar x_1-\bar x_0$ est l'écart des taux de
+  participation effective entre les deux groupes, c'est-à-dire le
+  \emph{taux de conformité} au tirage. C'est la régression de première étape.
+\end{itemize}
+L'estimateur de Wald corrige donc l'effet d'intention de traiter par le taux de
+conformité~: si seuls $50\,\%$ des personnes sollicitées participent
+effectivement, l'effet mesuré sur l'ensemble du groupe doit être doublé pour
+retrouver l'effet sur ceux qui participent réellement.
+
+\question Si le taux de conformité est faible, le dénominateur $\bar x_1-\bar x_0$
+est proche de zéro~: l'estimateur devient très instable, sa variance
+asymptotique explose, et le moindre défaut d'exogénéité de $z$ est amplifié dans
+le rapport. C'est exactement la situation d'instruments faibles de
+l'exercice~\ref{ex:instruments-faibles}~: on y voit ici de façon très concrète
+d'où vient le problème, puisqu'il s'agit littéralement d'une division par un
+petit nombre. À la limite $\bar x_1=\bar x_0$ (personne ne modifie son
+comportement suite au tirage), l'estimateur n'est pas défini~: l'expérience
+n'apporte aucune information sur $\beta$.
+
+\question \textbf{Le tirage au sort porte sur $z$, pas sur $x$.} Par
+construction, $z$ est indépendant de tout ce qui caractérise les individus,
+donc de $\varepsilon$~: l'exogénéité de l'instrument est garantie \emph{par le
+protocole}, ce qui est rare et précieux --- ailleurs, elle repose toujours sur un
+argument discutable. En revanche $x$, la participation \emph{effective},
+résulte d'une décision individuelle~: les personnes qui acceptent la formation
+sont vraisemblablement les plus motivées, et cette motivation influence aussi
+$y$. Donc $\mathrm{cov}(x,\varepsilon)\neq0$. Régresser $y$ sur $x$ produirait
+un estimateur inconvergent (exercice~\ref{ex:vi-simple}), confondant l'effet de
+la formation avec celui de la motivation~: on attribuerait au programme le mérite
+de sélectionner les meilleurs. Le tirage au sort ne suffit donc pas~: encore
+faut-il l'utiliser comme \emph{instrument} et non comme traitement.
+
+\section*{Chapitre IV~-- Hétéroscédasticité}
+
+\nouvelexercice\label{ex:cout-hetero}
+
+\question En substituant le DGP,
+$\hat{\mathbf b} = \beta + (X'X)^{-1}X'\varepsilon$. Comme $X$ est déterministe
+et $\mathbb E[\varepsilon]=0$, $\mathbb E[\hat{\mathbf b}]=\beta$~:
+\textbf{l'absence de biais est préservée}, car elle ne fait intervenir que
+l'espérance des erreurs, jamais leur variance. L'estimateur reste convergent dès
+que $X'X/T\plimT Q$ définie positive et que $X'\Omega X/T$ admet une limite
+finie.
+
+\question Comme $\mathbb V[\varepsilon]=\Omega$~:
+\[
+  \mathbb V\left[\hat{\mathbf b}\right] = (X'X)^{-1}X'\Omega X(X'X)^{-1}
+\]
+Elle diffère de $\epsvar(X'X)^{-1}$ parce que le calcul usuel remplace
+$\mathbb V[\varepsilon]$ par $\epsvar I_T$, ce qui permet de sortir $\epsvar$ du
+produit et de simplifier $X'X$. Ici $\Omega$ ne peut pas être sortie de
+$X'\Omega X$, et la simplification n'a plus lieu. C'est le cas diagonal de la
+variance sandwich du chapitre~II.
+
+\question \textbf{Non.} Le théorème de Gauss-Markov suppose
+$\mathbb V[\varepsilon]=\epsvar I_T$, c'est-à-dire à la fois l'homoscédasticité
+(éléments diagonaux tous égaux) et l'absence de corrélation (éléments hors
+diagonale nuls). C'est ici la première partie qui est violée. Il existe donc un
+estimateur linéaire sans biais de variance plus petite~: l'estimateur des MCG,
+qui prend ici la forme des moindres carrés pondérés (exercice~\ref{ex:mcp}).
+
+\question \textbf{Non}, $s^2(X'X)^{-1}$ n'estime rien de pertinent~: $s^2$
+converge vers une moyenne pondérée des $\sigma_t^2$, et le produit par
+$(X'X)^{-1}$ ne reconstitue pas $X'\Omega X$ encadré. Il n'y a aucune raison
+pour que le résultat soit proche de la vraie variance --- il peut la sur-estimer
+comme la sous-estimer. Par conséquent les tests de Student et de Fisher du
+chapitre~I sont invalides, et ils le restent \textbf{asymptotiquement}~: ce n'est
+pas un problème de petit échantillon que davantage d'observations résoudrait.
+
+\question \textbf{Le danger n'est pas dans l'estimateur, qui reste juste~: il
+est dans la formule d'écart-type imprimée à côté.} C'est la phrase à retenir du
+chapitre. Elle explique aussi pourquoi la première réponse au problème
+(exercice~\ref{ex:hc}) consiste à ne rien changer à $\hat{\mathbf b}$ et à corriger
+uniquement son écart-type.
+
+\question Si $y_g$ est la moyenne de $n_g$ observations individuelles
+homoscédastiques de variance $\epsvar$ et non corrélées entre elles~:
+\[
+  \mathbb V\left[\varepsilon_g\right] = \mathbb V\left[\frac{1}{n_g}\sum_{j=1}^{n_g}\varepsilon_{gj}\right] = \frac{\epsvar}{n_g}
+\]
+Les erreurs restent non corrélées entre groupes, donc $\Omega$ est bien
+diagonale, mais ses éléments diffèrent dès que les groupes n'ont pas la même
+taille. C'est un cas où $\Omega$ est \emph{connue} à un facteur près, et où la
+pondération de l'exercice~\ref{ex:mcp} s'impose naturellement (chaque groupe est pondéré
+par $\sqrt{n_g}$).
+
+\question Trois exemples classiques~: \emph{(i)} les équations de consommation
+ou d'épargne sur données individuelles, où la dispersion des comportements croît
+avec le revenu --- les ménages aisés ont beaucoup plus de latitude~; \emph{(ii)}
+les modèles portant sur des entreprises de tailles très différentes, où la
+variabilité des résultats croît avec l'échelle d'activité~; \emph{(iii)} les
+données agrégées ou moyennées par zone géographique, comme dans la question
+précédente. On peut y ajouter les modèles à variable dépendante limitée, où la
+variance dépend mécaniquement de l'espérance.
+
+\nouvelexercice\label{ex:breusch-pagan}
+
+\question Le test est un test du multiplicateur de Lagrange, évalué
+\emph{sous} $\mathcal H_0:\alpha=0$. Au voisinage de ce point, seul compte le
+développement au premier ordre de $h$~: la dérivée $h'(\alpha_0)$ intervient
+comme un facteur d'échelle, qui se simplifie dans la statistique une fois
+celle-ci normalisée. La seule exigence est donc $h'(\alpha_0)\neq0$, c'est-à-dire
+que la variance réagisse effectivement à l'indice. Le test a ainsi la même forme
+que $\sigma_t^2$ soit linéaire, exponentielle ou quadratique en $z_t'\alpha$~:
+c'est ce qui fait sa robustesse et son élégance.
+
+\question On régresse la variable
+$\hat\varepsilon_t^{\,2}/\hat\sigma^2$ sur une constante et sur $z_t$, où
+$\hat\sigma^2 = \frac1T\sum_t\hat\varepsilon_t^{\,2}$ (noter la division par $T$
+et non par $T-K$). On retient la somme des carrés expliquée $SCE$ de cette
+régression auxiliaire.
+
+\question Sous normalité, $\varepsilon_t/\sigma_t\sim\normal{0}{1}$, donc
+$\left(\varepsilon_t/\sigma_t\right)^2\sim\chi^2(1)$. Or la variance d'une loi
+du khi-deux à un degré de liberté vaut $2\times1 = 2$~:
+\[
+  \mathbb V\left[\frac{\varepsilon_t^2}{\sigma_t^2}\right] = 2
+\]
+\textbf{D'où vient le facteur $2$}~: la variable expliquée de la régression
+auxiliaire a, sous $\mathcal H_0$, une variance \emph{connue} et égale à $2$. La
+statistique $LM$ est la somme des carrés expliquée divisée par cette variance,
+comme toute statistique de score. C'est parce que cette variance est connue --- et
+qu'elle vaut $2$ --- que la normalité est indispensable.
+
+\question Sous $\mathcal H_0$~:
+\[
+  LM = \frac{SCE}{2}\ \dlimT\ \chi^2(p)
+\]
+où $p$ est le nombre de variables dans $z_t$ (hors constante). On rejette
+l'homoscédasticité si $LM$ dépasse le quantile d'ordre $1-\alpha$ de cette loi.
+
+\question Si les erreurs ne sont pas gaussiennes,
+$\mathbb V[\varepsilon_t^2/\sigma_t^2]\neq2$ en général (elle dépend du moment
+d'ordre quatre), et diviser par $2$ fausse la statistique~: le test n'a plus la
+taille annoncée, et il sur-rejette typiquement en présence de queues épaisses.
+\textbf{Version de Koenker.} On régresse directement $\hat\varepsilon_t^{\,2}$
+sur $(1,z_t)$ et l'on retient~:
+\[
+  LM_K = T R^2 \ \dlimT\ \chi^2(p)
+\]
+Le $R^2$ normalise implicitement par la variance \emph{empirique} de
+$\hat\varepsilon_t^{\,2}$ au lieu de lui imposer la valeur théorique $2$~: c'est
+en ce sens que le test est «~studentisé~». Il ne requiert plus la normalité.
+
+\question Sous normalité, la version originale est \emph{plus puissante}~: elle
+exploite une information vraie (la variance vaut exactement $2$) au lieu de
+l'estimer. La version de Koenker est \emph{plus robuste}~: elle conserve la
+bonne taille quelle que soit la loi des erreurs. En pratique, la normalité étant
+rarement crédible sur données individuelles, c'est la version de Koenker qui est
+utilisée par défaut dans les logiciels.
+
+\question \textbf{Non.} Le test n'a de puissance que contre les alternatives où
+la variance dépend de $z_t$ à travers l'indice linéaire $z_t'\alpha$. Une
+hétéroscédasticité qui dépendrait d'une variable absente de $z_t$, ou qui
+dépendrait de $z_t$ de façon non monotone (par exemple en $z_t^2$ avec un
+minimum intérieur, de sorte que la corrélation entre $\varepsilon^2$ et $z$ soit
+nulle), passerait inaperçue. C'est précisément ce qui motive le test de White.
+
+\nouvelexercice\label{ex:white}
+
+\question On régresse le carré des résidus des MCO, $\hat\varepsilon_t^{\,2}$,
+sur une constante, sur les $J=K-1$ régresseurs du modèle initial, sur leurs
+carrés, et sur tous leurs produits croisés deux à deux.
+
+\question Supposons que la variance soit une fonction inconnue des explicatives,
+$\sigma_t^2 = f(\mathbf x_t)$. Un développement de Taylor d'ordre deux au
+voisinage de $\bar{\mathbf x}$ donne~:
+\[
+  f(\mathbf x_t) \simeq f(\bar{\mathbf x})
+  + \nabla f(\bar{\mathbf x})'\left(\mathbf x_t-\bar{\mathbf x}\right)
+  + \tfrac12\left(\mathbf x_t-\bar{\mathbf x}\right)'\nabla^2 f(\bar{\mathbf x})\left(\mathbf x_t-\bar{\mathbf x}\right)
+\]
+En développant, on fait apparaître une constante, les niveaux $x_{k,t}$, les
+carrés $x_{k,t}^2$ et les produits croisés $x_{k,t}x_{l,t}$. La régression
+auxiliaire de White est donc l'approximation quadratique générique d'une
+fonction de variance \emph{quelconque}~: c'est ce qui lui donne sa généralité.
+
+\question On compte $J$ niveaux, $J$ carrés et $\binom{J}{2} = J(J-1)/2$ produits
+croisés distincts, soit~:
+\[
+  q = J + J + \frac{J(J-1)}{2} = J + \frac{J(J+1)}{2}
+\]
+
+\question La statistique et sa loi asymptotique sous $\mathcal H_0$~:
+\[
+  W = TR^2\ \dlimT\ \chi^2(q)
+\]
+où $R^2$ est celui de la régression auxiliaire.
+
+\question Avec $J=3$ régresseurs ($educ$, $exper$, $exper^2$), le décompte naïf
+donnerait $q = 3 + \frac{3\times4}{2} = 9$. Mais le carré de $exper$ est
+$exper^2$, qui figure \emph{déjà} parmi les niveaux~: la colonne
+«~$exper\times exper$~» de la régression auxiliaire est exactement colinéaire à
+la colonne «~$exper^2$~». Une colonne est donc redondante et doit être écartée~:
+\[
+  q = 9 - 1 = 8
+\]
+\textbf{Leçon générale.} Dès que le modèle contient une transformation
+polynomiale d'un régresseur, ou une indicatrice (dont le carré est elle-même),
+la régression auxiliaire de White comporte des colinéarités et le degré de
+liberté effectif est inférieur à la formule. Il faut lire le rang effectif de la
+matrice auxiliaire, ce que font les logiciels --- et ne pas appliquer la formule
+mécaniquement.
+
+\question Le test de White est \textbf{plus général}~: il ne suppose ni forme
+fonctionnelle particulière, ni normalité, ni le choix préalable de variables
+$z_t$. Le test de Breusch-Pagan est \textbf{plus puissant} lorsque la forme de
+l'hétéroscédasticité est effectivement celle qu'il postule, car il concentre sa
+puissance sur $p$ degrés de liberté au lieu de la disperser sur $q$, en général
+bien plus grand. C'est l'arbitrage habituel entre généralité et puissance.
+
+\question \textbf{Non, il faut être prudent.} La régression auxiliaire de White
+contient les niveaux, les carrés et les produits croisés des explicatives~: ce
+sont précisément les termes qu'on aurait ajoutés au modèle initial pour tester
+une \emph{erreur de forme fonctionnelle}. Si le vrai modèle est non linéaire et
+qu'on l'estime linéairement, la partie non modélisée se retrouve dans les
+résidus et sera captée par la régression auxiliaire, provoquant un rejet sans
+qu'il y ait la moindre hétéroscédasticité. Le test de White est donc, en
+pratique, un test de mauvaise spécification au sens large. Avant de conclure à
+l'hétéroscédasticité, il est prudent de vérifier la forme fonctionnelle du
+modèle.
+
+\nouvelexercice\label{ex:goldfeld-quandt}
+
+\question On ordonne les observations selon $z$, croissant. On écarte les $c$
+observations centrales, puis on estime le modèle \emph{séparément} sur le
+premier sous-échantillon (faibles $z$) et sur le second (forts $z$), chacun de
+taille $m = (T-c)/2$. On compare les deux sommes des carrés des résidus.
+
+\question \textbf{Pourquoi écarter les observations centrales}~: elles sont
+celles pour lesquelles la variance est intermédiaire~; les inclure atténuerait le
+contraste entre les deux groupes et rapprocherait le rapport de $1$ sous
+$\mathcal H_1$. Les retirer accentue la différence et augmente la puissance.
+\textbf{Effet du choix de $c$}~: augmenter $c$ accroît le contraste mais réduit
+$m$, donc les degrés de liberté et la précision de chaque $SCR$. Il y a un
+optimum intermédiaire, d'où la recommandation $c\simeq T/4$.
+
+\question Sous $\mathcal H_0$ et sous normalité, chaque sous-échantillon relève
+du chapitre~I~: $SCR_i/\epsvar\sim\chi^2(m-K)$. Les deux sous-échantillons étant
+disjoints et les erreurs indépendantes, les deux formes quadratiques sont
+indépendantes. Le rapport de deux khi-deux indépendants divisés par leurs degrés
+de liberté suit une loi de Fisher, et $\epsvar$ se simplifie~:
+\[
+  F = \frac{SCR_2/(m-K)}{SCR_1/(m-K)} \sim \mathcal F(m-K,\,m-K)
+\]
+
+\question C'est une loi \textbf{exacte}, valable à toute taille d'échantillon --- 
+c'est le seul des trois tests dans ce cas, les deux autres n'ayant qu'une
+justification asymptotique. En contrepartie, la \textbf{normalité des erreurs
+est indispensable}~: sans elle, $SCR_i/\epsvar$ ne suit plus une loi du khi-deux.
+
+\question Le test est \textbf{unilatéral} parce que l'hypothèse alternative est
+orientée~: on postule que la variance \emph{croît} avec $z$, donc que
+$SCR_2>SCR_1$. On ordonne les sous-échantillons de sorte que le second
+corresponde aux fortes valeurs de $z$, et l'on rejette pour les grandes valeurs
+de $F$. Si l'on soupçonnait une variance décroissante, il suffirait d'inverser
+l'ordre (ou de placer au numérateur la plus grande des deux sommes, en doublant
+le seuil).
+
+\question La \textbf{limite principale} est la double exigence de monotonie et
+d'unidimensionnalité~: il faut savoir à l'avance selon quelle variable ordonner,
+et postuler que la variance en est une fonction monotone. Le test est aveugle à
+toute hétéroscédasticité dépendant de plusieurs variables, ou non monotone. Il
+exige de surcroît la normalité et sacrifie $c$ observations. Les tests de
+Breusch-Pagan et de White n'ont aucune de ces contraintes.
+
+\question
+\begin{center}
+\begin{tabular}{p{2.4cm}p{3.3cm}p{1.9cm}p{2.0cm}p{2.1cm}}
+\hline
+ & \textbf{Hétéroscéd. testée} & \textbf{Normalité} & \textbf{Loi sous $\mathcal H_0$} & \textbf{Degrés de liberté}\\
+\hline
+Breusch-Pagan (original) & $\sigma_t^2=h(\alpha_0+z_t'\alpha)$, forme d'indice & requise & $\chi^2$ asympt. & $p$\\[1mm]
+Koenker & idem & non requise & $\chi^2$ asympt. & $p$\\[1mm]
+White & quelconque (approx. quadratique) & non requise & $\chi^2$ asympt. & $q=J+\frac{J(J+1)}{2}$, moins les colinéarités\\[1mm]
+Goldfeld-Quandt & monotone en une variable $z$ & requise & $\mathcal F$ exacte & $(m-K,\,m-K)$\\
+\hline
+\end{tabular}
+\end{center}
+
+\nouvelexercice\label{ex:hc}
+
+\question On pourrait croire qu'il faut estimer les $T$ variances
+$\sigma_1^2,\dots,\sigma_T^2$ à partir de $T$ observations~: le nombre de
+paramètres croîtrait aussi vite que l'échantillon et aucune convergence ne
+serait possible. \textbf{Mais ce n'est pas ce dont on a besoin.} La variance de
+$\hat{\mathbf b}$ ne fait intervenir les $\sigma_t^2$ qu'à travers la matrice
+$K\times K$~:
+\[
+  S = \frac{1}{T}\sum_{t=1}^T \sigma_t^2\,\mathbf x_t\mathbf x_t'
+\]
+qui ne contient que $K(K+1)/2$ paramètres distincts, indépendamment de $T$.
+C'est une moyenne, et une moyenne s'estime bien. Toute l'astuce de White est là.
+
+\question On remplace chaque $\sigma_t^2$ inconnue par le carré du résidu
+observé~:
+\[
+  \widehat{\mathbb V}_{HC0}
+  = \left(\sum_t \mathbf x_t\mathbf x_t'\right)^{-1}
+    \left(\sum_t \hat\varepsilon_t^{\,2}\,\mathbf x_t\mathbf x_t'\right)
+    \left(\sum_t \mathbf x_t\mathbf x_t'\right)^{-1}
+\]
+Pris isolément, $\hat\varepsilon_t^{\,2}$ est un très mauvais estimateur de
+$\sigma_t^2$ (un seul point pour une variance !), mais c'est sans importance~:
+seule la \emph{moyenne} pondérée doit converger.
+
+\question Le résultat du cours est~: si $X'X/T\plimT Q$ définie positive et
+$\frac1T\sum_t\sigma_t^2\mathbf x_t\mathbf x_t'\plimT S$, alors~:
+\[
+  T\,\widehat{\mathbb V}_{HC0} \plimT Q^{-1}SQ^{-1}
+\]
+\textbf{Attention}~: l'énoncé porte sur $T\widehat{\mathbb V}_{HC0}$, et non sur
+$\widehat{\mathbb V}_{HC0}$. Il ne peut pas en être autrement~:
+$\widehat{\mathbb V}_{HC0}$ et $\mathbb V[\hat{\mathbf b}]$ tendent toutes deux
+vers la matrice nulle quand $T\rightarrow\infty$, et dire de l'une qu'elle
+converge vers l'autre serait vide de sens. La normalisation par $T$ est ce qui
+donne un contenu à l'énoncé --- c'est la même précaution que pour
+$\sqrt T(\hat{\mathbf b}-\beta)$.
+
+\question Pour la trace~:
+\[
+  \sum_t h_{tt} = \trace(H) = \tracarg{X(X'X)^{-1}X'} = \tracarg{(X'X)^{-1}X'X} = \trace(I_K) = K
+\]
+Le levier moyen vaut donc $K/T$. Par ailleurs $\hat\varepsilon = M\varepsilon$
+avec $M = I-H$, donc sous homoscédasticité~:
+\[
+  \mathbb E\left[\hat\varepsilon_t^{\,2}\right] = \epsvar\,M_{tt} = \epsvar\left(1-h_{tt}\right)
+\]
+
+\question Comme $0\leq h_{tt}\leq1$, on a
+$\mathbb E[\hat\varepsilon_t^{\,2}]\leq\epsvar$~: les résidus estimés sont
+\emph{systématiquement trop petits}, parce que les MCO ajustent la droite en
+partie sur le bruit. HC0, qui les utilise tels quels, \textbf{sous-estime} donc
+la variance. Le biais est d'autant plus marqué que le levier $h_{tt}$ est élevé,
+c'est-à-dire pour les observations atypiques --- précisément celles qui pèsent le
+plus dans la somme. En petit échantillon, les tests fondés sur HC0 rejettent
+donc trop souvent.
+
+\question En corrigeant chaque terme~:
+\[
+  HC1:\ \frac{T}{T-K}\,\hat\varepsilon_t^{\,2}
+  \qquad
+  HC2:\ \frac{\hat\varepsilon_t^{\,2}}{1-h_{tt}}
+  \qquad
+  HC3:\ \frac{\hat\varepsilon_t^{\,2}}{\left(1-h_{tt}\right)^2}
+\]
+HC1 applique la même correction de degrés de liberté à toutes les observations.
+HC2 corrige exactement le biais calculé à la question (4), observation par
+observation. HC3 (approximation du \emph{jackknife}) sur-corrige délibérément~:
+comme $(1-h_{tt})^2 < 1-h_{tt}$, c'est la correction la plus forte des trois.
+
+\question La règle du cours est~: retenir HC3 si $T<250$, ou si
+$\max_t h_{tt}$ est nettement supérieur à $2K/T$ (présence de points à fort
+levier). Dans le doute, HC3 est le choix par défaut prudent~: sur grand
+échantillon les quatre variantes coïncident, de sorte qu'on ne perd rien à la
+retenir systématiquement. \textbf{Simulation.} Pour $T=30$ et une
+hétéroscédasticité marquée, un test au seuil nominal de $5\,\%$ rejette de
+l'ordre de $10$ à $12\,\%$ du temps avec HC0, $8$ à $9\,\%$ avec HC1, et revient
+au voisinage de $5$ à $6\,\%$ avec HC3. Les écarts-types usuels, eux, peuvent
+donner des taux de rejet bien plus élevés encore.
+
+\nouvelexercice\label{ex:mcp}
+
+\question Si $\Omega = \mathrm{diag}(\sigma_1^2,\dots,\sigma_T^2)$, alors
+$\Omega^{-1} = \mathrm{diag}(1/\sigma_1^2,\dots,1/\sigma_T^2)$ et les produits
+matriciels se lisent comme des sommes pondérées~:
+\[
+  X'\Omega^{-1}X = \sum_{t=1}^T\frac{\mathbf x_t\mathbf x_t'}{\sigma_t^2},
+  \qquad
+  X'\Omega^{-1}\mathbf y = \sum_{t=1}^T\frac{\mathbf x_ty_t}{\sigma_t^2}
+\]
+d'où l'expression annoncée. Chaque observation entre dans les sommes affectée du
+poids $1/\sigma_t^2$~: d'où le nom de \emph{moindres carrés pondérés}. De façon
+équivalente, l'estimateur minimise $\sum_t (y_t-\mathbf x_t'\mathbf b)^2/\sigma_t^2$,
+somme des carrés des résidus pondérée.
+
+\question Il suffit de diviser chaque observation par son écart-type~:
+\[
+  \tilde y_t = \frac{y_t}{\sigma_t},
+  \qquad
+  \tilde{\mathbf x}_t = \frac{\mathbf x_t}{\sigma_t}
+\]
+ce qui correspond à $\Lambda = \Omega^{-1/2} = \mathrm{diag}(1/\sigma_t)$. Les
+erreurs transformées $\varepsilon_t/\sigma_t$ ont alors une variance unitaire
+pour tout $t$~: le modèle transformé est homoscédastique, et les MCO qu'on y
+applique satisfont les conditions idéales.
+
+\question Les observations de \emph{faible} variance reçoivent le poids le plus
+élevé. C'est parfaitement intuitif~: une observation dont on sait qu'elle est
+mesurée avec précision est plus informative sur la position de la droite qu'une
+observation très dispersée, et doit peser davantage. Les MCO, en donnant le même
+poids à toutes, gaspillent cette information --- d'où leur perte d'efficacité.
+
+\question Parce que la fonction exponentielle est strictement positive~:
+$\sigma_t^2 = \sigma^2\exp(z_t'\gamma)>0$ quels que soient $\gamma$ et $z_t$. Une
+spécification linéaire $\sigma_t^2 = \sigma^2 + z_t'\gamma$ ne le garantirait pas
+et pourrait produire des variances estimées négatives, donc des poids négatifs
+et un estimateur dépourvu de sens. La forme multiplicative rend en outre
+l'estimation linéaire après passage au logarithme.
+
+\question \textbf{Procédure en quatre étapes.} \emph{(i)} Estimer le modèle par
+les MCO et récupérer les résidus $\hat\varepsilon_t$. \emph{(ii)} Régresser
+$\log\hat\varepsilon_t^{\,2}$ sur une constante et $z_t$~: la pente estime
+$\gamma$. \emph{(iii)} Former les variances ajustées
+$\hat\sigma_t^2 = \exp(\hat c + z_t'\hat\gamma)$. \emph{(iv)} Estimer le modèle
+par moindres carrés pondérés avec les poids $1/\hat\sigma_t^2$.
+
+\question La constante $-1{,}2704$ (qui n'est autre que
+$\mathbb E[\log\chi^2(1)]$) est \emph{la même pour toutes les observations}~:
+elle ne modifie donc que la \textbf{constante} de la régression auxiliaire, et
+laisse les pentes $\gamma$ inchangées. Quant à $\breve{\mathbf b}$, il n'est pas
+affecté non plus~: multiplier tous les poids par une même constante positive
+$\lambda$ multiplie $X'\Omega^{-1}X$ et $X'\Omega^{-1}\mathbf y$ par $\lambda$,
+facteur qui se simplifie dans le produit
+$\left(X'\Omega^{-1}X\right)^{-1}X'\Omega^{-1}\mathbf y$. \textbf{Seuls les
+poids relatifs comptent}, jamais leur échelle --- ce qui est heureux, puisque
+$\sigma^2$ lui-même est inconnu.
+
+\question \textbf{Le risque} est que le modèle de variance soit faux. Les poids
+sont alors mal choisis. L'estimateur reste \emph{convergent} --- l'espérance
+conditionnelle est toujours correctement spécifiée, et pondérer ne fait que
+repondérer des conditions de moments valides --- mais il n'est plus efficace, et
+surtout ses écarts-types conventionnels, calculés comme si les poids étaient
+justes, sont \textbf{invalides}. On aurait alors remplacé un problème par un
+autre. \textbf{Comparaison.} Les écarts-types robustes ne demandent aucun modèle
+de la variance~: ils sont agnostiques, donc quasiment sans risque, au prix d'un
+estimateur non efficace. La pondération peut gagner beaucoup en précision, mais
+seulement si le modèle de variance est crédible. En pratique, on privilégie les
+écarts-types robustes par défaut, et l'on ne pondère que lorsque la forme de
+$\Omega$ est connue par construction --- typiquement le cas des données groupées
+de l'exercice~\ref{ex:cout-hetero}, où $\sigma_g^2=\epsvar/n_g$ avec $n_g$ observé. Une prudence
+supplémentaire consiste à pondérer \emph{et} à calculer des écarts-types
+robustes sur le modèle pondéré.
+
+\nouvelexercice\label{ex:mv-recap}
+
+\question Les erreurs étant indépendantes et gaussiennes de variances
+$\sigma_t^2$~:
+\[
+  \ell\left(\beta,\Omega;\mathbf y\right)
+  = -\frac{T}{2}\log(2\pi) - \frac{1}{2}\sum_{t=1}^T\log\sigma_t^2
+    - \frac{1}{2}\sum_{t=1}^T\frac{\left(y_t-\mathbf x_t'\beta\right)^2}{\sigma_t^2}
+\]
+soit, sous forme matricielle,
+$\ell = -\frac{T}{2}\log(2\pi) - \frac12\log|\Omega| - \frac12\left(\mathbf y-X\beta\right)'\Omega^{-1}\left(\mathbf y-X\beta\right)$.
+
+\question Si $\Omega$ est connue, les deux premiers termes ne dépendent pas de
+$\beta$~: maximiser $\ell$ en $\beta$ revient exactement à \emph{minimiser} la
+forme quadratique $\left(\mathbf y-X\beta\right)'\Omega^{-1}\left(\mathbf y-X\beta\right)$,
+qui est le programme des MCG. D'où~:
+\[
+  \check{\mathbf b} = \hat{\mathbf b}_{\textsc{mcg}} = \left(X'\Omega^{-1}X\right)^{-1}X'\Omega^{-1}\mathbf y
+\]
+et ceci \textbf{exactement}, à toute taille d'échantillon --- il ne s'agit pas
+d'une équivalence asymptotique. C'est la transposition au cas non sphérique de
+l'équivalence MCO/MV du chapitre~I.
+
+\question La dérivée croisée de la log-vraisemblance fait intervenir~:
+\[
+  \frac{\partial^2\ell}{\partial\beta\,\partial\gamma'}
+  = -\sum_t \frac{\left(y_t-\mathbf x_t'\beta\right)}{\sigma_t^2}\,\mathbf x_t z_t'
+  = -\sum_t \frac{\varepsilon_t}{\sigma_t^2}\,\mathbf x_t z_t'
+\]
+dont l'espérance est nulle puisque $\mathbb E[\varepsilon_t]=0$ et que
+$\mathbf x_t$, $z_t$ et $\sigma_t^2$ sont déterministes. Le bloc croisé de la
+matrice d'information est donc nul~: elle est \textbf{bloc-diagonale}. C'est un
+moment d'ordre impair qui s'annule --- le même mécanisme qu'au chapitre~I entre
+$\beta$ et $\epsvar$.
+
+\question La bloc-diagonalité signifie que $\beta$ et $\gamma$ sont orthogonaux
+au sens de l'information~: l'inverse de la matrice d'information est
+bloc-diagonale, de sorte que la borne pour $\beta$ est la même selon que
+$\gamma$ est connu ou estimé. \textbf{Estimer $\Omega$ ne coûte donc rien
+asymptotiquement}~: l'incertitude sur les poids ne se propage pas, au premier
+ordre, à l'estimation des paramètres d'intérêt.
+
+\question Il en résulte que l'estimateur des MCQG (qui utilise $\hat\Omega$) et
+l'estimateur du maximum de vraisemblance (qui estime tout conjointement) ont la
+\textbf{même distribution asymptotique}~:
+\[
+  \sqrt T\left(\breve{\mathbf b}-\beta\right)\ \dlimT\
+  \normal{0}{\left(\mathrm{plim}\ \frac{X'\Omega^{-1}X}{T}\right)^{-1}}
+\]
+et tous deux sont asymptotiquement équivalents aux MCG à $\Omega$ connue. Il n'y
+a donc pas lieu, asymptotiquement, de préférer l'un à l'autre.
+
+\question
+\begin{center}
+\begin{tabular}{p{1.6cm}p{2.3cm}p{2.0cm}p{3.2cm}p{3.0cm}}
+\hline
+ & \textbf{$\Omega$} & \textbf{Normalité} & \textbf{Optimalité} & \textbf{Mise en œuvre}\\
+\hline
+MCG & connue & non requise & BLUE à distance finie (Gauss-Markov) & directe, mais $\Omega$ l'est rarement\\[1mm]
+MCQG & estimée & non requise & asymptotique seulement & procédure en plusieurs étapes\\[1mm]
+MV & paramétrée et estimée & requise & efficace asympt. (borne CDFR) & optimisation numérique\\
+\hline
+\end{tabular}
+\end{center}
+
+\question L'estimateur sandwich de l'exercice~\ref{ex:hc} repose sur l'hypothèse que
+$\Omega$ est \textbf{diagonale}~: la garniture $\sum_t\hat\varepsilon_t^{\,2}\mathbf x_t\mathbf x_t'$
+ne contient que des termes en $t$, aucun terme croisé en $(t,s)$. Il corrige donc
+l'inégalité des variances, mais \emph{pas} la présence de covariances hors
+diagonale. Or~:
+\begin{itemize}
+\item En \textbf{série temporelle}, les erreurs sont fréquemment autocorrélées
+  (chapitre~II)~: $\Omega$ a des termes hors diagonale, et $X'\Omega X$ comporte
+  des sommes doubles que le sandwich ignore. La correction de Newey-West ajoute
+  précisément ces termes croisés, pondérés de façon décroissante avec l'écart
+  temporel pour garantir une matrice semi-définie positive.
+\item En \textbf{données groupées} (élèves d'une même classe, salariés d'une même
+  entreprise), les erreurs sont corrélées à l'intérieur des grappes~: $\Omega$ est
+  bloc-diagonale et non diagonale. Les écarts-types en grappes agrègent les
+  résidus au niveau du groupe plutôt que de l'observation.
+\end{itemize}
+Dans les deux cas, ignorer la corrélation conduit typiquement à sous-estimer
+lourdement les écarts-types.
+
+\nouvelexercice\label{ex:salaire} \textit{Les valeurs ci-dessous ont été obtenues sur
+\texttt{data/chapitre-1/wage1.csv} ($T=526$).}
+
+\question L'estimation par les MCO donne ($R^2 = 0{,}40$, $s = 0{,}413$)~:
+\[
+  \widehat{\log wage} = \underset{(0{,}102)}{0{,}390}
+  + \underset{(0{,}0070)}{0{,}0841}\,educ
+  + \underset{(0{,}0048)}{0{,}0389}\,exper
+  - \underset{(0{,}00011)}{0{,}000686}\,exper^2
+  - \underset{(0{,}036)}{0{,}337}\,female
+\]
+\textbf{Pourquoi le logarithme}~: le salaire est une grandeur positive à
+distribution très asymétrique, et la théorie du capital humain (Mincer) prédit
+un effet \emph{multiplicatif} de l'éducation. En log, le modèle devient additif
+et les coefficients s'interprètent en variation relative~: $\hat\beta_2 = 0{,}084$
+signifie qu'une année d'études supplémentaire est associée à un salaire horaire
+supérieur d'environ $8{,}4\,\%$. Le terme quadratique en $exper$, de coefficient
+négatif, traduit des rendements décroissants de l'expérience (le maximum est
+atteint vers $28$ ans). Le coefficient de $female$ indique un salaire inférieur
+d'environ $29\,\%$ ($e^{-0{,}337}-1$) pour les femmes, à caractéristiques
+observées données.
+
+\question Les deux graphiques montrent un net évasement des résidus~: leur
+dispersion croît avec le niveau d'éducation et avec le salaire prédit. Les
+diplômés du supérieur ont des salaires beaucoup plus hétérogènes que les
+non-diplômés. C'est la signature graphique de l'hétéroscédasticité, et elle
+suggère une variance croissante en $educ$ --- ce qui oriente vers le choix de
+$z_t$ pour Breusch-Pagan et vers la variable d'ordonnancement de Goldfeld-Quandt.
+
+\question Les trois tests donnent~:
+\begin{itemize}
+\item \textbf{Breusch-Pagan} (version de Koenker, $z_t$ = les quatre
+  régresseurs)~: $LM = 9{,}98$, $\chi^2(4)$, $p = 0{,}041$. On rejette
+  l'homoscédasticité au seuil de $5\,\%$.
+\item \textbf{White} (régression auxiliaire complète)~: $W = 19{,}93$. Le
+  décompte naïf donnerait $q = 4+\frac{4\times5}{2} = 14$, mais deux colonnes
+  sont colinéaires ($exper\times exper = exper^2$, et $female\times female = female$
+  puisque $female$ est une indicatrice), d'où $q = 12$ et
+  $p = 0{,}068$. On ne rejette \emph{pas} tout à fait au seuil de $5\,\%$.
+\item \textbf{Goldfeld-Quandt} (tri selon $educ$, un quart des observations
+  centrales écartées)~: $F = 1{,}33$, $p = 0{,}026$. On rejette à $5\,\%$.
+\end{itemize}
+\textbf{Les conclusions ne concordent pas tout à fait}, et c'est instructif.
+Breusch-Pagan et Goldfeld-Quandt rejettent, White non. L'explication tient à la
+puissance~: White disperse sa puissance sur $12$ degrés de liberté pour détecter
+n'importe quelle forme d'hétéroscédasticité, alors que les deux autres
+concentrent la leur sur une alternative monotone en $educ$ --- qui se trouve être
+la bonne. C'est exactement l'arbitrage généralité/puissance de l'exercice~\ref{ex:white}.
+
+\question Écarts-types comparés~:
+\begin{center}
+\begin{tabular}{lccccc}
+\hline
+ & usuel & HC0 & HC1 & HC2 & HC3\\
+\hline
+$educ$   & $0{,}00696$ & $0{,}00767$ & $0{,}00770$ & $0{,}00773$ & $0{,}00781$\\
+$exper$  & $0{,}00482$ & $0{,}00470$ & $0{,}00472$ & $0{,}00472$ & $0{,}00475$\\
+$female$ & $0{,}03634$ & $0{,}03604$ & $0{,}03621$ & $0{,}03623$ & $0{,}03643$\\
+\hline
+\end{tabular}
+\end{center}
+La correction est modeste et \emph{ne va pas dans le même sens pour toutes les
+variables}~: l'écart-type de $educ$ augmente d'environ $12\,\%$ (sa statistique
+de Student passe de $12{,}1$ à $10{,}8$), tandis que ceux de $exper$ et de
+$female$ diminuent légèrement. \textbf{Aucun coefficient ne change de statut}~:
+tous restent très significatifs. C'est un rappel utile --- l'hétéroscédasticité
+ne gonfle pas mécaniquement tous les écarts-types.
+
+\question Ici $T = 526$, très au-delà du seuil de $250$, et les leviers restent
+faibles ($\max_t h_{tt} = 0{,}054$ pour un levier moyen $K/T = 0{,}0095$). Les
+quatre variantes sont d'ailleurs presque confondues, ce qui confirme le
+diagnostic. \textbf{N'importe laquelle convient}, et l'on retiendra HC3 par
+défaut puisqu'elle ne coûte rien sur un échantillon de cette taille.
+
+\question Avec $\sigma_i^2 = \sigma^2\exp(\gamma_1 + \gamma_2\,educ_i + \gamma_3\,exper_i)$,
+la régression auxiliaire de $\log\hat\varepsilon_i^{\,2}$ donne
+$\hat\gamma_2 = 0{,}097$ ($t = 2{,}5$) et $\hat\gamma_3 = 0{,}021$ ($t = 2{,}7$)~:
+la variance croît bien avec l'éducation et l'expérience, ce qui confirme les
+tests. Les MCQG donnent alors~:
+\begin{center}
+\begin{tabular}{lcccc}
+\hline
+ & \multicolumn{2}{c}{MCO} & \multicolumn{2}{c}{MCQG}\\
+ & coef. & éc.-type & coef. & éc.-type\\
+\hline
+$educ$   & $0{,}0841$ & $0{,}0070$ & $0{,}0743$ & $0{,}0065$\\
+$exper$  & $0{,}0389$ & $0{,}0048$ & $0{,}0415$ & $0{,}0047$\\
+$female$ & $-0{,}3372$ & $0{,}0363$ & $-0{,}3005$ & $0{,}0355$\\
+\hline
+\end{tabular}
+\end{center}
+Le gain de précision est réel mais modeste (environ $6\,\%$ sur $educ$).
+\textbf{Un point mérite attention}~: le coefficient de $educ$ passe de $0{,}084$
+à $0{,}074$, soit un écart de près d'un écart-type et demi. Sous spécification
+correcte, MCO et MCQG sont tous deux convergents et ne devraient différer que
+par l'aléa d'échantillonnage. Un écart systématique de cette ampleur est un
+signal de type Hausman~: il invite à soupçonner une mauvaise spécification de
+l'espérance conditionnelle --- forme fonctionnelle, ou variable omise
+(le talent, cf. exercice~\ref{ex:variable-omise}) --- plutôt qu'à se réjouir du gain d'efficacité.
+
+\question \textbf{Conclusion.} L'hétéroscédasticité est ici statistiquement
+détectable mais \emph{économiquement inoffensive}~: les corrections déplacent
+les écarts-types de quelques pourcents, aucun coefficient ne change de signe ni
+de statut de significativité, et les conclusions de l'étude --- rendement de
+l'éducation d'environ $8\,\%$ par année, rendements décroissants de
+l'expérience, écart salarial femmes-hommes d'environ $30\,\%$ --- sont
+inchangées. \textbf{Que privilégier}~: les écarts-types robustes. Ils ne coûtent
+rien, ne demandent aucune hypothèse sur la forme de $\Omega$, et suffisent
+lorsque l'enjeu est l'inférence. La pondération n'apporte ici qu'un gain
+d'efficacité marginal, au prix d'un modèle de variance arbitraire --- et elle
+soulève, comme on vient de le voir, une question de spécification plus sérieuse
+que celle qu'elle prétendait régler. C'est bien le message du chapitre~: le
+danger n'était pas dans l'estimateur, mais dans l'écart-type imprimé à côté.
+
+\nouvelexercice\label{ex:mpl}
+
+\question Puisque $y_i$ vaut $0$ ou $1$, l'erreur ne peut prendre que deux
+valeurs~:
+\[
+  \varepsilon_i =
+  \begin{cases}
+    1-\mathbf x_i'\beta & \text{avec probabilité } \mathbf x_i'\beta\\
+    -\mathbf x_i'\beta  & \text{avec probabilité } 1-\mathbf x_i'\beta
+  \end{cases}
+\]
+L'erreur est donc, elle aussi, une variable de Bernoulli translatée --- très loin
+d'une gaussienne.
+
+\question L'espérance conditionnelle vaut~:
+\[
+  \mathbb E\left[\varepsilon_i|\mathbf x_i\right]
+  = \left(1-\mathbf x_i'\beta\right)\mathbf x_i'\beta + \left(-\mathbf x_i'\beta\right)\left(1-\mathbf x_i'\beta\right) = 0
+\]
+Pour la variance, en posant $\pi_i = \mathbf x_i'\beta$~:
+\[
+  \mathbb V\left[\varepsilon_i|\mathbf x_i\right]
+  = \mathbb E\left[\varepsilon_i^2|\mathbf x_i\right]
+  = \left(1-\pi_i\right)^2\pi_i + \pi_i^2\left(1-\pi_i\right)
+  = \pi_i\left(1-\pi_i\right)\left[\left(1-\pi_i\right)+\pi_i\right]
+  = \pi_i\left(1-\pi_i\right)
+\]
+(c'est simplement la variance d'une Bernoulli de paramètre $\pi_i$).
+\textbf{Commentaire.} La variance dépend de $\mathbf x_i$ à travers $\pi_i$~:
+elle est maximale ($1/4$) pour $\pi_i=1/2$ et tend vers zéro lorsque $\pi_i$
+s'approche de $0$ ou de $1$. L'hétéroscédasticité n'est donc pas ici une
+imperfection des données que l'on pourrait espérer absente~: elle est une
+\emph{conséquence logique} du caractère binaire de $y$. Aucun test n'est
+nécessaire pour la diagnostiquer --- sauf à vouloir vérifier la spécification.
+C'est le seul cas du cours où la forme de $\Omega$ est connue \emph{comme
+fonction des paramètres à estimer}.
+
+\question L'estimateur des MCO est \textbf{sans biais et convergent}~: ces deux
+propriétés ne reposent que sur $\mathbb E[\varepsilon|\mathbf x]=0$, qui est ici
+vraie par construction dès lors que l'espérance conditionnelle est effectivement
+linéaire (exercice~\ref{ex:cout-hetero}, question 1). En revanche il n'est
+\textbf{pas efficace}~: le théorème de Gauss-Markov ne s'applique pas, puisque
+les erreurs sont hétéroscédastiques. Et surtout, les écarts-types usuels
+$s^2(X'X)^{-1}$ sont \textbf{faux}.
+
+\question Les poids optimaux sont l'inverse des variances~:
+\[
+  \omega_i = \frac{1}{\pi_i\left(1-\pi_i\right)} = \frac{1}{\mathbf x_i'\beta\left(1-\mathbf x_i'\beta\right)}
+\]
+\textbf{On ne peut pas les utiliser directement} parce qu'ils dépendent de
+$\beta$, le paramètre que l'on cherche précisément à estimer~: c'est un
+raisonnement circulaire. D'où la procédure en deux étapes (MCQG)~: \emph{(i)}
+estimer $\beta$ par les MCO ordinaires, ce qui est légitime puisque l'estimateur
+est convergent, et former les probabilités ajustées
+$\hat\pi_i = \mathbf x_i'\hat{\mathbf b}$~; \emph{(ii)} ré-estimer par moindres
+carrés pondérés avec les poids $\hat\omega_i = 1/[\hat\pi_i(1-\hat\pi_i)]$.
+
+\question Rien dans les MCO ne contraint $\mathbf x_i'\hat{\mathbf b}$ à rester
+dans $[0,1]$~: c'est une combinaison linéaire non bornée des explicatives, et
+pour des valeurs extrêmes de $\mathbf x_i$ la prédiction sort de l'intervalle.
+On obtient alors des «~probabilités~» négatives ou supérieures à $1$, ce qui est
+déjà gênant en soi, mais devient \emph{fatal} pour la pondération~: si
+$\hat\pi_i\notin[0,1]$, alors $\hat\pi_i(1-\hat\pi_i)<0$ et le poids
+$\hat\omega_i$ est \textbf{négatif}. L'estimateur pondéré n'a plus aucun sens --- 
+une observation contribuerait négativement à la somme des carrés. \textbf{Deux
+remèdes pratiques}~: écarter les observations concernées (au prix d'une
+sélection arbitraire de l'échantillon, ce qui peut biaiser), ou tronquer les
+probabilités ajustées dans un intervalle du type $[0{,}01\ ;\ 0{,}99]$ (au prix
+d'un choix tout aussi arbitraire). Aucune de ces solutions n'est satisfaisante.
+
+\question Précisément à cause de la question précédente. La pondération promet un
+gain d'efficacité, mais elle se heurte à un obstacle structurel --- des poids
+possiblement négatifs --- et ne peut être sauvée que par des bricolages
+arbitraires. Les écarts-types robustes, eux, ne demandent rien~: ils
+n'exigent ni de connaître $\Omega$, ni de la modéliser, ni que les probabilités
+ajustées soient bien rangées. On conserve donc les MCO, dont on sait qu'ils sont
+convergents, et l'on se contente de corriger leur variance par l'estimateur
+sandwich. C'est exactement la stratégie recommandée à
+l'exercice~\ref{ex:mcp}~: pondérer seulement lorsque le modèle de variance est
+crédible, et se rabattre sinon sur les écarts-types robustes. Le modèle de
+probabilité linéaire s'estime ainsi en pratique~: MCO plus écarts-types robustes,
+systématiquement.
+
+\question \textbf{Comparaison.}
+\begin{itemize}
+\item \textbf{Avantages du modèle de probabilité linéaire}~: les coefficients
+  s'interprètent directement comme des effets marginaux sur la probabilité
+  (une unité de $x_k$ en plus fait varier $\mathbb P(y=1)$ de $\beta_k$), sans
+  calcul supplémentaire~; l'estimation est linéaire, donc immédiate, sans
+  optimisation numérique ni problème de convergence~; il se combine sans peine
+  aux variables instrumentales, aux effets fixes et aux données de panel~; et
+  il fournit une bonne approximation de l'effet marginal moyen lorsque les
+  probabilités estimées restent au voisinage de $1/2$.
+\item \textbf{Inconvénients}~: les probabilités prédites peuvent sortir de
+  $[0,1]$~; l'effet marginal est supposé constant, alors qu'il devrait
+  logiquement s'atténuer près de $0$ et de $1$~; et l'hypothèse de linéarité de
+  l'espérance conditionnelle est forte.
+\item \textbf{Probit et logit} corrigent ces défauts en spécifiant
+  $\mathbb P(y_i=1|\mathbf x_i) = F(\mathbf x_i'\beta)$ avec $F$ une fonction de
+  répartition, ce qui contraint la prédiction à $]0,1[$ et rend l'effet marginal
+  variable. Le prix à payer est une estimation par maximum de vraisemblance
+  (donc non linéaire), des coefficients qui ne s'interprètent plus directement,
+  et une plus grande sensibilité à la spécification retenue pour $F$.
+\end{itemize}
+En pratique, les deux approches donnent des effets marginaux moyens très proches
+--- ce que confirment les simulations de \texttt{exercices/E03.py} --- et le choix
+relève souvent de la commodité.
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
