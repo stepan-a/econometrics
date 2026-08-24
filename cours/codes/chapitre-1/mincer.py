@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from chemins import DONNEES, IMAGES
 
-data = pd.read_csv('../data/chapitre-1/wage1.csv')
+data = pd.read_csv(DONNEES / 'wage1.csv')
 
 data['lwage']  = np.log(data.wage)     # Salaire horaire en logarithme
 data['exper2'] = data.exper**2/100     # Expérience au carré (profil concave), en centaines
@@ -46,9 +47,9 @@ $F(%d,\,%d) = %s$ & p-value $< 10^{-3}$\\
     (T, K, fr(ols.rsquared, 4), fr(np.sqrt(ols.mse_resid), 4),
      fr(ols.rsquared_adj, 4), K-1, T-K, fr(ols.fvalue, 2)))
 
-with open('../images/chapitre-1/sortie-mincer.tex', 'w') as f:
+with open(IMAGES / 'sortie-mincer.tex', 'w') as f:
     f.write(tableau + '\n')
 
-with open('../images/chapitre-1/sortie-mincer-synthese.tex', 'w') as f:
+with open(IMAGES / 'sortie-mincer-synthese.tex', 'w') as f:
     f.write(synthese + '\n')
 

@@ -1,16 +1,28 @@
+"""Distribution de l'estimateur de la pente, exogène déterministe ou stochastique.
+
+Produit slope-estimate-sample-nonstochastic-x.tex et
+slope-estimate-sample-stochastic-x.tex.
+"""
+
 import numpy as np
+import matplotlib.pyplot as plt
+
+from chemins import IMAGES
 
 rng = np.random.default_rng(2211)
 
 N = 100000                         # Nombre d'échantillons
 T = 10                             # Taille de chaque échantillon
 
+
 def y(x, ε):
+    # Le modèle de la nature
     return x+ε
 
-xd = 10*rng.uniform(size=T)        # Variable exogène déterminsite (utilisée pour YD)
 
-ϵ = rng.normal(size=(T,N))         # Tableau où seront stockés les résidus pour les N échantillons
+xd = 10*rng.uniform(size=T)        # Variable exogène déterministe
+
+ϵ = rng.normal(size=(T,N))         # Résidus pour les N échantillons
 
 Bd = np.zeros(N)
 Bs = np.zeros(N)
@@ -22,24 +34,14 @@ for i in range(N):
     ys = y(xs, ϵ[:,i])
     Bs[i] = np.dot(ys-np.mean(ys), xs-np.mean(xs))/np.dot(xs-np.mean(xs), xs-np.mean(xs))
 
-import matplotlib.pyplot as plt
-
-#
-# Histogramme pour la distribution empirique de l'estimateur de la pente quand la variable exogène
-# est déterministe.
-#
+# Distribution empirique de la pente estimée, exogène déterministe
 
 fig, ax = plt.subplots()
 ax.hist(Bd, bins='auto', density=True, histtype='step')
-#ax.plot(Bd, 0*Bd, marker='o')
-plt.savefig('../images/chapitre-1/slope-estimate-sample-nonstochastic-x.tex', format='pgf')
+plt.savefig(IMAGES / 'slope-estimate-sample-nonstochastic-x.tex', format='pgf')
 
-#
-# Histogramme pour la distribution empirique de l'estimateur de la pente quand la variable exogène
-# est stochastique.
-#
+# Distribution empirique de la pente estimée, exogène stochastique
 
 fig, ax = plt.subplots()
 ax.hist(Bs, bins='auto', density=True, histtype='step')
-#ax.plot(Bs, 0*Bd, 'o')
-plt.savefig('../images/chapitre-1/slope-estimate-sample-stochastic-x.tex', format='pgf')
+plt.savefig(IMAGES / 'slope-estimate-sample-stochastic-x.tex', format='pgf')

@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from chemins import IMAGES
 
 rng = np.random.default_rng(2211)
 
@@ -33,5 +34,5 @@ axes[0].set_ylabel('y')
 axes[0].legend(loc='upper left', fontsize='small')
 fig.tight_layout()
 
-plt.savefig('../images/chapitre-1/signal-bruit.tex', format='pgf')
+plt.savefig(IMAGES / 'signal-bruit.tex', format='pgf')
 

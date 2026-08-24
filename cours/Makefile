@@ -4,10 +4,9 @@ LATEX = pdflatex
 
 all: chapitre-1.pdf chapitre-2.pdf chapitre-3.pdf chapitre-4.pdf clean
 
-codes/chapitre-1.log: codes/chapitre-1.org
-	cd codes ; ./babel chapitre-1.org
-
-chapitre-1.pdf: chapitre-1.tex preamble.tex codes/chapitre-1.log
+# Les figures engendrées sont versionnées : leur reconstruction relève du
+# Makefile racine (`make figures`), qui seul a besoin de Python.
+chapitre-1.pdf: chapitre-1.tex preamble.tex $(wildcard images/chapitre-1/*.tex)
 	@rubber --src-specials --unsafe --pdf chapitre-1
 	@rubber --clean chapitre-1
 

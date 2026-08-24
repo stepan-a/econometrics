@@ -1,0 +1,7 @@
+# Dépendances Python de la chaîne de construction des figures du cours.
+# Installées dans .venv par la cible `venv` du Makefile racine.
+numpy
+pandas
+scipy
+matplotlib
+statsmodels

@@ -1,14 +1,22 @@
+"""Convergence de l'estimateur des MCO quand la taille de l'échantillon croît.
+
+Produit ols-convergence.tex.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+from chemins import IMAGES
 
 rng = np.random.default_rng(2211)
 
 N = 100000                         # Nombre d'échantillons
 
+
 def y(x, ε):
+    # Le modèle de la nature
     return x+ε
 
-B = np.zeros(N)
 
 fig, ax = plt.subplots()
 
@@ -25,4 +33,4 @@ for t in range(0,3):
     ax.hist(B, bins='auto', density=True, histtype='step', color=colours[t], label=f"T = {T}")
 
 ax.legend()
-plt.savefig('../images/chapitre-1/ols-convergence.tex', format='pgf')
+plt.savefig(IMAGES / 'ols-convergence.tex', format='pgf')

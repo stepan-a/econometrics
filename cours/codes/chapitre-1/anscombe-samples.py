@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 import matplotlib.pyplot as plt
+from chemins import DONNEES, IMAGES
 
 def plot(ax, x, y, title=''):
   """
@@ -42,7 +43,7 @@ def plot(ax, x, y, title=''):
 fig = plt.figure()
 
 # Lecture des quatre échantillons
-data = pd.read_csv('../data/chapitre-1/anscombe.csv')
+data = pd.read_csv(DONNEES / 'anscombe.csv')
 
 ax = fig.add_subplot(2, 2, 1)
 x = data[data.dataset=='I'].x
@@ -67,4 +68,4 @@ regression = plot(ax, x, y, title=f'IV')
 # fig.suptitle(f"Les quatre échantillons d'Anscombe ($R^2 = {regression.rvalue**2:.2f}$)", fontsize='x-large')
 fig.tight_layout()
 
-plt.savefig('../images/chapitre-1/anscombe.tex', format='pgf')
+plt.savefig(IMAGES / 'anscombe.tex', format='pgf')

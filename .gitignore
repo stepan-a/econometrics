@@ -17,3 +17,6 @@ cours/*.snm
 cours/*.synctex.gz
 cours/*.toc
 cours/*.auxlock
+
+.venv/
+__pycache__/
