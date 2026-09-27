@@ -3,6 +3,11 @@ set -e
 
 TARGET="/puck/www/le-mans.adjemian.eu/econometrics"
 
+# Le hook post-receive hérite de GIT_DIR=. (relatif à .git/) puis se place dans
+# l'arbre de travail : ce GIT_DIR ne désigne alors plus le dépôt. Sans lui, git
+# retrouve .git/ par remontée depuis n'importe quel sous-répertoire.
+unset GIT_DIR GIT_WORK_TREE
+
 # --- Build ---------------------------------------------------------------
 make -C cours
 make -C td
