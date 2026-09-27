@@ -1,4 +1,4 @@
-[[https://git.ithaca.fr/stepan/econometrics/badges/master/pipeline.svg]]
+[[https://img.shields.io/endpoint?url=https://stephane-adjemian.fr/ci-status/econometrics.git.json]]
 #+html:<div align="center">
 * Cours d'Économétrie Approfondie
    (Le Mans, L3)
