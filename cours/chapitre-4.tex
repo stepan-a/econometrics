@@ -54,8 +54,8 @@
   \dnote{La matrice $\Omega$ n'a pas ici le même sens qu'au \chapref{2}{II}. Là-bas
     la variance était \emph{factorisée}, $\mathbb V[\varepsilon]=\epsvar\Omega$,
     de sorte qu'$\Omega$ était sans dimension et valait $I_T$ dans le cas
-    sphérique. Ici les variances sont \emph{dans} $\Omega$. Les formules ont la
-    même allure, au facteur $\epsvar$ près.}
+    sphérique. Ici les variances sont \emph{dans} $\Omega$. Les formules sont
+    identiques au facteur $\epsvar$ près.}
 
 \end{frame}
 
@@ -334,8 +334,7 @@
 
   \end{itemize}
 
-  \dnote{Les deux statistiques ne sont pas égales, et ne diffèrent pas d'un
-    simple facteur~: elles ne normalisent pas par la même quantité. Sur
+  \dnote{Les deux statistiques diffèrent, et pas d'un simple facteur~: elles ne normalisent pas par la même quantité. Sur
     l'équation de salaire, à la fin de ce chapitre, la première vaut $25{,}48$
     et la seconde $19{,}84$. Écrire $LM = TR^2 = \nicefrac{SCE}{\hat\sigma^4}$
     serait faux trois fois.}
@@ -397,7 +396,7 @@
   \end{itemize}
 
   \dnote{Ce décompte suppose les $q$ variables auxiliaires linéairement
-    indépendantes, ce qui est faux plus souvent qu'on ne le croit. Le carré
+    indépendantes, ce qui est souvent faux. Le carré
     d'une indicatrice est l'indicatrice elle-même. Et si le modèle contient déjà
     un terme quadratique — une équation de salaire avec $exper$ et $exper^2$ —,
     le carré du premier est colinéaire au second. Il faut alors retenir le rang
@@ -649,7 +648,7 @@
     \]
   \end{defn}
 
-  \bigskip
+  \medskip
 
   \begin{prop}\label{prop:hc0}
     Si $\nicefrac{X'X}{T}\plim Q$ définie positive et
@@ -659,7 +658,7 @@
     \]
   \end{prop}
 
-  \bigskip
+  \medskip
 
   \begin{itemize}
 
@@ -744,13 +743,13 @@
   \item Les corrections proposées consistent à regonfler $\hat\varepsilon_t^2$~:
 
     \begin{center}
-      \renewcommand{\arraystretch}{1.5}
+      \renewcommand{\arraystretch}{1.3}
       \begin{tabular}{lcl}
         \toprule
         HC0 & $\hat\varepsilon_t^2$ & \cite{White1980}\\
-        HC1 & $\dfrac{T}{T-K}\,\hat\varepsilon_t^2$ & degrés de liberté\\
-        HC2 & $\dfrac{\hat\varepsilon_t^2}{1-h_{tt}}$ & \cite{MacKinnonWhite1985}\\
-        HC3 & $\dfrac{\hat\varepsilon_t^2}{(1-h_{tt})^2}$ & \cite{DavidsonMacKinnon1993}\\
+        HC1 & $T\hat\varepsilon_t^2/(T-K)$ & degrés de liberté\\
+        HC2 & $\hat\varepsilon_t^2/(1-h_{tt})$ & \cite{MacKinnonWhite1985}\\
+        HC3 & $\hat\varepsilon_t^2/(1-h_{tt})^2$ & \cite{DavidsonMacKinnon1993}\\
         \bottomrule
       \end{tabular}
     \end{center}
@@ -904,11 +903,11 @@
 
   \end{itemize}
 
-  \dnote{Cette correction de $1{,}2704$ — l'espérance du logarithme d'un
+  \dnote{Cette correction — l'espérance du logarithme d'un
     $\chi^2_1$, au signe près — est \textbf{sans effet sur} $\breve{\mathbf b}$~:
     les MCP ne dépendent que des poids \emph{relatifs}, et une constante
-    additive dans le logarithme est un facteur multiplicatif commun. Elle
-    importe pour estimer $\sigma_t^2$ lui-même, pas pour estimer $\beta$.}
+    additive dans le logarithme est un facteur multiplicatif commun. Elle ne
+    sert qu'à estimer $\sigma_t^2$.}
 
 \end{frame}
 
@@ -1277,20 +1276,18 @@
     s'améliore pas quand $T$ grandit.\newline
 
   \item \textbf{Détecter.} Breusch-Pagan studentisé si l'on soupçonne une
-    variable, White si l'on n'en soupçonne aucune, Goldfeld-Quandt si l'on
-    attend une variance monotone et si la normalité est plausible. La version
+    variable, White sinon, Goldfeld-Quandt pour une variance
+    monotone. La version
     de $1979$ et Goldfeld-Quandt reposent sur la normalité, et le paient
     cher.\newline
 
-  \item \textbf{Corriger l'inférence.} Le sandwich d'Eicker-Huber-White, avec
-    HC3 en petit échantillon ou en présence de leviers élevés, HC1 au-delà.
-    C'est la réponse par défaut.\newline
+  \item \textbf{Corriger l'inférence.} Le sandwich d'Eicker-Huber-White, par
+    défaut~: HC3 si $T$ est petit ou les leviers élevés, HC1 sinon.\newline
 
   \item \textbf{Corriger l'estimateur.} Les MCP, cas particulier des MCG du
-    \chapref{2}{II} quand $\Omega$ est diagonale, avec les MCQG lorsqu'il faut
-    estimer les poids. Le gain d'efficacité est réel — il valait un facteur
-    trois et demi dans notre simulation — mais il suppose le modèle de variance
-    correct, faute de quoi il n'y a aucun gain.\newline
+    \chapref{2}{II} quand $\Omega$ est diagonale, et les MCQG s'il faut estimer
+    les poids. Le gain d'efficacité est réel — un facteur trois et demi dans
+    notre simulation — mais suppose le modèle de variance correct.\newline
 
   \item[$\Rightarrow$] Un test qui rejette ne dit pas que l'inférence usuelle
     est très fausse~; il dit qu'on n'en sait rien tant qu'on n'a pas regardé.
