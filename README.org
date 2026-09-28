@@ -1,4 +1,5 @@
-[[https://img.shields.io/endpoint?url=https://stephane-adjemian.fr/ci-status/econometrics.git.json]]
+#+html:<img src="https://img.shields.io/endpoint?url=https://stephane-adjemian.fr/ci-status/econometrics.git.json" alt="CI status">
+
 #+html:<div align="center">
 * Cours d'Économétrie Approfondie
    (Le Mans, L3)
